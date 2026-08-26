@@ -11,6 +11,7 @@ import { MyCompetencyComponent } from './views/mycompetency/mycompetency.compone
 import { MockAssessmentComponent, MockAssessmentSummary } from './views/mockAssessmentSummary/mock-assessment.data';
 import { TrainingComponent } from './views/training/training.component';
 import { PocHowToComponent } from './views/pochowto/pochowto.component';
+import { TrainingsComponent } from './views/trainings/trainings.component';
 
 @Component({
   selector: 'app-root',
@@ -25,6 +26,7 @@ import { PocHowToComponent } from './views/pochowto/pochowto.component';
     MockAssessmentComponent,
     TrainingComponent,
     PocHowToComponent,
+    TrainingsComponent,
   ],
   templateUrl: './app.component.html',
   styleUrl: './app.component.css',

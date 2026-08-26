@@ -1,0 +1,14 @@
+.trainings-placeholder {
+  margin: 1.5rem;
+  padding: 2rem;
+  text-align: center;
+  color: var(--text-muted, #888);
+}
+
+.trainings-placeholder i {
+  font-size: 3rem;
+}
+
+.trainings-placeholder p {
+  margin-top: 1rem;
+}
