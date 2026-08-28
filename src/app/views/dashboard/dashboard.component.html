@@ -1,0 +1,141 @@
+@if (loadError) {
+  <section class="alert alert-danger py-2" role="alert">{{ loadError }}</section>
+}
+
+<section class="notice-bar">
+  <div>
+    <strong>{{ notice.title }}</strong>
+    <span>{{ notice.detail }}</span>
+    @if (notice.badge) {
+      <span class="new-pill">{{ notice.badge }}</span>
+    }
+  </div>
+  <button class="link-button notice-link" type="button">View all</button>
+</section>
+
+<section class="page-header">
+  <div>
+    <h1>Welcome back, {{ header.welcomeName }}</h1>
+    <p>{{ header.detail }}</p>
+  </div>
+  <div class="header-actions">
+    <button class="btn btn-outline-secondary btn-sm" type="button">
+      <i class="bi bi-download"></i>
+      Export report
+    </button>
+    <button class="btn btn-primary btn-sm" type="button">
+      <i class="bi bi-plus-lg"></i>
+      New initiative
+    </button>
+  </div>
+</section>
+
+<section class="stats-grid" aria-label="Dashboard metrics">
+  @for (stat of stats; track stat.label) {
+    <article class="metric-card">
+      <p>{{ stat.label }}</p>
+      <strong>{{ stat.value }}</strong>
+      <span>{{ stat.detail }}</span>
+    </article>
+  }
+</section>
+
+<div class="content-grid">
+  <section class="panel checklist-panel">
+    <div class="panel-header">
+      <h2>My onboarding checklist</h2>
+      <button class="link-button" type="button">View all <i class="bi bi-arrow-right"></i></button>
+    </div>
+
+    <div class="segmented-tabs" role="tablist" aria-label="Onboarding track">
+      <button class="active" type="button">New joiner</button>
+      <button type="button">Lateral</button>
+      <button type="button">Returnee</button>
+    </div>
+
+    <div class="progress-row">
+      <span>Overall progress</span>
+      <strong>{{ checklistProgress.completed }} / {{ checklistProgress.total }}</strong>
+    </div>
+    <div class="progress" role="progressbar" [attr.aria-valuenow]="checklistProgress.percent" aria-valuemin="0" aria-valuemax="100">
+      <div class="progress-bar" [style.width.%]="checklistProgress.percent"></div>
+    </div>
+
+    <div class="task-list">
+      @for (task of checklist; track task.label) {
+        <button class="task-row" type="button" [class.done]="task.done" [class.warning]="task.warning">
+          <span class="task-check"><i class="bi" [class.bi-check-lg]="task.done"></i></span>
+          <span>{{ task.label }}</span>
+          <small>{{ task.status }}</small>
+        </button>
+      }
+    </div>
+  </section>
+
+  <section class="panel">
+    <div class="panel-header">
+      <h2>Announcements</h2>
+      <button class="link-button" type="button">All <i class="bi bi-arrow-right"></i></button>
+    </div>
+    <div class="stack-list">
+      @for (item of announcements; track item.title) {
+        <button class="announcement-row" type="button">
+          <strong>{{ item.title }}</strong>
+          <span>{{ item.meta }}</span>
+        </button>
+      }
+    </div>
+  </section>
+
+  <section class="panel initiatives-panel">
+    <div class="panel-header">
+      <h2>Song initiatives</h2>
+      <button class="link-button" type="button">Browse all <i class="bi bi-arrow-right"></i></button>
+    </div>
+    <div class="initiative-list">
+      @for (item of initiatives; track item.title) {
+        <article class="initiative-row">
+          <div>
+            <h3>{{ item.title }}</h3>
+            <p>{{ item.group }} - {{ item.meta }}</p>
+            <div class="tag-row">
+              @for (tag of item.tags; track tag) {
+                <span>{{ tag }}</span>
+              }
+            </div>
+          </div>
+          <strong>{{ item.status }}</strong>
+        </article>
+      }
+    </div>
+  </section>
+
+  <section class="panel">
+    <div class="panel-header">
+      <h2>POC overview</h2>
+      <button class="link-button" type="button">Full report <i class="bi bi-arrow-right"></i></button>
+    </div>
+    <div class="poc-list">
+      @for (person of poc; track person.name) {
+        <button class="poc-row" type="button">
+          <span class="avatar">{{ person.initials }}</span>
+          <span>
+            <strong>{{ person.name }}</strong>
+            <small>{{ person.role }}</small>
+          </span>
+          <em>{{ person.pending }}</em>
+        </button>
+      }
+    </div>
+  </section>
+
+  <section class="panel quick-tools">
+    <h2>Quick POC tools</h2>
+    @for (tool of quickTools; track tool.label) {
+      <button class="btn btn-outline-secondary" type="button">
+        <i class="bi {{ tool.icon }}"></i>
+        {{ tool.label }}
+      </button>
+    }
+  </section>
+</div>

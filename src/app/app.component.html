@@ -1,0 +1,84 @@
+<div class="dashboard-shell">
+  <aside class="sidebar">
+    <div class="brand">
+      <a href="/" class="cmp-logo" aria-label="ATCP Song Tracker Home">
+        <div class="cmp-logo__svg-wrapper">
+            <!-- Accenture greater-than mark (chevron) — decorative -->
+            <svg viewBox="0 0 38 40" xmlns="http://www.w3.org/2000/svg" role="img" aria-hidden="true" class="cmp-logo__svg">
+              <path class="cmp-logo__greater-than" d="M0 28.75L22.07 20.54L0 11.92V0.5L37.8 15.72V25.19L0 40.5V28.75Z"></path>
+            </svg>
+          </div>
+          <span class="cmp-logo__title">ATCP Song Tracker</span>
+      </a>
+    </div>
+
+    <div class="sidebar-group-filter">
+      <label class="sidebar-group-label">Group</label>
+      <select class="sidebar-group-select" [ngModel]="sharedData.attendanceGroup" (ngModelChange)="sharedData.setAttendanceGroup($event)">
+        <option value="">All Groups</option>
+        @for (g of sharedData.groupOptions; track g.value) {
+          <option [value]="g.value">{{ g.label }}</option>
+        }
+      </select>
+    </div>
+
+    @for (group of navGroups; track group.label) {
+      <nav class="nav-group" [attr.aria-label]="group.label">
+        <p>{{ group.label }}</p>
+        @for (item of group.items; track item.label) {
+          <button class="nav-item" [class.active]="isNavActive(item)" type="button" (click)="selectNav(item)">
+            <i class="bi {{ item.icon }}"></i>
+            <span>{{ item.label }}</span>
+            @if (item.label === 'Resources') {
+              <span class="nav-badge">{{ resourcesBadgeCount }}</span>
+            } @else if (item.badge) {
+              <span class="nav-badge">{{ item.badge }}</span>
+            }
+          </button>
+        }
+      </nav>
+    }
+  </aside>
+
+  <main class="dashboard-main">
+
+    @if (activeView === 'dashboard') {
+      <app-dashboard></app-dashboard>
+    } @else if (activeView === 'onboarding') {
+      <app-onboarding></app-onboarding>
+    } @else if (activeView === 'attendance') {
+      <app-attendance></app-attendance>
+    } @else if (activeView === 'planner') {
+      <app-planner></app-planner>
+    } @else if (activeView === 'mycompetency') {
+      <app-mycompetency></app-mycompetency>
+    } @else if (activeView === 'trainings') {
+      <section class="page-header">
+        <div>
+          <h1>Trainings</h1>
+          <p>Access training materials and track progress</p>
+        </div>
+      </section>
+      <div class="panel" style="margin:1.5rem;padding:2rem;text-align:center;color:var(--text-muted,#888);">
+        <i class="bi bi-journals" style="font-size:3rem;"></i>
+        <p style="margin-top:1rem;">Trainings — coming soon</p>
+      </div>
+    } @else if (activeView === 'mockinterview') {
+      <app-mock-assessment [summary]="mockSummary"></app-mock-assessment>
+    } @else if (activeView === 'reachout') {
+      <section class="page-header">
+        <div>
+          <h1>Projects and Reachouts</h1>
+          <p>Connect and reach out to team members</p>
+        </div>
+      </section>
+      <div class="panel" style="margin:1.5rem;padding:2rem;text-align:center;color:var(--text-muted,#888);">
+        <i class="bi bi-send" style="font-size:3rem;"></i>
+        <p style="margin-top:1rem;">Reachout — coming soon</p>
+      </div>
+    } @else if (activeView === 'training') {
+      <app-training></app-training>
+    }
+
+  </main>
+</div>

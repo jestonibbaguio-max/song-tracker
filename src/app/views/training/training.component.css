@@ -1,0 +1,107 @@
+.training-tabs {
+  margin: 0 1.5rem 0;
+}
+
+.training-table-wrap {
+  margin: 1rem 1.5rem 1.5rem;
+  max-height: 80vh;
+  overflow: auto;
+  border: 1px solid var(--line, #e5ded5);
+  border-radius: 8px;
+}
+
+.training-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.85rem;
+}
+
+.training-table th {
+  position: sticky;
+  top: 0;
+  text-align: left;
+  padding: 0.5rem 0.75rem;
+  font-size: 0.72rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.4px;
+  color: var(--muted, #888);
+  background: var(--panel, #fff);
+  border-bottom: 2px solid var(--line, #e5ded5);
+  z-index: 1;
+}
+
+.training-table td {
+  padding: 0.6rem 0.75rem;
+  border-bottom: 1px solid var(--line, #e5ded5);
+}
+
+.training-table tbody tr:last-child td {
+  border-bottom: 1px solid var(--line, #e5ded5);
+}
+
+.training-empty-row td {
+  color: var(--muted, #888);
+  text-align: center;
+  padding: 1.25rem 0.75rem;
+}
+
+.training-col-actions {
+  width: 44px;
+  text-align: center;
+}
+
+.training-icon-btn {
+  border: 1px solid transparent;
+  background: transparent;
+  color: var(--muted, #888);
+  border-radius: 6px;
+  width: 30px;
+  height: 30px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.training-icon-btn:hover:not(:disabled) {
+  background: rgba(0, 0, 0, 0.05);
+  color: var(--accent-dark, #7b5e3b);
+}
+
+.training-icon-btn:disabled {
+  opacity: 0.35;
+}
+
+.training-add-row td {
+  position: sticky;
+  bottom: 0;
+  background: var(--panel, #fff);
+  border-bottom: none;
+  border-top: 1px solid var(--line, #e5ded5);
+  padding-top: 0.75rem;
+}
+
+.training-add-form {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.training-add-form input {
+  border: 1px solid var(--line, #e5ded5);
+  border-radius: 6px;
+  padding: 0.4rem 0.6rem;
+  font-size: 0.85rem;
+  background: rgba(255, 255, 255, 0.6);
+}
+
+.training-add-title,
+.training-add-link {
+  flex: 2;
+  min-width: 0;
+}
+
+.training-add-length {
+  flex: 1;
+  min-width: 0;
+}

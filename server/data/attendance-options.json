@@ -1,0 +1,16 @@
+{
+  "options": [
+    "Present",
+    "Absent",
+    "SL",
+    "VL",
+    "PL",
+    "ML",
+    "EH",
+    "BL",
+    "Deployed",
+    "RTO",
+    "NITC",
+    "Transferred"
+  ]
+}

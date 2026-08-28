@@ -1,0 +1,253 @@
+.mock-summary h2 {
+  background: #0b3b71;
+  color: #fff;
+  display: inline-block;
+  padding: 10px 16px;
+  border-radius: 3px;
+  font-size: 3rem;
+}
+
+.mock-summary__table-wrap {
+  overflow-x: auto;
+  margin-top: 12px;
+}
+
+.mock-summary__table {
+  width: 100%;
+  border-collapse: collapse;
+  box-shadow: none;
+}
+
+.mock-summary__table thead th {
+  background: #0b3b71;
+  color: #ffffff;
+  padding: 14px 12px;
+  text-align: left;
+  font-weight: 700;
+  border: 1px solid rgba(0,0,0,0.06);
+}
+
+.mock-summary__table tbody td {
+  background: #e6e5e5;
+  padding: 12px;
+  border: 1px solid rgba(0,0,0,0.04);
+  vertical-align: middle;
+}
+
+.mock-summary__table tbody tr td:nth-child(2),
+.mock-summary__table tbody tr td:nth-child(4),
+.mock-summary__table tbody tr td:nth-child(5),
+.mock-summary__table tbody tr td:nth-child(7) {
+  text-align: center;
+}
+
+.mock-summary__table tbody td.stream {
+  white-space: pre-line;
+  font-weight: 600;
+}
+
+.mock-summary__highlights {
+  margin-top: 18px;
+  color: var(--muted);
+  font-size: 0.95rem;
+}
+
+.mock-summary__highlights ul {
+  margin: 6px 0 0 18px;
+  list-style: none;
+  padding: 0;
+}
+
+.mock-summary__highlights li {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 8px 0;
+  border-bottom: 1px solid #eee;
+}
+
+.mock-summary__highlights li:last-child {
+  border-bottom: none;
+}
+
+.mock-summary__highlights span {
+  flex: 1;
+}
+
+.highlight-actions {
+  display: flex;
+  gap: 8px;
+  margin-left: 12px;
+}
+
+.btn-icon-small {
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-size: 0.9rem;
+  padding: 4px 8px;
+  border-radius: 3px;
+  transition: all 0.2s ease;
+}
+
+.btn-icon-small:hover {
+  background-color: #f0f0f0;
+}
+
+/* Add Highlight Button */
+.btn-add-highlight {
+  background-color: #17a2b8;
+  color: white;
+  border: none;
+  padding: 6px 12px;
+  border-radius: 4px;
+  font-size: 0.85rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.btn-add-highlight:hover {
+  background-color: #138496;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.btn-add-highlight:active {
+  transform: scale(0.98);
+}
+
+/* Add Row Button */
+.btn-add-row {
+  background-color: #28a745;
+  color: white;
+  border: none;
+  padding: 10px 16px;
+  border-radius: 4px;
+  font-size: 0.95rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.btn-add-row:hover {
+  background-color: #218838;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.btn-add-row:active {
+  transform: scale(0.98);
+}
+
+/* Action Column Styles */
+.mock-summary__table tbody td.actions {
+  text-align: center;
+  white-space: nowrap;
+}
+
+.mock-summary__table tbody td.actions button {
+  padding: 6px 12px;
+  margin: 0 4px;
+  border-radius: 3px;
+  font-size: 0.9rem;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.mock-summary__table tbody td.actions button:hover {
+  opacity: 0.8;
+}
+
+/* Modal Styles */
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+}
+
+.modal-content {
+  background: white;
+  border-radius: 8px;
+  padding: 2rem;
+  max-width: 500px;
+  width: 90%;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  max-height: 90vh;
+  overflow-y: auto;
+}
+
+.modal-content h3 {
+  margin-top: 0;
+  margin-bottom: 1.5rem;
+  color: #0b3b71;
+  font-size: 1.3rem;
+}
+
+.form-group {
+  margin-bottom: 1.2rem;
+  display: flex;
+  flex-direction: column;
+}
+
+.form-group label {
+  margin-bottom: 0.5rem;
+  font-weight: 600;
+  color: #333;
+  font-size: 0.95rem;
+}
+
+.form-group input {
+  padding: 8px 12px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  font-size: 0.95rem;
+  font-family: inherit;
+}
+
+.form-group input:focus {
+  outline: none;
+  border-color: #0b3b71;
+  box-shadow: 0 0 0 2px rgba(11, 59, 113, 0.1);
+}
+
+.modal-actions {
+  display: flex;
+  gap: 1rem;
+  margin-top: 2rem;
+  justify-content: flex-end;
+}
+
+.btn-save,
+.btn-cancel {
+  padding: 10px 20px;
+  border: none;
+  border-radius: 4px;
+  font-size: 0.95rem;
+  cursor: pointer;
+  font-weight: 600;
+  transition: all 0.3s ease;
+}
+
+.btn-save {
+  background-color: #007bff;
+  color: white;
+}
+
+.btn-save:hover {
+  background-color: #0056b3;
+}
+
+.btn-cancel {
+  background-color: #6c757d;
+  color: white;
+}
+
+.btn-cancel:hover {
+  background-color: #545b62;
+}

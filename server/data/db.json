@@ -1,0 +1,7784 @@
+{
+  "capacity-entries": [
+    {
+      "id": 1,
+      "sprintName": "Sprint 11",
+      "eid": "j.baliwag",
+      "cadence": 2,
+      "admin": 0,
+      "holiday": 0
+    },
+    {
+      "id": 2,
+      "sprintName": "Sprint 11",
+      "eid": "aldhen.a.dignaran",
+      "cadence": 2,
+      "admin": 0,
+      "holiday": 1
+    },
+    {
+      "id": 3,
+      "sprintName": "Sprint 11",
+      "eid": "joshua.a.b.soriaga",
+      "cadence": 4,
+      "admin": 0,
+      "holiday": 0
+    },
+    {
+      "id": 4,
+      "sprintName": "Sprint 11",
+      "eid": "vanessa.b.nicolas",
+      "cadence": 2,
+      "admin": 0,
+      "holiday": 0
+    },
+    {
+      "id": 5,
+      "sprintName": "Sprint 11",
+      "eid": "elray.jun.b.amplayo",
+      "cadence": 2,
+      "admin": 0,
+      "holiday": 0
+    },
+    {
+      "id": 6,
+      "sprintName": "Sprint 11",
+      "eid": "john.rey.paraguya",
+      "cadence": 2,
+      "admin": 0,
+      "holiday": 0
+    },
+    {
+      "id": 7,
+      "sprintName": "Sprint 11",
+      "eid": "ramil.agramon.jr",
+      "cadence": 2,
+      "admin": 0,
+      "holiday": 0
+    },
+    {
+      "id": 8,
+      "sprintName": "Sprint 11",
+      "eid": "kirstin.d.a.rubica",
+      "cadence": 4,
+      "admin": 0,
+      "holiday": 0
+    },
+    {
+      "id": 9,
+      "sprintName": "Sprint 11",
+      "eid": "michael.bobis",
+      "cadence": 3,
+      "admin": 0,
+      "holiday": 0
+    },
+    {
+      "id": 10,
+      "sprintName": "Sprint 11",
+      "eid": "marife.amper",
+      "cadence": 4,
+      "admin": 0,
+      "holiday": 0
+    },
+    {
+      "id": 11,
+      "sprintName": "Sprint 11",
+      "eid": "kenneth.g.ebora",
+      "cadence": 2,
+      "admin": 0,
+      "holiday": 0
+    },
+    {
+      "id": 12,
+      "sprintName": "Sprint 11",
+      "eid": "ariel.s.udtohan",
+      "cadence": 2,
+      "admin": 0,
+      "holiday": 0
+    },
+    {
+      "id": 13,
+      "sprintName": "Sprint 11",
+      "eid": "nofia.a.c.mendoza",
+      "cadence": 2,
+      "admin": 0,
+      "holiday": 0
+    },
+    {
+      "id": 14,
+      "sprintName": "Sprint 11",
+      "eid": "gisella.dame.arcaya",
+      "cadence": 2,
+      "admin": 0,
+      "holiday": 0
+    },
+    {
+      "id": 15,
+      "sprintName": "Sprint 11",
+      "eid": "lesly.dimailig",
+      "cadence": 2,
+      "admin": 0,
+      "holiday": 0
+    },
+    {
+      "id": 16,
+      "sprintName": "Sprint 11",
+      "eid": "adrian.m.bartolome",
+      "cadence": 2,
+      "admin": 0,
+      "holiday": 0
+    },
+    {
+      "id": 17,
+      "sprintName": "Sprint 11",
+      "eid": "mira.joy.g.abcede",
+      "cadence": 2,
+      "admin": 0,
+      "holiday": 0
+    },
+    {
+      "id": 18,
+      "sprintName": "Sprint 11",
+      "eid": "krizel.b.bartolome",
+      "cadence": 2,
+      "admin": 0,
+      "holiday": 0
+    }
+  ],
+  "sprints": [
+    {
+      "id": 1,
+      "name": "Sprint 1",
+      "start": "2026-03-10",
+      "end": "2026-03-21"
+    },
+    {
+      "id": 2,
+      "name": "Sprint 2",
+      "start": "2026-03-24",
+      "end": "2026-04-04"
+    },
+    {
+      "id": 3,
+      "name": "Sprint 3",
+      "start": "2026-04-07",
+      "end": "2026-04-18"
+    },
+    {
+      "id": 4,
+      "name": "Sprint 4",
+      "start": "2026-04-21",
+      "end": "2026-05-02"
+    },
+    {
+      "id": 5,
+      "name": "Sprint 5",
+      "start": "2026-05-05",
+      "end": "2026-05-16"
+    },
+    {
+      "id": 6,
+      "name": "Sprint 6",
+      "start": "2026-05-19",
+      "end": "2026-05-30"
+    },
+    {
+      "id": 7,
+      "name": "Sprint 7",
+      "start": "2026-06-02",
+      "end": "2026-06-13"
+    },
+    {
+      "id": 8,
+      "name": "Sprint 8",
+      "start": "2026-06-16",
+      "end": "2026-06-27"
+    },
+    {
+      "id": 9,
+      "name": "Sprint 9",
+      "start": "2026-06-30",
+      "end": "2026-07-11"
+    },
+    {
+      "id": 10,
+      "name": "Sprint 10",
+      "start": "2026-07-13",
+      "end": "2026-07-24"
+    },
+    {
+      "id": 11,
+      "name": "Sprint 11",
+      "start": "2026-07-27",
+      "end": "2026-08-07"
+    },
+    {
+      "id": 12,
+      "name": "Sprint 12",
+      "start": "2026-08-10",
+      "end": "2026-08-21"
+    },
+    {
+      "id": 13,
+      "name": "Sprint 13",
+      "start": "2026-08-24",
+      "end": "2026-09-04"
+    }
+  ],
+  "onboarding-resources": [
+    {
+      "id": "1",
+      "name": "melchor.a.v.vega",
+      "eid": "melchor.a.v.vega",
+      "hireDate": "07/08/2026",
+      "rollInDate": "07/14/2026",
+      "projectDeployed": "No",
+      "deploymentDate": "",
+      "projectName": "Song Bench",
+      "poc": "",
+      "dn": "No",
+      "rollOffDate": "08/01/2026",
+      "fromProject": "",
+      "groupNumber": 1,
+      "primarySkill": "Angular 3",
+      "primaryYears": "",
+      "secondarySkill": "",
+      "secondaryYears": "",
+      "anotherSkills": [],
+      "createdAt": "2026-07-30T04:23:44.784Z",
+      "updatedAt": "2026-07-30T07:16:25.934Z"
+    },
+    {
+      "id": "2",
+      "name": "Martin.l.navarro",
+      "eid": "martin.l.navarro",
+      "hireDate": "08/03/2026",
+      "rollInDate": "08/05/2026",
+      "projectDeployed": "No",
+      "deploymentDate": "",
+      "projectName": "Song Bench",
+      "poc": "hannahdel.l.orellosa",
+      "dn": "No",
+      "rollOffDate": "",
+      "fromProject": "",
+      "groupNumber": "1",
+      "primarySkill": "",
+      "primaryYears": "",
+      "secondarySkill": "",
+      "secondaryYears": "",
+      "anotherSkills": [],
+      "createdAt": "2026-07-30T04:23:44.784Z",
+      "updatedAt": "2026-07-30T04:23:44.784Z",
+      "clLevel": ""
+    },
+    {
+      "id": "3",
+      "name": "joselito.perez.jr",
+      "eid": "joselito.perez.jr",
+      "hireDate": "08/05/2026",
+      "rollInDate": "08/07/2026",
+      "projectDeployed": "No",
+      "deploymentDate": "",
+      "projectName": "Song Bench",
+      "poc": "hannahdel.l.orellosa",
+      "dn": "No",
+      "rollOffDate": "",
+      "fromProject": "",
+      "groupNumber": "1",
+      "primarySkill": "",
+      "primaryYears": "",
+      "secondarySkill": "",
+      "secondaryYears": "",
+      "anotherSkills": [],
+      "createdAt": "2026-07-30T04:23:44.784Z",
+      "updatedAt": "2026-07-30T04:23:44.784Z",
+      "clLevel": ""
+    },
+    {
+      "id": "4",
+      "name": "jannrey.nino.s.tolop",
+      "eid": "jannrey.nino.s.tolop",
+      "hireDate": "08/05/2026",
+      "rollInDate": "08/06/2026",
+      "projectDeployed": "No",
+      "deploymentDate": "",
+      "projectName": "Song Bench",
+      "poc": "hannahdel.l.orellosa",
+      "dn": "No",
+      "rollOffDate": "",
+      "fromProject": "",
+      "groupNumber": "1",
+      "primarySkill": "",
+      "primaryYears": "",
+      "secondarySkill": "",
+      "secondaryYears": "",
+      "anotherSkills": [],
+      "createdAt": "2026-07-30T04:23:44.784Z",
+      "updatedAt": "2026-07-30T04:23:44.784Z",
+      "clLevel": ""
+    },
+    {
+      "id": "5",
+      "name": "rico.gabunada",
+      "eid": "rico.gabunada",
+      "hireDate": "",
+      "rollInDate": "",
+      "projectDeployed": "No",
+      "deploymentDate": "",
+      "projectName": "Song Bench",
+      "poc": "",
+      "dn": "No",
+      "rollOffDate": "",
+      "fromProject": "",
+      "groupNumber": 1,
+      "primarySkill": "",
+      "primaryYears": "",
+      "secondarySkill": "",
+      "secondaryYears": "",
+      "anotherSkills": [],
+      "createdAt": "2026-07-30T04:23:44.784Z",
+      "updatedAt": "2026-07-30T04:23:44.784Z"
+    },
+    {
+      "id": "6",
+      "name": "chester.jay.baluyot",
+      "eid": "chester.jay.baluyot",
+      "hireDate": "",
+      "rollInDate": "",
+      "projectDeployed": "No",
+      "deploymentDate": "",
+      "projectName": "Song Bench",
+      "poc": "",
+      "dn": "No",
+      "rollOffDate": "",
+      "fromProject": "",
+      "groupNumber": 1,
+      "primarySkill": "",
+      "primaryYears": "",
+      "secondarySkill": "",
+      "secondaryYears": "",
+      "anotherSkills": [],
+      "createdAt": "2026-07-30T04:23:44.784Z",
+      "updatedAt": "2026-07-30T04:23:44.784Z"
+    },
+    {
+      "id": "7",
+      "name": "raquel.f.bastian",
+      "eid": "raquel.f.bastian",
+      "hireDate": "",
+      "rollInDate": "",
+      "projectDeployed": "No",
+      "deploymentDate": "",
+      "projectName": "Song Bench",
+      "poc": "",
+      "dn": "No",
+      "rollOffDate": "",
+      "fromProject": "",
+      "groupNumber": 1,
+      "primarySkill": "",
+      "primaryYears": "",
+      "secondarySkill": "",
+      "secondaryYears": "",
+      "anotherSkills": [],
+      "createdAt": "2026-07-30T04:23:44.784Z",
+      "updatedAt": "2026-07-30T04:23:44.784Z"
+    },
+    {
+      "id": "8",
+      "name": "alliza.mae.m.ilao",
+      "eid": "alliza.mae.m.ilao",
+      "hireDate": "",
+      "rollInDate": "",
+      "projectDeployed": "No",
+      "deploymentDate": "",
+      "projectName": "Song Bench",
+      "poc": "",
+      "dn": "No",
+      "rollOffDate": "",
+      "fromProject": "",
+      "groupNumber": 1,
+      "primarySkill": "",
+      "primaryYears": "",
+      "secondarySkill": "",
+      "secondaryYears": "",
+      "anotherSkills": [],
+      "createdAt": "2026-07-30T04:23:44.784Z",
+      "updatedAt": "2026-07-30T04:23:44.784Z"
+    },
+    {
+      "id": "9",
+      "name": "patrick.l.j.mapalad",
+      "eid": "patrick.l.j.mapalad",
+      "hireDate": "",
+      "rollInDate": "",
+      "projectDeployed": "No",
+      "deploymentDate": "",
+      "projectName": "Song Bench",
+      "poc": "",
+      "dn": "No",
+      "rollOffDate": "",
+      "fromProject": "",
+      "groupNumber": 1,
+      "primarySkill": "",
+      "primaryYears": "",
+      "secondarySkill": "",
+      "secondaryYears": "",
+      "anotherSkills": [],
+      "createdAt": "2026-07-30T04:23:44.784Z",
+      "updatedAt": "2026-07-30T04:23:44.784Z"
+    },
+    {
+      "id": "10",
+      "name": "joshua.kyle.dizon",
+      "eid": "joshua.kyle.dizon",
+      "hireDate": "",
+      "rollInDate": "",
+      "projectDeployed": "No",
+      "deploymentDate": "",
+      "projectName": "Song Bench",
+      "poc": "",
+      "dn": "No",
+      "rollOffDate": "",
+      "fromProject": "",
+      "groupNumber": 1,
+      "primarySkill": "",
+      "primaryYears": "",
+      "secondarySkill": "",
+      "secondaryYears": "",
+      "anotherSkills": [],
+      "createdAt": "2026-07-30T04:23:44.784Z",
+      "updatedAt": "2026-07-30T04:23:44.784Z"
+    },
+    {
+      "id": "11",
+      "name": "romeo.j.a.abella",
+      "eid": "romeo.j.a.abella",
+      "hireDate": "",
+      "rollInDate": "",
+      "projectDeployed": "No",
+      "deploymentDate": "",
+      "projectName": "Song Bench",
+      "poc": "",
+      "dn": "No",
+      "rollOffDate": "",
+      "fromProject": "",
+      "groupNumber": 1,
+      "primarySkill": "",
+      "primaryYears": "",
+      "secondarySkill": "",
+      "secondaryYears": "",
+      "anotherSkills": [],
+      "createdAt": "2026-07-30T04:23:44.784Z",
+      "updatedAt": "2026-07-30T04:23:44.784Z"
+    },
+    {
+      "id": "12",
+      "name": "jeremy.jardio",
+      "eid": "jeremy.jardio",
+      "hireDate": "",
+      "rollInDate": "",
+      "projectDeployed": "No",
+      "deploymentDate": "",
+      "projectName": "Song Bench",
+      "poc": "",
+      "dn": "No",
+      "rollOffDate": "",
+      "fromProject": "",
+      "groupNumber": 1,
+      "primarySkill": "",
+      "primaryYears": "",
+      "secondarySkill": "",
+      "secondaryYears": "",
+      "anotherSkills": [],
+      "createdAt": "2026-07-30T04:23:44.784Z",
+      "updatedAt": "2026-07-30T04:23:44.784Z"
+    },
+    {
+      "id": "13",
+      "name": "darwin.b.laquinta",
+      "eid": "darwin.b.laquinta",
+      "hireDate": "",
+      "rollInDate": "",
+      "projectDeployed": "No",
+      "deploymentDate": "",
+      "projectName": "Song Bench",
+      "poc": "",
+      "dn": "No",
+      "rollOffDate": "",
+      "fromProject": "",
+      "groupNumber": 2,
+      "primarySkill": "",
+      "primaryYears": "",
+      "secondarySkill": "",
+      "secondaryYears": "",
+      "anotherSkills": [],
+      "createdAt": "2026-07-30T04:23:44.784Z",
+      "updatedAt": "2026-07-30T04:23:44.784Z"
+    },
+    {
+      "id": "14",
+      "name": "mia.shayne.de.guzman",
+      "eid": "mia.shayne.de.guzman",
+      "hireDate": "",
+      "rollInDate": "",
+      "projectDeployed": "No",
+      "deploymentDate": "",
+      "projectName": "Song Bench",
+      "poc": "",
+      "dn": "No",
+      "rollOffDate": "",
+      "fromProject": "",
+      "groupNumber": 2,
+      "primarySkill": "",
+      "primaryYears": "",
+      "secondarySkill": "",
+      "secondaryYears": "",
+      "anotherSkills": [],
+      "createdAt": "2026-07-30T04:23:44.784Z",
+      "updatedAt": "2026-07-30T04:23:44.784Z"
+    },
+    {
+      "id": "15",
+      "name": "gideon.r.linsangan",
+      "eid": "gideon.r.linsangan",
+      "hireDate": "",
+      "rollInDate": "",
+      "projectDeployed": "No",
+      "deploymentDate": "",
+      "projectName": "Song Bench",
+      "poc": "",
+      "dn": "No",
+      "rollOffDate": "",
+      "fromProject": "",
+      "groupNumber": 2,
+      "primarySkill": "",
+      "primaryYears": "",
+      "secondarySkill": "",
+      "secondaryYears": "",
+      "anotherSkills": [],
+      "createdAt": "2026-07-30T04:23:44.784Z",
+      "updatedAt": "2026-07-30T04:23:44.784Z"
+    },
+    {
+      "id": "16",
+      "name": "Hernandez, Christian Jay",
+      "eid": "hernandez.christian.jay",
+      "hireDate": "",
+      "rollInDate": "",
+      "projectDeployed": "No",
+      "deploymentDate": "",
+      "projectName": "Song Bench",
+      "poc": "",
+      "dn": "No",
+      "rollOffDate": "",
+      "fromProject": "",
+      "groupNumber": 2,
+      "primarySkill": "",
+      "primaryYears": "",
+      "secondarySkill": "",
+      "secondaryYears": "",
+      "anotherSkills": [],
+      "createdAt": "2026-07-30T04:23:44.785Z",
+      "updatedAt": "2026-07-30T04:23:44.785Z"
+    },
+    {
+      "id": "17",
+      "name": "Hernandez, Ramil",
+      "eid": "hernandez.ramil",
+      "hireDate": "",
+      "rollInDate": "",
+      "projectDeployed": "No",
+      "deploymentDate": "",
+      "projectName": "Song Bench",
+      "poc": "",
+      "dn": "No",
+      "rollOffDate": "",
+      "fromProject": "",
+      "groupNumber": 2,
+      "primarySkill": "",
+      "primaryYears": "",
+      "secondarySkill": "",
+      "secondaryYears": "",
+      "anotherSkills": [],
+      "createdAt": "2026-07-30T04:23:44.785Z",
+      "updatedAt": "2026-07-30T04:23:44.785Z"
+    },
+    {
+      "id": "18",
+      "name": "Catubig, Jayson",
+      "eid": "catubig.jayson",
+      "hireDate": "",
+      "rollInDate": "",
+      "projectDeployed": "No",
+      "deploymentDate": "",
+      "projectName": "Song Bench",
+      "poc": "",
+      "dn": "No",
+      "rollOffDate": "",
+      "fromProject": "",
+      "groupNumber": 2,
+      "primarySkill": "",
+      "primaryYears": "",
+      "secondarySkill": "",
+      "secondaryYears": "",
+      "anotherSkills": [],
+      "createdAt": "2026-07-30T04:23:44.785Z",
+      "updatedAt": "2026-07-30T04:23:44.785Z"
+    },
+    {
+      "id": "19",
+      "name": "Ferma, Philip C. A.",
+      "eid": "ferma.philip.c..a.",
+      "hireDate": "",
+      "rollInDate": "",
+      "projectDeployed": "No",
+      "deploymentDate": "",
+      "projectName": "Song Bench",
+      "poc": "",
+      "dn": "No",
+      "rollOffDate": "",
+      "fromProject": "",
+      "groupNumber": 2,
+      "primarySkill": "",
+      "primaryYears": "",
+      "secondarySkill": "",
+      "secondaryYears": "",
+      "anotherSkills": [],
+      "createdAt": "2026-07-30T04:23:44.785Z",
+      "updatedAt": "2026-07-30T04:23:44.785Z"
+    },
+    {
+      "id": "20",
+      "name": "Temporaza, Ryan Andrei",
+      "eid": "temporaza.ryan.andrei",
+      "hireDate": "",
+      "rollInDate": "",
+      "projectDeployed": "No",
+      "deploymentDate": "",
+      "projectName": "Song Bench",
+      "poc": "",
+      "dn": "No",
+      "rollOffDate": "",
+      "fromProject": "",
+      "groupNumber": 2,
+      "primarySkill": "",
+      "primaryYears": "",
+      "secondarySkill": "",
+      "secondaryYears": "",
+      "anotherSkills": [],
+      "createdAt": "2026-07-30T04:23:44.785Z",
+      "updatedAt": "2026-07-30T04:23:44.785Z"
+    },
+    {
+      "id": "21",
+      "name": "Berdijo, Nikka Zia",
+      "eid": "berdijo.nikka.zia",
+      "hireDate": "",
+      "rollInDate": "",
+      "projectDeployed": "No",
+      "deploymentDate": "",
+      "projectName": "Song Bench",
+      "poc": "",
+      "dn": "No",
+      "rollOffDate": "",
+      "fromProject": "",
+      "groupNumber": 2,
+      "primarySkill": "",
+      "primaryYears": "",
+      "secondarySkill": "",
+      "secondaryYears": "",
+      "anotherSkills": [],
+      "createdAt": "2026-07-30T04:23:44.785Z",
+      "updatedAt": "2026-07-30T04:23:44.785Z"
+    },
+    {
+      "id": "22",
+      "name": "Rosete, Cassie",
+      "eid": "rosete.cassie",
+      "hireDate": "",
+      "rollInDate": "",
+      "projectDeployed": "No",
+      "deploymentDate": "",
+      "projectName": "Song Bench",
+      "poc": "",
+      "dn": "No",
+      "rollOffDate": "",
+      "fromProject": "",
+      "groupNumber": 2,
+      "primarySkill": "",
+      "primaryYears": "",
+      "secondarySkill": "",
+      "secondaryYears": "",
+      "anotherSkills": [],
+      "createdAt": "2026-07-30T04:23:44.785Z",
+      "updatedAt": "2026-07-30T04:23:44.785Z"
+    },
+    {
+      "id": "23",
+      "name": "jestoni.b.baguio",
+      "eid": "jestoni.b.baguio",
+      "hireDate": "",
+      "rollInDate": "",
+      "projectDeployed": "No",
+      "deploymentDate": "",
+      "projectName": "Song Bench",
+      "poc": "",
+      "dn": "No",
+      "rollOffDate": "",
+      "fromProject": "",
+      "groupNumber": 2,
+      "primarySkill": "",
+      "primaryYears": "",
+      "secondarySkill": "",
+      "secondaryYears": "",
+      "anotherSkills": [],
+      "createdAt": "2026-07-30T04:23:44.785Z",
+      "updatedAt": "2026-07-30T04:23:44.785Z"
+    },
+    {
+      "id": "24",
+      "name": "j.baliwag",
+      "eid": "j.baliwag",
+      "hireDate": "",
+      "rollInDate": "",
+      "projectDeployed": "No",
+      "deploymentDate": "",
+      "projectName": "Song Bench",
+      "poc": "",
+      "dn": "No",
+      "rollOffDate": "",
+      "fromProject": "",
+      "groupNumber": 2,
+      "primarySkill": "",
+      "primaryYears": "",
+      "secondarySkill": "",
+      "secondaryYears": "",
+      "anotherSkills": [],
+      "createdAt": "2026-07-30T04:23:44.785Z",
+      "updatedAt": "2026-07-30T04:23:44.785Z"
+    },
+    {
+      "id": "25",
+      "name": "john.lean.cruzada",
+      "eid": "john.lean.cruzada",
+      "hireDate": "",
+      "rollInDate": "",
+      "projectDeployed": "No",
+      "deploymentDate": "",
+      "projectName": "Song Bench",
+      "poc": "",
+      "dn": "No",
+      "rollOffDate": "",
+      "fromProject": "",
+      "groupNumber": 3,
+      "primarySkill": "",
+      "primaryYears": "",
+      "secondarySkill": "",
+      "secondaryYears": "",
+      "anotherSkills": [],
+      "createdAt": "2026-07-30T04:23:44.785Z",
+      "updatedAt": "2026-07-30T04:23:44.785Z"
+    },
+    {
+      "id": "26",
+      "name": "victor.inigo.garcia",
+      "eid": "victor.inigo.garcia",
+      "hireDate": "",
+      "rollInDate": "",
+      "projectDeployed": "No",
+      "deploymentDate": "",
+      "projectName": "Song Bench",
+      "poc": "",
+      "dn": "No",
+      "rollOffDate": "",
+      "fromProject": "",
+      "groupNumber": 3,
+      "primarySkill": "",
+      "primaryYears": "",
+      "secondarySkill": "",
+      "secondaryYears": "",
+      "anotherSkills": [],
+      "createdAt": "2026-07-30T04:23:44.785Z",
+      "updatedAt": "2026-07-30T04:23:44.785Z"
+    },
+    {
+      "id": "27",
+      "name": "joseph.r.malayas",
+      "eid": "joseph.r.malayas",
+      "hireDate": "",
+      "rollInDate": "",
+      "projectDeployed": "No",
+      "deploymentDate": "",
+      "projectName": "Song Bench",
+      "poc": "",
+      "dn": "No",
+      "rollOffDate": "",
+      "fromProject": "",
+      "groupNumber": 3,
+      "primarySkill": "",
+      "primaryYears": "",
+      "secondarySkill": "",
+      "secondaryYears": "",
+      "anotherSkills": [],
+      "createdAt": "2026-07-30T04:23:44.785Z",
+      "updatedAt": "2026-07-30T04:23:44.785Z"
+    },
+    {
+      "id": "28",
+      "name": "jian.mikee.pacheco",
+      "eid": "jian.mikee.pacheco",
+      "hireDate": "",
+      "rollInDate": "",
+      "projectDeployed": "No",
+      "deploymentDate": "",
+      "projectName": "Song Bench",
+      "poc": "",
+      "dn": "No",
+      "rollOffDate": "",
+      "fromProject": "",
+      "groupNumber": 4,
+      "primarySkill": "IOS",
+      "primaryYears": "",
+      "secondarySkill": "",
+      "secondaryYears": "",
+      "anotherSkills": [],
+      "createdAt": "2026-07-30T04:23:44.785Z",
+      "updatedAt": "2026-07-30T04:23:44.785Z"
+    },
+    {
+      "id": "29",
+      "name": "alfredo.sumala",
+      "eid": "alfredo.sumala",
+      "hireDate": "",
+      "rollInDate": "",
+      "projectDeployed": "No",
+      "deploymentDate": "",
+      "projectName": "Song Bench",
+      "poc": "",
+      "dn": "No",
+      "rollOffDate": "",
+      "fromProject": "",
+      "groupNumber": 4,
+      "primarySkill": "IOS",
+      "primaryYears": "",
+      "secondarySkill": "",
+      "secondaryYears": "",
+      "anotherSkills": [],
+      "createdAt": "2026-07-30T04:23:44.785Z",
+      "updatedAt": "2026-07-30T04:23:44.785Z"
+    },
+    {
+      "id": "30",
+      "name": "christian.r.lazatin",
+      "eid": "christian.r.lazatin",
+      "hireDate": "",
+      "rollInDate": "",
+      "projectDeployed": "No",
+      "deploymentDate": "",
+      "projectName": "Song Bench",
+      "poc": "",
+      "dn": "No",
+      "rollOffDate": "",
+      "fromProject": "",
+      "groupNumber": 4,
+      "primarySkill": "IOS",
+      "primaryYears": "",
+      "secondarySkill": "",
+      "secondaryYears": "",
+      "anotherSkills": [],
+      "createdAt": "2026-07-30T04:23:44.785Z",
+      "updatedAt": "2026-07-30T04:23:44.785Z"
+    },
+    {
+      "id": "31",
+      "name": "mikhail.adrianne.ng",
+      "eid": "mikhail.adrianne.ng",
+      "hireDate": "",
+      "rollInDate": "",
+      "projectDeployed": "No",
+      "deploymentDate": "",
+      "projectName": "Song Bench",
+      "poc": "",
+      "dn": "No",
+      "rollOffDate": "",
+      "fromProject": "",
+      "groupNumber": 4,
+      "primarySkill": "IOS",
+      "primaryYears": "",
+      "secondarySkill": "",
+      "secondaryYears": "",
+      "anotherSkills": [],
+      "createdAt": "2026-07-30T04:23:44.785Z",
+      "updatedAt": "2026-07-30T04:23:44.785Z"
+    },
+    {
+      "id": "32",
+      "name": "marc.ivan.lim",
+      "eid": "marc.ivan.lim",
+      "hireDate": "",
+      "rollInDate": "",
+      "projectDeployed": "No",
+      "deploymentDate": "",
+      "projectName": "Song Bench",
+      "poc": "",
+      "dn": "No",
+      "rollOffDate": "",
+      "fromProject": "",
+      "groupNumber": 4,
+      "primarySkill": "Android",
+      "primaryYears": "",
+      "secondarySkill": "",
+      "secondaryYears": "",
+      "anotherSkills": [],
+      "createdAt": "2026-07-30T04:23:44.785Z",
+      "updatedAt": "2026-07-30T04:23:44.785Z"
+    },
+    {
+      "id": "33",
+      "name": "mark.anthony.sanchez",
+      "eid": "mark.anthony.sanchez",
+      "hireDate": "",
+      "rollInDate": "",
+      "projectDeployed": "No",
+      "deploymentDate": "",
+      "projectName": "Song Bench",
+      "poc": "",
+      "dn": "No",
+      "rollOffDate": "",
+      "fromProject": "",
+      "groupNumber": 4,
+      "primarySkill": "Android",
+      "primaryYears": "",
+      "secondarySkill": "",
+      "secondaryYears": "",
+      "anotherSkills": [],
+      "createdAt": "2026-07-30T04:23:44.785Z",
+      "updatedAt": "2026-07-30T04:23:44.785Z"
+    },
+    {
+      "id": "34",
+      "name": "hubert.saludo",
+      "eid": "hubert.saludo",
+      "hireDate": "",
+      "rollInDate": "",
+      "projectDeployed": "No",
+      "deploymentDate": "",
+      "projectName": "Song Bench",
+      "poc": "",
+      "dn": "No",
+      "rollOffDate": "",
+      "fromProject": "",
+      "groupNumber": 4,
+      "primarySkill": "Android",
+      "primaryYears": "",
+      "secondarySkill": "",
+      "secondaryYears": "",
+      "anotherSkills": [],
+      "createdAt": "2026-07-30T04:23:44.785Z",
+      "updatedAt": "2026-07-30T04:23:44.785Z"
+    },
+    {
+      "id": "35",
+      "name": "kenneth.t.cartel",
+      "eid": "kenneth.t.cartel",
+      "hireDate": "",
+      "rollInDate": "",
+      "projectDeployed": "No",
+      "deploymentDate": "",
+      "projectName": "Song Bench",
+      "poc": "",
+      "dn": "No",
+      "rollOffDate": "",
+      "fromProject": "",
+      "groupNumber": 4,
+      "primarySkill": "React Native",
+      "primaryYears": "",
+      "secondarySkill": "",
+      "secondaryYears": "",
+      "anotherSkills": [],
+      "createdAt": "2026-07-30T04:23:44.785Z",
+      "updatedAt": "2026-07-30T04:23:44.785Z"
+    },
+    {
+      "id": "36",
+      "name": "anlly.namoca",
+      "eid": "anlly.namoca",
+      "hireDate": "",
+      "rollInDate": "",
+      "projectDeployed": "No",
+      "deploymentDate": "",
+      "projectName": "Song Bench",
+      "poc": "",
+      "dn": "No",
+      "rollOffDate": "",
+      "fromProject": "",
+      "groupNumber": 4,
+      "primarySkill": "Mobile Testing",
+      "primaryYears": "",
+      "secondarySkill": "",
+      "secondaryYears": "",
+      "anotherSkills": [],
+      "createdAt": "2026-07-30T04:23:44.785Z",
+      "updatedAt": "2026-07-30T04:23:44.785Z"
+    },
+    {
+      "id": "37",
+      "name": "joel.j.b.villanueva",
+      "eid": "joel.j.b.villanueva",
+      "hireDate": "",
+      "rollInDate": "",
+      "projectDeployed": "No",
+      "deploymentDate": "",
+      "projectName": "Song Bench",
+      "poc": "",
+      "dn": "No",
+      "rollOffDate": "",
+      "fromProject": "",
+      "groupNumber": 4,
+      "primarySkill": "Lead",
+      "primaryYears": "",
+      "secondarySkill": "",
+      "secondaryYears": "",
+      "anotherSkills": [],
+      "createdAt": "2026-07-30T04:23:44.785Z",
+      "updatedAt": "2026-07-30T04:23:44.785Z"
+    },
+    {
+      "id": "38",
+      "name": "oliver.lester.berris",
+      "eid": "oliver.lester.berris",
+      "hireDate": "",
+      "rollInDate": "",
+      "projectDeployed": "No",
+      "deploymentDate": "",
+      "projectName": "Song Bench",
+      "poc": "",
+      "dn": "No",
+      "rollOffDate": "",
+      "fromProject": "",
+      "groupNumber": 4,
+      "primarySkill": "Android",
+      "primaryYears": "",
+      "secondarySkill": "",
+      "secondaryYears": "",
+      "anotherSkills": [],
+      "createdAt": "2026-07-30T04:23:44.785Z",
+      "updatedAt": "2026-07-30T04:23:44.785Z"
+    },
+    {
+      "id": "39",
+      "name": "marlon.noble",
+      "eid": "marlon.noble",
+      "hireDate": "",
+      "rollInDate": "",
+      "projectDeployed": "No",
+      "deploymentDate": "",
+      "projectName": "Song Bench",
+      "poc": "",
+      "dn": "No",
+      "rollOffDate": "",
+      "fromProject": "",
+      "groupNumber": 4,
+      "primarySkill": "iOS",
+      "primaryYears": "",
+      "secondarySkill": "",
+      "secondaryYears": "",
+      "anotherSkills": [],
+      "createdAt": "2026-07-30T04:23:44.785Z",
+      "updatedAt": "2026-07-30T04:23:44.785Z"
+    },
+    {
+      "id": "40",
+      "name": "german.joseph.molina",
+      "eid": "german.joseph.molina",
+      "hireDate": "",
+      "rollInDate": "",
+      "projectDeployed": "No",
+      "deploymentDate": "",
+      "projectName": "Song Bench",
+      "poc": "",
+      "dn": "No",
+      "rollOffDate": "",
+      "fromProject": "",
+      "groupNumber": 4,
+      "primarySkill": "Mobile Testing",
+      "primaryYears": "",
+      "secondarySkill": "",
+      "secondaryYears": "",
+      "anotherSkills": [],
+      "createdAt": "2026-07-30T04:23:44.785Z",
+      "updatedAt": "2026-07-30T04:23:44.785Z"
+    },
+    {
+      "id": "41",
+      "name": "krizel.b.bartolome",
+      "eid": "krizel.b.bartolome",
+      "hireDate": "",
+      "rollInDate": "",
+      "projectDeployed": "No",
+      "deploymentDate": "",
+      "projectName": "Song Bench",
+      "poc": "",
+      "dn": "No",
+      "rollOffDate": "",
+      "fromProject": "",
+      "groupNumber": 5,
+      "primarySkill": "",
+      "primaryYears": "",
+      "secondarySkill": "",
+      "secondaryYears": "",
+      "anotherSkills": [],
+      "createdAt": "2026-07-30T04:23:44.785Z",
+      "updatedAt": "2026-07-30T04:23:44.785Z"
+    },
+    {
+      "id": "42",
+      "name": "mira.joy.g.abcede",
+      "eid": "mira.joy.g.abcede",
+      "hireDate": "",
+      "rollInDate": "",
+      "projectDeployed": "No",
+      "deploymentDate": "",
+      "projectName": "Song Bench",
+      "poc": "",
+      "dn": "No",
+      "rollOffDate": "",
+      "fromProject": "",
+      "groupNumber": 5,
+      "primarySkill": "",
+      "primaryYears": "",
+      "secondarySkill": "",
+      "secondaryYears": "",
+      "anotherSkills": [],
+      "createdAt": "2026-07-30T04:23:44.785Z",
+      "updatedAt": "2026-07-30T04:23:44.785Z"
+    },
+    {
+      "id": "43",
+      "name": "adrian.m.bartolome",
+      "eid": "adrian.m.bartolome",
+      "hireDate": "",
+      "rollInDate": "",
+      "projectDeployed": "No",
+      "deploymentDate": "",
+      "projectName": "Song Bench",
+      "poc": "",
+      "dn": "No",
+      "rollOffDate": "",
+      "fromProject": "",
+      "groupNumber": 5,
+      "primarySkill": "",
+      "primaryYears": "",
+      "secondarySkill": "",
+      "secondaryYears": "",
+      "anotherSkills": [],
+      "createdAt": "2026-07-30T04:23:44.785Z",
+      "updatedAt": "2026-07-30T04:23:44.785Z"
+    },
+    {
+      "id": "44",
+      "name": "lesly.dimailig",
+      "eid": "lesly.dimailig",
+      "hireDate": "",
+      "rollInDate": "",
+      "projectDeployed": "No",
+      "deploymentDate": "",
+      "projectName": "Song Bench",
+      "poc": "",
+      "dn": "No",
+      "rollOffDate": "",
+      "fromProject": "",
+      "groupNumber": 5,
+      "primarySkill": "",
+      "primaryYears": "",
+      "secondarySkill": "",
+      "secondaryYears": "",
+      "anotherSkills": [],
+      "createdAt": "2026-07-30T04:23:44.785Z",
+      "updatedAt": "2026-07-30T04:23:44.785Z"
+    },
+    {
+      "id": "45",
+      "name": "gisella.dame.arcaya",
+      "eid": "gisella.dame.arcaya",
+      "hireDate": "",
+      "rollInDate": "",
+      "projectDeployed": "No",
+      "deploymentDate": "",
+      "projectName": "Song Bench",
+      "poc": "",
+      "dn": "No",
+      "rollOffDate": "",
+      "fromProject": "",
+      "groupNumber": 5,
+      "primarySkill": "",
+      "primaryYears": "",
+      "secondarySkill": "",
+      "secondaryYears": "",
+      "anotherSkills": [],
+      "createdAt": "2026-07-30T04:23:44.785Z",
+      "updatedAt": "2026-07-30T04:23:44.785Z"
+    },
+    {
+      "id": "46",
+      "name": "nofia.a.c.mendoza",
+      "eid": "nofia.a.c.mendoza",
+      "hireDate": "",
+      "rollInDate": "",
+      "projectDeployed": "No",
+      "deploymentDate": "",
+      "projectName": "Song Bench",
+      "poc": "",
+      "dn": "No",
+      "rollOffDate": "",
+      "fromProject": "",
+      "groupNumber": 5,
+      "primarySkill": "",
+      "primaryYears": "",
+      "secondarySkill": "",
+      "secondaryYears": "",
+      "anotherSkills": [],
+      "createdAt": "2026-07-30T04:23:44.785Z",
+      "updatedAt": "2026-07-30T04:23:44.785Z"
+    },
+    {
+      "id": "47",
+      "name": "aldhen.a.dignaran",
+      "eid": "aldhen.a.dignaran",
+      "hireDate": "",
+      "rollInDate": "",
+      "projectDeployed": "No",
+      "deploymentDate": "",
+      "projectName": "Song Bench",
+      "poc": "",
+      "dn": "No",
+      "rollOffDate": "",
+      "fromProject": "",
+      "groupNumber": 5,
+      "primarySkill": "",
+      "primaryYears": "",
+      "secondarySkill": "",
+      "secondaryYears": "",
+      "anotherSkills": [],
+      "createdAt": "2026-07-30T04:23:44.785Z",
+      "updatedAt": "2026-07-30T04:23:44.785Z"
+    },
+    {
+      "id": "48",
+      "name": "ariel.s.udtohan",
+      "eid": "ariel.s.udtohan",
+      "hireDate": "",
+      "rollInDate": "",
+      "projectDeployed": "No",
+      "deploymentDate": "",
+      "projectName": "Song Bench",
+      "poc": "",
+      "dn": "No",
+      "rollOffDate": "",
+      "fromProject": "",
+      "groupNumber": 5,
+      "primarySkill": "",
+      "primaryYears": "",
+      "secondarySkill": "",
+      "secondaryYears": "",
+      "anotherSkills": [],
+      "createdAt": "2026-07-30T04:23:44.785Z",
+      "updatedAt": "2026-07-30T04:23:44.785Z"
+    },
+    {
+      "id": "49",
+      "name": "kenneth.g.ebora",
+      "eid": "kenneth.g.ebora",
+      "hireDate": "",
+      "rollInDate": "",
+      "projectDeployed": "No",
+      "deploymentDate": "",
+      "projectName": "Song Bench",
+      "poc": "",
+      "dn": "No",
+      "rollOffDate": "",
+      "fromProject": "",
+      "groupNumber": 5,
+      "primarySkill": "",
+      "primaryYears": "",
+      "secondarySkill": "",
+      "secondaryYears": "",
+      "anotherSkills": [],
+      "createdAt": "2026-07-30T04:23:44.785Z",
+      "updatedAt": "2026-07-30T04:23:44.785Z"
+    },
+    {
+      "id": "50",
+      "name": "j.baliwag",
+      "eid": "j.baliwag",
+      "hireDate": "",
+      "rollInDate": "",
+      "projectDeployed": "No",
+      "deploymentDate": "",
+      "projectName": "Song Bench",
+      "poc": "",
+      "dn": "No",
+      "rollOffDate": "",
+      "fromProject": "",
+      "groupNumber": 5,
+      "primarySkill": "",
+      "primaryYears": "",
+      "secondarySkill": "",
+      "secondaryYears": "",
+      "anotherSkills": [],
+      "createdAt": "2026-07-30T04:23:44.785Z",
+      "updatedAt": "2026-07-30T04:23:44.785Z"
+    },
+    {
+      "id": "51",
+      "name": "joshua.a.b.soriaga",
+      "eid": "joshua.a.b.soriaga",
+      "hireDate": "",
+      "rollInDate": "",
+      "projectDeployed": "No",
+      "deploymentDate": "",
+      "projectName": "Song Bench",
+      "poc": "",
+      "dn": "No",
+      "rollOffDate": "",
+      "fromProject": "",
+      "groupNumber": 5,
+      "primarySkill": "",
+      "primaryYears": "",
+      "secondarySkill": "",
+      "secondaryYears": "",
+      "anotherSkills": [],
+      "createdAt": "2026-07-30T04:23:44.785Z",
+      "updatedAt": "2026-07-30T04:23:44.785Z"
+    },
+    {
+      "id": "52",
+      "name": "marife.amper",
+      "eid": "marife.amper",
+      "hireDate": "",
+      "rollInDate": "",
+      "projectDeployed": "No",
+      "deploymentDate": "",
+      "projectName": "Song Bench",
+      "poc": "",
+      "dn": "No",
+      "rollOffDate": "",
+      "fromProject": "",
+      "groupNumber": 5,
+      "primarySkill": "",
+      "primaryYears": "",
+      "secondarySkill": "",
+      "secondaryYears": "",
+      "anotherSkills": [],
+      "createdAt": "2026-07-30T04:23:44.785Z",
+      "updatedAt": "2026-07-30T04:23:44.785Z"
+    },
+    {
+      "id": "53",
+      "name": "Michael Bobis",
+      "eid": "michael.bobis",
+      "hireDate": "08/16/2021",
+      "rollInDate": "08/18/2021",
+      "projectDeployed": "No",
+      "deploymentDate": "",
+      "projectName": "Song Bench",
+      "poc": "",
+      "dn": "No",
+      "rollOffDate": "07/19/2026",
+      "fromProject": "CIO - Quality & Risk",
+      "groupNumber": "5",
+      "primarySkill": "Angular",
+      "primaryYears": "2",
+      "secondarySkill": "Agile Coaching",
+      "secondaryYears": "15",
+      "anotherSkills": [
+        "PHP",
+        "Service Management",
+        "Problem Management",
+        "Project Management",
+        "Agile",
+        "IAM",
+        "Infrastructure Architect",
+        "MySQL",
+        "Windows Provisioning"
+      ],
+      "createdAt": "2026-07-30T04:23:44.785Z",
+      "updatedAt": "2026-07-30T07:13:07.788Z",
+      "clLevel": "9"
+    },
+    {
+      "id": "54",
+      "name": "armida.f.ligo",
+      "eid": "armida.f.ligo",
+      "hireDate": "",
+      "rollInDate": "",
+      "projectDeployed": "No",
+      "deploymentDate": "",
+      "projectName": "Song Bench",
+      "poc": "",
+      "dn": "No",
+      "rollOffDate": "",
+      "fromProject": "",
+      "groupNumber": 6,
+      "primarySkill": "",
+      "primaryYears": "",
+      "secondarySkill": "",
+      "secondaryYears": "",
+      "anotherSkills": [],
+      "createdAt": "2026-07-30T04:23:44.785Z",
+      "updatedAt": "2026-07-30T04:23:44.785Z"
+    },
+    {
+      "id": "55",
+      "name": "jemsey.c.amonsot",
+      "eid": "jemsey.c.amonsot",
+      "hireDate": "",
+      "rollInDate": "",
+      "projectDeployed": "No",
+      "deploymentDate": "",
+      "projectName": "Song Bench",
+      "poc": "",
+      "dn": "No",
+      "rollOffDate": "",
+      "fromProject": "",
+      "groupNumber": 6,
+      "primarySkill": "",
+      "primaryYears": "",
+      "secondarySkill": "",
+      "secondaryYears": "",
+      "anotherSkills": [],
+      "createdAt": "2026-07-30T04:23:44.785Z",
+      "updatedAt": "2026-07-30T04:23:44.785Z"
+    },
+    {
+      "id": "56",
+      "name": "jemar.diamante",
+      "eid": "jemar.diamante",
+      "hireDate": "",
+      "rollInDate": "",
+      "projectDeployed": "No",
+      "deploymentDate": "",
+      "projectName": "Song Bench",
+      "poc": "",
+      "dn": "No",
+      "rollOffDate": "",
+      "fromProject": "",
+      "groupNumber": 6,
+      "primarySkill": "",
+      "primaryYears": "",
+      "secondarySkill": "",
+      "secondaryYears": "",
+      "anotherSkills": [],
+      "createdAt": "2026-07-30T04:23:44.785Z",
+      "updatedAt": "2026-07-30T04:23:44.785Z"
+    },
+    {
+      "id": "57",
+      "name": "cris.r.s.velasquez",
+      "eid": "cris.r.s.velasquez",
+      "hireDate": "",
+      "rollInDate": "",
+      "projectDeployed": "No",
+      "deploymentDate": "",
+      "projectName": "Song Bench",
+      "poc": "",
+      "dn": "No",
+      "rollOffDate": "",
+      "fromProject": "",
+      "groupNumber": 6,
+      "primarySkill": "",
+      "primaryYears": "",
+      "secondarySkill": "",
+      "secondaryYears": "",
+      "anotherSkills": [],
+      "createdAt": "2026-07-30T04:23:44.785Z",
+      "updatedAt": "2026-07-30T04:23:44.785Z"
+    },
+    {
+      "id": "58",
+      "name": "john.c.c.obediente",
+      "eid": "john.c.c.obediente",
+      "hireDate": "",
+      "rollInDate": "",
+      "projectDeployed": "No",
+      "deploymentDate": "",
+      "projectName": "Song Bench",
+      "poc": "",
+      "dn": "No",
+      "rollOffDate": "",
+      "fromProject": "",
+      "groupNumber": 6,
+      "primarySkill": "",
+      "primaryYears": "",
+      "secondarySkill": "",
+      "secondaryYears": "",
+      "anotherSkills": [],
+      "createdAt": "2026-07-30T04:23:44.785Z",
+      "updatedAt": "2026-07-30T04:23:44.785Z"
+    },
+    {
+      "id": "59",
+      "name": "j.b.hinaut",
+      "eid": "j.b.hinaut",
+      "hireDate": "",
+      "rollInDate": "",
+      "projectDeployed": "No",
+      "deploymentDate": "",
+      "projectName": "Song Bench",
+      "poc": "",
+      "dn": "No",
+      "rollOffDate": "",
+      "fromProject": "",
+      "groupNumber": 6,
+      "primarySkill": "",
+      "primaryYears": "",
+      "secondarySkill": "",
+      "secondaryYears": "",
+      "anotherSkills": [],
+      "createdAt": "2026-07-30T04:23:44.785Z",
+      "updatedAt": "2026-07-30T04:23:44.785Z"
+    },
+    {
+      "id": "60",
+      "name": "joshua.m.c.balbon",
+      "eid": "joshua.m.c.balbon",
+      "hireDate": "",
+      "rollInDate": "",
+      "projectDeployed": "No",
+      "deploymentDate": "",
+      "projectName": "Song Bench",
+      "poc": "",
+      "dn": "No",
+      "rollOffDate": "",
+      "fromProject": "",
+      "groupNumber": 6,
+      "primarySkill": "",
+      "primaryYears": "",
+      "secondarySkill": "",
+      "secondaryYears": "",
+      "anotherSkills": [],
+      "createdAt": "2026-07-30T04:23:44.785Z",
+      "updatedAt": "2026-07-30T04:23:44.785Z"
+    },
+    {
+      "id": "61",
+      "name": "jayson.mark.d.castro",
+      "eid": "jayson.mark.d.castro",
+      "hireDate": "",
+      "rollInDate": "",
+      "projectDeployed": "No",
+      "deploymentDate": "",
+      "projectName": "Song Bench",
+      "poc": "",
+      "dn": "No",
+      "rollOffDate": "",
+      "fromProject": "",
+      "groupNumber": 6,
+      "primarySkill": "",
+      "primaryYears": "",
+      "secondarySkill": "",
+      "secondaryYears": "",
+      "anotherSkills": [],
+      "createdAt": "2026-07-30T04:23:44.785Z",
+      "updatedAt": "2026-07-30T04:23:44.785Z"
+    },
+    {
+      "id": "62",
+      "name": "daniel.x.b.legaspi",
+      "eid": "daniel.x.b.legaspi",
+      "hireDate": "",
+      "rollInDate": "",
+      "projectDeployed": "No",
+      "deploymentDate": "",
+      "projectName": "Song Bench",
+      "poc": "",
+      "dn": "No",
+      "rollOffDate": "",
+      "fromProject": "",
+      "groupNumber": 6,
+      "primarySkill": "",
+      "primaryYears": "",
+      "secondarySkill": "",
+      "secondaryYears": "",
+      "anotherSkills": [],
+      "createdAt": "2026-07-30T04:23:44.785Z",
+      "updatedAt": "2026-07-30T04:23:44.785Z"
+    },
+    {
+      "id": "63",
+      "name": "erald.j.l.sanchez",
+      "eid": "erald.j.l.sanchez",
+      "hireDate": "",
+      "rollInDate": "",
+      "projectDeployed": "No",
+      "deploymentDate": "",
+      "projectName": "Song Bench",
+      "poc": "",
+      "dn": "No",
+      "rollOffDate": "",
+      "fromProject": "",
+      "groupNumber": 6,
+      "primarySkill": "",
+      "primaryYears": "",
+      "secondarySkill": "",
+      "secondaryYears": "",
+      "anotherSkills": [],
+      "createdAt": "2026-07-30T04:23:44.785Z",
+      "updatedAt": "2026-07-30T04:23:44.785Z"
+    },
+    {
+      "id": "64",
+      "name": "johnbert.c.d.tagle",
+      "eid": "johnbert.c.d.tagle",
+      "hireDate": "",
+      "rollInDate": "",
+      "projectDeployed": "No",
+      "deploymentDate": "",
+      "projectName": "Song Bench",
+      "poc": "",
+      "dn": "No",
+      "rollOffDate": "",
+      "fromProject": "",
+      "groupNumber": 6,
+      "primarySkill": "",
+      "primaryYears": "",
+      "secondarySkill": "",
+      "secondaryYears": "",
+      "anotherSkills": [],
+      "createdAt": "2026-07-30T04:23:44.785Z",
+      "updatedAt": "2026-07-30T04:23:44.785Z"
+    },
+    {
+      "id": "65",
+      "name": "michael.d.m.reyes",
+      "eid": "michael.d.m.reyes",
+      "hireDate": "",
+      "rollInDate": "",
+      "projectDeployed": "No",
+      "deploymentDate": "",
+      "projectName": "Song Bench",
+      "poc": "",
+      "dn": "No",
+      "rollOffDate": "",
+      "fromProject": "",
+      "groupNumber": 6,
+      "primarySkill": "",
+      "primaryYears": "",
+      "secondarySkill": "",
+      "secondaryYears": "",
+      "anotherSkills": [],
+      "createdAt": "2026-07-30T04:23:44.785Z",
+      "updatedAt": "2026-07-30T04:23:44.785Z"
+    },
+    {
+      "id": "66",
+      "name": "robert.s.valenzuela",
+      "eid": "robert.s.valenzuela",
+      "hireDate": "",
+      "rollInDate": "",
+      "projectDeployed": "No",
+      "deploymentDate": "",
+      "projectName": "Song Bench",
+      "poc": "",
+      "dn": "No",
+      "rollOffDate": "",
+      "fromProject": "",
+      "groupNumber": 6,
+      "primarySkill": "",
+      "primaryYears": "",
+      "secondarySkill": "",
+      "secondaryYears": "",
+      "anotherSkills": [],
+      "createdAt": "2026-07-30T04:23:44.785Z",
+      "updatedAt": "2026-07-30T04:23:44.785Z"
+    },
+    {
+      "id": "67",
+      "name": "jhasper.w.carandang",
+      "eid": "jhasper.w.carandang",
+      "hireDate": "",
+      "rollInDate": "",
+      "projectDeployed": "No",
+      "deploymentDate": "",
+      "projectName": "Song Bench",
+      "poc": "",
+      "dn": "No",
+      "rollOffDate": "",
+      "fromProject": "",
+      "groupNumber": 6,
+      "primarySkill": "",
+      "primaryYears": "",
+      "secondarySkill": "",
+      "secondaryYears": "",
+      "anotherSkills": [],
+      "createdAt": "2026-07-30T04:23:44.785Z",
+      "updatedAt": "2026-07-30T04:23:44.785Z"
+    },
+    {
+      "id": "68",
+      "name": "aljhon.o.dela.torre",
+      "eid": "aljhon.o.dela.torre",
+      "hireDate": "",
+      "rollInDate": "",
+      "projectDeployed": "No",
+      "deploymentDate": "",
+      "projectName": "Song Bench",
+      "poc": "",
+      "dn": "No",
+      "rollOffDate": "",
+      "fromProject": "",
+      "groupNumber": 6,
+      "primarySkill": "",
+      "primaryYears": "",
+      "secondarySkill": "",
+      "secondaryYears": "",
+      "anotherSkills": [],
+      "createdAt": "2026-07-30T04:23:44.785Z",
+      "updatedAt": "2026-07-30T04:23:44.785Z"
+    },
+    {
+      "id": "69",
+      "name": "jason.aaron.l.chua",
+      "eid": "jason.aaron.l.chua",
+      "hireDate": "",
+      "rollInDate": "",
+      "projectDeployed": "No",
+      "deploymentDate": "",
+      "projectName": "Song Bench",
+      "poc": "",
+      "dn": "No",
+      "rollOffDate": "",
+      "fromProject": "",
+      "groupNumber": 6,
+      "primarySkill": "",
+      "primaryYears": "",
+      "secondarySkill": "",
+      "secondaryYears": "",
+      "anotherSkills": [],
+      "createdAt": "2026-07-30T04:23:44.785Z",
+      "updatedAt": "2026-07-30T04:23:44.785Z"
+    },
+    {
+      "id": "70",
+      "name": "iverson.c.cabangis",
+      "eid": "iverson.c.cabangis",
+      "hireDate": "",
+      "rollInDate": "",
+      "projectDeployed": "No",
+      "deploymentDate": "",
+      "projectName": "Song Bench",
+      "poc": "",
+      "dn": "No",
+      "rollOffDate": "",
+      "fromProject": "",
+      "groupNumber": 6,
+      "primarySkill": "",
+      "primaryYears": "",
+      "secondarySkill": "",
+      "secondaryYears": "",
+      "anotherSkills": [],
+      "createdAt": "2026-07-30T04:23:44.785Z",
+      "updatedAt": "2026-07-30T04:23:44.785Z"
+    },
+    {
+      "id": "71",
+      "name": "john.s.p.jamandron",
+      "eid": "john.s.p.jamandron",
+      "hireDate": "",
+      "rollInDate": "",
+      "projectDeployed": "No",
+      "deploymentDate": "",
+      "projectName": "Song Bench",
+      "poc": "",
+      "dn": "No",
+      "rollOffDate": "",
+      "fromProject": "",
+      "groupNumber": 6,
+      "primarySkill": "",
+      "primaryYears": "",
+      "secondarySkill": "",
+      "secondaryYears": "",
+      "anotherSkills": [],
+      "createdAt": "2026-07-30T04:23:44.785Z",
+      "updatedAt": "2026-07-30T04:23:44.785Z"
+    },
+    {
+      "id": "72",
+      "name": "jan.j.b.areniego",
+      "eid": "jan.j.b.areniego",
+      "hireDate": "",
+      "rollInDate": "",
+      "projectDeployed": "No",
+      "deploymentDate": "",
+      "projectName": "Song Bench",
+      "poc": "",
+      "dn": "No",
+      "rollOffDate": "",
+      "fromProject": "",
+      "groupNumber": 6,
+      "primarySkill": "",
+      "primaryYears": "",
+      "secondarySkill": "",
+      "secondaryYears": "",
+      "anotherSkills": [],
+      "createdAt": "2026-07-30T04:23:44.785Z",
+      "updatedAt": "2026-07-30T04:23:44.785Z"
+    },
+    {
+      "id": "73",
+      "name": "irish.b.roxas",
+      "eid": "irish.b.roxas",
+      "hireDate": "",
+      "rollInDate": "",
+      "projectDeployed": "No",
+      "deploymentDate": "",
+      "projectName": "Song Bench",
+      "poc": "",
+      "dn": "No",
+      "rollOffDate": "",
+      "fromProject": "",
+      "groupNumber": 6,
+      "primarySkill": "",
+      "primaryYears": "",
+      "secondarySkill": "",
+      "secondaryYears": "",
+      "anotherSkills": [],
+      "createdAt": "2026-07-30T04:23:44.785Z",
+      "updatedAt": "2026-07-30T04:23:44.785Z"
+    },
+    {
+      "id": "74",
+      "name": "a.m.vinluan.iii",
+      "eid": "a.m.vinluan.iii",
+      "hireDate": "",
+      "rollInDate": "",
+      "projectDeployed": "No",
+      "deploymentDate": "",
+      "projectName": "Song Bench",
+      "poc": "",
+      "dn": "No",
+      "rollOffDate": "",
+      "fromProject": "",
+      "groupNumber": 6,
+      "primarySkill": "",
+      "primaryYears": "",
+      "secondarySkill": "",
+      "secondaryYears": "",
+      "anotherSkills": [],
+      "createdAt": "2026-07-30T04:23:44.785Z",
+      "updatedAt": "2026-07-30T04:23:44.785Z"
+    },
+    {
+      "id": "75",
+      "name": "kenjie.l.dela.cruz",
+      "eid": "kenjie.l.dela.cruz",
+      "hireDate": "",
+      "rollInDate": "",
+      "projectDeployed": "No",
+      "deploymentDate": "",
+      "projectName": "Song Bench",
+      "poc": "",
+      "dn": "No",
+      "rollOffDate": "",
+      "fromProject": "",
+      "groupNumber": 6,
+      "primarySkill": "",
+      "primaryYears": "",
+      "secondarySkill": "",
+      "secondaryYears": "",
+      "anotherSkills": [],
+      "createdAt": "2026-07-30T04:23:44.785Z",
+      "updatedAt": "2026-07-30T04:23:44.785Z"
+    },
+    {
+      "id": "76",
+      "name": "a.t.loberternos",
+      "eid": "a.t.loberternos",
+      "hireDate": "",
+      "rollInDate": "",
+      "projectDeployed": "No",
+      "deploymentDate": "",
+      "projectName": "Song Bench",
+      "poc": "",
+      "dn": "No",
+      "rollOffDate": "",
+      "fromProject": "",
+      "groupNumber": 6,
+      "primarySkill": "",
+      "primaryYears": "",
+      "secondarySkill": "",
+      "secondaryYears": "",
+      "anotherSkills": [],
+      "createdAt": "2026-07-30T04:23:44.785Z",
+      "updatedAt": "2026-07-30T04:23:44.785Z"
+    },
+    {
+      "id": "77",
+      "name": "john.eric.e.lumambas",
+      "eid": "john.eric.e.lumambas",
+      "hireDate": "",
+      "rollInDate": "",
+      "projectDeployed": "No",
+      "deploymentDate": "",
+      "projectName": "Song Bench",
+      "poc": "",
+      "dn": "No",
+      "rollOffDate": "",
+      "fromProject": "",
+      "groupNumber": 6,
+      "primarySkill": "",
+      "primaryYears": "",
+      "secondarySkill": "",
+      "secondaryYears": "",
+      "anotherSkills": [],
+      "createdAt": "2026-07-30T04:23:44.785Z",
+      "updatedAt": "2026-07-30T04:23:44.785Z"
+    },
+    {
+      "id": "78",
+      "name": "john.lyndo.v.anuada",
+      "eid": "john.lyndo.v.anuada",
+      "hireDate": "",
+      "rollInDate": "",
+      "projectDeployed": "No",
+      "deploymentDate": "",
+      "projectName": "Song Bench",
+      "poc": "",
+      "dn": "No",
+      "rollOffDate": "",
+      "fromProject": "",
+      "groupNumber": 6,
+      "primarySkill": "",
+      "primaryYears": "",
+      "secondarySkill": "",
+      "secondaryYears": "",
+      "anotherSkills": [],
+      "createdAt": "2026-07-30T04:23:44.785Z",
+      "updatedAt": "2026-07-30T04:23:44.785Z"
+    },
+    {
+      "id": "79",
+      "name": "jose.d.g.inocentes",
+      "eid": "jose.d.g.inocentes",
+      "hireDate": "",
+      "rollInDate": "",
+      "projectDeployed": "No",
+      "deploymentDate": "",
+      "projectName": "Song Bench",
+      "poc": "",
+      "dn": "No",
+      "rollOffDate": "",
+      "fromProject": "",
+      "groupNumber": 6,
+      "primarySkill": "",
+      "primaryYears": "",
+      "secondarySkill": "",
+      "secondaryYears": "",
+      "anotherSkills": [],
+      "createdAt": "2026-07-30T04:23:44.785Z",
+      "updatedAt": "2026-07-30T04:23:44.785Z"
+    },
+    {
+      "id": "80",
+      "name": "josemar.pajares",
+      "eid": "josemar.pajares",
+      "hireDate": "06/01/2026",
+      "rollInDate": "06/15/2026",
+      "projectDeployed": "No",
+      "deploymentDate": "",
+      "projectName": "Song Bench",
+      "poc": "TestPOC",
+      "dn": "No",
+      "rollOffDate": "",
+      "fromProject": "",
+      "groupNumber": 6,
+      "primarySkill": "Java",
+      "primaryYears": "3",
+      "secondarySkill": "",
+      "secondaryYears": "",
+      "anotherSkills": [],
+      "createdAt": "2026-07-30T04:23:44.785Z",
+      "updatedAt": "2026-07-30T07:03:48.110Z"
+    },
+    {
+      "id": "81",
+      "name": "Adhan Timothy Younes",
+      "eid": "adhan.timothy.younes",
+      "hireDate": "07/08/2026",
+      "rollInDate": "07/07/2026",
+      "projectDeployed": "Yes",
+      "deploymentDate": "06/10/2024",
+      "projectName": "Samsung",
+      "poc": "Kim",
+      "dn": "Yes",
+      "rollOffDate": "",
+      "fromProject": "",
+      "groupNumber": "",
+      "primarySkill": "Angular",
+      "primaryYears": "10",
+      "secondarySkill": "Magento",
+      "secondaryYears": "2",
+      "anotherSkills": [
+        "PHP",
+        "Code Igniter",
+        "Laravel",
+        "Python",
+        "MySQL",
+        "C#"
+      ],
+      "createdAt": "2026-07-30T07:20:34.151Z",
+      "updatedAt": "2026-07-30T07:42:15.450Z",
+      "clLevel": ""
+    }
+  ],
+  "dashboard": {
+    "notice": {
+      "title": "RTO policy update effective Aug 1",
+      "detail": "3 days onsite required for bench resources.",
+      "badge": "New"
+    },
+    "header": {
+      "welcomeName": "Aldhen Dignaran test 01",
+      "detail": "Song Bench - Week 3 on bench - New joiner track"
+    },
+    "checklistProgress": {
+      "completed": 8,
+      "total": 12,
+      "percent": 67
+    },
+    "navGroups": [
+      {
+        "label": "MAIN",
+        "items": [
+          {
+            "icon": "bi-grid-1x2",
+            "label": "Dashboard",
+            "badge": null,
+            "active": true
+          },
+          {
+            "icon": "bi-person-check",
+            "label": "Onboarding",
+            "badge": "12",
+            "active": false
+          },
+          {
+            "icon": "bi-calendar-check",
+            "label": "Attendance Tracker",
+            "badge": null,
+            "active": false
+          },
+          {
+            "icon": "bi-calendar3",
+            "label": "Planner",
+            "badge": null,
+            "active": false
+          },
+          {
+            "icon": "bi-patch-check",
+            "label": "myCompetency",
+            "badge": null,
+            "active": false
+          },
+          {
+            "icon": "bi-journals",
+            "label": "Trainings",
+            "badge": null,
+            "active": false
+          },
+          {
+            "icon": "bi-person-video3",
+            "label": "Mock Interview",
+            "badge": null,
+            "active": false
+          },
+          {
+            "icon": "bi-send",
+            "label": "Projects and Reachouts",
+            "badge": null,
+            "active": false
+          },
+          {
+            "icon": "bi-mortarboard",
+            "label": "Training",
+            "badge": null,
+            "active": false
+          },
+          {
+            "icon": "bi-kanban",
+            "label": "Initiatives",
+            "badge": null,
+            "active": false
+          }
+        ]
+      },
+      {
+        "label": "POC TOOLS",
+        "items": [
+          {
+            "icon": "bi-file-earmark-bar-graph",
+            "label": "Reports",
+            "badge": null,
+            "active": false
+          },
+          {
+            "icon": "bi-people",
+            "label": "Resource tracking",
+            "badge": null,
+            "active": false
+          },
+          {
+            "icon": "bi-journal-text",
+            "label": "POC how-to",
+            "badge": null,
+            "active": false
+          }
+        ]
+      },
+      {
+        "label": "GENERAL",
+        "items": [
+          {
+            "icon": "bi-megaphone",
+            "label": "Announcements",
+            "badge": null,
+            "active": false
+          },
+          {
+            "icon": "bi-gear",
+            "label": "Settings",
+            "badge": null,
+            "active": false
+          }
+        ]
+      }
+    ],
+    "stats": [
+      {
+        "label": "Onboarding progress",
+        "value": "67%",
+        "detail": "8 of 12 tasks complete"
+      },
+      {
+        "label": "Pending tasks",
+        "value": "4",
+        "detail": "2 overdue"
+      },
+      {
+        "label": "Active initiatives",
+        "value": "23",
+        "detail": "Across 5 Song groups"
+      },
+      {
+        "label": "Resources on bench",
+        "value": "47",
+        "detail": "6 not started onboarding"
+      }
+    ],
+    "checklist": [
+      {
+        "label": "Complete HR verification",
+        "status": "Done Jul 10",
+        "done": true,
+        "warning": false
+      },
+      {
+        "label": "Attend bench orientation",
+        "status": "Done Jul 12",
+        "done": true,
+        "warning": false
+      },
+      {
+        "label": "Submit BIR documents",
+        "status": "Overdue",
+        "done": false,
+        "warning": true
+      }
+    ],
+    "initiatives": [
+      {
+        "id": 1,
+        "title": "Song Bench rollout",
+        "group": "Group A",
+        "meta": "Release plan active",
+        "status": "On track"
+      },
+      {
+        "id": 2,
+        "title": "Mobile lift initiative",
+        "group": "Group B",
+        "meta": "Scope review pending",
+        "status": "Planning"
+      }
+    ],
+    "announcements": [
+      {
+        "title": "New bench orientation date",
+        "meta": "Aug 5 at 10am"
+      },
+      {
+        "title": "Process update",
+        "meta": "Submit onboarding in Song Bench portal"
+      }
+    ],
+    "poc": [
+      {
+        "initials": "AD",
+        "name": "Aldhen Dignaran",
+        "role": "Bench coordinator",
+        "pending": "3 actions"
+      },
+      {
+        "initials": "JG",
+        "name": "Jannrey Tolop",
+        "role": "Project lead",
+        "pending": "1 action"
+      }
+    ],
+    "quickTools": [
+      {
+        "icon": "bi-file-earmark-bar-graph",
+        "label": "Reports"
+      },
+      {
+        "icon": "bi-people",
+        "label": "Resource tracking"
+      },
+      {
+        "icon": "bi-journal-text",
+        "label": "POC how-to"
+      }
+    ]
+  },
+  "attendance-options": [
+    {
+      "id": "1",
+      "label": "Present"
+    },
+    {
+      "id": "2",
+      "label": "Absent"
+    },
+    {
+      "id": "3",
+      "label": "SL"
+    },
+    {
+      "id": "4",
+      "label": "VL"
+    },
+    {
+      "id": "5",
+      "label": "PL"
+    },
+    {
+      "id": "6",
+      "label": "ML"
+    },
+    {
+      "id": "7",
+      "label": "EH"
+    },
+    {
+      "id": "8",
+      "label": "BL"
+    },
+    {
+      "id": "9",
+      "label": "Deployed"
+    },
+    {
+      "id": "10",
+      "label": "RTO"
+    },
+    {
+      "id": "11",
+      "label": "NITC"
+    },
+    {
+      "id": "12",
+      "label": "Transferred"
+    }
+  ],
+  "attendance": [
+    {
+      "id": "1",
+      "eid": "krizel.b.bartolome",
+      "year": 2026,
+      "month": 7,
+      "day": 1,
+      "status": "Present"
+    },
+    {
+      "id": "2",
+      "eid": "krizel.b.bartolome",
+      "year": 2026,
+      "month": 7,
+      "day": 20,
+      "status": "RTO"
+    },
+    {
+      "id": "3",
+      "eid": "krizel.b.bartolome",
+      "year": 2026,
+      "month": 7,
+      "day": 21,
+      "status": "RTO"
+    },
+    {
+      "id": "4",
+      "eid": "krizel.b.bartolome",
+      "year": 2026,
+      "month": 7,
+      "day": 27,
+      "status": "VL"
+    },
+    {
+      "id": "5",
+      "eid": "krizel.b.bartolome",
+      "year": 2026,
+      "month": 7,
+      "day": 28,
+      "status": "VL"
+    },
+    {
+      "id": "6",
+      "eid": "krizel.b.bartolome",
+      "year": 2026,
+      "month": 7,
+      "day": 29,
+      "status": "VL"
+    },
+    {
+      "id": "9",
+      "eid": "mira.joy.g.abcede",
+      "year": 2026,
+      "month": 7,
+      "day": 1,
+      "status": "Present"
+    },
+    {
+      "id": "10",
+      "eid": "mira.joy.g.abcede",
+      "year": 2026,
+      "month": 7,
+      "day": 2,
+      "status": "RTO"
+    },
+    {
+      "id": "11",
+      "eid": "mira.joy.g.abcede",
+      "year": 2026,
+      "month": 7,
+      "day": 3,
+      "status": "Present"
+    },
+    {
+      "id": "12",
+      "eid": "mira.joy.g.abcede",
+      "year": 2026,
+      "month": 7,
+      "day": 6,
+      "status": "Present"
+    },
+    {
+      "id": "13",
+      "eid": "mira.joy.g.abcede",
+      "year": 2026,
+      "month": 7,
+      "day": 7,
+      "status": "RTO"
+    },
+    {
+      "id": "14",
+      "eid": "mira.joy.g.abcede",
+      "year": 2026,
+      "month": 7,
+      "day": 8,
+      "status": "Present"
+    },
+    {
+      "id": "15",
+      "eid": "mira.joy.g.abcede",
+      "year": 2026,
+      "month": 7,
+      "day": 9,
+      "status": "RTO"
+    },
+    {
+      "id": "16",
+      "eid": "mira.joy.g.abcede",
+      "year": 2026,
+      "month": 7,
+      "day": 10,
+      "status": "Present"
+    },
+    {
+      "id": "17",
+      "eid": "mira.joy.g.abcede",
+      "year": 2026,
+      "month": 7,
+      "day": 13,
+      "status": "Present"
+    },
+    {
+      "id": "18",
+      "eid": "mira.joy.g.abcede",
+      "year": 2026,
+      "month": 7,
+      "day": 14,
+      "status": "RTO"
+    },
+    {
+      "id": "19",
+      "eid": "mira.joy.g.abcede",
+      "year": 2026,
+      "month": 7,
+      "day": 15,
+      "status": "RTO"
+    },
+    {
+      "id": "20",
+      "eid": "mira.joy.g.abcede",
+      "year": 2026,
+      "month": 7,
+      "day": 16,
+      "status": "Present"
+    },
+    {
+      "id": "21",
+      "eid": "mira.joy.g.abcede",
+      "year": 2026,
+      "month": 7,
+      "day": 17,
+      "status": "Present"
+    },
+    {
+      "id": "22",
+      "eid": "mira.joy.g.abcede",
+      "year": 2026,
+      "month": 7,
+      "day": 20,
+      "status": "Present"
+    },
+    {
+      "id": "23",
+      "eid": "mira.joy.g.abcede",
+      "year": 2026,
+      "month": 7,
+      "day": 21,
+      "status": "Deployed"
+    },
+    {
+      "id": "24",
+      "eid": "mira.joy.g.abcede",
+      "year": 2026,
+      "month": 7,
+      "day": 22,
+      "status": "Deployed"
+    },
+    {
+      "id": "25",
+      "eid": "mira.joy.g.abcede",
+      "year": 2026,
+      "month": 7,
+      "day": 23,
+      "status": "Deployed"
+    },
+    {
+      "id": "26",
+      "eid": "mira.joy.g.abcede",
+      "year": 2026,
+      "month": 7,
+      "day": 24,
+      "status": "Deployed"
+    },
+    {
+      "id": "27",
+      "eid": "mira.joy.g.abcede",
+      "year": 2026,
+      "month": 7,
+      "day": 27,
+      "status": "Present"
+    },
+    {
+      "id": 28,
+      "eid": "mira.joy.g.abcede",
+      "year": 2026,
+      "month": 7,
+      "day": 28,
+      "status": "RTO",
+      "location": "Gateway Tower 2"
+    },
+    {
+      "id": "29",
+      "eid": "mira.joy.g.abcede",
+      "year": 2026,
+      "month": 7,
+      "day": 29,
+      "status": "Present"
+    },
+    {
+      "id": "31",
+      "eid": "mira.joy.g.abcede",
+      "year": 2026,
+      "month": 7,
+      "day": 31,
+      "status": "Present"
+    },
+    {
+      "id": "32",
+      "eid": "adrian.m.bartolome",
+      "year": 2026,
+      "month": 7,
+      "day": 1,
+      "status": "RTO"
+    },
+    {
+      "id": "33",
+      "eid": "adrian.m.bartolome",
+      "year": 2026,
+      "month": 7,
+      "day": 2,
+      "status": "RTO"
+    },
+    {
+      "id": "34",
+      "eid": "adrian.m.bartolome",
+      "year": 2026,
+      "month": 7,
+      "day": 3,
+      "status": "Present"
+    },
+    {
+      "id": "35",
+      "eid": "adrian.m.bartolome",
+      "year": 2026,
+      "month": 7,
+      "day": 6,
+      "status": "Present"
+    },
+    {
+      "id": "36",
+      "eid": "adrian.m.bartolome",
+      "year": 2026,
+      "month": 7,
+      "day": 7,
+      "status": "RTO"
+    },
+    {
+      "id": "37",
+      "eid": "adrian.m.bartolome",
+      "year": 2026,
+      "month": 7,
+      "day": 8,
+      "status": "Present"
+    },
+    {
+      "id": "38",
+      "eid": "adrian.m.bartolome",
+      "year": 2026,
+      "month": 7,
+      "day": 9,
+      "status": "Present"
+    },
+    {
+      "id": "39",
+      "eid": "adrian.m.bartolome",
+      "year": 2026,
+      "month": 7,
+      "day": 10,
+      "status": "Present"
+    },
+    {
+      "id": "40",
+      "eid": "adrian.m.bartolome",
+      "year": 2026,
+      "month": 7,
+      "day": 13,
+      "status": "Present"
+    },
+    {
+      "id": "41",
+      "eid": "adrian.m.bartolome",
+      "year": 2026,
+      "month": 7,
+      "day": 14,
+      "status": "RTO"
+    },
+    {
+      "id": "42",
+      "eid": "adrian.m.bartolome",
+      "year": 2026,
+      "month": 7,
+      "day": 15,
+      "status": "Present"
+    },
+    {
+      "id": "43",
+      "eid": "adrian.m.bartolome",
+      "year": 2026,
+      "month": 7,
+      "day": 16,
+      "status": "RTO"
+    },
+    {
+      "id": "44",
+      "eid": "adrian.m.bartolome",
+      "year": 2026,
+      "month": 7,
+      "day": 17,
+      "status": "Present"
+    },
+    {
+      "id": "46",
+      "eid": "adrian.m.bartolome",
+      "year": 2026,
+      "month": 7,
+      "day": 21,
+      "status": "Deployed"
+    },
+    {
+      "id": "47",
+      "eid": "adrian.m.bartolome",
+      "year": 2026,
+      "month": 7,
+      "day": 22,
+      "status": "Deployed"
+    },
+    {
+      "id": "48",
+      "eid": "adrian.m.bartolome",
+      "year": 2026,
+      "month": 7,
+      "day": 23,
+      "status": "Deployed"
+    },
+    {
+      "id": "49",
+      "eid": "adrian.m.bartolome",
+      "year": 2026,
+      "month": 7,
+      "day": 27,
+      "status": "Present"
+    },
+    {
+      "id": 50,
+      "eid": "adrian.m.bartolome",
+      "year": 2026,
+      "month": 7,
+      "day": 28,
+      "status": "RTO",
+      "location": "Gateway Tower 2"
+    },
+    {
+      "id": "51",
+      "eid": "adrian.m.bartolome",
+      "year": 2026,
+      "month": 7,
+      "day": 29,
+      "status": "Present"
+    },
+    {
+      "id": 52,
+      "eid": "adrian.m.bartolome",
+      "year": 2026,
+      "month": 7,
+      "day": 30,
+      "status": "RTO",
+      "location": "Uptown Bonifacio Tower 3"
+    },
+    {
+      "id": "53",
+      "eid": "adrian.m.bartolome",
+      "year": 2026,
+      "month": 7,
+      "day": 31,
+      "status": "Present"
+    },
+    {
+      "id": "54",
+      "eid": "lesly.dimailig",
+      "year": 2026,
+      "month": 7,
+      "day": 1,
+      "status": "Present"
+    },
+    {
+      "id": "55",
+      "eid": "lesly.dimailig",
+      "year": 2026,
+      "month": 7,
+      "day": 2,
+      "status": "RTO"
+    },
+    {
+      "id": "56",
+      "eid": "lesly.dimailig",
+      "year": 2026,
+      "month": 7,
+      "day": 3,
+      "status": "RTO"
+    },
+    {
+      "id": "57",
+      "eid": "lesly.dimailig",
+      "year": 2026,
+      "month": 7,
+      "day": 6,
+      "status": "RTO"
+    },
+    {
+      "id": "58",
+      "eid": "lesly.dimailig",
+      "year": 2026,
+      "month": 7,
+      "day": 7,
+      "status": "RTO"
+    },
+    {
+      "id": "59",
+      "eid": "lesly.dimailig",
+      "year": 2026,
+      "month": 7,
+      "day": 8,
+      "status": "Present"
+    },
+    {
+      "id": "60",
+      "eid": "lesly.dimailig",
+      "year": 2026,
+      "month": 7,
+      "day": 9,
+      "status": "Present"
+    },
+    {
+      "id": "61",
+      "eid": "lesly.dimailig",
+      "year": 2026,
+      "month": 7,
+      "day": 10,
+      "status": "Present"
+    },
+    {
+      "id": "62",
+      "eid": "lesly.dimailig",
+      "year": 2026,
+      "month": 7,
+      "day": 13,
+      "status": "RTO"
+    },
+    {
+      "id": "63",
+      "eid": "lesly.dimailig",
+      "year": 2026,
+      "month": 7,
+      "day": 14,
+      "status": "RTO"
+    },
+    {
+      "id": "64",
+      "eid": "lesly.dimailig",
+      "year": 2026,
+      "month": 7,
+      "day": 15,
+      "status": "Present"
+    },
+    {
+      "id": "65",
+      "eid": "lesly.dimailig",
+      "year": 2026,
+      "month": 7,
+      "day": 16,
+      "status": "Present"
+    },
+    {
+      "id": "66",
+      "eid": "lesly.dimailig",
+      "year": 2026,
+      "month": 7,
+      "day": 17,
+      "status": "Present"
+    },
+    {
+      "id": "67",
+      "eid": "lesly.dimailig",
+      "year": 2026,
+      "month": 7,
+      "day": 20,
+      "status": "Present"
+    },
+    {
+      "id": "68",
+      "eid": "lesly.dimailig",
+      "year": 2026,
+      "month": 7,
+      "day": 21,
+      "status": "Deployed"
+    },
+    {
+      "id": "69",
+      "eid": "lesly.dimailig",
+      "year": 2026,
+      "month": 7,
+      "day": 22,
+      "status": "Deployed"
+    },
+    {
+      "id": "70",
+      "eid": "lesly.dimailig",
+      "year": 2026,
+      "month": 7,
+      "day": 23,
+      "status": "Deployed"
+    },
+    {
+      "id": "71",
+      "eid": "lesly.dimailig",
+      "year": 2026,
+      "month": 7,
+      "day": 24,
+      "status": "Deployed"
+    },
+    {
+      "id": "74",
+      "eid": "lesly.dimailig",
+      "year": 2026,
+      "month": 7,
+      "day": 29,
+      "status": "Present"
+    },
+    {
+      "id": "75",
+      "eid": "lesly.dimailig",
+      "year": 2026,
+      "month": 7,
+      "day": 30,
+      "status": "Present"
+    },
+    {
+      "id": "76",
+      "eid": "lesly.dimailig",
+      "year": 2026,
+      "month": 7,
+      "day": 31,
+      "status": "Present"
+    },
+    {
+      "id": "77",
+      "eid": "gisella.dame.arcaya",
+      "year": 2026,
+      "month": 7,
+      "day": 1,
+      "status": "Present"
+    },
+    {
+      "id": "78",
+      "eid": "gisella.dame.arcaya",
+      "year": 2026,
+      "month": 7,
+      "day": 2,
+      "status": "RTO"
+    },
+    {
+      "id": "79",
+      "eid": "gisella.dame.arcaya",
+      "year": 2026,
+      "month": 7,
+      "day": 3,
+      "status": "Present"
+    },
+    {
+      "id": "80",
+      "eid": "gisella.dame.arcaya",
+      "year": 2026,
+      "month": 7,
+      "day": 6,
+      "status": "SL"
+    },
+    {
+      "id": "81",
+      "eid": "gisella.dame.arcaya",
+      "year": 2026,
+      "month": 7,
+      "day": 7,
+      "status": "Present"
+    },
+    {
+      "id": "82",
+      "eid": "gisella.dame.arcaya",
+      "year": 2026,
+      "month": 7,
+      "day": 8,
+      "status": "RTO"
+    },
+    {
+      "id": "83",
+      "eid": "gisella.dame.arcaya",
+      "year": 2026,
+      "month": 7,
+      "day": 9,
+      "status": "RTO"
+    },
+    {
+      "id": "84",
+      "eid": "gisella.dame.arcaya",
+      "year": 2026,
+      "month": 7,
+      "day": 10,
+      "status": "Present"
+    },
+    {
+      "id": "85",
+      "eid": "gisella.dame.arcaya",
+      "year": 2026,
+      "month": 7,
+      "day": 13,
+      "status": "Present"
+    },
+    {
+      "id": "86",
+      "eid": "gisella.dame.arcaya",
+      "year": 2026,
+      "month": 7,
+      "day": 14,
+      "status": "RTO"
+    },
+    {
+      "id": "87",
+      "eid": "gisella.dame.arcaya",
+      "year": 2026,
+      "month": 7,
+      "day": 15,
+      "status": "Present"
+    },
+    {
+      "id": "88",
+      "eid": "gisella.dame.arcaya",
+      "year": 2026,
+      "month": 7,
+      "day": 16,
+      "status": "RTO"
+    },
+    {
+      "id": "89",
+      "eid": "gisella.dame.arcaya",
+      "year": 2026,
+      "month": 7,
+      "day": 17,
+      "status": "Present"
+    },
+    {
+      "id": "90",
+      "eid": "gisella.dame.arcaya",
+      "year": 2026,
+      "month": 7,
+      "day": 20,
+      "status": "Present"
+    },
+    {
+      "id": "91",
+      "eid": "gisella.dame.arcaya",
+      "year": 2026,
+      "month": 7,
+      "day": 21,
+      "status": "Deployed"
+    },
+    {
+      "id": "92",
+      "eid": "gisella.dame.arcaya",
+      "year": 2026,
+      "month": 7,
+      "day": 22,
+      "status": "Deployed"
+    },
+    {
+      "id": "93",
+      "eid": "gisella.dame.arcaya",
+      "year": 2026,
+      "month": 7,
+      "day": 23,
+      "status": "Deployed"
+    },
+    {
+      "id": "94",
+      "eid": "gisella.dame.arcaya",
+      "year": 2026,
+      "month": 7,
+      "day": 24,
+      "status": "Deployed"
+    },
+    {
+      "id": "95",
+      "eid": "gisella.dame.arcaya",
+      "year": 2026,
+      "month": 7,
+      "day": 27,
+      "status": "Present"
+    },
+    {
+      "id": "98",
+      "eid": "gisella.dame.arcaya",
+      "year": 2026,
+      "month": 7,
+      "day": 30,
+      "status": "SL"
+    },
+    {
+      "id": "99",
+      "eid": "gisella.dame.arcaya",
+      "year": 2026,
+      "month": 7,
+      "day": 31,
+      "status": "Present"
+    },
+    {
+      "id": "100",
+      "eid": "nofia.a.c.mendoza",
+      "year": 2026,
+      "month": 7,
+      "day": 1,
+      "status": "Present"
+    },
+    {
+      "id": "101",
+      "eid": "nofia.a.c.mendoza",
+      "year": 2026,
+      "month": 7,
+      "day": 2,
+      "status": "Present"
+    },
+    {
+      "id": "102",
+      "eid": "nofia.a.c.mendoza",
+      "year": 2026,
+      "month": 7,
+      "day": 3,
+      "status": "RTO"
+    },
+    {
+      "id": "103",
+      "eid": "nofia.a.c.mendoza",
+      "year": 2026,
+      "month": 7,
+      "day": 6,
+      "status": "Present"
+    },
+    {
+      "id": "104",
+      "eid": "nofia.a.c.mendoza",
+      "year": 2026,
+      "month": 7,
+      "day": 7,
+      "status": "RTO"
+    },
+    {
+      "id": "105",
+      "eid": "nofia.a.c.mendoza",
+      "year": 2026,
+      "month": 7,
+      "day": 8,
+      "status": "RTO"
+    },
+    {
+      "id": "106",
+      "eid": "nofia.a.c.mendoza",
+      "year": 2026,
+      "month": 7,
+      "day": 9,
+      "status": "VL"
+    },
+    {
+      "id": "107",
+      "eid": "nofia.a.c.mendoza",
+      "year": 2026,
+      "month": 7,
+      "day": 10,
+      "status": "VL"
+    },
+    {
+      "id": "108",
+      "eid": "nofia.a.c.mendoza",
+      "year": 2026,
+      "month": 7,
+      "day": 13,
+      "status": "Present"
+    },
+    {
+      "id": "109",
+      "eid": "nofia.a.c.mendoza",
+      "year": 2026,
+      "month": 7,
+      "day": 14,
+      "status": "Present"
+    },
+    {
+      "id": "110",
+      "eid": "nofia.a.c.mendoza",
+      "year": 2026,
+      "month": 7,
+      "day": 15,
+      "status": "RTO"
+    },
+    {
+      "id": "111",
+      "eid": "nofia.a.c.mendoza",
+      "year": 2026,
+      "month": 7,
+      "day": 16,
+      "status": "Present"
+    },
+    {
+      "id": "112",
+      "eid": "nofia.a.c.mendoza",
+      "year": 2026,
+      "month": 7,
+      "day": 17,
+      "status": "RTO"
+    },
+    {
+      "id": "113",
+      "eid": "nofia.a.c.mendoza",
+      "year": 2026,
+      "month": 7,
+      "day": 20,
+      "status": "Present"
+    },
+    {
+      "id": "114",
+      "eid": "nofia.a.c.mendoza",
+      "year": 2026,
+      "month": 7,
+      "day": 21,
+      "status": "Deployed"
+    },
+    {
+      "id": "115",
+      "eid": "nofia.a.c.mendoza",
+      "year": 2026,
+      "month": 7,
+      "day": 22,
+      "status": "Deployed"
+    },
+    {
+      "id": "116",
+      "eid": "nofia.a.c.mendoza",
+      "year": 2026,
+      "month": 7,
+      "day": 23,
+      "status": "Deployed"
+    },
+    {
+      "id": "117",
+      "eid": "nofia.a.c.mendoza",
+      "year": 2026,
+      "month": 7,
+      "day": 24,
+      "status": "Deployed"
+    },
+    {
+      "id": "120",
+      "eid": "nofia.a.c.mendoza",
+      "year": 2026,
+      "month": 7,
+      "day": 29,
+      "status": "Present"
+    },
+    {
+      "id": "121",
+      "eid": "nofia.a.c.mendoza",
+      "year": 2026,
+      "month": 7,
+      "day": 30,
+      "status": "Present"
+    },
+    {
+      "id": "122",
+      "eid": "nofia.a.c.mendoza",
+      "year": 2026,
+      "month": 7,
+      "day": 31,
+      "status": "Present"
+    },
+    {
+      "id": "123",
+      "eid": "aldhen.a.dignaran",
+      "year": 2026,
+      "month": 7,
+      "day": 1,
+      "status": "RTO"
+    },
+    {
+      "id": "124",
+      "eid": "aldhen.a.dignaran",
+      "year": 2026,
+      "month": 7,
+      "day": 2,
+      "status": "Present"
+    },
+    {
+      "id": "125",
+      "eid": "aldhen.a.dignaran",
+      "year": 2026,
+      "month": 7,
+      "day": 3,
+      "status": "RTO"
+    },
+    {
+      "id": "126",
+      "eid": "aldhen.a.dignaran",
+      "year": 2026,
+      "month": 7,
+      "day": 6,
+      "status": "RTO"
+    },
+    {
+      "id": "127",
+      "eid": "aldhen.a.dignaran",
+      "year": 2026,
+      "month": 7,
+      "day": 7,
+      "status": "RTO"
+    },
+    {
+      "id": "128",
+      "eid": "aldhen.a.dignaran",
+      "year": 2026,
+      "month": 7,
+      "day": 8,
+      "status": "Present"
+    },
+    {
+      "id": "129",
+      "eid": "aldhen.a.dignaran",
+      "year": 2026,
+      "month": 7,
+      "day": 9,
+      "status": "Present"
+    },
+    {
+      "id": "130",
+      "eid": "aldhen.a.dignaran",
+      "year": 2026,
+      "month": 7,
+      "day": 10,
+      "status": "Present"
+    },
+    {
+      "id": "131",
+      "eid": "aldhen.a.dignaran",
+      "year": 2026,
+      "month": 7,
+      "day": 13,
+      "status": "RTO"
+    },
+    {
+      "id": "132",
+      "eid": "aldhen.a.dignaran",
+      "year": 2026,
+      "month": 7,
+      "day": 14,
+      "status": "RTO"
+    },
+    {
+      "id": "133",
+      "eid": "aldhen.a.dignaran",
+      "year": 2026,
+      "month": 7,
+      "day": 15,
+      "status": "Present"
+    },
+    {
+      "id": "134",
+      "eid": "aldhen.a.dignaran",
+      "year": 2026,
+      "month": 7,
+      "day": 16,
+      "status": "Present"
+    },
+    {
+      "id": "135",
+      "eid": "aldhen.a.dignaran",
+      "year": 2026,
+      "month": 7,
+      "day": 17,
+      "status": "Present"
+    },
+    {
+      "id": "136",
+      "eid": "aldhen.a.dignaran",
+      "year": 2026,
+      "month": 7,
+      "day": 20,
+      "status": "Present"
+    },
+    {
+      "id": "137",
+      "eid": "aldhen.a.dignaran",
+      "year": 2026,
+      "month": 7,
+      "day": 21,
+      "status": "RTO"
+    },
+    {
+      "id": "138",
+      "eid": "aldhen.a.dignaran",
+      "year": 2026,
+      "month": 7,
+      "day": 22,
+      "status": "RTO"
+    },
+    {
+      "id": "139",
+      "eid": "aldhen.a.dignaran",
+      "year": 2026,
+      "month": 7,
+      "day": 23,
+      "status": "VL"
+    },
+    {
+      "id": "140",
+      "eid": "aldhen.a.dignaran",
+      "year": 2026,
+      "month": 7,
+      "day": 24,
+      "status": "SL"
+    },
+    {
+      "id": "142",
+      "eid": "aldhen.a.dignaran",
+      "year": 2026,
+      "month": 7,
+      "day": 28,
+      "status": "Present"
+    },
+    {
+      "id": "144",
+      "eid": "aldhen.a.dignaran",
+      "year": 2026,
+      "month": 7,
+      "day": 30,
+      "status": "VL"
+    },
+    {
+      "id": "145",
+      "eid": "aldhen.a.dignaran",
+      "year": 2026,
+      "month": 7,
+      "day": 31,
+      "status": "VL"
+    },
+    {
+      "id": "146",
+      "eid": "ariel.s.udtohan",
+      "year": 2026,
+      "month": 7,
+      "day": 1,
+      "status": "Present"
+    },
+    {
+      "id": "147",
+      "eid": "ariel.s.udtohan",
+      "year": 2026,
+      "month": 7,
+      "day": 2,
+      "status": "RTO"
+    },
+    {
+      "id": "148",
+      "eid": "ariel.s.udtohan",
+      "year": 2026,
+      "month": 7,
+      "day": 3,
+      "status": "RTO"
+    },
+    {
+      "id": "149",
+      "eid": "ariel.s.udtohan",
+      "year": 2026,
+      "month": 7,
+      "day": 6,
+      "status": "Present"
+    },
+    {
+      "id": "150",
+      "eid": "ariel.s.udtohan",
+      "year": 2026,
+      "month": 7,
+      "day": 7,
+      "status": "RTO"
+    },
+    {
+      "id": "151",
+      "eid": "ariel.s.udtohan",
+      "year": 2026,
+      "month": 7,
+      "day": 8,
+      "status": "Present"
+    },
+    {
+      "id": "152",
+      "eid": "ariel.s.udtohan",
+      "year": 2026,
+      "month": 7,
+      "day": 9,
+      "status": "RTO"
+    },
+    {
+      "id": "153",
+      "eid": "ariel.s.udtohan",
+      "year": 2026,
+      "month": 7,
+      "day": 10,
+      "status": "SL"
+    },
+    {
+      "id": "154",
+      "eid": "ariel.s.udtohan",
+      "year": 2026,
+      "month": 7,
+      "day": 13,
+      "status": "RTO"
+    },
+    {
+      "id": "155",
+      "eid": "ariel.s.udtohan",
+      "year": 2026,
+      "month": 7,
+      "day": 14,
+      "status": "Present"
+    },
+    {
+      "id": "156",
+      "eid": "ariel.s.udtohan",
+      "year": 2026,
+      "month": 7,
+      "day": 15,
+      "status": "Present"
+    },
+    {
+      "id": "157",
+      "eid": "ariel.s.udtohan",
+      "year": 2026,
+      "month": 7,
+      "day": 16,
+      "status": "RTO"
+    },
+    {
+      "id": "158",
+      "eid": "ariel.s.udtohan",
+      "year": 2026,
+      "month": 7,
+      "day": 17,
+      "status": "Present"
+    },
+    {
+      "id": "159",
+      "eid": "ariel.s.udtohan",
+      "year": 2026,
+      "month": 7,
+      "day": 20,
+      "status": "Present"
+    },
+    {
+      "id": "160",
+      "eid": "ariel.s.udtohan",
+      "year": 2026,
+      "month": 7,
+      "day": 21,
+      "status": "VL"
+    },
+    {
+      "id": "161",
+      "eid": "ariel.s.udtohan",
+      "year": 2026,
+      "month": 7,
+      "day": 22,
+      "status": "Deployed"
+    },
+    {
+      "id": "162",
+      "eid": "ariel.s.udtohan",
+      "year": 2026,
+      "month": 7,
+      "day": 23,
+      "status": "Deployed"
+    },
+    {
+      "id": "163",
+      "eid": "ariel.s.udtohan",
+      "year": 2026,
+      "month": 7,
+      "day": 24,
+      "status": "Deployed"
+    },
+    {
+      "id": "164",
+      "eid": "ariel.s.udtohan",
+      "year": 2026,
+      "month": 7,
+      "day": 27,
+      "status": "Present"
+    },
+    {
+      "id": "166",
+      "eid": "ariel.s.udtohan",
+      "year": 2026,
+      "month": 7,
+      "day": 29,
+      "status": "Present"
+    },
+    {
+      "id": "167",
+      "eid": "ariel.s.udtohan",
+      "year": 2026,
+      "month": 7,
+      "day": 30,
+      "status": "RTO"
+    },
+    {
+      "id": "168",
+      "eid": "ariel.s.udtohan",
+      "year": 2026,
+      "month": 7,
+      "day": 31,
+      "status": "Present"
+    },
+    {
+      "id": "169",
+      "eid": "kenneth.g.ebora",
+      "year": 2026,
+      "month": 7,
+      "day": 1,
+      "status": "RTO"
+    },
+    {
+      "id": "170",
+      "eid": "kenneth.g.ebora",
+      "year": 2026,
+      "month": 7,
+      "day": 2,
+      "status": "RTO"
+    },
+    {
+      "id": "171",
+      "eid": "kenneth.g.ebora",
+      "year": 2026,
+      "month": 7,
+      "day": 3,
+      "status": "Present"
+    },
+    {
+      "id": "172",
+      "eid": "kenneth.g.ebora",
+      "year": 2026,
+      "month": 7,
+      "day": 6,
+      "status": "Present"
+    },
+    {
+      "id": "173",
+      "eid": "kenneth.g.ebora",
+      "year": 2026,
+      "month": 7,
+      "day": 7,
+      "status": "RTO"
+    },
+    {
+      "id": "174",
+      "eid": "kenneth.g.ebora",
+      "year": 2026,
+      "month": 7,
+      "day": 8,
+      "status": "SL"
+    },
+    {
+      "id": "175",
+      "eid": "kenneth.g.ebora",
+      "year": 2026,
+      "month": 7,
+      "day": 9,
+      "status": "RTO"
+    },
+    {
+      "id": "176",
+      "eid": "kenneth.g.ebora",
+      "year": 2026,
+      "month": 7,
+      "day": 10,
+      "status": "Present"
+    },
+    {
+      "id": "177",
+      "eid": "kenneth.g.ebora",
+      "year": 2026,
+      "month": 7,
+      "day": 13,
+      "status": "Present"
+    },
+    {
+      "id": "178",
+      "eid": "kenneth.g.ebora",
+      "year": 2026,
+      "month": 7,
+      "day": 14,
+      "status": "RTO"
+    },
+    {
+      "id": "179",
+      "eid": "kenneth.g.ebora",
+      "year": 2026,
+      "month": 7,
+      "day": 15,
+      "status": "RTO"
+    },
+    {
+      "id": "180",
+      "eid": "kenneth.g.ebora",
+      "year": 2026,
+      "month": 7,
+      "day": 16,
+      "status": "Present"
+    },
+    {
+      "id": "181",
+      "eid": "kenneth.g.ebora",
+      "year": 2026,
+      "month": 7,
+      "day": 17,
+      "status": "Present"
+    },
+    {
+      "id": "182",
+      "eid": "kenneth.g.ebora",
+      "year": 2026,
+      "month": 7,
+      "day": 20,
+      "status": "Present"
+    },
+    {
+      "id": "183",
+      "eid": "kenneth.g.ebora",
+      "year": 2026,
+      "month": 7,
+      "day": 21,
+      "status": "Present"
+    },
+    {
+      "id": "184",
+      "eid": "kenneth.g.ebora",
+      "year": 2026,
+      "month": 7,
+      "day": 22,
+      "status": "RTO"
+    },
+    {
+      "id": "185",
+      "eid": "kenneth.g.ebora",
+      "year": 2026,
+      "month": 7,
+      "day": 23,
+      "status": "RTO"
+    },
+    {
+      "id": "186",
+      "eid": "kenneth.g.ebora",
+      "year": 2026,
+      "month": 7,
+      "day": 24,
+      "status": "SL"
+    },
+    {
+      "id": "187",
+      "eid": "kenneth.g.ebora",
+      "year": 2026,
+      "month": 7,
+      "day": 27,
+      "status": "Present"
+    },
+    {
+      "id": 188,
+      "eid": "kenneth.g.ebora",
+      "year": 2026,
+      "month": 7,
+      "day": 28,
+      "status": "RTO",
+      "location": "Gateway Tower 2"
+    },
+    {
+      "id": "189",
+      "eid": "kenneth.g.ebora",
+      "year": 2026,
+      "month": 7,
+      "day": 29,
+      "status": "Present"
+    },
+    {
+      "id": "191",
+      "eid": "kenneth.g.ebora",
+      "year": 2026,
+      "month": 7,
+      "day": 31,
+      "status": "Present"
+    },
+    {
+      "id": "192",
+      "eid": "j.baliwag",
+      "year": 2026,
+      "month": 7,
+      "day": 13,
+      "status": "RTO"
+    },
+    {
+      "id": "193",
+      "eid": "j.baliwag",
+      "year": 2026,
+      "month": 7,
+      "day": 14,
+      "status": "RTO"
+    },
+    {
+      "id": "194",
+      "eid": "j.baliwag",
+      "year": 2026,
+      "month": 7,
+      "day": 15,
+      "status": "Present"
+    },
+    {
+      "id": "195",
+      "eid": "j.baliwag",
+      "year": 2026,
+      "month": 7,
+      "day": 16,
+      "status": "SL"
+    },
+    {
+      "id": "196",
+      "eid": "j.baliwag",
+      "year": 2026,
+      "month": 7,
+      "day": 17,
+      "status": "Present"
+    },
+    {
+      "id": "197",
+      "eid": "j.baliwag",
+      "year": 2026,
+      "month": 7,
+      "day": 20,
+      "status": "RTO"
+    },
+    {
+      "id": "198",
+      "eid": "j.baliwag",
+      "year": 2026,
+      "month": 7,
+      "day": 21,
+      "status": "RTO"
+    },
+    {
+      "id": "199",
+      "eid": "j.baliwag",
+      "year": 2026,
+      "month": 7,
+      "day": 22,
+      "status": "Present"
+    },
+    {
+      "id": "200",
+      "eid": "j.baliwag",
+      "year": 2026,
+      "month": 7,
+      "day": 23,
+      "status": "Present"
+    },
+    {
+      "id": "201",
+      "eid": "j.baliwag",
+      "year": 2026,
+      "month": 7,
+      "day": 27,
+      "status": "Present"
+    },
+    {
+      "id": "203",
+      "eid": "j.baliwag",
+      "year": 2026,
+      "month": 7,
+      "day": 29,
+      "status": "Present"
+    },
+    {
+      "id": "205",
+      "eid": "j.baliwag",
+      "year": 2026,
+      "month": 7,
+      "day": 31,
+      "status": "Present"
+    },
+    {
+      "id": "206",
+      "eid": "joshua.a.b.soriaga",
+      "year": 2026,
+      "month": 7,
+      "day": 13,
+      "status": "RTO"
+    },
+    {
+      "id": "208",
+      "eid": "joshua.a.b.soriaga",
+      "year": 2026,
+      "month": 7,
+      "day": 15,
+      "status": "Present"
+    },
+    {
+      "id": "209",
+      "eid": "joshua.a.b.soriaga",
+      "year": 2026,
+      "month": 7,
+      "day": 16,
+      "status": "Present"
+    },
+    {
+      "id": "210",
+      "eid": "joshua.a.b.soriaga",
+      "year": 2026,
+      "month": 7,
+      "day": 17,
+      "status": "Present"
+    },
+    {
+      "id": "211",
+      "eid": "joshua.a.b.soriaga",
+      "year": 2026,
+      "month": 7,
+      "day": 20,
+      "status": "RTO"
+    },
+    {
+      "id": "212",
+      "eid": "joshua.a.b.soriaga",
+      "year": 2026,
+      "month": 7,
+      "day": 21,
+      "status": "RTO"
+    },
+    {
+      "id": "213",
+      "eid": "joshua.a.b.soriaga",
+      "year": 2026,
+      "month": 7,
+      "day": 22,
+      "status": "Present"
+    },
+    {
+      "id": "214",
+      "eid": "joshua.a.b.soriaga",
+      "year": 2026,
+      "month": 7,
+      "day": 23,
+      "status": "Present"
+    },
+    {
+      "id": "215",
+      "eid": "joshua.a.b.soriaga",
+      "year": 2026,
+      "month": 7,
+      "day": 24,
+      "status": "Present"
+    },
+    {
+      "id": "216",
+      "eid": "joshua.a.b.soriaga",
+      "year": 2026,
+      "month": 7,
+      "day": 27,
+      "status": "Present"
+    },
+    {
+      "id": "219",
+      "eid": "joshua.a.b.soriaga",
+      "year": 2026,
+      "month": 7,
+      "day": 30,
+      "status": "Present"
+    },
+    {
+      "id": "220",
+      "eid": "joshua.a.b.soriaga",
+      "year": 2026,
+      "month": 7,
+      "day": 31,
+      "status": "Present"
+    },
+    {
+      "id": "221",
+      "eid": "marife.amper",
+      "year": 2026,
+      "month": 7,
+      "day": 15,
+      "status": "Present"
+    },
+    {
+      "id": "222",
+      "eid": "marife.amper",
+      "year": 2026,
+      "month": 7,
+      "day": 16,
+      "status": "Present"
+    },
+    {
+      "id": "223",
+      "eid": "marife.amper",
+      "year": 2026,
+      "month": 7,
+      "day": 20,
+      "status": "Present"
+    },
+    {
+      "id": "224",
+      "eid": "marife.amper",
+      "year": 2026,
+      "month": 7,
+      "day": 21,
+      "status": "RTO"
+    },
+    {
+      "id": "225",
+      "eid": "marife.amper",
+      "year": 2026,
+      "month": 7,
+      "day": 22,
+      "status": "RTO"
+    },
+    {
+      "id": "226",
+      "eid": "marife.amper",
+      "year": 2026,
+      "month": 7,
+      "day": 23,
+      "status": "Present"
+    },
+    {
+      "id": "227",
+      "eid": "marife.amper",
+      "year": 2026,
+      "month": 7,
+      "day": 24,
+      "status": "SL"
+    },
+    {
+      "id": "228",
+      "eid": "marife.amper",
+      "year": 2026,
+      "month": 7,
+      "day": 27,
+      "status": "Present"
+    },
+    {
+      "id": "229",
+      "eid": "marife.amper",
+      "year": 2026,
+      "month": 7,
+      "day": 28,
+      "status": "Present"
+    },
+    {
+      "id": "232",
+      "eid": "marife.amper",
+      "year": 2026,
+      "month": 7,
+      "day": 31,
+      "status": "Present"
+    },
+    {
+      "id": "233",
+      "eid": "michael.bobis",
+      "year": 2026,
+      "month": 7,
+      "day": 15,
+      "status": "Present"
+    },
+    {
+      "id": "234",
+      "eid": "michael.bobis",
+      "year": 2026,
+      "month": 7,
+      "day": 16,
+      "status": "Present"
+    },
+    {
+      "id": "235",
+      "eid": "michael.bobis",
+      "year": 2026,
+      "month": 7,
+      "day": 20,
+      "status": "Present"
+    },
+    {
+      "id": "236",
+      "eid": "michael.bobis",
+      "year": 2026,
+      "month": 7,
+      "day": 21,
+      "status": "SL"
+    },
+    {
+      "id": "237",
+      "eid": "michael.bobis",
+      "year": 2026,
+      "month": 7,
+      "day": 22,
+      "status": "Present"
+    },
+    {
+      "id": "238",
+      "eid": "michael.bobis",
+      "year": 2026,
+      "month": 7,
+      "day": 23,
+      "status": "Present"
+    },
+    {
+      "id": "239",
+      "eid": "michael.bobis",
+      "year": 2026,
+      "month": 7,
+      "day": 24,
+      "status": "RTO"
+    },
+    {
+      "id": "240",
+      "eid": "michael.bobis",
+      "year": 2026,
+      "month": 7,
+      "day": 27,
+      "status": "Present"
+    },
+    {
+      "id": "241",
+      "eid": "michael.bobis",
+      "year": 2026,
+      "month": 7,
+      "day": 28,
+      "status": "Present"
+    },
+    {
+      "id": "242",
+      "eid": "michael.bobis",
+      "year": 2026,
+      "month": 7,
+      "day": 29,
+      "status": "Present"
+    },
+    {
+      "id": "243",
+      "eid": "michael.bobis",
+      "year": 2026,
+      "month": 7,
+      "day": 30,
+      "status": "Present"
+    },
+    {
+      "id": "244",
+      "eid": "michael.bobis",
+      "year": 2026,
+      "month": 7,
+      "day": 31,
+      "status": "VL"
+    },
+    {
+      "id": "245",
+      "eid": "kirstin.d.a.rubica",
+      "year": 2026,
+      "month": 7,
+      "day": 27,
+      "status": "Present"
+    },
+    {
+      "id": "246",
+      "eid": "kirstin.d.a.rubica",
+      "year": 2026,
+      "month": 7,
+      "day": 28,
+      "status": "Present"
+    },
+    {
+      "id": "247",
+      "eid": "kirstin.d.a.rubica",
+      "year": 2026,
+      "month": 7,
+      "day": 29,
+      "status": "Present"
+    },
+    {
+      "eid": "adrian.m.bartolome",
+      "year": 2026,
+      "month": 7,
+      "day": 24,
+      "status": "Deployed",
+      "id": "RxJX-3dWOPE"
+    },
+    {
+      "eid": "krizel.b.bartolome",
+      "year": 2026,
+      "month": 8,
+      "day": 3,
+      "status": "Present",
+      "id": "qEajxisZP24"
+    },
+    {
+      "eid": "mira.joy.g.abcede",
+      "year": 2026,
+      "month": 8,
+      "day": 3,
+      "status": "Present",
+      "id": "tIM6fUHOE74"
+    },
+    {
+      "eid": "adrian.m.bartolome",
+      "year": 2026,
+      "month": 8,
+      "day": 3,
+      "status": "Present",
+      "id": "1o9LTuqz2Mg"
+    },
+    {
+      "eid": "lesly.dimailig",
+      "year": 2026,
+      "month": 8,
+      "day": 3,
+      "status": "VL",
+      "id": "WFQZc-Ek-F8"
+    },
+    {
+      "eid": "nofia.a.c.mendoza",
+      "year": 2026,
+      "month": 8,
+      "day": 3,
+      "status": "Present",
+      "id": "KvhM_JuDD8U"
+    },
+    {
+      "eid": "ariel.s.udtohan",
+      "year": 2026,
+      "month": 8,
+      "day": 3,
+      "status": "Present",
+      "id": "nedUdlbbXAE"
+    },
+    {
+      "eid": "joshua.a.b.soriaga",
+      "year": 2026,
+      "month": 8,
+      "day": 3,
+      "status": "Present",
+      "id": "W5nDWV-4Dqo"
+    },
+    {
+      "eid": "marife.amper",
+      "year": 2026,
+      "month": 8,
+      "day": 3,
+      "status": "Present",
+      "id": "Jd5JNhpj_8I"
+    },
+    {
+      "eid": "michael.bobis",
+      "year": 2026,
+      "month": 8,
+      "day": 3,
+      "status": "Present",
+      "id": "YExxUn5ssQA"
+    },
+    {
+      "eid": "michael.bobis",
+      "year": 2026,
+      "month": 8,
+      "day": 14,
+      "status": "VL",
+      "id": "4A016qOExfs"
+    },
+    {
+      "eid": "michael.bobis",
+      "year": 2026,
+      "month": 8,
+      "day": 21,
+      "status": "VL",
+      "id": "KJLEvYlObJs"
+    },
+    {
+      "eid": "michael.bobis",
+      "year": 2026,
+      "month": 8,
+      "day": 28,
+      "status": "VL",
+      "id": "mn1-Ck3PuRc"
+    },
+    {
+      "eid": "michael.bobis",
+      "year": 2026,
+      "month": 8,
+      "day": 7,
+      "status": "VL",
+      "location": "Cyberpark Tower 1",
+      "id": "4YTfZIh8-BU"
+    },
+    {
+      "eid": "j.baliwag",
+      "year": 2026,
+      "month": 8,
+      "day": 3,
+      "status": "RTO",
+      "location": "Gateway Tower 2",
+      "id": "eg67g7tjilQ"
+    },
+    {
+      "eid": "gisella.dame.arcaya",
+      "year": 2026,
+      "month": 8,
+      "day": 3,
+      "status": "RTO",
+      "location": "Gateway Tower 2",
+      "id": "FBtW3gMNkJ8"
+    },
+    {
+      "eid": "aldhen.a.dignaran",
+      "year": 2026,
+      "month": 8,
+      "day": 3,
+      "status": "RTO",
+      "location": "Vista Mall Malolos",
+      "id": "pxvhgMyCscY"
+    },
+    {
+      "eid": "krizel.b.bartolome",
+      "year": 2026,
+      "month": 8,
+      "day": 4,
+      "status": "Present",
+      "id": "3wTQcMJI6NM"
+    },
+    {
+      "eid": "mira.joy.g.abcede",
+      "year": 2026,
+      "month": 8,
+      "day": 4,
+      "status": "RTO",
+      "location": "Gateway Tower 2",
+      "id": "Jj0xmdpIwsM"
+    },
+    {
+      "eid": "adrian.m.bartolome",
+      "year": 2026,
+      "month": 8,
+      "day": 4,
+      "status": "SL",
+      "id": "m9UgikferOM"
+    },
+    {
+      "eid": "lesly.dimailig",
+      "year": 2026,
+      "month": 8,
+      "day": 4,
+      "status": "VL",
+      "id": "XaVXEdedU5Y"
+    },
+    {
+      "eid": "gisella.dame.arcaya",
+      "year": 2026,
+      "month": 8,
+      "day": 4,
+      "status": "Present",
+      "id": "7MW5DMlFsk4"
+    },
+    {
+      "eid": "nofia.a.c.mendoza",
+      "year": 2026,
+      "month": 8,
+      "day": 4,
+      "status": "SL",
+      "id": "k6cba0Srw0Q"
+    },
+    {
+      "eid": "aldhen.a.dignaran",
+      "year": 2026,
+      "month": 8,
+      "day": 4,
+      "status": "Present",
+      "id": "PaaHtZSdxlM"
+    },
+    {
+      "eid": "ariel.s.udtohan",
+      "year": 2026,
+      "month": 8,
+      "day": 4,
+      "status": "Present",
+      "id": "24t6WolXFfA"
+    },
+    {
+      "eid": "j.baliwag",
+      "year": 2026,
+      "month": 8,
+      "day": 4,
+      "status": "RTO",
+      "location": "Gateway Tower 2",
+      "id": "MdmW7-6ygys"
+    },
+    {
+      "eid": "joshua.a.b.soriaga",
+      "year": 2026,
+      "month": 8,
+      "day": 4,
+      "status": "RTO",
+      "location": "Gateway Tower 2",
+      "id": "mjZevQ9PqC8"
+    },
+    {
+      "eid": "marife.amper",
+      "year": 2026,
+      "month": 8,
+      "day": 4,
+      "status": "Present",
+      "id": "V-9tCU_q3KA"
+    },
+    {
+      "eid": "michael.bobis",
+      "year": 2026,
+      "month": 8,
+      "day": 4,
+      "status": "Present",
+      "id": "odwyIZv6G_w"
+    },
+    {
+      "eid": "joshua.a.b.soriaga",
+      "year": 2026,
+      "month": 7,
+      "day": 14,
+      "status": "RTO",
+      "location": "Gateway Tower 1",
+      "id": "Exqr2lPW0-c"
+    },
+    {
+      "eid": "michael.bobis",
+      "year": 2026,
+      "month": 8,
+      "day": 5,
+      "status": "Present",
+      "id": "72mfTQVZkkc"
+    },
+    {
+      "eid": "j.baliwag",
+      "year": 2026,
+      "month": 8,
+      "day": 5,
+      "status": "Present",
+      "id": "nF1SCX8Jvkw"
+    },
+    {
+      "eid": "joshua.a.b.soriaga",
+      "year": 2026,
+      "month": 8,
+      "day": 5,
+      "status": "Present",
+      "id": "N4dQtUFk2cA"
+    },
+    {
+      "eid": "ariel.s.udtohan",
+      "year": 2026,
+      "month": 8,
+      "day": 5,
+      "status": "RTO",
+      "location": "San Nicholas Valdez Center Building",
+      "id": "JGYfu_bR2G0"
+    },
+    {
+      "eid": "kenneth.g.ebora",
+      "year": 2026,
+      "month": 8,
+      "day": 5,
+      "status": "RTO",
+      "location": "Gateway Tower 2",
+      "id": "M4rbHwKj-JM"
+    },
+    {
+      "eid": "michael.bobis",
+      "year": 2026,
+      "month": 8,
+      "day": 6,
+      "status": "Present",
+      "id": "jOAPctekf7I"
+    },
+    {
+      "eid": "vanessa.b.nicolas",
+      "year": 2026,
+      "month": 8,
+      "day": 3,
+      "status": "Present",
+      "id": 249
+    },
+    {
+      "eid": "vanessa.b.nicolas",
+      "year": 2026,
+      "month": 8,
+      "day": 4,
+      "status": "Present",
+      "id": 250
+    },
+    {
+      "eid": "vanessa.b.nicolas",
+      "year": 2026,
+      "month": 8,
+      "day": 6,
+      "status": "Present",
+      "id": 251
+    },
+    {
+      "eid": "elray.jun.b.amplayo",
+      "year": 2026,
+      "month": 8,
+      "day": 4,
+      "status": "Present",
+      "id": 252
+    },
+    {
+      "eid": "elray.jun.b.amplayo",
+      "year": 2026,
+      "month": 8,
+      "day": 5,
+      "status": "Present",
+      "id": 253
+    },
+    {
+      "eid": "elray.jun.b.amplayo",
+      "year": 2026,
+      "month": 8,
+      "day": 6,
+      "status": "EH",
+      "id": 254
+    },
+    {
+      "eid": "john.rey.paraguya",
+      "year": 2026,
+      "month": 8,
+      "day": 4,
+      "status": "Present",
+      "id": 255
+    },
+    {
+      "eid": "john.rey.paraguya",
+      "year": 2026,
+      "month": 8,
+      "day": 6,
+      "status": "EH",
+      "id": 256
+    },
+    {
+      "eid": "ramil.agramon.jr",
+      "year": 2026,
+      "month": 8,
+      "day": 5,
+      "status": "Present",
+      "id": 257
+    },
+    {
+      "eid": "ramil.agramon.jr",
+      "year": 2026,
+      "month": 8,
+      "day": 6,
+      "status": "EH",
+      "id": 258
+    },
+    {
+      "eid": "kirstin.d.a.rubica",
+      "year": 2026,
+      "month": 8,
+      "day": 4,
+      "status": "Present",
+      "id": 259
+    },
+    {
+      "eid": "kirstin.d.a.rubica",
+      "year": 2026,
+      "month": 8,
+      "day": 6,
+      "status": "EH",
+      "id": 260
+    },
+    {
+      "eid": "mira.joy.g.abcede",
+      "year": 2026,
+      "month": 8,
+      "day": 5,
+      "status": "Present",
+      "id": 261
+    },
+    {
+      "eid": "adrian.m.bartolome",
+      "year": 2026,
+      "month": 8,
+      "day": 5,
+      "status": "Present",
+      "id": 262
+    },
+    {
+      "eid": "lesly.dimailig",
+      "year": 2026,
+      "month": 8,
+      "day": 5,
+      "status": "VL",
+      "id": 263
+    },
+    {
+      "eid": "lesly.dimailig",
+      "year": 2026,
+      "month": 8,
+      "day": 6,
+      "status": "VL",
+      "id": 264
+    },
+    {
+      "eid": "lesly.dimailig",
+      "year": 2026,
+      "month": 8,
+      "day": 7,
+      "status": "VL",
+      "id": 265
+    },
+    {
+      "eid": "lesly.dimailig",
+      "year": 2026,
+      "month": 8,
+      "day": 10,
+      "status": "VL",
+      "id": 266
+    },
+    {
+      "eid": "lesly.dimailig",
+      "year": 2026,
+      "month": 8,
+      "day": 11,
+      "status": "VL",
+      "id": 267
+    },
+    {
+      "eid": "lesly.dimailig",
+      "year": 2026,
+      "month": 8,
+      "day": 12,
+      "status": "VL",
+      "id": 268
+    },
+    {
+      "eid": "lesly.dimailig",
+      "year": 2026,
+      "month": 8,
+      "day": 13,
+      "status": "VL",
+      "id": 269
+    },
+    {
+      "eid": "lesly.dimailig",
+      "year": 2026,
+      "month": 8,
+      "day": 14,
+      "status": "VL",
+      "id": 270
+    },
+    {
+      "eid": "gisella.dame.arcaya",
+      "year": 2026,
+      "month": 8,
+      "day": 6,
+      "status": "EH",
+      "id": 271
+    },
+    {
+      "eid": "aldhen.a.dignaran",
+      "year": 2026,
+      "month": 8,
+      "day": 5,
+      "status": "RTO",
+      "location": "Robinsons Cybergate Tower 2",
+      "id": 272
+    },
+    {
+      "eid": "aldhen.a.dignaran",
+      "year": 2026,
+      "month": 8,
+      "day": 6,
+      "status": "EH",
+      "id": 273
+    },
+    {
+      "eid": "ariel.s.udtohan",
+      "year": 2026,
+      "month": 8,
+      "day": 6,
+      "status": "RTO",
+      "id": 274,
+      "location": "Uptown Bonifacio Tower 3"
+    },
+    {
+      "eid": "j.baliwag",
+      "year": 2026,
+      "month": 8,
+      "day": 6,
+      "status": "Present",
+      "location": "Cyberpark Tower 1",
+      "id": 275
+    },
+    {
+      "eid": "kenneth.g.ebora",
+      "year": 2026,
+      "month": 8,
+      "day": 3,
+      "status": "Present",
+      "id": 276
+    },
+    {
+      "eid": "elray.jun.b.amplayo",
+      "year": 2026,
+      "month": 8,
+      "day": 3,
+      "status": "RTO",
+      "location": "Robinsons Cybergate Tower 2",
+      "id": 277
+    },
+    {
+      "eid": "krizel.b.bartolome",
+      "year": 2026,
+      "month": 8,
+      "day": 5,
+      "status": "RTO",
+      "location": "Cyberpark Tower 1",
+      "id": 278
+    },
+    {
+      "eid": "krizel.b.bartolome",
+      "year": 2026,
+      "month": 8,
+      "day": 6,
+      "status": "RTO",
+      "location": "Uptown Bonifacio Tower 3",
+      "id": 279
+    },
+    {
+      "eid": "mira.joy.g.abcede",
+      "year": 2026,
+      "month": 8,
+      "day": 6,
+      "status": "RTO",
+      "location": "Uptown Bonifacio Tower 3",
+      "id": 281
+    },
+    {
+      "eid": "adrian.m.bartolome",
+      "year": 2026,
+      "month": 8,
+      "day": 6,
+      "status": "RTO",
+      "location": "Uptown Bonifacio Tower 3",
+      "id": 282
+    },
+    {
+      "eid": "gisella.dame.arcaya",
+      "year": 2026,
+      "month": 8,
+      "day": 3,
+      "status": "RTO",
+      "location": "e-Bloc Tower 2",
+      "id": 283
+    },
+    {
+      "eid": "gisella.dame.arcaya",
+      "year": 2026,
+      "month": 8,
+      "day": 5,
+      "status": "RTO",
+      "location": "e-Bloc Tower 2",
+      "id": 284
+    },
+    {
+      "eid": "nofia.a.c.mendoza",
+      "year": 2026,
+      "month": 8,
+      "day": 6,
+      "status": "RTO",
+      "location": "Uptown Bonifacio Tower 3",
+      "id": 285
+    },
+    {
+      "eid": "krizel.b.bartolome",
+      "year": 2026,
+      "month": 8,
+      "day": 7,
+      "status": "Present",
+      "id": 286
+    },
+    {
+      "eid": "mira.joy.g.abcede",
+      "year": 2026,
+      "month": 8,
+      "day": 7,
+      "status": "Present",
+      "id": 287
+    },
+    {
+      "eid": "adrian.m.bartolome",
+      "year": 2026,
+      "month": 8,
+      "day": 7,
+      "status": "Present",
+      "id": 288
+    },
+    {
+      "eid": "gisella.dame.arcaya",
+      "year": 2026,
+      "month": 8,
+      "day": 7,
+      "status": "Present",
+      "id": 289
+    },
+    {
+      "eid": "nofia.a.c.mendoza",
+      "year": 2026,
+      "month": 8,
+      "day": 7,
+      "status": "Present",
+      "id": 290
+    },
+    {
+      "eid": "aldhen.a.dignaran",
+      "year": 2026,
+      "month": 8,
+      "day": 7,
+      "status": "Present",
+      "id": 291
+    },
+    {
+      "eid": "ariel.s.udtohan",
+      "year": 2026,
+      "month": 8,
+      "day": 7,
+      "status": "Present",
+      "id": 292
+    },
+    {
+      "eid": "j.baliwag",
+      "year": 2026,
+      "month": 8,
+      "day": 7,
+      "status": "Present",
+      "id": 293
+    },
+    {
+      "eid": "joshua.a.b.soriaga",
+      "year": 2026,
+      "month": 8,
+      "day": 7,
+      "status": "Present",
+      "id": 294
+    },
+    {
+      "eid": "marife.amper",
+      "year": 2026,
+      "month": 8,
+      "day": 7,
+      "status": "Present",
+      "id": 295
+    },
+    {
+      "eid": "kirstin.d.a.rubica",
+      "year": 2026,
+      "month": 8,
+      "day": 7,
+      "status": "Present",
+      "id": 296
+    },
+    {
+      "eid": "ramil.agramon.jr",
+      "year": 2026,
+      "month": 8,
+      "day": 7,
+      "status": "Present",
+      "id": 297
+    },
+    {
+      "eid": "john.rey.paraguya",
+      "year": 2026,
+      "month": 8,
+      "day": 7,
+      "status": "Present",
+      "id": 298
+    },
+    {
+      "eid": "elray.jun.b.amplayo",
+      "year": 2026,
+      "month": 8,
+      "day": 7,
+      "status": "RTO",
+      "location": "e-Bloc Tower 2",
+      "id": 299
+    },
+    {
+      "eid": "vanessa.b.nicolas",
+      "year": 2026,
+      "month": 8,
+      "day": 7,
+      "status": "RTO",
+      "location": "e-Bloc Tower 2",
+      "id": 300
+    },
+    {
+      "eid": "krizel.b.bartolome",
+      "year": 2026,
+      "month": 8,
+      "day": 10,
+      "status": "SL",
+      "id": 301
+    },
+    {
+      "eid": "mira.joy.g.abcede",
+      "year": 2026,
+      "month": 8,
+      "day": 10,
+      "status": "Present",
+      "id": 302
+    },
+    {
+      "eid": "adrian.m.bartolome",
+      "year": 2026,
+      "month": 8,
+      "day": 10,
+      "status": "Present",
+      "id": 303
+    },
+    {
+      "eid": "gisella.dame.arcaya",
+      "year": 2026,
+      "month": 8,
+      "day": 10,
+      "status": "Present",
+      "id": 304
+    },
+    {
+      "eid": "nofia.a.c.mendoza",
+      "year": 2026,
+      "month": 8,
+      "day": 10,
+      "status": "Present",
+      "id": 305
+    },
+    {
+      "eid": "aldhen.a.dignaran",
+      "year": 2026,
+      "month": 8,
+      "day": 10,
+      "status": "SL",
+      "id": 306
+    },
+    {
+      "eid": "ariel.s.udtohan",
+      "year": 2026,
+      "month": 8,
+      "day": 10,
+      "status": "Present",
+      "id": 307
+    },
+    {
+      "eid": "j.baliwag",
+      "year": 2026,
+      "month": 8,
+      "day": 10,
+      "status": "Present",
+      "id": 308
+    },
+    {
+      "eid": "joshua.a.b.soriaga",
+      "year": 2026,
+      "month": 8,
+      "day": 10,
+      "status": "Present",
+      "id": 309
+    },
+    {
+      "eid": "marife.amper",
+      "year": 2026,
+      "month": 8,
+      "day": 10,
+      "status": "Present",
+      "id": 310
+    },
+    {
+      "eid": "michael.bobis",
+      "year": 2026,
+      "month": 8,
+      "day": 10,
+      "status": "Present",
+      "id": 311
+    },
+    {
+      "eid": "kirstin.d.a.rubica",
+      "year": 2026,
+      "month": 8,
+      "day": 10,
+      "status": "Present",
+      "id": 312
+    },
+    {
+      "eid": "ramil.agramon.jr",
+      "year": 2026,
+      "month": 8,
+      "day": 10,
+      "status": "Present",
+      "id": 313
+    },
+    {
+      "eid": "john.rey.paraguya",
+      "year": 2026,
+      "month": 8,
+      "day": 10,
+      "status": "RTO",
+      "location": "One West Aeropark",
+      "id": 314
+    },
+    {
+      "eid": "elray.jun.b.amplayo",
+      "year": 2026,
+      "month": 8,
+      "day": 10,
+      "status": "Present",
+      "id": 315
+    },
+    {
+      "eid": "vanessa.b.nicolas",
+      "year": 2026,
+      "month": 8,
+      "day": 10,
+      "status": "SL",
+      "id": 316
+    },
+    {
+      "eid": "nofia.a.c.mendoza",
+      "year": 2026,
+      "month": 8,
+      "day": 5,
+      "status": "RTO",
+      "location": "Gateway Tower 2",
+      "id": 317
+    },
+    {
+      "eid": "joshua.a.b.soriaga",
+      "year": 2026,
+      "month": 8,
+      "day": 6,
+      "status": "RTO",
+      "location": "Uptown Bonifacio Tower 3",
+      "id": 318
+    },
+    {
+      "eid": "joshua.a.b.soriaga",
+      "year": 2026,
+      "month": 8,
+      "day": 4,
+      "status": "RTO",
+      "location": "Uptown Bonifacio Tower 3",
+      "id": 319
+    },
+    {
+      "eid": "marife.amper",
+      "year": 2026,
+      "month": 8,
+      "day": 6,
+      "status": "RTO",
+      "location": "Vista Mall Malolos",
+      "id": 320
+    },
+    {
+      "eid": "marife.amper",
+      "year": 2026,
+      "month": 8,
+      "day": 5,
+      "status": "RTO",
+      "location": "Uptown Bonifacio Tower 3",
+      "id": 321
+    },
+    {
+      "eid": "kirstin.d.a.rubica",
+      "year": 2026,
+      "month": 8,
+      "day": 5,
+      "status": "RTO",
+      "location": "e-Bloc Tower 2",
+      "id": 322
+    },
+    {
+      "eid": "kirstin.d.a.rubica",
+      "year": 2026,
+      "month": 8,
+      "day": 3,
+      "status": "RTO",
+      "location": "e-Bloc Tower 2",
+      "id": 323
+    },
+    {
+      "eid": "ramil.agramon.jr",
+      "year": 2026,
+      "month": 8,
+      "day": 3,
+      "status": "RTO",
+      "location": "e-Bloc Tower 2",
+      "id": 324
+    },
+    {
+      "eid": "ramil.agramon.jr",
+      "year": 2026,
+      "month": 8,
+      "day": 4,
+      "status": "RTO",
+      "location": "e-Bloc Tower 2",
+      "id": 325
+    },
+    {
+      "eid": "john.rey.paraguya",
+      "year": 2026,
+      "month": 8,
+      "day": 3,
+      "status": "RTO",
+      "location": "e-Bloc Tower 2",
+      "id": 326
+    },
+    {
+      "eid": "john.rey.paraguya",
+      "year": 2026,
+      "month": 8,
+      "day": 5,
+      "status": "RTO",
+      "location": "e-Bloc Tower 2",
+      "id": 327
+    },
+    {
+      "eid": "krizel.b.bartolome",
+      "year": 2026,
+      "month": 7,
+      "day": 31,
+      "status": "RTO",
+      "location": "Uptown Bonifacio Tower 3",
+      "id": 328
+    },
+    {
+      "eid": "krizel.b.bartolome",
+      "year": 2026,
+      "month": 7,
+      "day": 30,
+      "status": "RTO",
+      "location": "Uptown Bonifacio Tower 3",
+      "id": 329
+    },
+    {
+      "eid": "mira.joy.g.abcede",
+      "year": 2026,
+      "month": 7,
+      "day": 30,
+      "status": "RTO",
+      "location": "Gateway Tower 2",
+      "id": 330
+    },
+    {
+      "eid": "lesly.dimailig",
+      "year": 2026,
+      "month": 7,
+      "day": 27,
+      "status": "RTO",
+      "location": "Gateway Tower 2",
+      "id": 331
+    },
+    {
+      "eid": "lesly.dimailig",
+      "year": 2026,
+      "month": 7,
+      "day": 28,
+      "status": "RTO",
+      "location": "Gateway Tower 2",
+      "id": 332
+    },
+    {
+      "eid": "gisella.dame.arcaya",
+      "year": 2026,
+      "month": 7,
+      "day": 28,
+      "status": "RTO",
+      "location": "Gateway Tower 2",
+      "id": 333
+    },
+    {
+      "eid": "gisella.dame.arcaya",
+      "year": 2026,
+      "month": 7,
+      "day": 29,
+      "status": "RTO",
+      "location": "Gateway Tower 2",
+      "id": 334
+    },
+    {
+      "eid": "nofia.a.c.mendoza",
+      "year": 2026,
+      "month": 7,
+      "day": 27,
+      "status": "RTO",
+      "location": "Gateway Tower 2",
+      "id": 335
+    },
+    {
+      "eid": "nofia.a.c.mendoza",
+      "year": 2026,
+      "month": 7,
+      "day": 28,
+      "status": "RTO",
+      "location": "Gateway Tower 2",
+      "id": 336
+    },
+    {
+      "eid": "aldhen.a.dignaran",
+      "year": 2026,
+      "month": 7,
+      "day": 27,
+      "status": "RTO",
+      "location": "e-Bloc Tower 2",
+      "id": 337
+    },
+    {
+      "eid": "ariel.s.udtohan",
+      "year": 2026,
+      "month": 7,
+      "day": 28,
+      "status": "RTO",
+      "location": "Gateway Tower 2",
+      "id": 339
+    },
+    {
+      "eid": "aldhen.a.dignaran",
+      "year": 2026,
+      "month": 7,
+      "day": 29,
+      "status": "RTO",
+      "location": "Uptown Bonifacio Tower 3",
+      "id": 340
+    },
+    {
+      "eid": "kenneth.g.ebora",
+      "year": 2026,
+      "month": 7,
+      "day": 30,
+      "status": "RTO",
+      "location": "Gateway Tower 2",
+      "id": 341
+    },
+    {
+      "eid": "j.baliwag",
+      "year": 2026,
+      "month": 7,
+      "day": 28,
+      "status": "RTO",
+      "location": "Cyberpark Tower 1",
+      "id": 342
+    },
+    {
+      "eid": "j.baliwag",
+      "year": 2026,
+      "month": 7,
+      "day": 30,
+      "status": "RTO",
+      "location": "Cyberpark Tower 1",
+      "id": 343
+    },
+    {
+      "eid": "joshua.a.b.soriaga",
+      "year": 2026,
+      "month": 7,
+      "day": 28,
+      "status": "RTO",
+      "location": "Uptown Bonifacio Tower 3",
+      "id": 344
+    },
+    {
+      "eid": "joshua.a.b.soriaga",
+      "year": 2026,
+      "month": 7,
+      "day": 29,
+      "status": "RTO",
+      "location": "Uptown Bonifacio Tower 3",
+      "id": 345
+    },
+    {
+      "eid": "marife.amper",
+      "year": 2026,
+      "month": 7,
+      "day": 29,
+      "status": "RTO",
+      "location": "Vista Mall Malolos",
+      "id": 346
+    },
+    {
+      "eid": "marife.amper",
+      "year": 2026,
+      "month": 7,
+      "day": 30,
+      "status": "RTO",
+      "location": "Vista Mall Malolos",
+      "id": 347
+    },
+    {
+      "eid": "kirstin.d.a.rubica",
+      "year": 2026,
+      "month": 7,
+      "day": 30,
+      "status": "RTO",
+      "location": "e-Bloc Tower 2",
+      "id": 350
+    },
+    {
+      "eid": "kirstin.d.a.rubica",
+      "year": 2026,
+      "month": 7,
+      "day": 31,
+      "status": "RTO",
+      "location": "e-Bloc Tower 2",
+      "id": 351
+    }
+  ],
+  "office-locations": [
+    {
+      "id": "1",
+      "name": "Manila"
+    },
+    {
+      "id": "2",
+      "name": "Cebu"
+    }
+  ],
+  "planner-labels": [
+    {
+      "id": "1",
+      "name": "Angular Training",
+      "color": "#e8a0a0"
+    },
+    {
+      "id": "2",
+      "name": "Initiatives",
+      "color": "#9dc08b"
+    },
+    {
+      "id": "3",
+      "name": "Sprint Delivery",
+      "color": "#b3a6d9"
+    },
+    {
+      "id": "4",
+      "name": "Story Point 1",
+      "color": "#f4c07a"
+    },
+    {
+      "id": "5",
+      "name": "Story Point 2",
+      "color": "#f0954a"
+    },
+    {
+      "id": "6",
+      "name": "Story Point 3",
+      "color": "#e05c5c"
+    },
+    {
+      "id": "7",
+      "name": "Bug",
+      "color": "#e05c5c"
+    },
+    {
+      "id": "8",
+      "name": "Feature",
+      "color": "#5b8dd9"
+    },
+    {
+      "id": "9",
+      "name": "Review",
+      "color": "#d9c85b"
+    },
+    {
+      "id": 10,
+      "name": "Training",
+      "color": "#6ec6ca"
+    },
+    {
+      "id": 11,
+      "name": "Burnt",
+      "color": "#aab8c2"
+    }
+  ],
+  "planner-boards": [
+    {
+      "id": "1",
+      "groupNumber": 1,
+      "name": "Group 1 - React",
+      "description": "Song Bench React workstream"
+    },
+    {
+      "id": "2",
+      "groupNumber": 2,
+      "name": "Group 2 - SFCC, Hybris, Magento, OpenText, UI/UX",
+      "description": "Song Bench SFCC & related workstream"
+    },
+    {
+      "id": "3",
+      "groupNumber": 3,
+      "name": "Group 3 - UI/UX",
+      "description": "Song Bench UI/UX workstream"
+    },
+    {
+      "id": "4",
+      "groupNumber": 4,
+      "name": "Group 4 - Mobile Technologies",
+      "description": "Song Bench Mobile workstream"
+    },
+    {
+      "id": "5",
+      "groupNumber": 5,
+      "name": "Group 5 - AEM/Angular",
+      "description": "Song Bench AEM & Angular workstream"
+    }
+  ],
+  "planner-buckets": [
+    {
+      "id": "1",
+      "boardId": 5,
+      "name": "Sprint 9",
+      "order": 1
+    },
+    {
+      "id": "2",
+      "boardId": 5,
+      "name": "Sprint 10",
+      "order": 2
+    },
+    {
+      "id": "3",
+      "boardId": 5,
+      "name": "Sprint 11",
+      "order": 3
+    },
+    {
+      "id": 4,
+      "boardId": 5,
+      "name": "Sprint 12",
+      "order": 3
+    },
+    {
+      "id": 5,
+      "boardId": 5,
+      "name": "Sprint 13",
+      "order": 4
+    }
+  ],
+  "planner-tasks": [
+    {
+      "id": 1,
+      "boardId": 5,
+      "bucketId": 2,
+      "title": "Seed initial Sprint 10 data",
+      "status": "Completed",
+      "priority": "Medium",
+      "startDate": "2026-07-15",
+      "dueDate": "2026-07-31",
+      "labels": [
+        3,
+        5
+      ],
+      "assignee": "michael.bobis",
+      "checklist": [
+        {
+          "id": 1,
+          "text": "Create db.json structure",
+          "done": true
+        },
+        {
+          "id": 2,
+          "text": "Validate with json-server",
+          "done": true
+        }
+      ],
+      "completed": true,
+      "createdAt": "2026-07-15T08:00:00.000Z",
+      "updatedAt": "2026-08-04T00:52:42.556Z"
+    },
+    {
+      "id": 2,
+      "boardId": 5,
+      "bucketId": 3,
+      "title": "Project Initiative (PoC): WebUI - Leave Planner",
+      "status": "Completed",
+      "priority": "Medium",
+      "startDate": "2026-08-04",
+      "dueDate": "2026-08-11",
+      "labels": [
+        1,
+        2,
+        3,
+        "5"
+      ],
+      "assignee": "michael.bobis",
+      "checklist": [
+        {
+          "id": 1,
+          "text": "Design leave planner layout",
+          "done": false
+        },
+        {
+          "id": 2,
+          "text": "Implement calendar grid",
+          "done": false
+        },
+        {
+          "id": 3,
+          "text": "Wire up API endpoints",
+          "done": false
+        }
+      ],
+      "completed": true,
+      "createdAt": "2026-08-04T00:52:42.556Z",
+      "updatedAt": "2026-08-10T11:35:19.416Z",
+      "description": "",
+      "acceptanceCriteria": "As a user, i must be able to file my leave plan. Be able to see it by respective team and may be use the data for reporting.",
+      "comments": [
+        {
+          "id": 1785853168009,
+          "author": "Michael Bobis",
+          "text": "Closing this Task, this feature was already added into Attendance tracker with full automation reporting.",
+          "createdAt": "2026-08-04T14:19:28.009Z"
+        }
+      ]
+    },
+    {
+      "id": 3,
+      "boardId": 5,
+      "bucketId": 3,
+      "title": "Project Initiative (PoC): Planner - Create workflow",
+      "status": "Completed",
+      "priority": "Medium",
+      "startDate": "2026-08-04",
+      "dueDate": "2026-08-10",
+      "labels": [
+        1,
+        2,
+        3,
+        "5"
+      ],
+      "assignee": "michael.bobis",
+      "checklist": [
+        {
+          "id": 1,
+          "text": "Kanban board UI",
+          "done": true
+        },
+        {
+          "id": 2,
+          "text": "Task modal",
+          "done": true
+        },
+        {
+          "id": 3,
+          "text": "DB integration",
+          "done": true
+        }
+      ],
+      "completed": true,
+      "createdAt": "2026-08-04T00:52:42.556Z",
+      "updatedAt": "2026-08-10T11:35:21.868Z",
+      "description": "",
+      "acceptanceCriteria": "",
+      "comments": []
+    },
+    {
+      "boardId": 1,
+      "bucketId": 3,
+      "title": "Project Initiative (PoC) WebUI - Leave Planner",
+      "status": "In progress",
+      "priority": "Medium",
+      "startDate": "2026-08-04",
+      "dueDate": "2026-08-06",
+      "labels": [],
+      "assignee": "mic",
+      "checklist": [],
+      "completed": false,
+      "createdAt": "2026-08-04T01:20:13.980Z",
+      "updatedAt": "2026-08-04T01:20:13.980Z",
+      "id": 4
+    },
+    {
+      "boardId": 5,
+      "bucketId": 3,
+      "title": "Project Initiative (PoC) WebUI - Leave Planner",
+      "status": "Completed",
+      "priority": "Medium",
+      "startDate": "2026-08-04",
+      "dueDate": "2026-08-06",
+      "labels": [
+        4
+      ],
+      "assignee": "michael.bobis",
+      "checklist": [],
+      "completed": true,
+      "createdAt": "2026-08-04T01:46:47.806Z",
+      "updatedAt": "2026-08-06T16:33:35.871Z",
+      "id": 5,
+      "description": "descr",
+      "acceptanceCriteria": "test",
+      "comments": []
+    },
+    {
+      "boardId": 5,
+      "bucketId": 3,
+      "title": "Project Initiative (PoC) WebUI - Leave Planner",
+      "status": "Completed",
+      "priority": "Medium",
+      "startDate": "2026-08-04",
+      "dueDate": "2026-08-06",
+      "labels": [],
+      "assignee": "krizel.b.bartolome",
+      "checklist": [],
+      "completed": true,
+      "createdAt": "2026-08-04T01:47:50.736Z",
+      "updatedAt": "2026-08-10T11:35:27.084Z",
+      "id": 6,
+      "description": "",
+      "acceptanceCriteria": "",
+      "comments": []
+    },
+    {
+      "boardId": 5,
+      "bucketId": 3,
+      "title": "Project Initiative (PoC) Planner - Building the UI / Implement Functionality",
+      "status": "Completed",
+      "priority": "Medium",
+      "startDate": "2026-08-04",
+      "dueDate": "2026-08-06",
+      "labels": [
+        "1",
+        "2",
+        "3",
+        "5"
+      ],
+      "assignee": "michael.bobis",
+      "checklist": [
+        {
+          "id": 1785851257057,
+          "text": "Finalizing the UI and UX",
+          "done": true
+        },
+        {
+          "id": 1785851285736,
+          "text": "Testing workflow and functionality",
+          "done": false
+        },
+        {
+          "id": 1785851293440,
+          "text": "Random Testing",
+          "done": false
+        }
+      ],
+      "completed": true,
+      "createdAt": "2026-08-04T13:48:54.133Z",
+      "updatedAt": "2026-08-06T16:35:26.011Z",
+      "id": 7,
+      "description": "",
+      "acceptanceCriteria": "",
+      "comments": []
+    },
+    {
+      "boardId": 5,
+      "bucketId": 3,
+      "title": "Project Initiative (PoC): Leave Planner - Integrate to Attendance Tracker",
+      "status": "Completed",
+      "priority": "Medium",
+      "startDate": "2026-08-04",
+      "dueDate": "2026-08-06",
+      "labels": [
+        1,
+        2,
+        3,
+        8,
+        5
+      ],
+      "assignee": "michael.bobis",
+      "checklist": [
+        {
+          "id": 1785853505278,
+          "text": "Apply leave into Attendance Tracker",
+          "done": false
+        },
+        {
+          "id": 1785853531118,
+          "text": "Capture Leave application",
+          "done": false
+        },
+        {
+          "id": 1785853548040,
+          "text": "Summarize Leave",
+          "done": false
+        }
+      ],
+      "description": "Integrate leave planner to Attendance tracker to automate the headcount and attendance summary for daily and monthly report.",
+      "acceptanceCriteria": "To be able to integrate the leave plan to Attendance tracker and count the leave plan into attendance summary",
+      "comments": [
+        {
+          "id": 1785853607147,
+          "author": "Michael Bobis",
+          "text": "Inspired to automate and integrate leave plan into Attendance tracker and summary reporting",
+          "createdAt": "2026-08-04T14:26:47.147Z"
+        }
+      ],
+      "completed": true,
+      "createdAt": "2026-08-04T14:26:59.947Z",
+      "updatedAt": "2026-08-06T16:35:32.536Z",
+      "id": 8
+    },
+    {
+      "boardId": 5,
+      "bucketId": 3,
+      "title": "Project Initiative (PoC): RTO Office Headcount",
+      "status": "Completed",
+      "priority": "Medium",
+      "startDate": "2026-08-04",
+      "dueDate": "2026-08-10",
+      "labels": [
+        1,
+        2,
+        8,
+        3,
+        "5"
+      ],
+      "assignee": "michael.bobis",
+      "checklist": [
+        {
+          "id": 1785853859863,
+          "text": "Generate List of offices",
+          "done": false
+        },
+        {
+          "id": 1785853871661,
+          "text": "Capture RTO Location tagging",
+          "done": false
+        },
+        {
+          "id": 1785853890559,
+          "text": "Added data to summary report",
+          "done": false
+        }
+      ],
+      "description": "Added RTO Office Headcount automated summary under Attendance Tracker",
+      "acceptanceCriteria": "As a Group PIC, I want to see the total head count of a Head count per location who render RTO",
+      "comments": [
+        {
+          "id": 1785853964772,
+          "author": "Michael Bobis",
+          "text": "Implement this feature to Attendance tracker to easily identify who are working in Offices and which location.",
+          "createdAt": "2026-08-04T14:32:44.772Z"
+        }
+      ],
+      "completed": true,
+      "createdAt": "2026-08-04T14:32:49.997Z",
+      "updatedAt": "2026-08-10T11:35:23.580Z",
+      "id": 9
+    },
+    {
+      "id": 10,
+      "boardId": 5,
+      "bucketId": 3,
+      "title": "Angular Training Day 2",
+      "status": "Completed",
+      "priority": "Medium",
+      "startDate": "2026-07-28",
+      "dueDate": "2026-07-29",
+      "completedDate": "2026-07-29",
+      "labels": [
+        1,
+        10,
+        4
+      ],
+      "assignee": "marife.amper",
+      "checklist": [],
+      "completed": true,
+      "createdAt": "2026-08-06T13:15:53.833Z",
+      "updatedAt": "2026-08-06T16:33:26.654Z",
+      "description": "",
+      "acceptanceCriteria": "",
+      "comments": []
+    },
+    {
+      "id": 11,
+      "boardId": 5,
+      "bucketId": 3,
+      "title": "Angular Training Day 3",
+      "status": "Completed",
+      "priority": "Medium",
+      "startDate": "",
+      "dueDate": "",
+      "completedDate": "2026-07-31",
+      "labels": [
+        1,
+        10,
+        4
+      ],
+      "assignee": "marife.amper",
+      "checklist": [
+        {
+          "id": 1,
+          "text": "Angular 16: Directives and Pipes",
+          "done": true
+        },
+        {
+          "id": 2,
+          "text": "Angular 16: Working with Components",
+          "done": true
+        }
+      ],
+      "completed": true,
+      "createdAt": "2026-08-06T13:15:53.833Z",
+      "updatedAt": "2026-08-06T16:33:21.168Z",
+      "description": "",
+      "acceptanceCriteria": "",
+      "comments": []
+    },
+    {
+      "id": 12,
+      "boardId": 5,
+      "bucketId": 3,
+      "title": "Anngular Training Day 4",
+      "status": "Completed",
+      "priority": "Medium",
+      "startDate": "",
+      "dueDate": "",
+      "completedDate": "2026-08-02",
+      "labels": [
+        1,
+        3,
+        10,
+        4
+      ],
+      "assignee": "marife.amper",
+      "checklist": [],
+      "completed": true,
+      "createdAt": "2026-08-06T13:15:53.833Z",
+      "updatedAt": "2026-08-06T13:15:53.833Z"
+    },
+    {
+      "id": 13,
+      "boardId": 5,
+      "bucketId": 3,
+      "title": "Pending Secure Behavior Score Actions",
+      "status": "Completed",
+      "priority": "Medium",
+      "startDate": "",
+      "dueDate": "",
+      "completedDate": "2026-07-29",
+      "labels": [
+        10,
+        4
+      ],
+      "assignee": "marife.amper",
+      "checklist": [
+        {
+          "id": 1,
+          "text": "Complete by August 31",
+          "done": true
+        }
+      ],
+      "completed": true,
+      "createdAt": "2026-08-06T13:15:53.833Z",
+      "updatedAt": "2026-08-06T13:15:53.833Z"
+    },
+    {
+      "id": 14,
+      "boardId": 5,
+      "bucketId": 3,
+      "title": "Angular Training Day 5",
+      "status": "Completed",
+      "priority": "Medium",
+      "startDate": "",
+      "dueDate": "",
+      "completedDate": "2026-08-04",
+      "labels": [
+        1,
+        10,
+        4
+      ],
+      "assignee": "marife.amper",
+      "checklist": [],
+      "completed": true,
+      "createdAt": "2026-08-06T13:15:53.833Z",
+      "updatedAt": "2026-08-06T13:15:53.833Z"
+    },
+    {
+      "id": 15,
+      "boardId": 5,
+      "bucketId": 3,
+      "title": "Fix issues in angular version",
+      "status": "Completed",
+      "priority": "Medium",
+      "startDate": "",
+      "dueDate": "",
+      "completedDate": "2026-08-05",
+      "labels": [
+        3,
+        4
+      ],
+      "assignee": "marife.amper",
+      "checklist": [],
+      "completed": true,
+      "createdAt": "2026-08-06T13:15:53.833Z",
+      "updatedAt": "2026-08-06T13:15:53.833Z"
+    },
+    {
+      "id": 16,
+      "boardId": 5,
+      "bucketId": 3,
+      "title": "Angular Training Day 6",
+      "status": "Completed",
+      "priority": "Medium",
+      "startDate": "",
+      "dueDate": "",
+      "completedDate": "2026-08-06",
+      "labels": [
+        1,
+        10,
+        4
+      ],
+      "assignee": "marife.amper",
+      "checklist": [],
+      "completed": true,
+      "createdAt": "2026-08-06T13:15:53.833Z",
+      "updatedAt": "2026-08-06T13:15:53.833Z"
+    },
+    {
+      "id": 17,
+      "boardId": 5,
+      "bucketId": 3,
+      "title": "SongBook Enhancement",
+      "status": "Completed",
+      "priority": "Medium",
+      "startDate": "",
+      "dueDate": "",
+      "completedDate": "",
+      "labels": [
+        3,
+        4
+      ],
+      "assignee": "marife.amper",
+      "checklist": [],
+      "completed": true,
+      "createdAt": "2026-08-06T13:15:53.833Z",
+      "updatedAt": "2026-08-10T11:35:25.444Z"
+    },
+    {
+      "id": 18,
+      "boardId": 5,
+      "bucketId": 4,
+      "title": "Delivery - 3 SP",
+      "status": "Review",
+      "priority": "Medium",
+      "startDate": "",
+      "dueDate": "",
+      "completedDate": "",
+      "notes": "",
+      "labels": [],
+      "assignee": "j.baliwag",
+      "checklist": [],
+      "completed": false,
+      "createdAt": "2026-08-06T13:32:40.019Z",
+      "updatedAt": "2026-08-11T08:07:09.680Z",
+      "description": "",
+      "acceptanceCriteria": "",
+      "comments": []
+    },
+    {
+      "id": 19,
+      "boardId": 5,
+      "bucketId": 3,
+      "title": "Training - 5 SP",
+      "status": "Not started",
+      "priority": "Medium",
+      "startDate": "",
+      "dueDate": "",
+      "completedDate": "",
+      "notes": "",
+      "labels": [],
+      "assignee": "j.baliwag",
+      "checklist": [],
+      "completed": false,
+      "createdAt": "2026-08-06T13:32:40.019Z",
+      "updatedAt": "2026-08-06T13:32:40.019Z"
+    },
+    {
+      "id": 20,
+      "boardId": 5,
+      "bucketId": 3,
+      "title": "AEM mycompetency review - 1SP",
+      "status": "Completed",
+      "priority": "Medium",
+      "startDate": "",
+      "dueDate": "",
+      "completedDate": "2026-07-28",
+      "notes": "",
+      "labels": [
+        10,
+        4,
+        11
+      ],
+      "assignee": "j.baliwag",
+      "checklist": [],
+      "completed": true,
+      "createdAt": "2026-08-06T13:32:40.019Z",
+      "updatedAt": "2026-08-06T13:32:40.019Z"
+    },
+    {
+      "id": 21,
+      "boardId": 5,
+      "bucketId": 3,
+      "title": "Delivery 2SP",
+      "status": "Not started",
+      "priority": "Medium",
+      "startDate": "",
+      "dueDate": "",
+      "completedDate": "",
+      "notes": "",
+      "labels": [],
+      "assignee": "kenneth.g.ebora",
+      "checklist": [],
+      "completed": false,
+      "createdAt": "2026-08-06T13:32:40.019Z",
+      "updatedAt": "2026-08-06T13:32:40.019Z"
+    },
+    {
+      "id": 22,
+      "boardId": 5,
+      "bucketId": 3,
+      "title": "Process Factorial and Power Automate Training Day 1",
+      "status": "Completed",
+      "priority": "Medium",
+      "startDate": "",
+      "dueDate": "",
+      "completedDate": "2026-07-28",
+      "notes": "",
+      "labels": [
+        10,
+        4,
+        11
+      ],
+      "assignee": "kenneth.g.ebora",
+      "checklist": [],
+      "completed": true,
+      "createdAt": "2026-08-06T13:32:40.019Z",
+      "updatedAt": "2026-08-06T13:32:40.019Z"
+    },
+    {
+      "id": 23,
+      "boardId": 5,
+      "bucketId": 3,
+      "title": "Training: Exces Demo",
+      "status": "Completed",
+      "priority": "Medium",
+      "startDate": "",
+      "dueDate": "",
+      "completedDate": "2026-07-28",
+      "notes": "",
+      "labels": [
+        10,
+        4,
+        11
+      ],
+      "assignee": "aldhen.a.dignaran",
+      "checklist": [],
+      "completed": true,
+      "createdAt": "2026-08-06T13:32:40.019Z",
+      "updatedAt": "2026-08-06T13:32:40.019Z"
+    },
+    {
+      "id": 24,
+      "boardId": 5,
+      "bucketId": 3,
+      "title": "Delivery: Examify Question Bank Update",
+      "status": "Completed",
+      "priority": "Medium",
+      "startDate": "",
+      "dueDate": "",
+      "completedDate": "2026-08-04",
+      "notes": "",
+      "labels": [
+        3,
+        5,
+        11
+      ],
+      "assignee": "aldhen.a.dignaran",
+      "checklist": [],
+      "completed": true,
+      "createdAt": "2026-08-06T13:32:40.019Z",
+      "updatedAt": "2026-08-06T13:32:40.019Z"
+    },
+    {
+      "id": 25,
+      "boardId": 5,
+      "bucketId": 3,
+      "title": "Process Factorial and Power Automate Training Day 2",
+      "status": "Not started",
+      "priority": "Medium",
+      "startDate": "",
+      "dueDate": "",
+      "completedDate": "",
+      "notes": "",
+      "labels": [
+        10,
+        4
+      ],
+      "assignee": "kenneth.g.ebora",
+      "checklist": [],
+      "completed": false,
+      "createdAt": "2026-08-06T13:32:40.019Z",
+      "updatedAt": "2026-08-06T13:32:40.019Z"
+    },
+    {
+      "id": 26,
+      "boardId": 5,
+      "bucketId": 3,
+      "title": "Process Factorial and Power Automate Training Day 3",
+      "status": "Not started",
+      "priority": "Medium",
+      "startDate": "",
+      "dueDate": "",
+      "completedDate": "",
+      "notes": "",
+      "labels": [
+        10,
+        4
+      ],
+      "assignee": "kenneth.g.ebora",
+      "checklist": [],
+      "completed": false,
+      "createdAt": "2026-08-06T13:32:40.019Z",
+      "updatedAt": "2026-08-06T13:32:40.019Z"
+    },
+    {
+      "id": 27,
+      "boardId": 5,
+      "bucketId": 3,
+      "title": "Delivery 4SP",
+      "status": "Not started",
+      "priority": "Medium",
+      "startDate": "",
+      "dueDate": "",
+      "completedDate": "",
+      "notes": "",
+      "labels": [
+        3
+      ],
+      "assignee": "joshua.a.b.soriaga",
+      "checklist": [
+        {
+          "id": 1,
+          "text": "Angular reviewer question bank addition",
+          "done": false
+        },
+        {
+          "id": 2,
+          "text": "SongBook enhancements",
+          "done": false
+        }
+      ],
+      "completed": false,
+      "createdAt": "2026-08-06T13:32:40.019Z",
+      "updatedAt": "2026-08-06T13:32:40.019Z"
+    },
+    {
+      "id": 28,
+      "boardId": 5,
+      "bucketId": 3,
+      "title": "Training 2SP",
+      "status": "Not started",
+      "priority": "Medium",
+      "startDate": "",
+      "dueDate": "",
+      "completedDate": "",
+      "notes": "",
+      "labels": [
+        10
+      ],
+      "assignee": "joshua.a.b.soriaga",
+      "checklist": [
+        {
+          "id": 1,
+          "text": "Angular training",
+          "done": false
+        },
+        {
+          "id": 2,
+          "text": "My competency review",
+          "done": false
+        }
+      ],
+      "completed": false,
+      "createdAt": "2026-08-06T13:32:40.019Z",
+      "updatedAt": "2026-08-06T13:32:40.019Z"
+    },
+    {
+      "id": 29,
+      "boardId": 5,
+      "bucketId": 3,
+      "title": "MyCompetency review - angular",
+      "status": "Completed",
+      "priority": "Medium",
+      "startDate": "",
+      "dueDate": "",
+      "completedDate": "2026-07-29",
+      "notes": "",
+      "labels": [
+        1,
+        10,
+        4,
+        11
+      ],
+      "assignee": "joshua.a.b.soriaga",
+      "checklist": [],
+      "completed": true,
+      "createdAt": "2026-08-06T13:32:40.019Z",
+      "updatedAt": "2026-08-06T13:32:40.019Z"
+    },
+    {
+      "id": 30,
+      "boardId": 5,
+      "bucketId": 3,
+      "title": "AEM Mycompetency Review - 1 SP",
+      "status": "Completed",
+      "priority": "Medium",
+      "startDate": "",
+      "dueDate": "",
+      "completedDate": "2026-07-28",
+      "notes": "",
+      "labels": [
+        10,
+        4,
+        11
+      ],
+      "assignee": "j.baliwag",
+      "checklist": [],
+      "completed": true,
+      "createdAt": "2026-08-06T13:32:40.019Z",
+      "updatedAt": "2026-08-06T13:32:40.019Z"
+    },
+    {
+      "id": 31,
+      "boardId": 5,
+      "bucketId": 3,
+      "title": "Delivery: Song Dashboard Mock",
+      "status": "Completed",
+      "priority": "Medium",
+      "startDate": "",
+      "dueDate": "",
+      "completedDate": "2026-07-29",
+      "notes": "",
+      "labels": [
+        3,
+        4,
+        11
+      ],
+      "assignee": "aldhen.a.dignaran",
+      "checklist": [],
+      "completed": true,
+      "createdAt": "2026-08-06T13:32:40.019Z",
+      "updatedAt": "2026-08-06T13:32:40.019Z"
+    },
+    {
+      "id": 32,
+      "boardId": 5,
+      "bucketId": 3,
+      "title": "Training: Loop Engineering",
+      "status": "Completed",
+      "priority": "Medium",
+      "startDate": "",
+      "dueDate": "",
+      "completedDate": "2026-08-03",
+      "notes": "",
+      "labels": [
+        10,
+        4,
+        11
+      ],
+      "assignee": "aldhen.a.dignaran",
+      "checklist": [],
+      "completed": true,
+      "createdAt": "2026-08-06T13:32:40.019Z",
+      "updatedAt": "2026-08-06T13:32:40.019Z"
+    },
+    {
+      "id": 33,
+      "boardId": 5,
+      "bucketId": 3,
+      "title": "On boarding Day 2-3",
+      "status": "Completed",
+      "priority": "Medium",
+      "startDate": "2026-07-28",
+      "dueDate": "2026-07-29",
+      "completedDate": "2026-07-28",
+      "notes": "",
+      "labels": [
+        4,
+        11
+      ],
+      "assignee": "michael.bobis",
+      "checklist": [],
+      "completed": true,
+      "createdAt": "2026-08-06T13:32:40.019Z",
+      "updatedAt": "2026-08-06T13:32:40.019Z"
+    },
+    {
+      "id": 34,
+      "boardId": 5,
+      "bucketId": 3,
+      "title": "AEM Review - MyCompetency",
+      "status": "Completed",
+      "priority": "Medium",
+      "startDate": "",
+      "dueDate": "",
+      "completedDate": "2026-07-30",
+      "notes": "",
+      "labels": [
+        10,
+        4,
+        11
+      ],
+      "assignee": "j.baliwag",
+      "checklist": [],
+      "completed": true,
+      "createdAt": "2026-08-06T13:32:40.019Z",
+      "updatedAt": "2026-08-06T13:32:40.019Z"
+    },
+    {
+      "id": 35,
+      "boardId": 5,
+      "bucketId": 3,
+      "title": "Project Initiative (PoC) - Repository",
+      "status": "Completed",
+      "priority": "Medium",
+      "startDate": "2026-07-29",
+      "dueDate": "2026-08-05",
+      "completedDate": "2026-08-03",
+      "notes": "",
+      "labels": [
+        1,
+        2,
+        3,
+        6,
+        11
+      ],
+      "assignee": "michael.bobis",
+      "checklist": [],
+      "completed": true,
+      "createdAt": "2026-08-06T13:32:40.019Z",
+      "updatedAt": "2026-08-06T13:32:40.019Z"
+    },
+    {
+      "id": 36,
+      "boardId": 5,
+      "bucketId": 3,
+      "title": "Xcel EDS - Training Day 1",
+      "status": "Completed",
+      "priority": "Medium",
+      "startDate": "",
+      "dueDate": "",
+      "completedDate": "2026-07-29",
+      "notes": "",
+      "labels": [
+        10,
+        4,
+        11
+      ],
+      "assignee": "ariel.s.udtohan",
+      "checklist": [],
+      "completed": true,
+      "createdAt": "2026-08-06T13:32:40.019Z",
+      "updatedAt": "2026-08-06T13:32:40.019Z"
+    },
+    {
+      "id": 37,
+      "boardId": 5,
+      "bucketId": 3,
+      "title": "Xcel EDS - Training Day 2",
+      "status": "Completed",
+      "priority": "Medium",
+      "startDate": "",
+      "dueDate": "",
+      "completedDate": "2026-07-29",
+      "notes": "",
+      "labels": [
+        10,
+        4,
+        11
+      ],
+      "assignee": "ariel.s.udtohan",
+      "checklist": [],
+      "completed": true,
+      "createdAt": "2026-08-06T13:32:40.019Z",
+      "updatedAt": "2026-08-06T13:32:40.019Z"
+    },
+    {
+      "id": 38,
+      "boardId": 5,
+      "bucketId": 3,
+      "title": "Xcel EDS - Analyze and Migrate Page Day 1",
+      "status": "Completed",
+      "priority": "Medium",
+      "startDate": "",
+      "dueDate": "",
+      "completedDate": "2026-07-30",
+      "notes": "",
+      "labels": [
+        3,
+        4,
+        11
+      ],
+      "assignee": "ariel.s.udtohan",
+      "checklist": [],
+      "completed": true,
+      "createdAt": "2026-08-06T13:32:40.019Z",
+      "updatedAt": "2026-08-06T13:32:40.019Z"
+    },
+    {
+      "id": 39,
+      "boardId": 5,
+      "bucketId": 3,
+      "title": "Xcel EDS - Create content fragment, EDS Block with GraphQL Day 2",
+      "status": "Not started",
+      "priority": "Medium",
+      "startDate": "",
+      "dueDate": "",
+      "completedDate": "",
+      "notes": "",
+      "labels": [
+        3,
+        4
+      ],
+      "assignee": "ariel.s.udtohan",
+      "checklist": [],
+      "completed": false,
+      "createdAt": "2026-08-06T13:32:40.019Z",
+      "updatedAt": "2026-08-06T13:32:40.019Z"
+    },
+    {
+      "id": 40,
+      "boardId": 5,
+      "bucketId": 3,
+      "title": "Xcel EDS - Create content fragment, EDS Block with GraphQL Day 1",
+      "status": "Completed",
+      "priority": "Medium",
+      "startDate": "",
+      "dueDate": "",
+      "completedDate": "2026-08-05",
+      "notes": "",
+      "labels": [
+        3,
+        4,
+        11
+      ],
+      "assignee": "ariel.s.udtohan",
+      "checklist": [],
+      "completed": true,
+      "createdAt": "2026-08-06T13:32:40.019Z",
+      "updatedAt": "2026-08-06T13:32:40.019Z"
+    },
+    {
+      "id": 41,
+      "boardId": 5,
+      "bucketId": 3,
+      "title": "Provision AEM Sites Sandbox Request AEM Coder/EMA Access Connect GitHub Repo to AEM Coder/EMA",
+      "status": "Completed",
+      "priority": "Medium",
+      "startDate": "",
+      "dueDate": "",
+      "completedDate": "2026-07-29",
+      "notes": "",
+      "labels": [
+        3,
+        4,
+        11
+      ],
+      "assignee": "adrian.m.bartolome",
+      "checklist": [],
+      "completed": true,
+      "createdAt": "2026-08-06T13:32:40.019Z",
+      "updatedAt": "2026-08-06T13:32:40.019Z"
+    },
+    {
+      "id": 42,
+      "boardId": 5,
+      "bucketId": 3,
+      "title": "Familiarize with Page, Section, Block, Layout Create new Page, Section, Custom Blocks Day 1",
+      "status": "Completed",
+      "priority": "Medium",
+      "startDate": "",
+      "dueDate": "",
+      "completedDate": "2026-07-29",
+      "notes": "",
+      "labels": [
+        3,
+        4,
+        11
+      ],
+      "assignee": "adrian.m.bartolome",
+      "checklist": [],
+      "completed": true,
+      "createdAt": "2026-08-06T13:32:40.019Z",
+      "updatedAt": "2026-08-06T13:32:40.019Z"
+    },
+    {
+      "id": 43,
+      "boardId": 5,
+      "bucketId": 3,
+      "title": "Xcel EDS Training Day 1",
+      "status": "Completed",
+      "priority": "Medium",
+      "startDate": "",
+      "dueDate": "",
+      "completedDate": "2026-07-29",
+      "notes": "",
+      "labels": [
+        10,
+        4,
+        11
+      ],
+      "assignee": "lesly.dimailig",
+      "checklist": [
+        {
+          "id": 1,
+          "text": "Provision AEM Sites Sandbox",
+          "done": true
+        },
+        {
+          "id": 2,
+          "text": "Activity 1 -  Author a Page Using OOTB Blocks",
+          "done": true
+        }
+      ],
+      "completed": true,
+      "createdAt": "2026-08-06T13:32:40.019Z",
+      "updatedAt": "2026-08-06T13:32:40.019Z"
+    },
+    {
+      "id": 44,
+      "boardId": 5,
+      "bucketId": 3,
+      "title": "Familiarize with Page, Section, Block, Layout Create new Page, Section, Custom Blocks Day 2",
+      "status": "Completed",
+      "priority": "Medium",
+      "startDate": "",
+      "dueDate": "",
+      "completedDate": "2026-08-03",
+      "notes": "",
+      "labels": [
+        3,
+        4,
+        11
+      ],
+      "assignee": "adrian.m.bartolome",
+      "checklist": [],
+      "completed": true,
+      "createdAt": "2026-08-06T13:32:40.019Z",
+      "updatedAt": "2026-08-06T13:32:40.019Z"
+    },
+    {
+      "id": 45,
+      "boardId": 5,
+      "bucketId": 3,
+      "title": "Xcel EDS Training Day 2",
+      "status": "Completed",
+      "priority": "Medium",
+      "startDate": "",
+      "dueDate": "",
+      "completedDate": "2026-07-30",
+      "notes": "",
+      "labels": [
+        10,
+        4,
+        11
+      ],
+      "assignee": "lesly.dimailig",
+      "checklist": [
+        {
+          "id": 1,
+          "text": "Create a Custom Block",
+          "done": true
+        },
+        {
+          "id": 2,
+          "text": "Add website branding",
+          "done": true
+        }
+      ],
+      "completed": true,
+      "createdAt": "2026-08-06T13:32:40.019Z",
+      "updatedAt": "2026-08-06T13:32:40.019Z"
+    },
+    {
+      "id": 46,
+      "boardId": 5,
+      "bucketId": 3,
+      "title": "Analyze and migrate page using EMA Day 1",
+      "status": "Completed",
+      "priority": "Medium",
+      "startDate": "",
+      "dueDate": "",
+      "completedDate": "",
+      "notes": "",
+      "labels": [
+        3,
+        4
+      ],
+      "assignee": "adrian.m.bartolome",
+      "checklist": [],
+      "completed": true,
+      "createdAt": "2026-08-06T13:32:40.019Z",
+      "updatedAt": "2026-08-10T11:35:28.725Z"
+    },
+    {
+      "id": 47,
+      "boardId": 5,
+      "bucketId": 3,
+      "title": "Xcel EDS Training Day 3",
+      "status": "Completed",
+      "priority": "Medium",
+      "startDate": "",
+      "dueDate": "",
+      "completedDate": "",
+      "notes": "",
+      "labels": [
+        3,
+        5
+      ],
+      "assignee": "lesly.dimailig",
+      "checklist": [
+        {
+          "id": 1,
+          "text": "Migrate page using EMA",
+          "done": false
+        }
+      ],
+      "completed": true,
+      "createdAt": "2026-08-06T13:32:40.019Z",
+      "updatedAt": "2026-08-10T11:35:30.051Z"
+    },
+    {
+      "id": 48,
+      "boardId": 5,
+      "bucketId": 3,
+      "title": "Setup initial repo and db for Delivery Collection",
+      "status": "Completed",
+      "priority": "Medium",
+      "startDate": "",
+      "dueDate": "2026-07-29",
+      "completedDate": "2026-07-29",
+      "notes": "",
+      "labels": [
+        3,
+        4,
+        11
+      ],
+      "assignee": "kenneth.g.ebora",
+      "checklist": [],
+      "completed": true,
+      "createdAt": "2026-08-06T13:32:40.019Z",
+      "updatedAt": "2026-08-06T13:32:40.019Z"
+    },
+    {
+      "id": 49,
+      "boardId": 5,
+      "bucketId": 3,
+      "title": "MyCompetency review - angular (day 2)",
+      "status": "Completed",
+      "priority": "Medium",
+      "startDate": "",
+      "dueDate": "",
+      "completedDate": "2026-07-29",
+      "notes": "",
+      "labels": [
+        1,
+        10,
+        4,
+        11
+      ],
+      "assignee": "joshua.a.b.soriaga",
+      "checklist": [],
+      "completed": true,
+      "createdAt": "2026-08-06T13:32:40.019Z",
+      "updatedAt": "2026-08-06T13:32:40.019Z"
+    },
+    {
+      "id": 50,
+      "boardId": 5,
+      "bucketId": 3,
+      "title": "Xcel EDS Training Day 1",
+      "status": "Completed",
+      "priority": "Medium",
+      "startDate": "",
+      "dueDate": "",
+      "completedDate": "2026-07-29",
+      "notes": "",
+      "labels": [
+        10,
+        4,
+        11
+      ],
+      "assignee": "gisella.dame.arcaya",
+      "checklist": [],
+      "completed": true,
+      "createdAt": "2026-08-06T13:32:40.019Z",
+      "updatedAt": "2026-08-06T13:32:40.019Z"
+    },
+    {
+      "id": 51,
+      "boardId": 5,
+      "bucketId": 3,
+      "title": "Xcel EDS Training Day 2",
+      "status": "Completed",
+      "priority": "Medium",
+      "startDate": "",
+      "dueDate": "",
+      "completedDate": "2026-07-29",
+      "notes": "",
+      "labels": [
+        10,
+        4,
+        11
+      ],
+      "assignee": "gisella.dame.arcaya",
+      "checklist": [],
+      "completed": true,
+      "createdAt": "2026-08-06T13:32:40.019Z",
+      "updatedAt": "2026-08-06T13:32:40.019Z"
+    },
+    {
+      "id": 52,
+      "boardId": 5,
+      "bucketId": 3,
+      "title": "Xcel EDS Training Day 3",
+      "status": "Completed",
+      "priority": "Medium",
+      "startDate": "",
+      "dueDate": "",
+      "completedDate": "2026-08-02",
+      "notes": "",
+      "labels": [
+        3,
+        4,
+        11
+      ],
+      "assignee": "gisella.dame.arcaya",
+      "checklist": [],
+      "completed": true,
+      "createdAt": "2026-08-06T13:32:40.019Z",
+      "updatedAt": "2026-08-06T13:32:40.019Z"
+    },
+    {
+      "id": 53,
+      "boardId": 5,
+      "bucketId": 3,
+      "title": "XE - EDS : Create new Page, Section, Custom Blocks",
+      "status": "Completed",
+      "priority": "Medium",
+      "startDate": "",
+      "dueDate": "",
+      "completedDate": "2026-07-29",
+      "notes": "",
+      "labels": [
+        3,
+        4,
+        11
+      ],
+      "assignee": "mira.joy.g.abcede",
+      "checklist": [],
+      "completed": true,
+      "createdAt": "2026-08-06T13:32:40.019Z",
+      "updatedAt": "2026-08-06T13:32:40.019Z"
+    },
+    {
+      "id": 54,
+      "boardId": 5,
+      "bucketId": 3,
+      "title": "XE - EDS: Create more custom blocks, Add website branding",
+      "status": "Completed",
+      "priority": "Medium",
+      "startDate": "",
+      "dueDate": "",
+      "completedDate": "2026-07-29",
+      "notes": "",
+      "labels": [
+        3,
+        4,
+        11
+      ],
+      "assignee": "mira.joy.g.abcede",
+      "checklist": [],
+      "completed": true,
+      "createdAt": "2026-08-06T13:32:40.019Z",
+      "updatedAt": "2026-08-06T13:32:40.019Z"
+    },
+    {
+      "id": 55,
+      "boardId": 5,
+      "bucketId": 3,
+      "title": "Xcel EDS Training Day 1",
+      "status": "Completed",
+      "priority": "Medium",
+      "startDate": "",
+      "dueDate": "",
+      "completedDate": "2026-07-30",
+      "notes": "",
+      "labels": [
+        10,
+        4,
+        11
+      ],
+      "assignee": "nofia.a.c.mendoza",
+      "checklist": [],
+      "completed": true,
+      "createdAt": "2026-08-06T13:32:40.019Z",
+      "updatedAt": "2026-08-06T13:32:40.019Z"
+    },
+    {
+      "id": 56,
+      "boardId": 5,
+      "bucketId": 3,
+      "title": "Xcel EDS Training Day 2",
+      "status": "Completed",
+      "priority": "Medium",
+      "startDate": "",
+      "dueDate": "",
+      "completedDate": "2026-07-30",
+      "notes": "",
+      "labels": [
+        10,
+        4,
+        11
+      ],
+      "assignee": "nofia.a.c.mendoza",
+      "checklist": [],
+      "completed": true,
+      "createdAt": "2026-08-06T13:32:40.019Z",
+      "updatedAt": "2026-08-06T13:32:40.019Z"
+    },
+    {
+      "id": 57,
+      "boardId": 5,
+      "bucketId": 3,
+      "title": "Xcel EDS Training Day 3",
+      "status": "Completed",
+      "priority": "Medium",
+      "startDate": "",
+      "dueDate": "",
+      "completedDate": "",
+      "notes": "",
+      "labels": [
+        10,
+        4
+      ],
+      "assignee": "nofia.a.c.mendoza",
+      "checklist": [],
+      "completed": true,
+      "createdAt": "2026-08-06T13:32:40.019Z",
+      "updatedAt": "2026-08-10T11:35:34.796Z"
+    },
+    {
+      "id": 58,
+      "boardId": 5,
+      "bucketId": 3,
+      "title": "Xcel EDS Activities",
+      "status": "Not started",
+      "priority": "Medium",
+      "startDate": "",
+      "dueDate": "",
+      "completedDate": "",
+      "notes": "",
+      "labels": [
+        3,
+        6
+      ],
+      "assignee": "nofia.a.c.mendoza",
+      "checklist": [],
+      "completed": false,
+      "createdAt": "2026-08-06T13:32:40.019Z",
+      "updatedAt": "2026-08-06T13:32:40.019Z"
+    },
+    {
+      "id": 59,
+      "boardId": 5,
+      "bucketId": 3,
+      "title": "myCompetency assessment",
+      "status": "Completed",
+      "priority": "Medium",
+      "startDate": "",
+      "dueDate": "",
+      "completedDate": "2026-07-31",
+      "notes": "",
+      "labels": [
+        3,
+        5,
+        11
+      ],
+      "assignee": "nofia.a.c.mendoza",
+      "checklist": [],
+      "completed": true,
+      "createdAt": "2026-08-06T13:32:40.019Z",
+      "updatedAt": "2026-08-06T13:32:40.019Z"
+    },
+    {
+      "id": 60,
+      "boardId": 5,
+      "bucketId": 3,
+      "title": "XE - EDS: Analyze and migrate page using EMA Day 1",
+      "status": "Completed",
+      "priority": "Medium",
+      "startDate": "",
+      "dueDate": "",
+      "completedDate": "2026-07-30",
+      "notes": "",
+      "labels": [
+        3,
+        4,
+        11
+      ],
+      "assignee": "mira.joy.g.abcede",
+      "checklist": [],
+      "completed": true,
+      "createdAt": "2026-08-06T13:32:40.019Z",
+      "updatedAt": "2026-08-06T13:32:40.019Z"
+    },
+    {
+      "id": 61,
+      "boardId": 5,
+      "bucketId": 3,
+      "title": "Add Initiatives List for Delivery Collections App",
+      "status": "Completed",
+      "priority": "Medium",
+      "startDate": "",
+      "dueDate": "",
+      "completedDate": "2026-07-29",
+      "notes": "",
+      "labels": [
+        3,
+        4,
+        11
+      ],
+      "assignee": "kenneth.g.ebora",
+      "checklist": [],
+      "completed": true,
+      "createdAt": "2026-08-06T13:32:40.019Z",
+      "updatedAt": "2026-08-06T13:32:40.019Z"
+    },
+    {
+      "id": 62,
+      "boardId": 5,
+      "bucketId": 3,
+      "title": "Xcel EDS - Analyze and Migrate Page Day 2",
+      "status": "Completed",
+      "priority": "Medium",
+      "startDate": "",
+      "dueDate": "",
+      "completedDate": "2026-08-03",
+      "notes": "",
+      "labels": [
+        3,
+        4,
+        11
+      ],
+      "assignee": "ariel.s.udtohan",
+      "checklist": [],
+      "completed": true,
+      "createdAt": "2026-08-06T13:32:40.019Z",
+      "updatedAt": "2026-08-06T13:32:40.019Z"
+    },
+    {
+      "id": 63,
+      "boardId": 5,
+      "bucketId": 3,
+      "title": "AEM Review MyComtency",
+      "status": "Completed",
+      "priority": "Medium",
+      "startDate": "",
+      "dueDate": "",
+      "completedDate": "2026-07-31",
+      "notes": "",
+      "labels": [
+        10,
+        4,
+        11
+      ],
+      "assignee": "j.baliwag",
+      "checklist": [],
+      "completed": true,
+      "createdAt": "2026-08-06T13:32:40.019Z",
+      "updatedAt": "2026-08-06T13:32:40.019Z"
+    },
+    {
+      "id": 64,
+      "boardId": 5,
+      "bucketId": 3,
+      "title": "Angular Question Bank - additions",
+      "status": "Completed",
+      "priority": "Medium",
+      "startDate": "",
+      "dueDate": "",
+      "completedDate": "2026-07-30",
+      "notes": "",
+      "labels": [
+        3,
+        4,
+        11
+      ],
+      "assignee": "joshua.a.b.soriaga",
+      "checklist": [],
+      "completed": true,
+      "createdAt": "2026-08-06T13:32:40.019Z",
+      "updatedAt": "2026-08-06T13:32:40.019Z"
+    },
+    {
+      "id": 65,
+      "boardId": 5,
+      "bucketId": 3,
+      "title": "(Zimm) Zephyr Test Cases Creation",
+      "status": "Completed",
+      "priority": "Medium",
+      "startDate": "",
+      "dueDate": "2026-07-31",
+      "completedDate": "2026-08-03",
+      "notes": "",
+      "labels": [
+        3,
+        4,
+        11
+      ],
+      "assignee": "krizel.b.bartolome",
+      "checklist": [],
+      "completed": true,
+      "createdAt": "2026-08-06T13:32:40.019Z",
+      "updatedAt": "2026-08-06T13:32:40.019Z"
+    },
+    {
+      "id": 66,
+      "boardId": 5,
+      "bucketId": 3,
+      "title": "(Zimm) SFCC Tickets Validation",
+      "status": "Completed",
+      "priority": "Medium",
+      "startDate": "",
+      "dueDate": "",
+      "completedDate": "2026-08-04",
+      "notes": "",
+      "labels": [
+        3,
+        4,
+        11
+      ],
+      "assignee": "krizel.b.bartolome",
+      "checklist": [],
+      "completed": true,
+      "createdAt": "2026-08-06T13:32:40.019Z",
+      "updatedAt": "2026-08-06T13:32:40.019Z"
+    },
+    {
+      "id": 67,
+      "boardId": 5,
+      "bucketId": 3,
+      "title": "(Zimm) Guide 4- E2E testing using Playwright",
+      "status": "Not started",
+      "priority": "Medium",
+      "startDate": "",
+      "dueDate": "2026-08-07",
+      "completedDate": "",
+      "notes": "",
+      "labels": [
+        10,
+        4
+      ],
+      "assignee": "krizel.b.bartolome",
+      "checklist": [],
+      "completed": false,
+      "createdAt": "2026-08-06T13:32:40.019Z",
+      "updatedAt": "2026-08-06T13:32:40.019Z"
+    },
+    {
+      "id": 68,
+      "boardId": 5,
+      "bucketId": 3,
+      "title": "XE - EDS: Analyze and migrate page using EMA Day 2",
+      "status": "Completed",
+      "priority": "Medium",
+      "startDate": "",
+      "dueDate": "",
+      "completedDate": "2026-08-03",
+      "notes": "",
+      "labels": [
+        3,
+        4,
+        11
+      ],
+      "assignee": "mira.joy.g.abcede",
+      "checklist": [],
+      "completed": true,
+      "createdAt": "2026-08-06T13:32:40.019Z",
+      "updatedAt": "2026-08-06T13:32:40.019Z"
+    },
+    {
+      "id": 69,
+      "boardId": 5,
+      "bucketId": 3,
+      "title": "MyCompeteny assessment and Google Dev Ops renewal of Certification",
+      "status": "Completed",
+      "priority": "Medium",
+      "startDate": "",
+      "dueDate": "",
+      "completedDate": "2026-08-04",
+      "notes": "",
+      "labels": [
+        3,
+        5,
+        11
+      ],
+      "assignee": "j.baliwag",
+      "checklist": [],
+      "completed": true,
+      "createdAt": "2026-08-06T13:32:40.019Z",
+      "updatedAt": "2026-08-06T13:32:40.019Z"
+    },
+    {
+      "id": 70,
+      "boardId": 5,
+      "bucketId": 3,
+      "title": "PoC - SongBook V1 (Angular)",
+      "status": "Completed",
+      "priority": "Medium",
+      "startDate": "",
+      "dueDate": "",
+      "completedDate": "",
+      "notes": "",
+      "labels": [
+        3,
+        5
+      ],
+      "assignee": "joshua.a.b.soriaga",
+      "checklist": [],
+      "completed": true,
+      "createdAt": "2026-08-06T13:32:40.019Z",
+      "updatedAt": "2026-08-10T11:35:36.516Z"
+    },
+    {
+      "id": 71,
+      "boardId": 5,
+      "bucketId": 3,
+      "title": "Xcel EDS Training Day 4 & 5",
+      "status": "Completed",
+      "priority": "Medium",
+      "startDate": "",
+      "dueDate": "",
+      "completedDate": "2026-08-03",
+      "notes": "",
+      "labels": [
+        10,
+        4,
+        11
+      ],
+      "assignee": "gisella.dame.arcaya",
+      "checklist": [],
+      "completed": true,
+      "createdAt": "2026-08-06T13:32:40.019Z",
+      "updatedAt": "2026-08-06T13:32:40.019Z"
+    },
+    {
+      "id": 72,
+      "boardId": 5,
+      "bucketId": 3,
+      "title": "Delivery Collections - Contributions, Initiative Form, and Favorites",
+      "status": "Completed",
+      "priority": "Medium",
+      "startDate": "",
+      "dueDate": "",
+      "completedDate": "2026-07-31",
+      "notes": "",
+      "labels": [
+        3,
+        4,
+        11
+      ],
+      "assignee": "kenneth.g.ebora",
+      "checklist": [],
+      "completed": true,
+      "createdAt": "2026-08-06T13:32:40.019Z",
+      "updatedAt": "2026-08-06T13:32:40.019Z"
+    },
+    {
+      "id": 73,
+      "boardId": 5,
+      "bucketId": 3,
+      "title": "Functional Requirements Mapping",
+      "status": "Completed",
+      "priority": "Medium",
+      "startDate": "",
+      "dueDate": "2026-08-03",
+      "completedDate": "2026-08-04",
+      "notes": "",
+      "labels": [
+        3,
+        5,
+        11
+      ],
+      "assignee": "krizel.b.bartolome",
+      "checklist": [],
+      "completed": true,
+      "createdAt": "2026-08-06T13:32:40.019Z",
+      "updatedAt": "2026-08-06T13:32:40.019Z"
+    },
+    {
+      "id": 74,
+      "boardId": 5,
+      "bucketId": 3,
+      "title": "Xcel EDS Training Day 6",
+      "status": "Completed",
+      "priority": "Medium",
+      "startDate": "",
+      "dueDate": "",
+      "completedDate": "",
+      "notes": "",
+      "labels": [
+        3,
+        4
+      ],
+      "assignee": "gisella.dame.arcaya",
+      "checklist": [],
+      "completed": true,
+      "createdAt": "2026-08-06T13:32:40.019Z",
+      "updatedAt": "2026-08-10T11:35:39.524Z"
+    },
+    {
+      "id": 75,
+      "boardId": 5,
+      "bucketId": 3,
+      "title": "Xcel EDS Training Day 7",
+      "status": "Not started",
+      "priority": "Medium",
+      "startDate": "",
+      "dueDate": "",
+      "completedDate": "",
+      "notes": "",
+      "labels": [
+        3,
+        4
+      ],
+      "assignee": "gisella.dame.arcaya",
+      "checklist": [],
+      "completed": false,
+      "createdAt": "2026-08-06T13:32:40.019Z",
+      "updatedAt": "2026-08-06T13:32:40.019Z"
+    },
+    {
+      "id": 76,
+      "boardId": 5,
+      "bucketId": 3,
+      "title": "Xcel EDS Training Day 8",
+      "status": "Not started",
+      "priority": "Medium",
+      "startDate": "",
+      "dueDate": "",
+      "completedDate": "",
+      "notes": "",
+      "labels": [
+        3,
+        4
+      ],
+      "assignee": "gisella.dame.arcaya",
+      "checklist": [],
+      "completed": false,
+      "createdAt": "2026-08-06T13:32:40.019Z",
+      "updatedAt": "2026-08-06T13:32:40.019Z"
+    },
+    {
+      "id": 77,
+      "boardId": 5,
+      "bucketId": 3,
+      "title": "XE - EDS: Create Content Fragment Model, CF, Connect EDS block w/ GraphQL Day 1 + MyComp Retake",
+      "status": "Completed",
+      "priority": "Medium",
+      "startDate": "",
+      "dueDate": "",
+      "completedDate": "2026-08-04",
+      "notes": "",
+      "labels": [
+        3,
+        4,
+        11
+      ],
+      "assignee": "mira.joy.g.abcede",
+      "checklist": [],
+      "completed": true,
+      "createdAt": "2026-08-06T13:32:40.019Z",
+      "updatedAt": "2026-08-06T13:32:40.019Z"
+    },
+    {
+      "id": 78,
+      "boardId": 5,
+      "bucketId": 3,
+      "title": "Delivery Collections: Added Insert configs and forms",
+      "status": "Completed",
+      "priority": "Medium",
+      "startDate": "",
+      "dueDate": "2026-08-03",
+      "completedDate": "2026-08-03",
+      "notes": "",
+      "labels": [
+        3,
+        4,
+        11
+      ],
+      "assignee": "kenneth.g.ebora",
+      "checklist": [],
+      "completed": true,
+      "createdAt": "2026-08-06T13:32:40.019Z",
+      "updatedAt": "2026-08-06T13:32:40.019Z"
+    },
+    {
+      "id": 79,
+      "boardId": 5,
+      "bucketId": 3,
+      "title": "Project Initiative (PoC) WebUI - Attendance Tracker",
+      "status": "Completed",
+      "priority": "Medium",
+      "startDate": "2026-08-03",
+      "dueDate": "2026-08-04",
+      "completedDate": "2026-08-04",
+      "notes": "",
+      "labels": [
+        1,
+        2,
+        3,
+        5,
+        11
+      ],
+      "assignee": "michael.bobis",
+      "checklist": [],
+      "completed": true,
+      "createdAt": "2026-08-06T13:32:40.019Z",
+      "updatedAt": "2026-08-06T13:32:40.019Z"
+    },
+    {
+      "id": 80,
+      "boardId": 5,
+      "bucketId": 3,
+      "title": "XE - EDS: Global Search",
+      "status": "Not started",
+      "priority": "Medium",
+      "startDate": "",
+      "dueDate": "",
+      "completedDate": "",
+      "notes": "",
+      "labels": [
+        10,
+        4
+      ],
+      "assignee": "mira.joy.g.abcede",
+      "checklist": [],
+      "completed": false,
+      "createdAt": "2026-08-06T13:32:40.019Z",
+      "updatedAt": "2026-08-06T13:32:40.019Z"
+    },
+    {
+      "id": 81,
+      "boardId": 5,
+      "bucketId": 3,
+      "title": "XE - EDS: Create Content Fragment Model, CF, Connect EDS block w/ GraphQL Day 2",
+      "status": "Completed",
+      "priority": "Medium",
+      "startDate": "",
+      "dueDate": "",
+      "completedDate": "2026-08-05",
+      "notes": "",
+      "labels": [
+        10,
+        4,
+        11
+      ],
+      "assignee": "mira.joy.g.abcede",
+      "checklist": [],
+      "completed": true,
+      "createdAt": "2026-08-06T13:32:40.019Z",
+      "updatedAt": "2026-08-06T13:32:40.019Z"
+    },
+    {
+      "id": 82,
+      "boardId": 5,
+      "bucketId": 3,
+      "title": "XE - Assets Content Hub",
+      "status": "Completed",
+      "priority": "Medium",
+      "startDate": "",
+      "dueDate": "",
+      "completedDate": "",
+      "notes": "",
+      "labels": [
+        10,
+        4
+      ],
+      "assignee": "mira.joy.g.abcede",
+      "checklist": [],
+      "completed": true,
+      "createdAt": "2026-08-06T13:32:40.019Z",
+      "updatedAt": "2026-08-10T11:35:38.063Z"
+    },
+    {
+      "id": 83,
+      "boardId": 5,
+      "bucketId": 3,
+      "title": "Project Initiative (PoC) WebUI - Planner",
+      "status": "Completed",
+      "priority": "Medium",
+      "startDate": "2026-08-04",
+      "dueDate": "2026-08-06",
+      "completedDate": "2026-08-05",
+      "notes": "",
+      "labels": [
+        1,
+        2,
+        3,
+        5,
+        11
+      ],
+      "assignee": "michael.bobis",
+      "checklist": [],
+      "completed": true,
+      "createdAt": "2026-08-06T13:32:40.019Z",
+      "updatedAt": "2026-08-06T13:32:40.019Z"
+    },
+    {
+      "id": 84,
+      "boardId": 5,
+      "bucketId": 3,
+      "title": "Project Initiative (PoC) WebUI - Leave Planner",
+      "status": "Completed",
+      "priority": "Medium",
+      "startDate": "2026-08-05",
+      "dueDate": "2026-08-11",
+      "completedDate": "2026-08-05",
+      "notes": "",
+      "labels": [
+        1,
+        2,
+        3,
+        5,
+        11
+      ],
+      "assignee": "michael.bobis",
+      "checklist": [],
+      "completed": true,
+      "createdAt": "2026-08-06T13:32:40.019Z",
+      "updatedAt": "2026-08-06T13:32:40.019Z"
+    },
+    {
+      "id": 85,
+      "boardId": 5,
+      "bucketId": 3,
+      "title": "Agentic AI Ecosystems Tool 3A",
+      "status": "Completed",
+      "priority": "Medium",
+      "startDate": "2026-07-29",
+      "dueDate": "2026-08-05",
+      "completedDate": "2026-08-04",
+      "notes": "",
+      "labels": [
+        10,
+        4,
+        11
+      ],
+      "assignee": "kirstin.d.a.rubica",
+      "checklist": [],
+      "completed": true,
+      "createdAt": "2026-08-06T13:32:40.019Z",
+      "updatedAt": "2026-08-06T13:32:40.019Z"
+    },
+    {
+      "id": 86,
+      "boardId": 5,
+      "bucketId": 3,
+      "title": "Project Initiative (PoC) - Integration of Leave to Capacity Plan page",
+      "status": "Completed",
+      "priority": "Medium",
+      "startDate": "2026-08-05",
+      "dueDate": "2026-08-06",
+      "completedDate": "2026-08-06",
+      "notes": "",
+      "labels": [
+        1,
+        2,
+        3,
+        4,
+        11
+      ],
+      "assignee": "michael.bobis",
+      "checklist": [],
+      "completed": true,
+      "createdAt": "2026-08-06T13:32:40.019Z",
+      "updatedAt": "2026-08-06T13:32:40.019Z"
+    },
+    {
+      "id": 87,
+      "boardId": 5,
+      "bucketId": 3,
+      "title": "Project Initiative (PoC) - Planner Dashboard",
+      "status": "Completed",
+      "priority": "Medium",
+      "startDate": "2026-08-05",
+      "dueDate": "2026-08-06",
+      "completedDate": "",
+      "notes": "",
+      "labels": [
+        1,
+        2,
+        3,
+        4
+      ],
+      "assignee": "michael.bobis",
+      "checklist": [],
+      "completed": true,
+      "createdAt": "2026-08-06T13:32:40.019Z",
+      "updatedAt": "2026-08-06T16:35:43.859Z"
+    },
+    {
+      "id": 88,
+      "boardId": 5,
+      "bucketId": 3,
+      "title": "SAP Ecommerce - MyCompetency",
+      "status": "Completed",
+      "priority": "Medium",
+      "startDate": "",
+      "dueDate": "",
+      "completedDate": "2026-08-06",
+      "notes": "",
+      "labels": [
+        3,
+        4,
+        11
+      ],
+      "assignee": "j.baliwag",
+      "checklist": [],
+      "completed": true,
+      "createdAt": "2026-08-06T13:32:40.019Z",
+      "updatedAt": "2026-08-06T13:32:40.019Z"
+    },
+    {
+      "id": 89,
+      "boardId": 5,
+      "bucketId": 3,
+      "title": "Onboarding",
+      "status": "Not started",
+      "priority": "Medium",
+      "startDate": "",
+      "dueDate": "2026-08-10",
+      "completedDate": "",
+      "notes": "",
+      "labels": [
+        3,
+        10
+      ],
+      "assignee": "elray.jun.b.amplayo",
+      "checklist": [],
+      "completed": false,
+      "createdAt": "2026-08-06T13:32:40.019Z",
+      "updatedAt": "2026-08-06T13:32:40.019Z"
+    },
+    {
+      "id": 90,
+      "boardId": 5,
+      "bucketId": 3,
+      "title": "Adobe Testing_Questionnaire Review",
+      "status": "Not started",
+      "priority": "Medium",
+      "startDate": "",
+      "dueDate": "2026-08-07",
+      "completedDate": "",
+      "notes": "",
+      "labels": [
+        10
+      ],
+      "assignee": "elray.jun.b.amplayo",
+      "checklist": [],
+      "completed": false,
+      "createdAt": "2026-08-06T13:32:40.019Z",
+      "updatedAt": "2026-08-06T13:32:40.019Z"
+    },
+    {
+      "id": 91,
+      "boardId": 5,
+      "bucketId": 3,
+      "title": "AEM Review for MyCompetency",
+      "status": "Not started",
+      "priority": "Medium",
+      "startDate": "",
+      "dueDate": "2026-08-10",
+      "completedDate": "",
+      "notes": "",
+      "labels": [
+        10
+      ],
+      "assignee": "elray.jun.b.amplayo",
+      "checklist": [],
+      "completed": false,
+      "createdAt": "2026-08-06T13:32:40.019Z",
+      "updatedAt": "2026-08-06T13:32:40.019Z"
+    },
+    {
+      "id": 92,
+      "boardId": 5,
+      "bucketId": 3,
+      "title": "MyCompetency review + Assessment",
+      "status": "Completed",
+      "priority": "Medium",
+      "startDate": "",
+      "dueDate": "",
+      "completedDate": "2026-08-05",
+      "notes": "",
+      "labels": [
+        3,
+        10,
+        11
+      ],
+      "assignee": "joshua.a.b.soriaga",
+      "checklist": [],
+      "completed": true,
+      "createdAt": "2026-08-06T13:32:40.019Z",
+      "updatedAt": "2026-08-06T13:32:40.019Z"
+    },
+    {
+      "id": 93,
+      "boardId": 5,
+      "bucketId": 3,
+      "title": "Onboarding",
+      "status": "Not started",
+      "priority": "Medium",
+      "startDate": "",
+      "dueDate": "",
+      "completedDate": "",
+      "notes": "",
+      "labels": [
+        3,
+        10
+      ],
+      "assignee": "john.rey.paraguya",
+      "checklist": [],
+      "completed": false,
+      "createdAt": "2026-08-06T13:32:40.019Z",
+      "updatedAt": "2026-08-06T13:32:40.019Z"
+    },
+    {
+      "id": 94,
+      "boardId": 5,
+      "bucketId": 3,
+      "title": "Onboarding",
+      "status": "Not started",
+      "priority": "Medium",
+      "startDate": "",
+      "dueDate": "",
+      "completedDate": "",
+      "notes": "",
+      "labels": [
+        3,
+        10
+      ],
+      "assignee": "ramil.agramon.jr",
+      "checklist": [],
+      "completed": false,
+      "createdAt": "2026-08-06T13:32:40.019Z",
+      "updatedAt": "2026-08-06T13:32:40.019Z"
+    },
+    {
+      "id": 95,
+      "boardId": 5,
+      "bucketId": 3,
+      "title": "MyCompertency - Adobe testing  and Enterprise Content Management",
+      "status": "Completed",
+      "priority": "Medium",
+      "startDate": "",
+      "dueDate": "",
+      "completedDate": "",
+      "notes": "",
+      "labels": [
+        3,
+        5
+      ],
+      "assignee": "j.baliwag",
+      "checklist": [],
+      "completed": true,
+      "createdAt": "2026-08-06T13:32:40.019Z",
+      "updatedAt": "2026-08-10T11:35:42.428Z"
+    },
+    {
+      "boardId": 5,
+      "bucketId": 4,
+      "title": "Project Initiative (PoC) - Summary Dashboard",
+      "status": "In progress",
+      "priority": "Medium",
+      "startDate": "2026-08-10",
+      "dueDate": "2026-08-14",
+      "labels": [
+        6,
+        2,
+        3,
+        1
+      ],
+      "assignee": "michael.bobis",
+      "checklist": [],
+      "description": "To Consolidate all summary report in a single source of truth of reporting",
+      "acceptanceCriteria": "As a POC, i want to see all summary in a single place and that is what we called Summary Dashboard.",
+      "comments": [],
+      "completed": false,
+      "createdAt": "2026-08-10T12:08:03.598Z",
+      "updatedAt": "2026-08-11T08:08:48.566Z",
+      "id": 96
+    }
+  ],
+  "$schema": "./node_modules/json-server/schema.json",
+  "competency-records": [
+    {
+      "eid": "krizel.b.bartolome",
+      "primarySkill": "AEM",
+      "primaryProficiency": "P1",
+      "recentRetakeDate": "2026-06-22",
+      "nextRetakeDate": "2026-08-07",
+      "secondarySkill": "TBD",
+      "secondaryProficiency": "TBD",
+      "retakeDate": ""
+    },
+    {
+      "eid": "mira.joy.g.abcede",
+      "primarySkill": "AEM",
+      "primaryProficiency": "P1",
+      "recentRetakeDate": "2026-06-15",
+      "nextRetakeDate": "2026-08-03",
+      "secondarySkill": "Agile",
+      "secondaryProficiency": "P3+",
+      "retakeDate": ""
+    },
+    {
+      "eid": "adrian.m.bartolome",
+      "primarySkill": "AEM",
+      "primaryProficiency": "P1",
+      "recentRetakeDate": "2026-05-29",
+      "nextRetakeDate": "2026-07-16",
+      "secondarySkill": "Java",
+      "secondaryProficiency": "P1",
+      "retakeDate": ""
+    },
+    {
+      "eid": "lesly.dimailig",
+      "primarySkill": "AEM",
+      "primaryProficiency": "P1",
+      "recentRetakeDate": "2026-07-13",
+      "nextRetakeDate": "2026-08-10",
+      "secondarySkill": "Test Planning",
+      "secondaryProficiency": "P1",
+      "retakeDate": ""
+    },
+    {
+      "eid": "gisella.dame.arcaya",
+      "primarySkill": "AEM",
+      "primaryProficiency": "P1",
+      "recentRetakeDate": "2026-06-22",
+      "nextRetakeDate": "2026-07-16",
+      "secondarySkill": "TBD",
+      "secondaryProficiency": "TBD",
+      "retakeDate": ""
+    },
+    {
+      "eid": "nofia.a.c.mendoza",
+      "primarySkill": "AEM",
+      "primaryProficiency": "P2",
+      "recentRetakeDate": "2026-06-09",
+      "nextRetakeDate": "2026-07-30",
+      "secondarySkill": "SNOW",
+      "secondaryProficiency": "P1",
+      "retakeDate": ""
+    },
+    {
+      "eid": "aldhen.a.dignaran",
+      "primarySkill": "AEM",
+      "primaryProficiency": "P3",
+      "recentRetakeDate": "",
+      "nextRetakeDate": "",
+      "secondarySkill": "Enterprise Content Management",
+      "secondaryProficiency": "P3+",
+      "retakeDate": ""
+    },
+    {
+      "eid": "ariel.s.udtohan",
+      "primarySkill": "AEM",
+      "primaryProficiency": "P3",
+      "recentRetakeDate": "",
+      "nextRetakeDate": "",
+      "secondarySkill": "React",
+      "secondaryProficiency": "P3+",
+      "retakeDate": ""
+    },
+    {
+      "eid": "kenneth.g.ebora",
+      "primarySkill": "Angular",
+      "primaryProficiency": "P3",
+      "recentRetakeDate": "",
+      "nextRetakeDate": "",
+      "secondarySkill": "React",
+      "secondaryProficiency": "P3",
+      "retakeDate": ""
+    },
+    {
+      "eid": "j.baliwag",
+      "primarySkill": "Adobe Experience Manager (AEM) Sites",
+      "primaryProficiency": "N/A",
+      "recentRetakeDate": "",
+      "nextRetakeDate": "2026-08-04",
+      "secondarySkill": "Google BigQuery",
+      "secondaryProficiency": "P4",
+      "retakeDate": ""
+    },
+    {
+      "eid": "joshua.a.b.soriaga",
+      "primarySkill": "Angular",
+      "primaryProficiency": "P2",
+      "recentRetakeDate": "2026-07-29",
+      "nextRetakeDate": "2026-08-05",
+      "secondarySkill": "",
+      "secondaryProficiency": "N/A",
+      "retakeDate": ""
+    },
+    {
+      "eid": "marife.amper",
+      "primarySkill": "Angular",
+      "primaryProficiency": "P3",
+      "recentRetakeDate": "",
+      "nextRetakeDate": "",
+      "secondarySkill": "",
+      "secondaryProficiency": "N/A",
+      "retakeDate": ""
+    },
+    {
+      "eid": "michael.bobis",
+      "primarySkill": "Angular",
+      "primaryProficiency": "P3+",
+      "recentRetakeDate": "",
+      "nextRetakeDate": "",
+      "secondarySkill": "TBD",
+      "secondaryProficiency": "TBD",
+      "retakeDate": ""
+    }
+  ]
+}

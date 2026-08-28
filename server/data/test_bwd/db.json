@@ -1,0 +1,108 @@
+{
+  "fruits": [
+    {
+      "id": 1,
+      "name": "Apple",
+      "emoji": "🍎",
+      "category": "Temperate",
+      "price": 1.5,
+      "stock": 150
+    },
+    {
+      "id": 2,
+      "name": "Banana",
+      "emoji": "🍌",
+      "category": "Tropical",
+      "price": 0.75,
+      "stock": 200
+    },
+    {
+      "id": 3,
+      "name": "Orange",
+      "emoji": "🍊",
+      "category": "Citrus",
+      "price": 1.2,
+      "stock": 80
+    },
+    {
+      "id": 4,
+      "name": "Grape",
+      "emoji": "🍇",
+      "category": "Berry",
+      "price": 3,
+      "stock": 60
+    },
+    {
+      "id": 5,
+      "name": "Strawberry",
+      "emoji": "🍓",
+      "category": "Berry",
+      "price": 4.5,
+      "stock": 90
+    },
+    {
+      "id": 6,
+      "name": "Mango",
+      "emoji": "🥭",
+      "category": "Tropical",
+      "price": 2.5,
+      "stock": 45
+    },
+    {
+      "id": 7,
+      "name": "Watermelon",
+      "emoji": "🍉",
+      "category": "Melon",
+      "price": 5,
+      "stock": 30
+    },
+    {
+      "id": 8,
+      "name": "Pineapple",
+      "emoji": "🍍",
+      "category": "Tropical",
+      "price": 3.5,
+      "stock": 25
+    },
+    {
+      "id": 9,
+      "name": "Lemon",
+      "emoji": "🍋",
+      "category": "Citrus",
+      "price": 0.9,
+      "stock": 120
+    },
+    {
+      "id": 10,
+      "name": "Cherry",
+      "emoji": "🍒",
+      "category": "Stone Fruit",
+      "price": 6,
+      "stock": 70
+    },
+    {
+      "id": 11,
+      "emoji": "🥝",
+      "name": "Kiwi",
+      "category": "Temperate",
+      "price": 21,
+      "stock": 55
+    },
+    {
+      "id": 12,
+      "name": "Peach",
+      "emoji": "🍑",
+      "category": "Stone Fruit",
+      "price": 2.8,
+      "stock": 40
+    },
+    {
+      "id": 13,
+      "emoji": "🍎",
+      "name": "kamotr",
+      "category": "Tropical",
+      "price": 12,
+      "stock": 33
+    }
+  ]
+}

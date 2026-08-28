@@ -1,0 +1,969 @@
+@if (plannerView === 'boards') {
+  <!-- Board list -->
+  <section class="page-header">
+    <div>
+      <h1>Planner</h1>
+      <p>Select a plan to view its board</p>
+    </div>
+  </section>
+
+  @if (plannerLoading) {
+    <div class="planner-empty">Loading plans…</div>
+  } @else if (filteredPlannerBoards.length === 0) {
+    <div class="planner-empty">
+      <div style="text-align:center;">
+        <i class="bi bi-kanban" style="font-size:2.5rem;color:#c5b8e8;display:block;margin-bottom:.75rem;"></i>
+        No plans for {{ sharedData.getGroupLabel(sharedData.attendanceGroup) }}
+      </div>
+    </div>
+  } @else {
+    <div class="planner-board-list">
+      @for (board of filteredPlannerBoards; track board.id) {
+        <button class="planner-board-card" type="button" (click)="openBoard(board)">
+          <div class="planner-board-icon"><i class="bi bi-kanban"></i></div>
+          <div>
+            <strong>{{ board.name }}</strong>
+            @if (board.description) {
+              <p>{{ board.description }}</p>
+            }
+          </div>
+          <i class="bi bi-chevron-right planner-board-chevron"></i>
+        </button>
+      }
+    </div>
+  }
+
+} @else if (plannerView === 'board') {
+  <!-- Kanban board -->
+  <section class="page-header planner-board-header">
+    <div class="planner-breadcrumb">
+      <button class="link-button" type="button" (click)="backToBoards()">My plans</button>
+      <i class="bi bi-chevron-right"></i>
+      <span>{{ selectedBoard?.name }}</span>
+    </div>
+  </section>
+
+  <!-- Unified toolbar -->
+  <div class="board-tab-bar">
+    <div class="board-tabs">
+      <button class="board-tab" [class.board-tab-active]="plannerSubView === 'grid'"
+              type="button" (click)="plannerSubView = 'grid'">
+        <i class="bi bi-table"></i> Grid
+      </button>
+      <button class="board-tab" [class.board-tab-active]="plannerSubView === 'board'"
+              type="button" (click)="plannerSubView = 'board'">
+        <i class="bi bi-kanban"></i> Board
+      </button>
+      <button class="board-tab" [class.board-tab-active]="plannerSubView === 'dashboard'"
+              type="button" (click)="plannerSubView = 'dashboard'">
+        <i class="bi bi-speedometer2"></i> Dashboard
+      </button>
+    </div>
+
+    <span class="board-toolbar-divider"></span>
+
+    <!-- Sprint filter always visible in toolbar -->
+    <div class="board-sprint-selector">
+      <select class="sprint-select-toolbar" [ngModel]="selectedSprintName" (ngModelChange)="onSprintSelected($event)">
+        @for (sprint of sprintSchedule; track sprint.name) {
+          <option [value]="sprint.name">
+            {{ sprint.name }}{{ sprint.name === getCurrentSprintName() ? ' ★' : '' }}
+          </option>
+        }
+      </select>
+      @if (selectedSprintName === getCurrentSprintName()) {
+        <span class="sprint-active-badge">Current</span>
+      }
+      <button class="sprint-action-btn" type="button" title="Edit sprint" (click)="openEditSprintDialog()">
+        <i class="bi bi-pencil"></i>
+      </button>
+      <button class="sprint-action-btn sprint-action-btn--new" type="button" title="New sprint" (click)="openCreateSprintDialog()">
+        <i class="bi bi-plus-lg"></i>
+      </button>
+    </div>
+
+    <div class="board-tab-actions" style="position:relative">
+      <button class="pf-icon-btn" type="button" title="Filter"
+              [class.pf-icon-active]="plannerActiveFilterCount > 0"
+              (click)="plannerFilterOpen = !plannerFilterOpen; plannerFilterSection = plannerFilterSection ? null : plannerFilterSection">
+        <i class="bi bi-filter-left"></i>
+        @if (plannerActiveFilterCount > 0) {
+          <span class="pf-icon-count">({{ plannerActiveFilterCount }})</span>
+        }
+      </button>
+      <div class="pf-search-wrap">
+        <i class="bi bi-search pf-search-icon"></i>
+        <input class="pf-search-input" type="search" placeholder="Search tasks…"
+               [(ngModel)]="plannerGridSearch" />
+      </div>
+      <button class="planner-capacity-btn" [class.cap-btn-active]="capacityOpen" type="button" (click)="toggleCapacity()">
+        <i class="bi bi-people-fill"></i>
+        <span>Capacity Plan</span>
+      </button>
+      @if (plannerFilterOpen) {
+        <div class="pf-backdrop" (click)="plannerFilterOpen = false; plannerFilterSection = null; assigneeSearch = ''"></div>
+        <div class="pf-float-wrap">
+          <div class="pf-float-panel">
+            <div class="pf-float-header">
+              <span class="pf-float-title">Filter by</span>
+              @if (plannerActiveFilterCount > 0) {
+                <button class="pf-float-clearall" type="button" (click)="clearPlannerFilter()">Clear all</button>
+              }
+            </div>
+            <button class="pf-section-row" type="button" [class.pf-section-active]="plannerFilterSection === 'assignment'"
+                    (click)="plannerFilterSection = plannerFilterSection === 'assignment' ? null : 'assignment'; assigneeSearch = ''">
+              <i class="bi bi-person-lines-fill pf-section-icon"></i>
+              <span>Assignment @if (plannerFilter.assignees.length) {<span class="pf-section-count">({{ plannerFilter.assignees.length }})</span>}</span>
+              <i class="bi bi-chevron-right pf-section-chevron"></i>
+            </button>
+            <button class="pf-section-row" type="button">
+              <i class="bi bi-tag pf-section-icon"></i><span>Labels</span>
+              <i class="bi bi-chevron-right pf-section-chevron"></i>
+            </button>
+            <button class="pf-section-row" type="button">
+              <i class="bi bi-flag pf-section-icon"></i><span>Priority</span>
+              <i class="bi bi-chevron-right pf-section-chevron"></i>
+            </button>
+            <button class="pf-section-row" type="button">
+              <i class="bi bi-circle-half pf-section-icon"></i><span>Status</span>
+              <i class="bi bi-chevron-right pf-section-chevron"></i>
+            </button>
+            <button class="pf-section-row" type="button">
+              <i class="bi bi-calendar3 pf-section-icon"></i><span>Due date</span>
+              <i class="bi bi-chevron-right pf-section-chevron"></i>
+            </button>
+          </div>
+          @if (plannerFilterSection === 'assignment') {
+            <div class="pf-people-panel">
+              <div class="pf-people-search-wrap">
+                <i class="bi bi-search pf-people-search-icon"></i>
+                <input class="pf-people-search-input" type="text" placeholder="Search people" [(ngModel)]="assigneeSearch" />
+              </div>
+              @for (member of filteredPeopleForFilter; track member.id) {
+                <button class="pf-people-row" type="button" (click)="toggleAssigneeFilter(member.name)">
+                  <span class="pf-people-check">
+                    @if (plannerFilter.assignees.includes(member.name)) { <i class="bi bi-check"></i> }
+                  </span>
+                  <span class="planner-avatar sm">{{ getPlannerInitials(member.name) }}</span>
+                  <span class="pf-people-name" [class.pf-people-selected]="plannerFilter.assignees.includes(member.name)">{{ member.name }}</span>
+                </button>
+              }
+            </div>
+          }
+        </div>
+      }
+    </div>
+  </div>
+
+  <!-- Grid view -->
+  @if (plannerSubView === 'grid') {
+    <div class="planner-grid-wrap">
+      <table class="planner-grid-table">
+        <thead>
+          <tr>
+            <th class="pg-th-check"></th>
+            <th class="pg-th-name">Task name</th>
+            <th class="pg-th-assignee">Assigned to</th>
+            <th class="pg-th-date">Start</th>
+            <th class="pg-th-date">Due</th>
+            <th class="pg-th-bucket">Bucket</th>
+            <th class="pg-th-status">Status</th>
+          </tr>
+        </thead>
+        <tbody>
+          @for (task of plannerGridTasks; track task.id) {
+            <tr class="pg-row" [class.pg-row-done]="task.completed" (click)="openEditTaskModal(task)">
+              <td class="pg-td-check">
+                <button class="planner-check-btn" [class.checked]="task.completed" type="button"
+                        (click)="toggleTaskComplete(task, $event)">
+                  @if (task.completed) { <i class="bi bi-check-lg"></i> }
+                </button>
+              </td>
+              <td class="pg-td-name">
+                <span [class.done-text]="task.completed">{{ task.title }}</span>
+              </td>
+              <td class="pg-td-assignee">
+                @if (task.assignee) {
+                  <div class="pg-assignee-wrap">
+                    <span class="planner-avatar sm" [title]="task.assignee">{{ getPlannerInitials(task.assignee) }}</span>
+                    <span class="pg-assignee-name">{{ getPlannerMemberName(task.assignee) }}</span>
+                  </div>
+                }
+              </td>
+              <td class="pg-td-date">{{ task.startDate ? formatPlannerDate(task.startDate) : '' }}</td>
+              <td class="pg-td-date" [class]="task.dueDate ? getDueDateClass(task.dueDate) : ''">
+                {{ task.dueDate ? formatPlannerDate(task.dueDate) : '' }}
+              </td>
+              <td class="pg-td-bucket">{{ getBucketName(task.bucketId) }}</td>
+              <td class="pg-td-status">
+                <span class="card-status-badge"
+                      [style.background]="getTaskStatusColor(task) + '1a'"
+                      [style.color]="getTaskStatusColor(task)"
+                      [style.border-color]="getTaskStatusColor(task) + '66'">
+                  {{ task.status || 'Not started' }}
+                </span>
+              </td>
+            </tr>
+          }
+          @if (plannerGridTasks.length === 0) {
+            <tr><td colspan="7" class="pg-empty">No tasks found for this sprint.</td></tr>
+          }
+        </tbody>
+      </table>
+    </div>
+  }
+
+  <!-- Board (Kanban) view -->
+  @if (plannerSubView === 'board') {
+
+    <!-- Capacity panel -->
+    @if (capacityOpen) {
+      <div class="planner-capacity-panel">
+        <div class="capacity-panel-header">
+          <span class="capacity-panel-title">Capacity Plan — {{ selectedSprintName }}</span>
+          <button class="cap-close-btn" type="button" (click)="toggleCapacity()"><i class="bi bi-x-lg"></i></button>
+        </div>
+
+        <!-- Sprint info strip -->
+        <div class="cap-sprint-info">
+          <div class="cap-sprint-info-cell"><span class="cap-info-label">ITERATION</span><span class="cap-info-value">Group {{ sharedData.attendanceGroup }} – {{ selectedSprintName }}</span></div>
+          <div class="cap-sprint-info-cell"><span class="cap-info-label">START / END</span><span class="cap-info-value">{{ getSprintDateRange(selectedSprintName) }}</span></div>
+          <div class="cap-sprint-info-cell"><span class="cap-info-label">DAYS IN SPRINT</span><span class="cap-info-value">{{ selectedSprintWorkingDays }}</span></div>
+        </div>
+
+        @if (capacityLoading) {
+          <div class="capacity-loading">Loading attendance data…</div>
+        } @else {
+          <div class="cap-tables-wrap">
+            <!-- LEFT TABLE -->
+            <table class="cap-main-table">
+              <thead>
+                <tr class="cap-header-row">
+                  <th class="cap-th-team">TEAM</th>
+                  <th class="cap-th-num">DAYS</th>
+                  <th class="cap-th-num">PTO</th>
+                  <th class="cap-th-num">CADENCE</th>
+                  <th class="cap-th-num">ADMIN</th>
+                  <th class="cap-th-num">HOLIDAY</th>
+                  <th class="cap-th-cap">CAPACITY</th>
+                </tr>
+              </thead>
+              <tbody>
+                @for (member of plannerGroupMembers; track member.id) {
+                  @let cd = capacityData[member.eid];
+                  <tr>
+                    <td class="cap-td-team">{{ member.name }}</td>
+                    <td class="cap-td-num">{{ cd?.totalDays ?? selectedSprintWorkingDays }}</td>
+                    <td class="cap-td-num cap-td-pto">{{ cd?.pto ?? 0 }}</td>
+                    <td class="cap-td-num">
+                      <input class="cap-inline-input" type="number" min="0"
+                             [value]="cd?.cadence ?? 0"
+                             (change)="saveCapacityEntry(member.eid, 'cadence', +$any($event.target).value)" />
+                    </td>
+                    <td class="cap-td-num">
+                      <input class="cap-inline-input" type="number" min="0"
+                             [value]="cd?.admin ?? 0"
+                             (change)="saveCapacityEntry(member.eid, 'admin', +$any($event.target).value)" />
+                    </td>
+                    <td class="cap-td-num">
+                      <input class="cap-inline-input" type="number" min="0"
+                             [value]="cd?.holiday ?? 0"
+                             (change)="saveCapacityEntry(member.eid, 'holiday', +$any($event.target).value)" />
+                    </td>
+                    <td class="cap-td-cap">{{ cd?.capacity ?? selectedSprintWorkingDays }}</td>
+                  </tr>
+                }
+              </tbody>
+              <tfoot>
+                <tr class="cap-total-row">
+                  <td class="cap-td-team">TOTAL</td>
+                  <td class="cap-td-num">{{ plannerGroupMembers.length * selectedSprintWorkingDays }}</td>
+                  <td class="cap-td-num">{{ getTotalPTO() }}</td>
+                  <td class="cap-td-num">—</td>
+                  <td class="cap-td-num">—</td>
+                  <td class="cap-td-num">—</td>
+                  <td class="cap-td-cap">{{ getTotalCapacity() }}</td>
+                </tr>
+              </tfoot>
+            </table>
+
+            <!-- RIGHT TABLE -->
+            <table class="cap-split-table">
+              <thead>
+                <tr>
+                  <th colspan="2" class="cap-split-header cap-split-training">TRAINING (40%)</th>
+                  <th colspan="2" class="cap-split-header cap-split-delivery">DELIVERY (60%)</th>
+                  <th colspan="2" class="cap-split-header cap-split-total">TOTAL CAPACITY</th>
+                </tr>
+                <tr class="cap-header-row">
+                  <th class="cap-th-num">HOURS</th>
+                  <th class="cap-th-num">STORY POINTS</th>
+                  <th class="cap-th-num">HOURS</th>
+                  <th class="cap-th-num">STORY POINTS</th>
+                  <th class="cap-th-num">HOURS</th>
+                  <th class="cap-th-num">STORY POINTS</th>
+                </tr>
+              </thead>
+              <tbody>
+                @for (member of plannerGroupMembers; track member.id) {
+                  @let cd = capacityData[member.eid];
+                  <tr>
+                    <td class="cap-td-num cap-td-training">{{ cd?.trainingHours ?? 0 }}</td>
+                    <td class="cap-td-num cap-td-training">{{ cd?.trainingSP ?? 0 }}</td>
+                    <td class="cap-td-num cap-td-delivery">{{ cd?.deliveryHours ?? 0 }}</td>
+                    <td class="cap-td-num cap-td-delivery">{{ cd?.deliverySP ?? 0 }}</td>
+                    <td class="cap-td-num cap-td-total">{{ cd?.totalHours ?? 0 }}</td>
+                    <td class="cap-td-num cap-td-total">{{ cd?.totalSP ?? 0 }}</td>
+                  </tr>
+                }
+              </tbody>
+              <tfoot>
+                <tr class="cap-total-row">
+                  <td class="cap-td-num cap-td-training">{{ getTotalTrainingHours() }}</td>
+                  <td class="cap-td-num cap-td-training">{{ getTotalTrainingSP() }}</td>
+                  <td class="cap-td-num cap-td-delivery">{{ getTotalDeliveryHours() }}</td>
+                  <td class="cap-td-num cap-td-delivery">{{ getTotalDeliverySP() }}</td>
+                  <td class="cap-td-num cap-td-total">{{ getTotalHours() }}</td>
+                  <td class="cap-td-num cap-td-total">{{ getTotalSP() }}</td>
+                </tr>
+              </tfoot>
+            </table>
+          </div>
+        }
+      </div>
+    }
+
+    @if (plannerLoading) {
+      <div class="planner-empty">Loading board…</div>
+    } @else {
+      <div class="planner-kanban">
+        @if (selectedBucket; as bucket) {
+
+          <!-- 4-column Kanban board -->
+          <div class="kanban-board" cdkDropListGroup>
+            @for (col of kanbanCols; track col.id) {
+              <div class="kanban-col"
+                   cdkDropList
+                   [id]="col.id + '-' + bucket.id"
+                   [cdkDropListData]="getTasksForCol(bucket.id, col.id)"
+                   (cdkDropListDropped)="onKanbanDrop($event)">
+
+                <!-- Column header -->
+                <div class="kanban-col-header">
+                  <span class="kanban-col-dot" [style.background]="col.color"></span>
+                  <span class="kanban-col-label">{{ col.label }}</span>
+                  <span class="kanban-col-count">{{ getColTaskCount(bucket.id, col.id) }}</span>
+                  @if (col.id === 'new') {
+                    <button class="kanban-add-btn" type="button" title="Add task" (click)="openNewTaskModal(bucket.id)">
+                      <i class="bi bi-plus-lg"></i>
+                    </button>
+                  }
+                </div>
+
+                <!-- Task cards -->
+                <div class="kanban-col-body">
+                  @for (task of getTasksForCol(bucket.id, col.id); track task.id) {
+                    <div class="planner-card"
+                         cdkDrag
+                         [cdkDragData]="task"
+                         [class.planner-card-done]="col.id === 'done'"
+                         [class.card-sync-pending]="isTaskPendingSync(task.id)"
+                         (click)="openEditTaskModal(task)">
+                      <div class="planner-card-labels">
+                        @for (label of getTaskLabels(task); track label.id) {
+                          <span class="planner-label-pill" [style.background]="label.color">{{ label.name }}</span>
+                        }
+                      </div>
+                      <div class="planner-card-title-row">
+                        <button class="planner-check-btn" type="button"
+                                [class.checked]="task.completed"
+                                (click)="toggleTaskComplete(task, $event)"
+                                [attr.aria-label]="'Mark ' + task.title + ' complete'">
+                          @if (task.completed) { <i class="bi bi-check-lg"></i> }
+                        </button>
+                        <span class="planner-card-title" [class.done-text]="col.id === 'done'">{{ task.title }}</span>
+                      </div>
+                      <div class="planner-card-footer">
+                        <span class="card-status-badge"
+                              [style.background]="getTaskStatusColor(task) + '1a'"
+                              [style.color]="getTaskStatusColor(task)"
+                              [style.border-color]="getTaskStatusColor(task) + '66'">
+                          {{ task.status || 'Not started' }}
+                        </span>
+                        @if (task.dueDate) {
+                          <span class="planner-card-due" [class]="getDueDateClass(task.dueDate)">
+                            <i class="bi bi-calendar3"></i> {{ formatPlannerDate(task.dueDate) }}
+                          </span>
+                        }
+                        @if (task.assignee) {
+                          <span class="planner-avatar" [title]="task.assignee">{{ getPlannerInitials(task.assignee) }}</span>
+                        }
+                      </div>
+                    </div>
+                  }
+                  @if (getTasksForCol(bucket.id, col.id).length === 0) {
+                    <div class="kanban-drop-hint">
+                      <i class="bi bi-inbox"></i>
+                      <span>Drop tasks here</span>
+                    </div>
+                  }
+                </div>
+              </div>
+            }
+          </div>
+
+        } @else {
+          <div class="planner-empty">
+            <i class="bi bi-inbox" style="font-size:2rem;display:block;margin-bottom:.5rem;"></i>
+            No sprint bucket for <strong>{{ selectedSprintName }}</strong> yet.<br>
+            <small style="color:var(--text-muted,#888)">Tasks added to this board will be saved under the selected sprint.</small>
+          </div>
+        }
+      </div>
+    }
+
+  } <!-- end Board view -->
+
+  <!-- Dashboard view -->
+  @if (plannerSubView === 'dashboard') {
+    <div class="bd-wrap">
+      <div class="bd-header">
+        <span class="bd-main-title">Sprint Burndown Chart</span>
+        <span class="bd-sprint-pill">{{ selectedSprintName }}</span>
+        <span class="bd-date-range">{{ getSprintDateRange(selectedSprintName) }} &bull; 2 weeks</span>
+      </div>
+
+      @if (burndownData.length === 0) {
+        <div class="bd-empty">
+          <i class="bi bi-bar-chart-line"></i>
+          <p>No tasks found for {{ selectedSprintName }}.</p>
+          <small>Tasks will appear here once they are added to this sprint.</small>
+        </div>
+      } @else {
+        @let chart = burndownChartConfig;
+        <div class="bd-content">
+
+          <!-- Summary table -->
+          <div class="bd-table-section">
+            <p class="bd-section-label">Sprint Delivery</p>
+            <table class="bd-table">
+              <thead>
+                <tr>
+                  <th class="bd-th-day">DAY /<br>SPRINT /<br>ITERATION</th>
+                  <th class="bd-th-feat">FEATURES /<br>STORY POINTS<br>GOAL</th>
+                  <th class="bd-th-cmp">COMPLETE</th>
+                  <th class="bd-th-tgt">TARGET</th>
+                  <th class="bd-th-act">ACTUALS</th>
+                  <th class="bd-th-rate">Target<br>Completion<br>Rate</th>
+                  <th class="bd-th-rate">Actual<br>Completion<br>Rate</th>
+                </tr>
+              </thead>
+              <tbody>
+                @for (row of burndownData; track row.day) {
+                  <tr>
+                    <td>{{ row.day }}</td>
+                    <td>{{ row.day === 0 ? '0.0' : (row.goalPerDay | number:'1.1-1') }}</td>
+                    <td>{{ row.complete }}</td>
+                    <td class="bd-td-tgt">{{ row.target }}</td>
+                    <td class="bd-td-act">{{ row.actuals !== null ? row.actuals : '' }}</td>
+                    <td>{{ row.day === 0 ? '0%' : (row.targetRate + '%') }}</td>
+                    <td>{{ row.actualRate !== null ? (row.actualRate + '%') : '' }}</td>
+                  </tr>
+                }
+              </tbody>
+            </table>
+          </div>
+
+          <!-- SVG burndown chart -->
+          <div class="bd-chart-section">
+            <svg class="bd-svg" viewBox="0 0 720 305" xmlns="http://www.w3.org/2000/svg">
+              <!-- Background -->
+              <rect width="720" height="305" rx="10" fill="#1e2235"/>
+
+              <!-- Legend -->
+              <rect x="370" y="10" width="12" height="12" rx="2" fill="#4a7fd4"/>
+              <text x="386" y="21" fill="#bbb" font-size="12" font-family="sans-serif" font-weight="600">TARGET</text>
+              <line x1="442" y1="16" x2="458" y2="16" stroke="#f5a623" stroke-width="3"/>
+              <circle cx="450" cy="16" r="4" fill="#f5a623"/>
+              <text x="462" y="21" fill="#bbb" font-size="12" font-family="sans-serif" font-weight="600">ACTUALS</text>
+
+              <!-- Y-axis grid lines and labels -->
+              @for (tick of chart.yTicks; track tick.label) {
+                <line [attr.x1]="chart.chartX" [attr.y1]="tick.y"
+                      [attr.x2]="chart.chartX + 610" [attr.y2]="tick.y"
+                      stroke="#2e3a55" stroke-width="1"/>
+                <text [attr.x]="chart.chartX - 6" [attr.y]="tick.y + 4"
+                      fill="#7a8aaa" font-size="11" text-anchor="end" font-family="sans-serif">
+                  {{ tick.label }}
+                </text>
+              }
+
+              <!-- TARGET bars -->
+              @for (bar of chart.bars; track bar.dayLabel) {
+                <rect [attr.x]="bar.x" [attr.y]="bar.y"
+                      [attr.width]="bar.w" [attr.height]="bar.h"
+                      fill="#4a7fd4" rx="2"/>
+                <text [attr.x]="bar.x + bar.w / 2" [attr.y]="bar.y - 5"
+                      fill="#7fb3ff" font-size="11" text-anchor="middle"
+                      font-family="sans-serif" font-weight="600">{{ bar.val }}</text>
+              }
+
+              <!-- X-axis baseline -->
+              <line [attr.x1]="chart.chartX" [attr.y1]="chart.baseY"
+                    [attr.x2]="chart.chartX + 610" [attr.y2]="chart.baseY"
+                    stroke="#3a4460" stroke-width="1"/>
+
+              <!-- X-axis labels -->
+              @for (xl of chart.xLabels; track xl.label) {
+                <text [attr.x]="xl.x" [attr.y]="chart.baseY + 16"
+                      fill="#7a8aaa" font-size="11" text-anchor="middle"
+                      font-family="sans-serif">{{ xl.label }}</text>
+              }
+
+              <!-- ACTUALS line -->
+              @if (chart.actualLine) {
+                <path [attr.d]="chart.actualLine"
+                      fill="none" stroke="#f5a623" stroke-width="2.5"
+                      stroke-linejoin="round" stroke-linecap="round"/>
+              }
+
+              <!-- ACTUALS data points + labels -->
+              @for (pt of chart.actualPts; track pt.day) {
+                <circle [attr.cx]="pt.x" [attr.cy]="pt.y" r="5" fill="#f5a623"/>
+                <rect [attr.x]="pt.x - 14" [attr.y]="pt.y - 22"
+                      width="28" height="16" rx="3" fill="#f5a623"/>
+                <text [attr.x]="pt.x" [attr.y]="pt.y - 10"
+                      fill="#1e2235" font-size="11" text-anchor="middle"
+                      font-family="sans-serif" font-weight="700">{{ pt.val }}</text>
+              }
+            </svg>
+          </div>
+
+        </div>
+
+        <!-- Highlights -->
+        <div class="bd-highlights">
+          <strong>Highlights</strong>
+          <ul>
+            <li>Total sprint tasks: <strong>{{ burndownSummary.total }}</strong></li>
+            <li>Remaining (latest day): <strong>{{ burndownSummary.remaining !== null ? burndownSummary.remaining : 'N/A' }}</strong></li>
+            <li>Completed so far: <strong>{{ burndownSummary.completed }}</strong></li>
+          </ul>
+        </div>
+      }
+    </div>
+  }
+
+}
+
+<!-- Task Modal -->
+@if (taskModal.open) {
+  <div class="modal-backdrop fade show" (click)="closeTaskModal()"></div>
+  <div class="modal fade show task-modal" tabindex="-1" role="dialog" aria-modal="true">
+    <div class="modal-dialog modal-dialog-centered task-modal-dialog">
+      <div class="modal-content task-modal-content">
+
+        <!-- Header -->
+        <div class="task-modal-header">
+          <div class="task-modal-header-actions">
+            @if (!taskModal.isNew) {
+              <button type="button" class="task-icon-btn" title="Delete task" (click)="openDeleteTaskDialog()">
+                <i class="bi bi-trash3"></i>
+              </button>
+            }
+            <button type="button" class="task-icon-btn" aria-label="Close" (click)="closeTaskModal()">
+              <i class="bi bi-x-lg"></i>
+            </button>
+          </div>
+        </div>
+
+        <!-- Body -->
+        <div class="task-modal-body">
+          <div class="task-modal-main">
+
+            <!-- Title -->
+            <div class="task-title-row">
+              <button class="planner-check-btn" type="button"
+                      [class.checked]="taskModal.task.completed"
+                      (click)="taskModal.task.completed = !taskModal.task.completed"
+                      aria-label="Toggle complete">
+                @if (taskModal.task.completed) { <i class="bi bi-check-lg"></i> }
+              </button>
+              <input class="task-title-input" [(ngModel)]="taskModal.task.title" placeholder="Task title" />
+            </div>
+
+            <!-- Labels row -->
+            <div class="task-meta-row">
+              <i class="bi bi-tag task-meta-icon"></i>
+              <div class="task-labels-edit">
+                @for (label of getTaskLabels(taskModal.task); track label.id) {
+                  <span class="planner-label-pill" [style.background]="label.color">
+                    {{ label.name }}
+                    <button class="label-remove" type="button" (click)="toggleLabelOnTask(label.id)">×</button>
+                  </span>
+                }
+                <div class="label-picker-wrap">
+                  <button class="label-add-btn" type="button" (click)="taskModal.labelMenuOpen = !taskModal.labelMenuOpen">
+                    <i class="bi bi-plus-lg"></i>
+                  </button>
+                  @if (taskModal.labelMenuOpen) {
+                    <div class="label-picker-dropdown">
+                      @for (label of plannerLabels; track label.id) {
+                        <button class="label-picker-item" type="button" (click)="toggleLabelOnTask(label.id)">
+                          <span class="label-swatch" [style.background]="label.color"></span>
+                          {{ label.name }}
+                          @if (isLabelOnTask(label.id)) { <i class="bi bi-check-lg ms-auto"></i> }
+                        </button>
+                      }
+                    </div>
+                  }
+                </div>
+              </div>
+            </div>
+
+            <!-- Assignee -->
+            <div class="task-meta-row">
+              <i class="bi bi-person task-meta-icon"></i>
+              <select class="task-inline-select" [(ngModel)]="taskModal.task.assignee">
+                <option value="">— Select member —</option>
+                @for (member of plannerGroupMembers; track member.id) {
+                  <option [value]="member.eid">{{ member.name }}</option>
+                }
+              </select>
+            </div>
+
+            <!-- Tabs -->
+            <div class="task-tabs">
+              <button class="task-tab" [class.active]="taskModal.activeTab === 'details'" type="button"
+                      (click)="taskModal.activeTab = 'details'">
+                <i class="bi bi-card-text"></i> Task details
+              </button>
+              <button class="task-tab" [class.active]="taskModal.activeTab === 'attachments'" type="button"
+                      (click)="taskModal.activeTab = 'attachments'">
+                <i class="bi bi-paperclip"></i> Attachments
+              </button>
+            </div>
+
+            @if (taskModal.activeTab === 'details') {
+
+              <!-- Description -->
+              <div class="task-section">
+                <h4 class="task-section-title"><i class="bi bi-text-left"></i> Description</h4>
+                <textarea class="task-section-textarea" [(ngModel)]="taskModal.task.description"
+                          placeholder="Add a description…" rows="3"></textarea>
+              </div>
+
+              <div class="task-details-grid">
+
+                <!-- Status -->
+                <div class="task-field">
+                  <label class="task-field-label">Status</label>
+                  <select class="task-field-select" [(ngModel)]="taskModal.task.status">
+                    <option>Not started</option>
+                    <option>In progress</option>
+                    <option>Review</option>
+                    <option>Completed</option>
+                    <option>Late</option>
+                  </select>
+                </div>
+
+                <!-- Priority -->
+                <div class="task-field">
+                  <label class="task-field-label">Priority</label>
+                  <div class="task-priority-select-wrap">
+                    <span class="priority-dot" [style.background]="getPriorityDotColor(taskModal.task.priority)"></span>
+                    <select class="task-field-select" [(ngModel)]="taskModal.task.priority">
+                      <option>Low</option>
+                      <option>Medium</option>
+                      <option>High</option>
+                      <option>Urgent</option>
+                    </select>
+                  </div>
+                </div>
+
+                <!-- Start date -->
+                <div class="task-field">
+                  <label class="task-field-label">Start date</label>
+                  <input class="task-field-input" type="date" [(ngModel)]="taskModal.task.startDate" />
+                </div>
+
+                <!-- Due date -->
+                <div class="task-field">
+                  <label class="task-field-label">Due date</label>
+                  <input class="task-field-input" type="date" [(ngModel)]="taskModal.task.dueDate" />
+                </div>
+
+                <!-- Bucket -->
+                <div class="task-field task-field-full">
+                  <label class="task-field-label">Bucket</label>
+                  <select class="task-field-select" [(ngModel)]="taskModal.task.bucketId">
+                    @for (bucket of plannerBuckets; track bucket.id) {
+                      <option [ngValue]="bucket.id">{{ bucket.name }}</option>
+                    }
+                  </select>
+                </div>
+
+              </div>
+
+              <!-- Acceptance Criteria -->
+              <div class="task-section">
+                <h4 class="task-section-title"><i class="bi bi-check2-square"></i> Acceptance Criteria</h4>
+                <textarea class="task-section-textarea" [(ngModel)]="taskModal.task.acceptanceCriteria"
+                          placeholder="Define what 'done' looks like…" rows="3"></textarea>
+              </div>
+
+              <!-- Checklist -->
+              <div class="task-section">
+                <h4 class="task-section-title">
+                  <i class="bi bi-list-check"></i> Checklist
+                  @if (taskModal.task.checklist.length) {
+                    <span class="task-section-badge">{{ checklistDoneCount(taskModal.task.checklist) }}/{{ taskModal.task.checklist.length }}</span>
+                  }
+                </h4>
+                <div class="checklist-pills-row">
+                  @for (item of taskModal.task.checklist; track item.id) {
+                    <span class="checklist-pill" [class.checklist-pill-done]="item.done"
+                          (click)="item.done = !item.done">
+                      <i class="bi" [class.bi-check-circle-fill]="item.done" [class.bi-circle]="!item.done"></i>
+                      <span class="checklist-pill-text">{{ item.text }}</span>
+                      <button type="button" class="checklist-pill-remove"
+                              (click)="$event.stopPropagation(); removeChecklistItem(item.id)">×</button>
+                    </span>
+                  }
+                </div>
+                <div class="task-checklist-add">
+                  <input class="task-field-input" [(ngModel)]="taskModal.checklistInput"
+                         placeholder="Add an item"
+                         (keydown.enter)="$event.preventDefault(); addChecklistItem()" />
+                  <button class="btn btn-outline-secondary btn-sm" type="button" (click)="addChecklistItem()">Add</button>
+                </div>
+              </div>
+
+              <!-- Comments -->
+              <div class="task-section">
+                <h4 class="task-section-title">
+                  <i class="bi bi-chat-left-text"></i> Comments
+                  @if (taskModal.task.comments.length) {
+                    <span class="task-section-badge">{{ taskModal.task.comments.length }}</span>
+                  }
+                </h4>
+                @if (taskModal.task.comments.length) {
+                  <div class="comments-thread">
+                    @for (comment of taskModal.task.comments; track comment.id) {
+                      <div class="comment-item">
+                        <div class="comment-avatar">{{ getInitials(comment.author) }}</div>
+                        <div class="comment-body">
+                          <div class="comment-header">
+                            <span class="comment-author">{{ comment.author }}</span>
+                            <span class="comment-time">{{ formatCommentDate(comment.createdAt) }}</span>
+                            <button type="button" class="comment-delete-btn"
+                                    title="Delete comment"
+                                    (click)="openDeleteCommentDialog(comment)">
+                              <i class="bi bi-x"></i>
+                            </button>
+                          </div>
+                          <div class="comment-text">{{ comment.text }}</div>
+                        </div>
+                      </div>
+                    }
+                  </div>
+                }
+                <div class="comment-add">
+                  <select class="task-field-select comment-author-select"
+                          [(ngModel)]="taskModal.commentAuthor">
+                    <option value="">— Select your name —</option>
+                    @for (member of plannerGroupMembers; track member.id) {
+                      <option [value]="member.name">{{ member.name }}</option>
+                    }
+                  </select>
+                  <textarea class="task-section-textarea"
+                            [(ngModel)]="taskModal.commentInput"
+                            placeholder="Write a comment…" rows="2"></textarea>
+                  <div class="comment-add-actions">
+                    <span class="comment-hint">Ctrl+Enter to post</span>
+                    <button class="btn btn-primary btn-sm" type="button"
+                            (click)="addComment()"
+                            [disabled]="!taskModal.commentInput.trim()">Post</button>
+                  </div>
+                </div>
+              </div>
+
+            } @else {
+              <div class="task-attachments-stub">
+                <i class="bi bi-paperclip" style="font-size:2.5rem;color:#bbb;"></i>
+                <p>Attachments — coming soon</p>
+              </div>
+            }
+
+          </div>
+        </div>
+
+        <!-- Footer -->
+        <div class="task-modal-footer">
+          @if (taskSaveError) {
+            <span class="task-save-error">{{ taskSaveError }}</span>
+          }
+          <button type="button" class="btn btn-outline-secondary" (click)="closeTaskModal()">Cancel</button>
+          <button type="button" class="btn btn-primary" (click)="saveTask()" [disabled]="!taskModal.task.title.trim()">
+            {{ taskModal.isNew ? 'Create task' : 'Save changes' }}
+          </button>
+        </div>
+
+      </div>
+    </div>
+  </div>
+}
+
+<!-- Delete Task Confirmation Dialog -->
+@if (deleteTaskDialog.open) {
+  <div class="del-dialog-backdrop" (click)="closeDeleteTaskDialog()">
+    <div class="del-dialog" (click)="$event.stopPropagation()">
+
+      <div class="del-dialog-header">
+        <div class="del-dialog-icon"><i class="bi bi-trash3"></i></div>
+        <div>
+          <h3 class="del-dialog-title">Delete Task</h3>
+          <p class="del-dialog-subtitle">This action cannot be undone. All comments and checklist data will be lost.</p>
+        </div>
+        <button type="button" class="del-dialog-close" (click)="closeDeleteTaskDialog()">
+          <i class="bi bi-x-lg"></i>
+        </button>
+      </div>
+
+      <div class="del-dialog-preview">
+        <div class="del-dialog-preview-author">
+          <span class="del-task-icon"><i class="bi bi-card-checklist"></i></span>
+          <span class="del-preview-name">{{ taskModal.task.title }}</span>
+        </div>
+        <p class="del-dialog-preview-text" style="margin-top: 0.35rem; color: #888;">
+          {{ taskModal.task.checklist.length }} checklist item(s) · {{ taskModal.task.comments.length }} comment(s)
+        </p>
+      </div>
+
+      <div class="del-dialog-body">
+        <label class="del-dialog-label">
+          Type <strong>DELETE</strong> to confirm:
+        </label>
+        <input class="del-dialog-input"
+               [(ngModel)]="deleteTaskDialog.typeInput"
+               placeholder="DELETE"
+               autocomplete="off" />
+      </div>
+
+      <div class="del-dialog-footer">
+        <button type="button" class="btn btn-outline-secondary" (click)="closeDeleteTaskDialog()">
+          Cancel
+        </button>
+        <button type="button" class="btn del-dialog-confirm-btn"
+                [disabled]="deleteTaskDialog.typeInput !== 'DELETE'"
+                (click)="confirmDeleteTask()">
+          <i class="bi bi-trash3"></i> Delete Task
+        </button>
+      </div>
+
+    </div>
+  </div>
+}
+
+<!-- Delete Comment Confirmation Dialog -->
+@if (deleteCommentDialog.open && deleteCommentDialog.comment) {
+  <div class="del-dialog-backdrop" (click)="closeDeleteCommentDialog()">
+    <div class="del-dialog" (click)="$event.stopPropagation()">
+
+      <div class="del-dialog-header">
+        <div class="del-dialog-icon"><i class="bi bi-trash3"></i></div>
+        <div>
+          <h3 class="del-dialog-title">Delete Comment</h3>
+          <p class="del-dialog-subtitle">This action cannot be undone.</p>
+        </div>
+        <button type="button" class="del-dialog-close" (click)="closeDeleteCommentDialog()">
+          <i class="bi bi-x-lg"></i>
+        </button>
+      </div>
+
+      <div class="del-dialog-preview">
+        <div class="del-dialog-preview-author">
+          <span class="del-preview-avatar">{{ getInitials(deleteCommentDialog.comment.author) }}</span>
+          <span class="del-preview-name">{{ deleteCommentDialog.comment.author }}</span>
+          <span class="del-preview-time">{{ formatCommentDate(deleteCommentDialog.comment.createdAt) }}</span>
+        </div>
+        <p class="del-dialog-preview-text">{{ deleteCommentDialog.comment.text }}</p>
+      </div>
+
+      <div class="del-dialog-body">
+        <label class="del-dialog-label">
+          Type <strong>DELETE</strong> to confirm:
+        </label>
+        <input class="del-dialog-input"
+               [(ngModel)]="deleteCommentDialog.typeInput"
+               placeholder="DELETE"
+               autocomplete="off" />
+      </div>
+
+      <div class="del-dialog-footer">
+        <button type="button" class="btn btn-outline-secondary" (click)="closeDeleteCommentDialog()">
+          Cancel
+        </button>
+        <button type="button" class="btn del-dialog-confirm-btn"
+                [disabled]="deleteCommentDialog.typeInput !== 'DELETE'"
+                (click)="confirmDeleteComment()">
+          <i class="bi bi-trash3"></i> Delete
+        </button>
+      </div>
+
+    </div>
+  </div>
+}
+
+<!-- Sprint Modal -->
+@if (sprintModal.open) {
+  <div class="modal-backdrop fade show" (click)="cancelSprintDialog()"></div>
+  <div class="modal fade show confirm-modal" tabindex="-1" role="dialog" aria-modal="true">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content sprint-dialog">
+        <div class="modal-header">
+          <h2 class="modal-title">
+            <i class="bi bi-calendar-range me-2"></i>
+            {{ sprintModal.isEdit ? 'Edit Sprint' : 'New Sprint' }}
+          </h2>
+          <button type="button" class="btn-close" aria-label="Close" (click)="cancelSprintDialog()"></button>
+        </div>
+        <div class="modal-body sprint-dialog-body">
+          <div class="sprint-dialog-field">
+            <label class="sprint-dialog-label" for="sprintName">Sprint Name</label>
+            <input id="sprintName" class="form-control" type="text"
+                   placeholder="e.g. Sprint 12"
+                   [(ngModel)]="sprintModal.name"
+                   (keydown.enter)="saveSprintDialog()" />
+          </div>
+          <div class="sprint-dialog-dates">
+            <div class="sprint-dialog-field">
+              <label class="sprint-dialog-label" for="sprintStart">Date From</label>
+              <input id="sprintStart" class="form-control" type="date"
+                     [(ngModel)]="sprintModal.start" />
+            </div>
+            <div class="sprint-dialog-field">
+              <label class="sprint-dialog-label" for="sprintEnd">Date To</label>
+              <input id="sprintEnd" class="form-control" type="date"
+                     [(ngModel)]="sprintModal.end" />
+            </div>
+          </div>
+          @if (sprintModal.error) {
+            <p class="sprint-dialog-error">{{ sprintModal.error }}</p>
+          }
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-outline-secondary" (click)="cancelSprintDialog()">
+            Cancel
+          </button>
+          <button type="button" class="btn btn-primary" [disabled]="sprintModal.saving" (click)="saveSprintDialog()">
+            @if (sprintModal.saving) {
+              <span class="spinner-border spinner-border-sm me-1"></span>
+            }
+            {{ sprintModal.isEdit ? 'Save Changes' : 'Create Sprint' }}
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+}

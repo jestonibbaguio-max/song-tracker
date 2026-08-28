@@ -1,0 +1,31 @@
+@import "bootstrap/dist/css/bootstrap.min.css";
+@import "bootstrap-icons/font/bootstrap-icons.css";
+
+:root {
+  --accent: #A100FF;
+  --accent-dark: #000000;
+  --ink: #000000;
+  --muted: #4d4d4d;
+  --line: #dbccff;
+  --panel: #ffffff;
+  --surface: #f7f1ff;
+  --good: #4f8f79;
+  --warning: #b85c48;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  min-width: 320px;
+  min-height: 100vh;
+  background: linear-gradient(180deg, #ffffff 0%, #f4efff 100%);
+  color: var(--ink);
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+button {
+  font: inherit;
+}

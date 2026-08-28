@@ -1,0 +1,125 @@
+<div class="comp-filter-bar">
+  <label class="comp-filter-label">Group</label>
+  <select class="comp-group-select" [(ngModel)]="selectedCompetencyGroup" (change)="loadCompetency()">
+    @for (g of sharedData.groupOptions; track g.value) {
+      <option [value]="g.value">{{ g.label }}</option>
+    }
+  </select>
+</div>
+<div class="comp-wrapper">
+  <div class="comp-title-bar">MYCOMPETENCY STATUS DETAILS</div>
+  <div class="comp-table-scroll">
+    <table class="comp-table">
+      <thead>
+        <tr>
+          <th class="comp-th-navy comp-col-num">#</th>
+          <th class="comp-th-navy comp-col-name">Name</th>
+          <th class="comp-th-cyan">Primary Skill</th>
+          <th class="comp-th-cyan">Proficiency</th>
+          <th class="comp-th-cyan">Recent Retake Date</th>
+          <th class="comp-th-cyan">Next Retake Date</th>
+          <th class="comp-th-purple">Secondary Skill</th>
+          <th class="comp-th-purple">Proficiency</th>
+          <th class="comp-th-purple">Retake Date</th>
+        </tr>
+      </thead>
+      <tbody>
+        @for (rec of competencyRecords; track rec.eid; let i = $index) {
+          <tr [class.comp-row-green]="isCompetencyRowGreen(rec)" [class.comp-row-yellow]="!isCompetencyRowGreen(rec)">
+            <td class="comp-td-num">{{ i + 1 }}</td>
+            <td class="comp-td-name">{{ rec.eid }}</td>
+            <td><input class="comp-cell-input" [(ngModel)]="rec.primarySkill" (blur)="updateCompetencyField(rec.eid, 'primarySkill', rec.primarySkill)" /></td>
+            <td>
+              <select class="comp-cell-select" [(ngModel)]="rec.primaryProficiency" (change)="updateCompetencyField(rec.eid, 'primaryProficiency', rec.primaryProficiency)">
+                <option>N/A</option>
+                <option>TBD</option>
+                <option>P1</option>
+                <option>P2</option>
+                <option>P3</option>
+                <option>P3+</option>
+                <option>P4</option>
+                <option>P5</option>
+              </select>
+            </td>
+            <td><input class="comp-cell-date" type="date" [(ngModel)]="rec.recentRetakeDate" (change)="updateCompetencyField(rec.eid, 'recentRetakeDate', rec.recentRetakeDate)" /></td>
+            <td><input class="comp-cell-date" type="date" [(ngModel)]="rec.nextRetakeDate" (change)="updateCompetencyField(rec.eid, 'nextRetakeDate', rec.nextRetakeDate)" /></td>
+            <td><input class="comp-cell-input" [(ngModel)]="rec.secondarySkill" (blur)="updateCompetencyField(rec.eid, 'secondarySkill', rec.secondarySkill)" /></td>
+            <td>
+              <select class="comp-cell-select" [(ngModel)]="rec.secondaryProficiency" (change)="updateCompetencyField(rec.eid, 'secondaryProficiency', rec.secondaryProficiency)">
+                <option>N/A</option>
+                <option>TBD</option>
+                <option>P1</option>
+                <option>P2</option>
+                <option>P3</option>
+                <option>P3+</option>
+                <option>P4</option>
+                <option>P5</option>
+              </select>
+            </td>
+            <td><input class="comp-cell-date" type="date" [(ngModel)]="rec.retakeDate" (change)="updateCompetencyField(rec.eid, 'retakeDate', rec.retakeDate)" /></td>
+          </tr>
+        }
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<!-- Summary Dashboard -->
+<div class="comp-status-wrapper">
+  <div class="comp-status-title">MYCOMPETENCY STATUS</div>
+  <div class="comp-status-table-scroll">
+    <table class="comp-status-table">
+      <thead>
+        <tr>
+          <th colspan="5" class="comp-status-th-cyan">Primary Skill Assessment</th>
+          <th colspan="5" class="comp-status-th-purple">Secondary Skill Assessment</th>
+        </tr>
+        <tr>
+          <th class="comp-status-col-h">Completed</th>
+          <th class="comp-status-col-h">Not Started</th>
+          <th class="comp-status-col-h">Below P2</th>
+          <th class="comp-status-col-h">P2 &amp; Above</th>
+          <th class="comp-status-col-h">No Assessment Available</th>
+          <th class="comp-status-col-h">Completed</th>
+          <th class="comp-status-col-h">Not Started</th>
+          <th class="comp-status-col-h">Below P2</th>
+          <th class="comp-status-col-h">P2 &amp; Above</th>
+          <th class="comp-status-col-h">No Assessment Available</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr class="comp-status-data-row">
+          <td>{{ competencySummary.primary.completed }}</td>
+          <td>{{ competencySummary.primary.notStarted }}</td>
+          <td>{{ competencySummary.primary.belowP2 }}</td>
+          <td>{{ competencySummary.primary.p2AndAbove }}</td>
+          <td>{{ competencySummary.primary.noAssessment }}</td>
+          <td>{{ competencySummary.secondary.completed }}</td>
+          <td>{{ competencySummary.secondary.notStarted }}</td>
+          <td>{{ competencySummary.secondary.belowP2 }}</td>
+          <td>{{ competencySummary.secondary.p2AndAbove }}</td>
+          <td>{{ competencySummary.secondary.noAssessment }}</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="comp-status-req-bar">
+    <div class="comp-req-block comp-req-primary">
+      <span class="comp-req-label">Primary — Meets Minimum Requirement</span>
+      <span class="comp-req-count">{{ competencyMeetReq.primaryMet }} / {{ competencyMeetReq.primaryTotal }}</span>
+    </div>
+    <div class="comp-req-block comp-req-secondary">
+      <span class="comp-req-label">Secondary — Meets P3 Minimum</span>
+      <span class="comp-req-count">{{ competencyMeetReq.secondaryMet }} / {{ competencyMeetReq.primaryTotal }}</span>
+    </div>
+  </div>
+
+  <div class="comp-status-note">
+    <p class="comp-note-heading">Note:</p>
+    <p><strong>Below P2:</strong> &nbsp;*Self-paced review in progress</p>
+    <p class="comp-note-heading" style="margin-top:0.75rem;">Minimum Requirements (Primary Skill):</p>
+    <p><strong>CL 12 &amp; 11</strong> — minimum <strong>P2</strong></p>
+    <p><strong>CL 10 – 6</strong> — minimum <strong>P3</strong></p>
+  </div>
+</div>

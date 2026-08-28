@@ -1,0 +1,125 @@
+<div class="panel mock-summary" style="margin:1.5rem;padding:2rem;">
+  <h2 style="margin:0 0 1rem 0;">{{ summary.title }}</h2>
+  <div style="text-align: right; margin-bottom: 1rem;">
+    <button (click)="onAddRow()" class="btn-add-row">+</button>
+  </div>
+  <div class="mock-summary__table-wrap">
+    <table class="mock-summary__table">
+      <thead>
+        <tr>
+          <th>Assessment Stream</th>
+          <th>Total Resources</th>
+          <th>Scheduled</th>
+          <th>Total Conducted</th>
+          <th>Total Passed</th>
+          <th>Total Failed</th>
+          <th>Pass Rate(%)</th>
+          <th>Fail Rate(%)</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        @for (row of summary.rows; track row.stream; let i = $index) {
+          <tr>
+            <td class="stream">{{ row.stream }}</td>
+            <td>{{ row.totalResources }}</td>
+            <td>{{ row.scheduled }}</td>
+            <td>{{ row.totalConducted }}</td>
+            <td>{{ row.totalPassed }}</td>
+            <td>{{ row.totalFailed }}</td>
+            <td>{{ row.passRate }}</td>
+            <td>{{ row.failRate }}</td>
+            <td class="actions">
+              <button (click)="onEdit(i)" title="Edit" style="background:none; border:none; cursor:pointer; color: #007bff; margin-right: 10px;">
+                ✏️
+              </button>
+              <button (click)="onDelete(i)" title="Delete" style="background:none; border:none; cursor:pointer; color: #dc3545;">
+                <i class="bi bi-trash3"></i>
+              </button>
+            </td>
+          </tr>
+        }
+      </tbody>
+    </table>
+  </div>
+
+  <div class="mock-summary__highlights">
+    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.5rem;">
+      <strong>Highlights:</strong>
+      <button (click)="onAddHighlight()" class="btn-add-highlight">+</button>
+    </div>
+    <ul>
+      @for (h of summary.highlights; track $index; let i = $index) {
+        <li>
+          <span>{{ h }}</span>
+          <div class="highlight-actions">
+            <button (click)="onEditHighlight(i)" title="Edit" class="btn-icon-small">✏️</button>
+            <button (click)="onDeleteHighlight(i)" title="Delete" class="btn-icon-small" style="color: #dc3545;">
+              <i class="bi bi-trash3"></i>
+            </button>
+          </div>
+        </li>
+      }
+    </ul>
+  </div>
+
+  @if (showEditModal && editingRow) {
+    <div class="modal-overlay" (click)="closeModal()">
+      <div class="modal-content" (click)="$event.stopPropagation()">
+        <h3>Edit Assessment Row</h3>
+        <div class="form-group">
+          <label>Assessment Stream:</label>
+          <input [(ngModel)]="editingRow.stream" type="text" />
+        </div>
+        <div class="form-group">
+          <label>Total Resources:</label>
+          <input [(ngModel)]="editingRow.totalResources" type="number" />
+        </div>
+        <div class="form-group">
+          <label>Scheduled:</label>
+          <input [(ngModel)]="editingRow.scheduled" type="text" />
+        </div>
+        <div class="form-group">
+          <label>Total Conducted:</label>
+          <input [(ngModel)]="editingRow.totalConducted" type="number" />
+        </div>
+        <div class="form-group">
+          <label>Total Passed:</label>
+          <input [(ngModel)]="editingRow.totalPassed" type="number" />
+        </div>
+        <div class="form-group">
+          <label>Total Failed:</label>
+          <input [(ngModel)]="editingRow.totalFailed" type="text" />
+        </div>
+        <div class="form-group">
+          <label>Pass Rate (%):</label>
+          <input [(ngModel)]="editingRow.passRate" type="text" />
+        </div>
+        <div class="form-group">
+          <label>Fail Rate (%):</label>
+          <input [(ngModel)]="editingRow.failRate" type="text" />
+        </div>
+        <div class="modal-actions">
+          <button (click)="onUpdate()" class="btn-save">Save</button>
+          <button (click)="closeModal()" class="btn-cancel">Cancel</button>
+        </div>
+      </div>
+    </div>
+  }
+
+  @if (showHighlightModal && editingHighlight !== null) {
+    <div class="modal-overlay" (click)="closeHighlightModal()">
+      <div class="modal-content" (click)="$event.stopPropagation()">
+        <h3>{{ editingHighlightIndex === summary.highlights.length ? 'Add Highlight' : 'Edit Highlight' }}</h3>
+        <div class="form-group">
+          <label>Highlight Text:</label>
+          <textarea [(ngModel)]="editingHighlight" rows="3" style="width: 100%; padding: 8px; border: 1px solid #ddd; border-radius: 4px; font-family: inherit; font-size: 0.95rem;"></textarea>
+        </div>
+        <div class="modal-actions">
+          <button (click)="onUpdateHighlight()" class="btn-save">Save</button>
+          <button (click)="closeHighlightModal()" class="btn-cancel">Cancel</button>
+        </div>
+      </div>
+    </div>
+  }
+</div>

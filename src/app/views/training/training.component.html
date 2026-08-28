@@ -1,0 +1,74 @@
+<section class="page-header">
+  <div>
+    <h1>Training</h1>
+    <p>Access training materials and track progress</p>
+  </div>
+</section>
+
+@if (loading) {
+  <div class="empty-state">Loading training tracks</div>
+} @else if (tracks.length === 0) {
+  <div class="empty-state">No training stack assigned to {{ sharedData.getGroupLabel(sharedData.attendanceGroup) }}</div>
+} @else {
+  <div class="segmented-tabs training-tabs" role="tablist" aria-label="Training tracks">
+    @for (tab of tracks; track tab.id) {
+      <button
+        type="button"
+        role="tab"
+        [class.active]="activeTab === tab.id"
+        [attr.aria-selected]="activeTab === tab.id"
+        (click)="selectTab(tab.id)">
+        <i class="bi {{ tab.icon }}"></i>
+        {{ tab.label }}
+      </button>
+    }
+  </div>
+
+  @for (tab of tracks; track tab.id) {
+    @if (activeTab === tab.id) {
+      <div class="training-table-wrap" role="tabpanel">
+        <table class="training-table">
+          <thead>
+            <tr>
+              <th>Name</th>
+              <th>Length</th>
+              <th class="training-col-actions"></th>
+            </tr>
+          </thead>
+          <tbody>
+            @if (tab.courses.length === 0) {
+              <tr class="training-empty-row">
+                <td colspan="3">No courses added yet</td>
+              </tr>
+            }
+            @for (course of tab.courses; track course.id) {
+              <tr>
+                <td><a [href]="course.link" target="_blank" rel="noopener">{{ course.title }}</a></td>
+                <td>{{ course.length }}</td>
+                <td class="training-col-actions">
+                  <button type="button" class="training-icon-btn" title="Remove course" (click)="removeCourse(tab, course)">
+                    <i class="bi bi-trash"></i>
+                  </button>
+                </td>
+              </tr>
+            }
+          </tbody>
+          <tfoot>
+            <tr class="training-add-row">
+              <td colspan="3">
+                <div class="training-add-form">
+                  <input class="training-add-title" type="text" [(ngModel)]="newCourse.title" placeholder="Course title" />
+                  <input class="training-add-length" type="text" [(ngModel)]="newCourse.length" placeholder="e.g. 2h 30m" />
+                  <input class="training-add-link" type="url" [(ngModel)]="newCourse.link" placeholder="https://..." />
+                  <button type="button" class="training-icon-btn" title="Add course" [disabled]="!newCourse.title.trim()" (click)="addCourse(tab)">
+                    <i class="bi bi-plus-lg"></i>
+                  </button>
+                </div>
+              </td>
+            </tr>
+          </tfoot>
+        </table>
+      </div>
+    }
+  }
+}

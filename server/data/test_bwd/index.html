@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<title>Fruit CRUD</title>
+<style>
+  body { font-family: Arial, sans-serif; max-width: 800px; margin: 40px auto; padding: 0 20px; background: #f5f5f5; }
+  h1 { margin-bottom: 8px; }
+
+  #pickWrap { background: #fff; border: 2px dashed #4a6cf7; border-radius: 8px; padding: 30px; text-align: center; margin-bottom: 20px; }
+  #pickWrap p { color: #555; margin-bottom: 12px; }
+  #pickWrap small { color: #999; display: block; margin-top: 8px; }
+
+  #app { display: none; }
+  #fileLabel { font-size: 13px; color: #4a6cf7; margin-bottom: 16px; }
+
+  .form-row { display: flex; gap: 10px; flex-wrap: wrap; margin-bottom: 20px; background: #fff; padding: 16px; border-radius: 8px; box-shadow: 0 1px 4px rgba(0,0,0,.1); }
+  .form-row input, .form-row select { padding: 8px 10px; border: 1px solid #ccc; border-radius: 5px; font-size: 14px; }
+  .form-row input[type=text]   { flex: 2; min-width: 120px; }
+  .form-row input[type=number] { width: 90px; }
+  .form-row select { width: 130px; }
+  .btn { padding: 8px 16px; border: none; border-radius: 5px; cursor: pointer; font-size: 14px; }
+  .btn-pick   { background: #4a6cf7; color: #fff; }
+  .btn-add    { background: #4a6cf7; color: #fff; }
+  .btn-save   { background: #28a745; color: #fff; }
+  .btn-cancel { background: #aaa; color: #fff; }
+  .btn-edit   { background: #f0a500; color: #fff; }
+  .btn-del    { background: #dc3545; color: #fff; }
+
+  table { width: 100%; border-collapse: collapse; background: #fff; border-radius: 8px; overflow: hidden; box-shadow: 0 1px 4px rgba(0,0,0,.1); }
+  th { background: #4a6cf7; color: #fff; padding: 10px 12px; text-align: left; font-size: 13px; }
+  td { padding: 10px 12px; border-bottom: 1px solid #eee; font-size: 14px; }
+  tr:last-child td { border-bottom: none; }
+  tr:hover td { background: #f9f9ff; }
+  .actions { display: flex; gap: 6px; }
+  .msg { padding: 10px; margin-bottom: 12px; border-radius: 5px; display: none; }
+  .msg.show { display: block; }
+  .msg.ok  { background: #d4edda; color: #155724; }
+  .msg.err { background: #f8d7da; color: #721c24; }
+</style>
+</head>
+<body>
+
+<h1>🍎 Fruit CRUD</h1>
+
+<!-- Step 1: pick the file -->
+<div id="pickWrap">
+  <p>Select your <strong>db.json</strong> file to begin</p>
+  <button class="btn btn-pick" onclick="pickFile()">📂 Open db.json</button>
+  <small>Uses the browser File System API — Chrome / Edge only. No server needed.</small>
+</div>
+
+<!-- App (shown after file is picked) -->
+<div id="app">
+  <div id="fileLabel"></div>
+  <div id="msg" class="msg"></div>
+
+  <div class="form-row">
+    <input type="hidden" id="editId" />
+    <input type="text"   id="fEmoji"    placeholder="Emoji" style="width:60px;flex:none" />
+    <input type="text"   id="fName"     placeholder="Name *" />
+    <select id="fCategory">
+      <option value="">Category…</option>
+      <option>Tropical</option><option>Citrus</option><option>Berry</option>
+      <option>Temperate</option><option>Melon</option><option>Stone Fruit</option>
+    </select>
+    <input type="number" id="fPrice" placeholder="Price" step="0.01" min="0" />
+    <input type="number" id="fStock" placeholder="Stock" min="0" />
+    <button class="btn btn-add"    id="btnAdd"    onclick="addFruit()">Add</button>
+    <button class="btn btn-save"   id="btnSave"   onclick="saveEdit()" style="display:none">Save</button>
+    <button class="btn btn-cancel" id="btnCancel" onclick="cancelEdit()" style="display:none">Cancel</button>
+  </div>
+
+  <table>
+    <thead>
+      <tr><th>Emoji</th><th>Name</th><th>Category</th><th>Price</th><th>Stock</th><th>Actions</th></tr>
+    </thead>
+    <tbody id="tbody"></tbody>
+  </table>
+</div>
+
+<script>
+let fileHandle = null;
+
+// ── File System Access API ───────────────────────────────────────────
+async function pickFile() {
+  try {
+    [fileHandle] = await window.showOpenFilePicker({
+      types: [{ description: 'JSON', accept: { 'application/json': ['.json'] } }],
+      multiple: false
+    });
+    document.getElementById('pickWrap').style.display = 'none';
+    document.getElementById('app').style.display      = 'block';
+    document.getElementById('fileLabel').textContent  = '📄 ' + fileHandle.name;
+    render();
+  } catch (e) {
+    if (e.name !== 'AbortError') alert('Could not open file: ' + e.message);
+  }
+}
+
+async function readFile() {
+  const file = await fileHandle.getFile();
+  const text = await file.text();
+  return JSON.parse(text);
+}
+
+async function writeFile(db) {
+  const writable = await fileHandle.createWritable();
+  await writable.write(JSON.stringify(db, null, 2));
+  await writable.close();
+}
+
+// ── Helpers ──────────────────────────────────────────────────────────
+function nextId(list) { return list.length ? Math.max(...list.map(f => f.id)) + 1 : 1; }
+
+function formData() {
+  return {
+    emoji:    document.getElementById('fEmoji').value.trim() || '🍎',
+    name:     document.getElementById('fName').value.trim(),
+    category: document.getElementById('fCategory').value,
+    price:    parseFloat(document.getElementById('fPrice').value) || 0,
+    stock:    parseInt(document.getElementById('fStock').value)   || 0,
+  };
+}
+
+function clearForm() {
+  ['editId','fEmoji','fName','fPrice','fStock'].forEach(id => document.getElementById(id).value = '');
+  document.getElementById('fCategory').value = '';
+}
+
+function showMsg(text, type) {
+  const el = document.getElementById('msg');
+  el.textContent = text;
+  el.className = `msg show ${type}`;
+  setTimeout(() => el.classList.remove('show'), 3000);
+}
+
+// ── Render ───────────────────────────────────────────────────────────
+async function render() {
+  const db   = await readFile();
+  const list = db.fruits || [];
+  const tbody = document.getElementById('tbody');
+  tbody.innerHTML = '';
+  list.forEach(f => {
+    const tr = document.createElement('tr');
+    tr.innerHTML = `
+      <td>${f.emoji}</td>
+      <td>${f.name}</td>
+      <td>${f.category}</td>
+      <td>$${Number(f.price).toFixed(2)}</td>
+      <td>${f.stock}</td>
+      <td class="actions">
+        <button class="btn btn-edit" onclick="startEdit(${f.id})">Edit</button>
+        <button class="btn btn-del"  onclick="deleteFruit(${f.id},'${f.name.replace(/'/g,"\\'")}')">Delete</button>
+      </td>`;
+    tbody.appendChild(tr);
+  });
+}
+
+// ── CRUD ─────────────────────────────────────────────────────────────
+async function addFruit() {
+  const data = formData();
+  if (!data.name || !data.category) return showMsg('Name and Category are required.', 'err');
+  const db   = await readFile();
+  db.fruits  = db.fruits || [];
+  db.fruits.push({ id: nextId(db.fruits), ...data });
+  await writeFile(db);
+  clearForm();
+  showMsg(`"${data.name}" added.`, 'ok');
+  render();
+}
+
+async function deleteFruit(id, name) {
+  if (!confirm(`Delete "${name}"?`)) return;
+  const db  = await readFile();
+  db.fruits = (db.fruits || []).filter(f => f.id !== id);
+  await writeFile(db);
+  showMsg(`"${name}" deleted.`, 'ok');
+  render();
+}
+
+async function startEdit(id) {
+  const db = await readFile();
+  const f  = (db.fruits || []).find(f => f.id === id);
+  if (!f) return;
+  document.getElementById('editId').value    = f.id;
+  document.getElementById('fEmoji').value    = f.emoji;
+  document.getElementById('fName').value     = f.name;
+  document.getElementById('fCategory').value = f.category;
+  document.getElementById('fPrice').value    = f.price;
+  document.getElementById('fStock').value    = f.stock;
+  document.getElementById('btnAdd').style.display    = 'none';
+  document.getElementById('btnSave').style.display   = '';
+  document.getElementById('btnCancel').style.display = '';
+  document.getElementById('fName').focus();
+}
+
+async function saveEdit() {
+  const id   = parseInt(document.getElementById('editId').value);
+  const data = formData();
+  if (!data.name) return showMsg('Name is required.', 'err');
+  const db   = await readFile();
+  db.fruits  = (db.fruits || []).map(f => f.id !== id ? f : { id, ...data });
+  await writeFile(db);
+  cancelEdit();
+  showMsg(`"${data.name}" updated.`, 'ok');
+  render();
+}
+
+function cancelEdit() {
+  clearForm();
+  document.getElementById('btnAdd').style.display    = '';
+  document.getElementById('btnSave').style.display   = 'none';
+  document.getElementById('btnCancel').style.display = 'none';
+}
+</script>
+</body>
+</html>

@@ -1,0 +1,186 @@
+<section class="page-header">
+  <div>
+    <h1>Attendance Tracker</h1>
+    <p>{{ attendanceMonthLabel() }} — {{ sharedData.getGroupLabel(sharedData.attendanceGroup) }}</p>
+  </div>
+  <div class="header-actions">
+    <select class="form-select form-select-sm" [(ngModel)]="attendanceMonthStr" (ngModelChange)="saveAttendanceMonth($event); loadAttendanceMonth()">
+      <option value="2026-07">July 2026</option>
+      <option value="2026-08">August 2026</option>
+    </select>
+  </div>
+</section>
+
+<div class="attendance-wrapper">
+  <table class="attendance-table">
+    <thead>
+      <tr>
+        <th class="att-name-col">EID</th>
+        @for (day of attendanceDays(); track day) {
+          <th class="att-day-col" [class.att-weekend]="isWeekend(day)">
+            <div class="att-day-num">{{ day }}</div>
+            <div class="att-day-lbl">{{ dayLabel(day) }}</div>
+          </th>
+        }
+      </tr>
+    </thead>
+    <tbody>
+      @for (resource of filteredAttendanceResources; track resource.id) {
+        <tr>
+          <td class="att-name-col">{{ resource.eid }}</td>
+          @for (day of attendanceDays(); track day) {
+            <td class="att-day-col" [class.att-weekend]="isWeekend(day)" [ngClass]="getAttendanceCellClass(resource.eid, day)" [title]="getAttendanceCellTitle(resource.eid, day)">
+              @if (!isWeekend(day)) {
+                <select class="att-select"
+                        [ngModel]="getAttendanceStatus(resource.eid, day)"
+                        (ngModelChange)="onAttendanceCellChange(resource.eid, day, $event)">
+                  <option value=""></option>
+                  @for (opt of attendanceOptions; track opt) {
+                    <option [value]="opt">{{ opt }}</option>
+                  }
+                </select>
+              }
+            </td>
+          }
+        </tr>
+      }
+    </tbody>
+  </table>
+</div>
+
+<!-- Attendance Summary -->
+<div class="att-summary-section">
+
+  <!-- Daily headcount per status (scrollable, aligned to table above) -->
+  <div class="att-summary-scroll-wrap">
+    <table class="att-summary-table">
+      <thead>
+        <tr>
+          <th class="att-sum-label-col">Status</th>
+          @for (day of attendanceDays(); track day) {
+            <th class="att-day-col" [class.att-weekend]="isWeekend(day)">{{ day }}</th>
+          }
+        </tr>
+      </thead>
+      <tbody>
+        <tr class="att-sum-total-row">
+          <td class="att-sum-label-col">Total Present <small>(incl. RTO)</small></td>
+          @for (day of attendanceDays(); track day) {
+            <td class="att-sum-cell" [class.att-weekend]="isWeekend(day)">
+              @if (!isWeekend(day) && getTotalPresentForDay(day) > 0) {
+                <span class="att-sum-badge present">{{ getTotalPresentForDay(day) }}</span>
+              }
+            </td>
+          }
+        </tr>
+        @for (status of getActiveStatuses(); track status) {
+          <tr>
+            <td class="att-sum-label-col"><span class="att-sum-status-dot" [ngClass]="'att-c-' + status.toLowerCase()"></span>{{ status }}</td>
+            @for (day of attendanceDays(); track day) {
+              <td class="att-sum-cell" [class.att-weekend]="isWeekend(day)">
+                @if (!isWeekend(day) && getStatusCountForDay(day, status) > 0) {
+                  <span class="att-sum-badge">{{ getStatusCountForDay(day, status) }}</span>
+                }
+              </td>
+            }
+          </tr>
+        }
+      </tbody>
+    </table>
+  </div>
+
+  <!-- RTO Location breakdown -->
+  @if (getRtoLocationSummary().length > 0) {
+    <div class="att-rto-summary">
+      <div class="att-rto-summary-title">
+        <i class="bi bi-building"></i> RTO Office Headcount
+      </div>
+      <div class="att-rto-cols">
+
+        <!-- Col 1: date-filtered -->
+        <div class="att-rto-col">
+          <div class="att-rto-col-header">
+            <span>Daily —</span>
+            <select class="att-rto-day-select" [(ngModel)]="rtoSummaryDay">
+              @for (day of attendanceDays(); track day) {
+                @if (!isWeekend(day)) {
+                  <option [value]="day">{{ rtoSummaryDayLabel(day) }}</option>
+                }
+              }
+            </select>
+          </div>
+          @if (getRtoLocationSummaryForDay(rtoSummaryDay).length > 0) {
+            <table class="att-rto-table">
+              <thead>
+                <tr><th>Office Location</th><th>Count</th></tr>
+              </thead>
+              <tbody>
+                @for (loc of getRtoLocationSummaryForDay(rtoSummaryDay); track loc.location) {
+                  <tr>
+                    <td><i class="bi bi-geo-alt-fill att-rto-pin"></i> {{ loc.location }}</td>
+                    <td class="att-rto-count">{{ loc.count }}</td>
+                  </tr>
+                }
+              </tbody>
+            </table>
+          } @else {
+            <p class="att-rto-empty">No RTO entries for this date.</p>
+          }
+        </div>
+
+        <!-- Col 2: monthly total -->
+        <div class="att-rto-col att-rto-col-divider">
+          <div class="att-rto-col-header">
+            <span>Monthly Total — {{ attendanceMonthLabel() }}</span>
+          </div>
+          <table class="att-rto-table">
+            <thead>
+              <tr><th>Office Location</th><th>Count</th></tr>
+            </thead>
+            <tbody>
+              @for (loc of getRtoLocationSummary(); track loc.location) {
+                <tr>
+                  <td><i class="bi bi-geo-alt-fill att-rto-pin"></i> {{ loc.location }}</td>
+                  <td class="att-rto-count">{{ loc.count }}</td>
+                </tr>
+              }
+            </tbody>
+          </table>
+        </div>
+
+      </div>
+    </div>
+  }
+
+</div>
+
+<!-- RTO Modal -->
+@if (rtoModal.open) {
+  <div class="modal-backdrop fade show"></div>
+  <div class="modal fade show confirm-modal" tabindex="-1" role="dialog" aria-modal="true">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h2 class="modal-title"><i class="bi bi-building me-2"></i>Select Office Location</h2>
+          <button type="button" class="btn-close" aria-label="Close" (click)="cancelRtoModal()"></button>
+        </div>
+        <div class="modal-body">
+          <p class="mb-3 text-muted">
+            <strong>{{ rtoModal.eid }}</strong> — Day {{ rtoModal.day }}, {{ attendanceMonthLabel() }}
+          </p>
+          <label class="form-label fw-semibold">Office Location</label>
+          <select class="form-select" [(ngModel)]="rtoLocationInput">
+            <option value="">— Select a location —</option>
+            @for (loc of sharedData.officeLocations; track loc) {
+              <option [value]="loc">{{ loc }}</option>
+            }
+          </select>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-outline-secondary" (click)="cancelRtoModal()">Cancel</button>
+          <button type="button" class="btn btn-primary" (click)="confirmRtoLocation()" [disabled]="!rtoLocationInput">Confirm RTO</button>
+        </div>
+      </div>
+    </div>
+  </div>
+}

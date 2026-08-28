@@ -1,0 +1,372 @@
+<section class="page-header">
+  <div>
+    <h1>Newly onboard resources</h1>
+    <p>Song Bench - New resource intake</p>
+  </div>
+</section>
+
+<div class="onboarding-grid">
+  <section class="panel onboarding-form-panel">
+    <div class="panel-header">
+      <h2>{{ editingOnboardingId ? 'Edit resource' : 'Resource entry' }}</h2>
+      @if (editingOnboardingId) {
+        <button class="link-button" type="button" (click)="cancelOnboardingEdit()">Cancel edit</button>
+      }
+    </div>
+
+    @if (onboardingError) {
+      <div class="alert alert-danger py-2" role="alert">{{ onboardingError }}</div>
+    }
+    @if (onboardingSuccess) {
+      <div class="alert alert-success py-2" role="status">{{ onboardingSuccess }}</div>
+    }
+
+    <form class="onboarding-form" (ngSubmit)="saveOnboardingResource()">
+      <label>
+        <span>Name</span>
+        <input class="form-control" name="name" [(ngModel)]="onboardingForm.name" autocomplete="name" required>
+      </label>
+      <label>
+        <span>EID</span>
+        <input class="form-control" name="eid" [(ngModel)]="onboardingForm.eid" autocomplete="username" required>
+      </label>
+      <label>
+        <span>Hire Date</span>
+        <div class="date-picker-field">
+          <input class="form-control" name="hireDate" [(ngModel)]="onboardingForm.hireDate" inputmode="numeric" placeholder="MM/DD/YYYY" required>
+          <button class="date-picker-button" type="button" (click)="openDatePicker('hireDatePicker', onboardingForm.hireDate)" aria-label="Pick hire date">
+            <i class="bi bi-calendar3"></i>
+          </button>
+          <input id="hireDatePicker" class="native-date-picker" type="date" tabindex="-1" aria-hidden="true" (change)="setDateFromPicker('hireDate', $event)">
+        </div>
+      </label>
+      <label>
+        <span>Roll-In Date</span>
+        <div class="date-picker-field">
+          <input class="form-control" name="rollInDate" [(ngModel)]="onboardingForm.rollInDate" inputmode="numeric" placeholder="MM/DD/YYYY" required>
+          <button class="date-picker-button" type="button" (click)="openDatePicker('rollInDatePicker', onboardingForm.rollInDate)" aria-label="Pick roll-in date">
+            <i class="bi bi-calendar3"></i>
+          </button>
+          <input id="rollInDatePicker" class="native-date-picker" type="date" tabindex="-1" aria-hidden="true" (change)="setDateFromPicker('rollInDate', $event)">
+        </div>
+      </label>
+      <label>
+        <span>CL Level</span>
+        <select class="form-select" name="clLevel" [(ngModel)]="onboardingForm.clLevel">
+          <option value="">Select CL level</option>
+          <option value="6">CL 6</option>
+          <option value="7">CL 7</option>
+          <option value="8">CL 8</option>
+          <option value="9">CL 9</option>
+          <option value="10">CL 10</option>
+          <option value="11">CL 11</option>
+          <option value="12">CL 12</option>
+        </select>
+      </label>
+      <label>
+        <span>Group</span>
+        <select class="form-select" name="groupNumber" [(ngModel)]="onboardingForm.groupNumber">
+          <option value="">Select group</option>
+          @for (g of sharedData.groupOptions; track g.value) {
+            <option [value]="g.value">{{ g.label }}</option>
+          }
+        </select>
+      </label>
+      <div class="skill-years-row">
+        <label>
+          <span>Primary Skill</span>
+          <input class="form-control" name="primarySkill" [(ngModel)]="onboardingForm.primarySkill" list="skillOptions">
+        </label>
+        <label>
+          <span>Yrs of Exp.</span>
+          <input class="form-control" name="primaryYears" [(ngModel)]="onboardingForm.primaryYears" inputmode="decimal">
+        </label>
+      </div>
+      <div class="skill-years-row">
+        <label>
+          <span>Secondary Skill</span>
+          <input class="form-control" name="secondarySkill" [(ngModel)]="onboardingForm.secondarySkill" list="skillOptions">
+        </label>
+        <label>
+          <span>Yrs of Exp.</span>
+          <input class="form-control" name="secondaryYears" [(ngModel)]="onboardingForm.secondaryYears" inputmode="decimal">
+        </label>
+      </div>
+      <div class="skill-tag-field">
+        <span>Another Skills</span>
+        <div class="tag-input-row">
+          <input class="form-control" name="anotherSkillInput" [(ngModel)]="anotherSkillInput" list="skillOptions" (keydown.enter)="$event.preventDefault(); addAnotherSkill()">
+          <button class="btn btn-outline-secondary" type="button" (click)="addAnotherSkill()">
+            <i class="bi bi-plus-lg"></i>
+            Add
+          </button>
+        </div>
+        <div class="selected-tags">
+          @for (skill of onboardingForm.anotherSkills; track skill) {
+            <span class="selected-tag">
+              <span>{{ skill }}</span>
+              <button class="tag-remove-button" type="button" (click)="requestAnotherSkillRemoval(skill)" [attr.aria-label]="'Remove ' + skill">
+                <i class="bi bi-x-lg"></i>
+              </button>
+            </span>
+          }
+        </div>
+      </div>
+      <label>
+        <span>Office Location</span>
+        <select class="form-select" name="officeLocation" [(ngModel)]="onboardingForm.officeLocation">
+          <option value="">Select location</option>
+          @for (loc of sharedData.officeLocations; track loc) {
+            <option [value]="loc">{{ loc }}</option>
+          }
+        </select>
+      </label>
+      <div class="form-section-separator">
+        <span>Project deployment</span>
+      </div>
+      <label>
+        <span>Project Deployed</span>
+        <select class="form-select" name="projectDeployed" [(ngModel)]="onboardingForm.projectDeployed" (ngModelChange)="onProjectDeployedChange()">
+          <option value="No">No</option>
+          <option value="Yes">Yes</option>
+        </select>
+      </label>
+      <label>
+        <span>Deployment Date</span>
+        <div class="date-picker-field">
+          <input class="form-control" name="deploymentDate" [(ngModel)]="onboardingForm.deploymentDate" inputmode="numeric" placeholder="MM/DD/YYYY">
+          <button class="date-picker-button" type="button" (click)="openDatePicker('deploymentDatePicker', onboardingForm.deploymentDate)" aria-label="Pick deployment date">
+            <i class="bi bi-calendar3"></i>
+          </button>
+          <input id="deploymentDatePicker" class="native-date-picker" type="date" tabindex="-1" aria-hidden="true" (change)="setDateFromPicker('deploymentDate', $event)">
+        </div>
+      </label>
+      <label>
+        <span>Project Name</span>
+        <input class="form-control" name="projectName" [(ngModel)]="onboardingForm.projectName">
+      </label>
+      <label>
+        <span>POC</span>
+        <input class="form-control" name="poc" [(ngModel)]="onboardingForm.poc">
+      </label>
+      <label>
+        <span>DN</span>
+        <select class="form-select" name="dn" [(ngModel)]="onboardingForm.dn">
+          <option value="No">No</option>
+          <option value="Yes">Yes</option>
+        </select>
+      </label>
+      <div class="skill-years-row">
+        <label>
+          <span>Rolled off from Project</span>
+          <input class="form-control" name="fromProject" [(ngModel)]="onboardingForm.fromProject">
+        </label>
+        <label>
+          <span>Roll-off Date</span>
+          <div class="date-picker-field">
+            <input class="form-control" name="rollOffDate" [(ngModel)]="onboardingForm.rollOffDate" inputmode="numeric" placeholder="MM/DD/YYYY">
+            <button class="date-picker-button" type="button" (click)="openDatePicker('rollOffDatePicker', onboardingForm.rollOffDate)" aria-label="Pick roll-off date">
+              <i class="bi bi-calendar3"></i>
+            </button>
+            <input id="rollOffDatePicker" class="native-date-picker" type="date" tabindex="-1" aria-hidden="true" (change)="setDateFromPicker('rollOffDate', $event)">
+          </div>
+        </label>
+      </div>
+      <datalist id="skillOptions">
+        @for (skill of skillOptions; track skill) {
+          <option [value]="skill"></option>
+        }
+      </datalist>
+      <button class="btn btn-primary" type="submit" [disabled]="onboardingSaving">
+        <i class="bi bi-save"></i>
+        {{ onboardingSaving ? 'Saving' : (editingOnboardingId ? 'Update resource' : 'Save resource') }}
+      </button>
+    </form>
+  </section>
+
+  <section class="panel onboarding-list-panel">
+    <div class="panel-header">
+      <div class="panel-title">
+        <h2>Saved resources</h2>
+        <button class="refresh-button" type="button" (click)="refreshResources()" title="Refresh list" aria-label="Refresh list">
+          <i class="bi bi-arrow-clockwise"></i>
+        </button>
+      </div>
+      <input
+        class="form-control search-input"
+        type="search"
+        placeholder="Search by name, skill, group…"
+        [(ngModel)]="onboardingSearchQuery"
+        (ngModelChange)="onboardingPage = 1"
+        aria-label="Search saved resources"
+      />
+    </div>
+
+    @if (onboardingLoading) {
+      <div class="empty-state">Loading records</div>
+    } @else if (sharedData.onboardingResources.length === 0) {
+      <div class="empty-state">No onboarding records yet</div>
+    } @else {
+      <div class="resource-table-wrap">
+        <table class="resource-table">
+          <thead>
+            <tr>
+              <th class="sortable" (click)="sortBy('name')">
+                Name <i class="bi" [class.bi-arrow-up]="sortColumn==='name'&&sortDirection==='asc'" [class.bi-arrow-down]="sortColumn==='name'&&sortDirection==='desc'" [class.bi-arrow-down-up]="sortColumn!=='name'"></i>
+              </th>
+              <th class="sortable" (click)="sortBy('eid')">
+                EID <i class="bi" [class.bi-arrow-up]="sortColumn==='eid'&&sortDirection==='asc'" [class.bi-arrow-down]="sortColumn==='eid'&&sortDirection==='desc'" [class.bi-arrow-down-up]="sortColumn!=='eid'"></i>
+              </th>
+              <th class="sortable" (click)="sortBy('projectName')">
+                Project <i class="bi" [class.bi-arrow-up]="sortColumn==='projectName'&&sortDirection==='asc'" [class.bi-arrow-down]="sortColumn==='projectName'&&sortDirection==='desc'" [class.bi-arrow-down-up]="sortColumn!=='projectName'"></i>
+              </th>
+              <th class="sortable" (click)="sortBy('groupNumber')">
+                Group <i class="bi" [class.bi-arrow-up]="sortColumn==='groupNumber'&&sortDirection==='asc'" [class.bi-arrow-down]="sortColumn==='groupNumber'&&sortDirection==='desc'" [class.bi-arrow-down-up]="sortColumn!=='groupNumber'"></i>
+              </th>
+              <th class="sortable" (click)="sortBy('primarySkill')">
+                Skills <i class="bi" [class.bi-arrow-up]="sortColumn==='primarySkill'&&sortDirection==='asc'" [class.bi-arrow-down]="sortColumn==='primarySkill'&&sortDirection==='desc'" [class.bi-arrow-down-up]="sortColumn!=='primarySkill'"></i>
+              </th>
+            </tr>
+          </thead>
+          <tbody>
+            @for (resource of pagedOnboardingResources; track resource.id) {
+              <tr>
+                <td>
+                  <button class="name-link" type="button" (click)="editOnboardingResource(resource)">
+                    {{ resource.name }}
+                  </button>
+                </td>
+                <td>{{ resource.eid }}</td>
+                <td>
+                  {{ resource.projectName || resource.fromProject || '-' }}
+                  @if (resource.projectDeployed === 'Yes') {
+                    <small class="deployed-badge">Deployed</small>
+                  }
+                </td>
+                <td>{{ resource.groupNumber ? (sharedData.getGroupLabel('' + resource.groupNumber) | slice:0:7) : '-' }}</td>
+                <td>
+                  {{ resource.primarySkill || '-' }}
+                  @if (resource.anotherSkills.length) {
+                    <small>{{ resource.anotherSkills.join(', ') }}</small>
+                  }
+                </td>
+                <td>
+                  <button class="onb-delete-btn" type="button" title="Delete record"
+                          (click)="openDeleteOnboardingDialog(resource)">
+                    <i class="bi bi-trash3"></i>
+                  </button>
+                </td>
+              </tr>
+            }
+          </tbody>
+        </table>
+      </div>
+
+      <!-- Pagination -->
+      @if (onboardingTotalPages > 1 || filteredOnboardingResources.length > 0) {
+        <div class="onb-pagination">
+          <span class="onb-page-info">
+            {{ (onboardingPage - 1) * onboardingPageSize + 1 }}–{{ onboardingPageEnd }} of {{ filteredOnboardingResources.length }}
+          </span>
+          <div class="onb-page-controls">
+            <button class="onb-page-btn" [disabled]="onboardingPage === 1" (click)="goToOnboardingPage(1)" title="First page">
+              <i class="bi bi-chevron-double-left"></i>
+            </button>
+            <button class="onb-page-btn" [disabled]="onboardingPage === 1" (click)="goToOnboardingPage(onboardingPage - 1)" title="Previous page">
+              <i class="bi bi-chevron-left"></i>
+            </button>
+            @for (p of onboardingPageNumbers; track $index) {
+              @if (p === '...') {
+                <span class="onb-page-ellipsis">…</span>
+              } @else {
+                <button class="onb-page-btn" [class.onb-page-active]="p === onboardingPage" (click)="goToOnboardingPage(p)">
+                  {{ p }}
+                </button>
+              }
+            }
+            <button class="onb-page-btn" [disabled]="onboardingPage === onboardingTotalPages" (click)="goToOnboardingPage(onboardingPage + 1)" title="Next page">
+              <i class="bi bi-chevron-right"></i>
+            </button>
+            <button class="onb-page-btn" [disabled]="onboardingPage === onboardingTotalPages" (click)="goToOnboardingPage(onboardingTotalPages)" title="Last page">
+              <i class="bi bi-chevron-double-right"></i>
+            </button>
+          </div>
+        </div>
+      }
+    }
+  </section>
+</div>
+
+<!-- Skill Removal Modal -->
+@if (skillPendingRemoval) {
+  <div class="modal-backdrop fade show"></div>
+  <div class="modal fade show confirm-modal" tabindex="-1" role="dialog" aria-modal="true">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h2 class="modal-title">Remove skill?</h2>
+          <button type="button" class="btn-close" aria-label="Close" (click)="cancelAnotherSkillRemoval()"></button>
+        </div>
+        <div class="modal-body">
+          <p>Remove {{ skillPendingRemoval }} from another skills?</p>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-outline-secondary" (click)="cancelAnotherSkillRemoval()">Cancel</button>
+          <button type="button" class="btn btn-primary" (click)="confirmAnotherSkillRemoval()">Remove</button>
+        </div>
+      </div>
+    </div>
+  </div>
+}
+
+<!-- Delete Onboarding Resource Confirmation Dialog -->
+@if (deleteOnboardingDialog.open && deleteOnboardingDialog.resource) {
+  <div class="del-dialog-backdrop" (click)="closeDeleteOnboardingDialog()">
+    <div class="del-dialog" (click)="$event.stopPropagation()">
+
+      <div class="del-dialog-header">
+        <div class="del-dialog-icon"><i class="bi bi-trash3"></i></div>
+        <div>
+          <h3 class="del-dialog-title">Delete Profile</h3>
+          <p class="del-dialog-subtitle">This action cannot be undone. The record will be permanently removed.</p>
+        </div>
+        <button type="button" class="del-dialog-close" (click)="closeDeleteOnboardingDialog()">
+          <i class="bi bi-x-lg"></i>
+        </button>
+      </div>
+
+      <div class="del-dialog-preview">
+        <div class="del-dialog-preview-author">
+          <span class="del-task-icon"><i class="bi bi-person-circle"></i></span>
+          <span class="del-preview-name">{{ deleteOnboardingDialog.resource.name }}</span>
+        </div>
+        <p class="del-dialog-preview-text" style="margin-top: 0.35rem; color: #888;">
+          EID: {{ deleteOnboardingDialog.resource.eid }} &nbsp;·&nbsp;
+          Group {{ deleteOnboardingDialog.resource.groupNumber ?? '-' }}
+        </p>
+      </div>
+
+      <div class="del-dialog-body">
+        <label class="del-dialog-label">
+          Type <strong>DELETE</strong> to confirm:
+        </label>
+        <input class="del-dialog-input"
+               [(ngModel)]="deleteOnboardingDialog.typeInput"
+               placeholder="DELETE"
+               autocomplete="off" />
+      </div>
+
+      <div class="del-dialog-footer">
+        <button type="button" class="btn btn-outline-secondary" (click)="closeDeleteOnboardingDialog()">
+          Cancel
+        </button>
+        <button type="button" class="btn del-dialog-confirm-btn"
+                [disabled]="deleteOnboardingDialog.typeInput !== 'DELETE'"
+                (click)="confirmDeleteOnboarding()">
+          <i class="bi bi-trash3"></i> Delete Profile
+        </button>
+      </div>
+
+    </div>
+  </div>
+}
