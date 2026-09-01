@@ -5,7 +5,72 @@
   </div>
 </section>
 
-<div class="panel trainings-placeholder">
-  <i class="bi bi-journals"></i>
-  <p>Trainings — coming soon</p>
+<div class="trainings-toolbar">
+  <div class="trainings-resource-picker">
+    <label for="trainings-resource">Resource</label>
+    <select
+      id="trainings-resource"
+      class="comp-group-select trainings-resource-select"
+      [(ngModel)]="selectedEid"
+      (ngModelChange)="onResourceChange()">
+      <option value="">Select a resource</option>
+      @for (member of groupMembers; track member.id) {
+        <option [value]="member.eid">{{ member.name }}</option>
+      }
+    </select>
+  </div>
+</div>
+
+<div class="trainings-progress-bar">
+  @if (selectedEid) {
+    <span><strong>{{ selectedMemberName }}</strong> — {{ completedCount }} of {{ courses.length }} completed</span>
+  } @else {
+    <span class="trainings-hint">Select a resource to track completion.</span>
+  }
+  @if (progressLoading) {
+    <span class="trainings-hint">Loading progress…</span>
+  }
+  @if (progressError) {
+    <span class="trainings-error">{{ progressError }}</span>
+  }
+</div>
+
+<div class="trainings-table-wrap">
+  <table class="trainings-table">
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Length</th>
+        <th class="trainings-col-completed">Completed</th>
+        <th class="trainings-col-actions"></th>
+      </tr>
+    </thead>
+    <tbody>
+      @if (courses.length === 0) {
+        <tr class="trainings-empty-row">
+          <td colspan="4">No courses added yet</td>
+        </tr>
+      }
+      @for (course of courses; track course.id) {
+        <tr [class.trainings-row-done]="isCompleted(course.id)">
+          <td><a [href]="course.link" target="_blank" rel="noopener">{{ course.title }}</a></td>
+          <td>{{ course.length }}</td>
+          <td class="trainings-col-completed">
+            <input
+              type="checkbox"
+              class="trainings-check"
+              [attr.aria-label]="'Mark ' + course.title + ' completed'"
+              [checked]="isCompleted(course.id)"
+              [disabled]="!selectedEid || progressLoading || savingCourseId === course.id"
+              (change)="toggleCompleted(course.id, $any($event.target).checked)" />
+          </td>
+          <td class="trainings-col-actions">
+            <button type="button" class="trainings-icon-btn" title="Remove course" (click)="removeCourse(course)">
+              <i class="bi bi-trash"></i>
+            </button>
+          </td>
+        </tr>
+      }
+    </tbody>
+  </table>
 </div>
