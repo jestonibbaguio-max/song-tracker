@@ -10,6 +10,7 @@ import { PlannerComponent } from './views/planner/planner.component';
 import { MyCompetencyComponent } from './views/mycompetency/mycompetency.component';
 import { MockAssessmentComponent, MockAssessmentSummary } from './views/mockAssessmentSummary/mock-assessment.data';
 import { TrainingComponent } from './views/training/training.component';
+import { PocHowToComponent } from './views/pochowto/pochowto.component';
 
 @Component({
   selector: 'app-root',
@@ -23,14 +24,15 @@ import { TrainingComponent } from './views/training/training.component';
     MyCompetencyComponent,
     MockAssessmentComponent,
     TrainingComponent,
+    PocHowToComponent,
   ],
   templateUrl: './app.component.html',
   styleUrl: './app.component.css',
   encapsulation: ViewEncapsulation.None
 })
 export class AppComponent {
-  activeView: 'dashboard' | 'onboarding' | 'attendance' | 'planner' | 'training' | 'mycompetency' | 'trainings' | 'mockinterview' | 'reachout' = 'dashboard';
-  private readonly validViews = ['dashboard', 'onboarding', 'attendance', 'planner', 'training', 'mycompetency', 'trainings', 'mockinterview', 'reachout'] as const;
+  activeView: 'dashboard' | 'onboarding' | 'attendance' | 'planner' | 'training' | 'mycompetency' | 'trainings' | 'mockinterview' | 'reachout' | 'pochowto' = 'dashboard';
+  private readonly validViews = ['dashboard', 'onboarding', 'attendance', 'planner', 'training', 'mycompetency', 'trainings', 'mockinterview', 'reachout', 'pochowto'] as const;
 
   navGroups: NavGroup[] = [];
   loading = true;
@@ -97,6 +99,7 @@ export class AppComponent {
       'Trainings': 'trainings',
       'Mock Interview': 'mockinterview',
       'Projects and Reachouts': 'reachout',
+      'POC how-to': 'pochowto',
     };
     this.activeView = viewMap[item.label] ?? 'dashboard';
     localStorage.setItem('active-view', this.activeView);
@@ -113,6 +116,7 @@ export class AppComponent {
       'Trainings': 'trainings',
       'Mock Interview': 'mockinterview',
       'Projects and Reachouts': 'reachout',
+      'POC how-to': 'pochowto',
     };
     return this.activeView === (viewMap[item.label] ?? '');
   }

@@ -1,0 +1,43 @@
+.pochowto-tabs {
+  margin: 0 1.5rem 0;
+}
+
+.pochowto-panel {
+  margin: 1rem 1.5rem 1.5rem;
+  padding: 1.5rem 2rem;
+  height: 80vh;
+  overflow-y: auto;
+}
+
+.pochowto-panel h2 {
+  margin: 0 0 0.35rem;
+}
+
+.pochowto-panel-desc {
+  color: var(--text-muted, #888);
+  margin: 0 0 1.5rem;
+}
+
+.pochowto-editor {
+  display: block;
+}
+
+.pochowto-editor ::ng-deep .ql-editor {
+  min-height: 240px;
+}
+
+.pochowto-toolbar-hidden ::ng-deep .ql-toolbar {
+  display: none;
+}
+
+.pochowto-toolbar-hidden ::ng-deep .ql-container.ql-snow {
+  border-top: 1px solid #ccc !important;  /* shows top border when toolbar is hidden */
+  border-radius: 4px;
+}
+
+.pochowto-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 0.5rem;
+  margin-top: 1rem;
+}
