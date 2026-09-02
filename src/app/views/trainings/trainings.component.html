@@ -72,5 +72,19 @@
         </tr>
       }
     </tbody>
+    <tfoot>
+      <tr class="trainings-add-row">
+        <td colspan="4">
+          <div class="trainings-add-form">
+            <input class="trainings-add-title" type="text" [(ngModel)]="newCourse.title" placeholder="Course title" />
+            <input class="trainings-add-length" type="text" [(ngModel)]="newCourse.length" placeholder="e.g. 2h 30m" />
+            <input class="trainings-add-link" type="url" [(ngModel)]="newCourse.link" placeholder="https://..." />
+            <button type="button" class="trainings-icon-btn" title="Add course" [disabled]="!newCourse.title.trim()" (click)="addCourse()">
+              <i class="bi bi-plus-lg"></i>
+            </button>
+          </div>
+        </td>
+      </tr>
+    </tfoot>
   </table>
 </div>

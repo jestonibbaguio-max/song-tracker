@@ -19,20 +19,18 @@ export interface TrainingsCourse {
   styleUrl: './trainings.component.css'
 })
 export class TrainingsComponent implements OnInit {
-  // Temporary dummy data until the trainings feature is wired to a data service.
   courses: TrainingsCourse[] = [
-    {
-      id: 'dummy-1',
-      title: 'Sample Training Course',
-      length: '2h 30m',
-      link: 'https://example.com',
-    },
+    { id: crypto.randomUUID(), title: 'TQ Training on Udacity', length: '', link: 'https://www.udacity.com/learning-plan/tq-at-accenture' },
+    { id: crypto.randomUUID(), title: 'Ethics and Compliance', length: '', link: 'https://wd103.myworkday.com/accenture/learning/viewmore/6964690f7fd810001c749ba92ee68ceb' },
+    { id: crypto.randomUUID(), title: 'ISA Advocate', length: '', link: 'https://isadvocate.accenture.com/' },
+    { id: crypto.randomUUID(), title: 'GenAI', length: '', link: 'https://atci.lkm.delivery.accenture.com/TT/Automation/genAI' },
   ];
 
   selectedEid = '';
   progressLoading = false;
   savingCourseId: string | null = null;
   progressError = '';
+  newCourse = { title: '', length: '', link: '' };
 
   private completedCourseIds = new Set<string>();
 
@@ -85,6 +83,18 @@ export class TrainingsComponent implements OnInit {
         this.progressError = 'Could not save progress. Please try again.';
       }
     });
+  }
+
+  addCourse(): void {
+    const title = this.newCourse.title.trim();
+    if (!title) return;
+    this.courses.push({
+      id: crypto.randomUUID(),
+      title,
+      length: this.newCourse.length.trim(),
+      link: this.newCourse.link.trim(),
+    });
+    this.newCourse = { title: '', length: '', link: '' };
   }
 
   removeCourse(course: TrainingsCourse): void {
