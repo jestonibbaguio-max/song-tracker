@@ -53,16 +53,7 @@
     } @else if (activeView === 'mycompetency') {
       <app-mycompetency></app-mycompetency>
     } @else if (activeView === 'trainings') {
-      <section class="page-header">
-        <div>
-          <h1>Trainings</h1>
-          <p>Access training materials and track progress</p>
-        </div>
-      </section>
-      <div class="panel" style="margin:1.5rem;padding:2rem;text-align:center;color:var(--text-muted,#888);">
-        <i class="bi bi-journals" style="font-size:3rem;"></i>
-        <p style="margin-top:1rem;">Trainings — coming soon</p>
-      </div>
+      <app-trainings></app-trainings>
     } @else if (activeView === 'mockinterview') {
       <app-mock-assessment [summary]="mockSummary"></app-mock-assessment>
     } @else if (activeView === 'reachout') {
