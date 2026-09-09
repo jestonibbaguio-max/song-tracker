@@ -13,6 +13,13 @@ import { TrainingComponent } from './views/training/training.component';
 import { PocHowToComponent } from './views/pochowto/pochowto.component';
 import { TrainingsComponent } from './views/trainings/trainings.component';
 
+export interface StubView {
+  heading: string;
+  subtitle: string;
+  icon: string;
+  label: string;
+}
+
 @Component({
   selector: 'app-root',
   standalone: true,
@@ -33,11 +40,20 @@ import { TrainingsComponent } from './views/trainings/trainings.component';
   encapsulation: ViewEncapsulation.None
 })
 export class AppComponent {
-  activeView: 'dashboard' | 'onboarding' | 'attendance' | 'planner' | 'training' | 'mycompetency' | 'trainings' | 'mockinterview' | 'reachout' | 'pochowto' = 'dashboard';
-  private readonly validViews = ['dashboard', 'onboarding', 'attendance', 'planner', 'training', 'mycompetency', 'trainings', 'mockinterview', 'reachout', 'pochowto'] as const;
+  activeView: 'dashboard' | 'onboarding' | 'attendance' | 'planner' | 'training' | 'mycompetency' | 'trainings' | 'mockinterview' | 'reachout' | 'pochowto' | 'initiatives' | 'reports' | 'resourcetracking' | 'announcements' | 'settings' = 'dashboard';
+  private readonly validViews = ['dashboard', 'onboarding', 'attendance', 'planner', 'training', 'mycompetency', 'trainings', 'mockinterview', 'reachout', 'pochowto', 'initiatives', 'reports', 'resourcetracking', 'announcements', 'settings'] as const;
 
   navGroups: NavGroup[] = [];
   loading = true;
+
+  readonly stubViews: Record<string, StubView> = {
+    reachout: { heading: 'Projects and Reachouts', subtitle: 'Connect and reach out to team members', icon: 'bi-send', label: 'Reachout' },
+    initiatives: { heading: 'Initiatives', subtitle: 'Track team initiatives and improvement drives', icon: 'bi-kanban', label: 'Initiatives' },
+    reports: { heading: 'Reports', subtitle: 'Generate and review POC reports', icon: 'bi-file-earmark-bar-graph', label: 'Reports' },
+    resourcetracking: { heading: 'Resource tracking', subtitle: 'Monitor resource allocation and utilisation', icon: 'bi-people', label: 'Resource tracking' },
+    announcements: { heading: 'Announcements', subtitle: 'Team announcements and updates', icon: 'bi-megaphone', label: 'Announcements' },
+    settings: { heading: 'Settings', subtitle: 'Manage dashboard preferences', icon: 'bi-gear', label: 'Settings' },
+  };
 
   mockSummary: MockAssessmentSummary = {
     title: 'MOCK ASSESSMENT SUMMARY',
@@ -91,6 +107,10 @@ export class AppComponent {
       : this.sharedData.onboardingResources.length;
   }
 
+  get stubView(): StubView | null {
+    return this.stubViews[this.activeView] ?? null;
+  }
+
   selectNav(item: NavItem): void {
     const viewMap: Record<string, typeof this.activeView> = {
       'Resources': 'onboarding',
@@ -102,6 +122,11 @@ export class AppComponent {
       'Mock Interview': 'mockinterview',
       'Projects and Reachouts': 'reachout',
       'POC how-to': 'pochowto',
+      'Initiatives': 'initiatives',
+      'Reports': 'reports',
+      'Resource tracking': 'resourcetracking',
+      'Announcements': 'announcements',
+      'Settings': 'settings',
     };
     this.activeView = viewMap[item.label] ?? 'dashboard';
     localStorage.setItem('active-view', this.activeView);
@@ -119,6 +144,11 @@ export class AppComponent {
       'Mock Interview': 'mockinterview',
       'Projects and Reachouts': 'reachout',
       'POC how-to': 'pochowto',
+      'Initiatives': 'initiatives',
+      'Reports': 'reports',
+      'Resource tracking': 'resourcetracking',
+      'Announcements': 'announcements',
+      'Settings': 'settings',
     };
     return this.activeView === (viewMap[item.label] ?? '');
   }

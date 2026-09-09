@@ -56,16 +56,16 @@
       <app-trainings></app-trainings>
     } @else if (activeView === 'mockinterview') {
       <app-mock-assessment [summary]="mockSummary"></app-mock-assessment>
-    } @else if (activeView === 'reachout') {
+    } @else if (stubView) {
       <section class="page-header">
         <div>
-          <h1>Projects and Reachouts</h1>
-          <p>Connect and reach out to team members</p>
+          <h1>{{ stubView.heading }}</h1>
+          <p>{{ stubView.subtitle }}</p>
         </div>
       </section>
       <div class="panel" style="margin:1.5rem;padding:2rem;text-align:center;color:var(--text-muted,#888);">
-        <i class="bi bi-send" style="font-size:3rem;"></i>
-        <p style="margin-top:1rem;">Reachout — coming soon</p>
+        <i class="bi {{ stubView.icon }}" style="font-size:3rem;"></i>
+        <p style="margin-top:1rem;">{{ stubView.label }} — coming soon</p>
       </div>
     } @else if (activeView === 'pochowto') {
       <app-pochowto></app-pochowto>
