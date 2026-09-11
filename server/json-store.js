@@ -56,10 +56,10 @@ function getDashboardPayload() {
           { icon: 'bi-calendar-check', label: 'Attendance Tracker', badge: null, active: false },
           { icon: 'bi-calendar3', label: 'Planner', badge: null, active: false },
           { icon: 'bi-patch-check', label: 'myCompetency', badge: null, active: false },
-          { icon: 'bi-journals', label: 'Trainings', badge: null, active: false },
+          { icon: 'bi-journals', label: 'Bench Trainings', badge: null, active: false },
           { icon: 'bi-person-video3', label: 'Mock Interview', badge: null, active: false },
-          { icon: 'bi-send', label: 'Projects and Reachouts', badge: null, active: false },
-          { icon: 'bi-mortarboard', label: 'Training', badge: null, active: false },
+          { icon: 'bi-send', label: 'Project Reachouts', badge: null, active: false },
+          { icon: 'bi-mortarboard', label: 'Group Trainings', badge: null, active: false },
           { icon: 'bi-kanban', label: 'Initiatives', badge: null, active: false }
         ]
       },

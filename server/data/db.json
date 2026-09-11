@@ -2082,7 +2082,7 @@
           },
           {
             "icon": "bi-journals",
-            "label": "Trainings",
+            "label": "Bench Trainings",
             "badge": null,
             "active": false
           },
@@ -2094,13 +2094,13 @@
           },
           {
             "icon": "bi-send",
-            "label": "Projects and Reachouts",
+            "label": "Project Reachouts",
             "badge": null,
             "active": false
           },
           {
             "icon": "bi-mortarboard",
-            "label": "Training",
+            "label": "Group Trainings",
             "badge": null,
             "active": false
           },
