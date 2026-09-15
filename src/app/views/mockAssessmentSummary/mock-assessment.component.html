@@ -1,6 +1,30 @@
 <div class="panel mock-summary" style="margin:1.5rem;padding:2rem;">
   <h2 style="margin:0 0 1rem 0;">{{ summary.title }}</h2>
-  <div style="text-align: right; margin-bottom: 1rem;">
+
+<ul class="nav nav-tabs" role="tablist">
+  <li>
+    <span style="cursor: pointer; color: #515151"
+      class="nav-link active"
+      data-bs-toggle="tab"
+      [attr.data-bs-target]="'#' + summaryTableTab.targetId"
+      aria-selected="true"
+    >{{ summaryTableTab.title }}</span>
+  </li>
+  <li>
+    <span style="cursor: pointer; color: #515151"
+      class="nav-link"
+      data-bs-toggle="tab"
+      [attr.data-bs-target]="'#' + feedbackTab.targetId"
+      aria-selected="false"
+    >
+      {{ feedbackTab.title }}
+  </span>
+  </li>
+</ul>
+
+<div class="tab-content">
+  <div class="tab-pane fade show active" [id]="summaryTableTab.targetId" role="tabpanel">
+  <div style="text-align: right; margin-bottom: 1rem; margin-top: 1rem;">
     <button (click)="onAddRow()" class="btn-add-row">+</button>
   </div>
   <div class="mock-summary__table-wrap">
@@ -122,4 +146,11 @@
       </div>
     </div>
   }
+  </div>
+
+  <div class="tab-pane fade" [id]="feedbackTab.targetId" role="tabpanel">
+    Feedback
+  </div>
+</div>
+
 </div>

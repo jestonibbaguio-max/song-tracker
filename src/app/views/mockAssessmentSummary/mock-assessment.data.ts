@@ -18,6 +18,13 @@ export interface MockAssessmentSummary {
   title: string;
   rows: MockAssessmentRow[];
   highlights: string[];
+  tabMenusItems: MockAssessmentSummaryTabItem[];
+}
+
+export interface MockAssessmentSummaryTabItem {
+  title: string;
+  description?: string;
+  targetId: string;
 }
 
 @Component({
@@ -29,7 +36,9 @@ export interface MockAssessmentSummary {
 })
 export class MockAssessmentComponent {
   @Input() summary!: MockAssessmentSummary;
-  
+  summaryTableTab!: MockAssessmentSummaryTabItem
+  feedbackTab!: MockAssessmentSummaryTabItem
+
   editingIndex: number | null = null;
   editingRow: MockAssessmentRow | null = null;
   showEditModal = false;
@@ -128,7 +137,12 @@ export class MockAssessmentComponent {
     if (savedData) {
       this.summary = JSON.parse(savedData);
     }
-}
+  }
+
+  ngAfterContentInit(): void {
+    this.summaryTableTab = this.summary?.tabMenusItems?.[0];
+    this.feedbackTab = this.summary?.tabMenusItems?.[1];
+  }
 
   // Save to backend API
   saveMockAssessment(): void {
