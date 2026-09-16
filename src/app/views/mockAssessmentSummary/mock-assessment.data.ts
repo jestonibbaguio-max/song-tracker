@@ -1,6 +1,9 @@
 import { Component, Input } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
+import { QuillModule } from 'ngx-quill';
+import { SharedDataService } from '../../services/shared-data.service';
+import { OnboardingResource } from '../../models/types';
 
 export interface MockAssessmentRow {
   stream: string;
@@ -30,20 +33,26 @@ export interface MockAssessmentSummaryTabItem {
 @Component({
   selector: 'app-mock-assessment',
   standalone: true,
-  imports: [CommonModule, FormsModule],
+  imports: [CommonModule, FormsModule, QuillModule],
   templateUrl: './mock-assessment.component.html',
   styleUrls: ['./mock-assessment.component.css']
 })
 export class MockAssessmentComponent {
   @Input() summary!: MockAssessmentSummary;
-  summaryTableTab!: MockAssessmentSummaryTabItem
-  feedbackTab!: MockAssessmentSummaryTabItem
+  summaryTableTab!: MockAssessmentSummaryTabItem;
+  feedbackTab!: MockAssessmentSummaryTabItem;
+  headCountTab!: MockAssessmentSummaryTabItem;
+
+  page: number = 1;
+  pageSize: number = 10;
+  maxVisiblePages: number = 5;
+  onBoardingResourcesPerPage: number = 10
 
   editingIndex: number | null = null;
   editingRow: MockAssessmentRow | null = null;
   showEditModal = false;
 
-  constructor() {}
+  constructor(public sharedData: SharedDataService) {}
 
   onEdit(index: number): void {
     this.editingIndex = index;
@@ -137,11 +146,42 @@ export class MockAssessmentComponent {
     if (savedData) {
       this.summary = JSON.parse(savedData);
     }
+
+    if (this.sharedData.onboardingResources.length === 0) {
+      this.sharedData.loadOnboardingResources();
+    }
+
   }
+
+  get onBoardingResources(): OnboardingResource[] {
+    const start = (this.page - 1) * this.pageSize;
+    return this.sharedData.onboardingResources.slice(start, start + this.pageSize);
+  }
+
+  get totalPages(): number {
+    return Math.ceil(this.sharedData.onboardingResources.length / this.pageSize);
+  }
+
+  get paginatedResources(){
+    const startIndex = (this.page - 1) * this.pageSize;
+    return this.onBoardingResources.slice(startIndex, startIndex + this.pageSize);
+  }
+
+  get visiblePages(): number[] {
+    let start = Math.max(1, this.page - Math.floor(this.maxVisiblePages / 2));
+    let end = Math.min(this.totalPages, start + this.maxVisiblePages - 1);
+
+    start = Math.max(1, end - this.maxVisiblePages + 1);
+   
+    console.log(start, end)
+    return Array.from({ length: end - start + 1 }, (_, i) => start + i);
+  }
+
 
   ngAfterContentInit(): void {
     this.summaryTableTab = this.summary?.tabMenusItems?.[0];
     this.feedbackTab = this.summary?.tabMenusItems?.[1];
+    this.headCountTab = this.summary?.tabMenusItems?.[2];
   }
 
   // Save to backend API

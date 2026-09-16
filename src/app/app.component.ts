@@ -98,7 +98,12 @@ export class AppComponent {
       {
         title: 'Feedback',
         targetId: 'feedback'
+      },
+      {
+        title: 'Head Count',
+        targetId: 'head-count'
       }
+
     ]
   };
   constructor(private http: HttpClient, public sharedData: SharedDataService) {
