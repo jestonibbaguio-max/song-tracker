@@ -10,6 +10,22 @@
 } @else if (tracks.length === 0) {
   <div class="empty-state">No training stack assigned to {{ sharedData.getGroupLabel(sharedData.attendanceGroup) }}</div>
 } @else {
+  <div class="training-toolbar">
+    <div class="training-resource-picker">
+      <label for="training-resource">Resource</label>
+      <select
+        id="training-resource"
+        class="comp-group-select training-resource-select"
+        [(ngModel)]="selectedEid"
+        (ngModelChange)="onResourceChange()">
+        <option value="">Select a resource</option>
+        @for (member of groupMembers; track member.id) {
+          <option [value]="member.eid">{{ member.name }}</option>
+        }
+      </select>
+    </div>
+  </div>
+
   <div class="segmented-tabs training-tabs" role="tablist" aria-label="Training tracks">
     @for (tab of tracks; track tab.id) {
       <button
@@ -24,6 +40,20 @@
     }
   </div>
 
+  <div class="training-progress-bar">
+    @if (selectedEid) {
+      <span><strong>{{ selectedMemberName }}</strong> — {{ completedCount }} of {{ activeCourseCount }} completed</span>
+    } @else {
+      <span class="training-hint">Select a resource to track completion.</span>
+    }
+    @if (progressLoading) {
+      <span class="training-hint">Loading progress…</span>
+    }
+    @if (progressError) {
+      <span class="training-error">{{ progressError }}</span>
+    }
+  </div>
+
   @for (tab of tracks; track tab.id) {
     @if (activeTab === tab.id) {
       <div class="training-table-wrap" role="tabpanel">
@@ -32,19 +62,29 @@
             <tr>
               <th>Name</th>
               <th>Length</th>
+              <th class="training-col-completed">Completed</th>
               <th class="training-col-actions"></th>
             </tr>
           </thead>
           <tbody>
             @if (tab.courses.length === 0) {
               <tr class="training-empty-row">
-                <td colspan="3">No courses added yet</td>
+                <td colspan="4">No courses added yet</td>
               </tr>
             }
             @for (course of tab.courses; track course.id) {
-              <tr>
+              <tr [class.training-row-done]="isCompleted(tab.id, course.id)">
                 <td><a [href]="course.link" target="_blank" rel="noopener">{{ course.title }}</a></td>
                 <td>{{ course.length }}</td>
+                <td class="training-col-completed">
+                  <input
+                    type="checkbox"
+                    class="training-check"
+                    [attr.aria-label]="'Mark ' + course.title + ' completed'"
+                    [checked]="isCompleted(tab.id, course.id)"
+                    [disabled]="!selectedEid || progressLoading || isSaving(tab.id, course.id)"
+                    (change)="toggleCompleted(tab.id, course.id, $any($event.target).checked)" />
+                </td>
                 <td class="training-col-actions">
                   <button type="button" class="training-icon-btn" title="Remove course" (click)="removeCourse(tab, course)">
                     <i class="bi bi-trash"></i>
@@ -55,7 +95,7 @@
           </tbody>
           <tfoot>
             <tr class="training-add-row">
-              <td colspan="3">
+              <td colspan="4">
                 <div class="training-add-form">
                   <input class="training-add-title" type="text" [(ngModel)]="newCourse.title" placeholder="Course title" />
                   <input class="training-add-length" type="text" [(ngModel)]="newCourse.length" placeholder="e.g. 2h 30m" />
