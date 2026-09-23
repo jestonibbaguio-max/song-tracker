@@ -56,6 +56,8 @@ export class MockAssessmentComponent {
   onBoardingResourcesPerPage: number = 10
 
   feedbackPage: number = 1;
+  feedbackSearchTerm: string = '';
+  headCountSearchTerm: string = '';
   private expandedFeedbackKeys = new Set<string>();
 
   editingIndex: number | null = null;
@@ -165,11 +167,11 @@ export class MockAssessmentComponent {
 
   get onBoardingResources(): OnboardingResource[] {
     const start = (this.page - 1) * this.pageSize;
-    return this.sharedData.onboardingResources.slice(start, start + this.pageSize);
+    return this.filteredOnboardingResources.slice(start, start + this.pageSize);
   }
 
   get totalPages(): number {
-    return Math.ceil(this.sharedData.onboardingResources.length / this.pageSize);
+    return Math.ceil(this.filteredOnboardingResources.length / this.pageSize);
   }
 
   get paginatedResources(){
@@ -191,6 +193,35 @@ export class MockAssessmentComponent {
     return localStorage.getItem(this.getHeadCountChecklistStorageKey(resource, field)) === 'true';
   }
 
+  getHeadCountChecklistTotal(field: HeadCountChecklistField): number {
+    return this.sharedData.onboardingResources.filter((resource) =>
+      this.isHeadCountChecklistChecked(resource, field)
+    ).length;
+  }
+
+  headCountFilter: HeadCountChecklistField | null = null;
+
+  toggleHeadCountFilter(field: HeadCountChecklistField): void {
+    this.headCountFilter = this.headCountFilter === field ? null : field;
+    this.page = 1;
+  }
+
+  onHeadCountSearchChange(): void {
+    this.page = 1;
+  }
+
+  private get filteredOnboardingResources(): OnboardingResource[] {
+    let resources = this.sortedOnboardingResources;
+
+    if (this.headCountFilter) {
+      resources = resources.filter((resource) =>
+        this.isHeadCountChecklistChecked(resource, this.headCountFilter!)
+      );
+    }
+
+    return this.filterByNameOrEid(resources, this.headCountSearchTerm);
+  }
+
   onHeadCountChecklistChange(resource: OnboardingResource, field: HeadCountChecklistField, event: Event): void {
     const isChecked = (event.target as HTMLInputElement).checked;
     const storageKey = this.getHeadCountChecklistStorageKey(resource, field);
@@ -208,12 +239,32 @@ export class MockAssessmentComponent {
   }
 
   get feedbackTotalPages(): number {
-    return Math.ceil(this.sharedData.onboardingResources.length / this.pageSize);
+    return Math.ceil(this.feedbackFilteredResources.length / this.pageSize);
   }
 
   get feedbackResources(): OnboardingResource[] {
     const start = (this.feedbackPage - 1) * this.pageSize;
-    return this.sharedData.onboardingResources.slice(start, start + this.pageSize);
+    return this.feedbackFilteredResources.slice(start, start + this.pageSize);
+  }
+
+  onFeedbackSearchChange(): void {
+    this.feedbackPage = 1;
+  }
+
+  private get feedbackFilteredResources(): OnboardingResource[] {
+    return this.filterByNameOrEid(this.sortedOnboardingResources, this.feedbackSearchTerm);
+  }
+
+  private filterByNameOrEid(resources: OnboardingResource[], searchTerm: string): OnboardingResource[] {
+    const term = searchTerm.trim().toLowerCase();
+
+    if (!term) {
+      return resources;
+    }
+
+    return resources.filter((resource) =>
+      resource.name?.toLowerCase().includes(term) || resource.eid?.toLowerCase().includes(term)
+    );
   }
 
   get feedbackVisiblePages(): number[] {
@@ -286,6 +337,12 @@ export class MockAssessmentComponent {
 
   private getResourceKey(resource: OnboardingResource): string {
     return String(resource.eid || resource.id);
+  }
+
+  private get sortedOnboardingResources(): OnboardingResource[] {
+    return [...this.sharedData.onboardingResources].sort((a, b) =>
+      a.name.localeCompare(b.name)
+    );
   }
 
 
