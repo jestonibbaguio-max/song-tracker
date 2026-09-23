@@ -30,6 +30,13 @@ export interface MockAssessmentSummaryTabItem {
   targetId: string;
 }
 
+type HeadCountChecklistField = 'communication' | 'technical' | 'client';
+
+export interface FeedbackSubmission {
+  content: string;
+  submittedAt: string;
+}
+
 @Component({
   selector: 'app-mock-assessment',
   standalone: true,
@@ -47,6 +54,9 @@ export class MockAssessmentComponent {
   pageSize: number = 10;
   maxVisiblePages: number = 5;
   onBoardingResourcesPerPage: number = 10
+
+  feedbackPage: number = 1;
+  private expandedFeedbackKeys = new Set<string>();
 
   editingIndex: number | null = null;
   editingRow: MockAssessmentRow | null = null;
@@ -175,6 +185,107 @@ export class MockAssessmentComponent {
    
     console.log(start, end)
     return Array.from({ length: end - start + 1 }, (_, i) => start + i);
+  }
+
+  isHeadCountChecklistChecked(resource: OnboardingResource, field: HeadCountChecklistField): boolean {
+    return localStorage.getItem(this.getHeadCountChecklistStorageKey(resource, field)) === 'true';
+  }
+
+  onHeadCountChecklistChange(resource: OnboardingResource, field: HeadCountChecklistField, event: Event): void {
+    const isChecked = (event.target as HTMLInputElement).checked;
+    const storageKey = this.getHeadCountChecklistStorageKey(resource, field);
+
+    if (isChecked) {
+      localStorage.setItem(storageKey, 'true');
+      return;
+    }
+
+    localStorage.removeItem(storageKey);
+  }
+
+  private getHeadCountChecklistStorageKey(resource: OnboardingResource, field: HeadCountChecklistField): string {
+    return `mockAssessment.headCount.${resource.eid || resource.id}.${field}.checked`;
+  }
+
+  get feedbackTotalPages(): number {
+    return Math.ceil(this.sharedData.onboardingResources.length / this.pageSize);
+  }
+
+  get feedbackResources(): OnboardingResource[] {
+    const start = (this.feedbackPage - 1) * this.pageSize;
+    return this.sharedData.onboardingResources.slice(start, start + this.pageSize);
+  }
+
+  get feedbackVisiblePages(): number[] {
+    let start = Math.max(1, this.feedbackPage - Math.floor(this.maxVisiblePages / 2));
+    let end = Math.min(this.feedbackTotalPages, start + this.maxVisiblePages - 1);
+
+    start = Math.max(1, end - this.maxVisiblePages + 1);
+
+    return Array.from({ length: end - start + 1 }, (_, i) => start + i);
+  }
+
+  isFeedbackExpanded(resource: OnboardingResource): boolean {
+    return this.expandedFeedbackKeys.has(this.getResourceKey(resource));
+  }
+
+  toggleFeedback(resource: OnboardingResource): void {
+    const key = this.getResourceKey(resource);
+
+    if (this.expandedFeedbackKeys.has(key)) {
+      this.expandedFeedbackKeys.delete(key);
+      return;
+    }
+
+    this.expandedFeedbackKeys.add(key);
+  }
+
+  getFeedbackContent(resource: OnboardingResource): string {
+    return localStorage.getItem(this.getFeedbackStorageKey(resource)) || '';
+  }
+
+  onFeedbackContentChange(resource: OnboardingResource, content: string): void {
+    const storageKey = this.getFeedbackStorageKey(resource);
+
+    if (content) {
+      localStorage.setItem(storageKey, content);
+      return;
+    }
+
+    localStorage.removeItem(storageKey);
+  }
+
+  private getFeedbackStorageKey(resource: OnboardingResource): string {
+    return `mockAssessment.feedback.${this.getResourceKey(resource)}.content`;
+  }
+
+  getFeedbackSubmissions(resource: OnboardingResource): FeedbackSubmission[] {
+    const raw = localStorage.getItem(this.getFeedbackSubmissionsStorageKey(resource));
+    return raw ? JSON.parse(raw) : [];
+  }
+
+  onSubmitFeedback(resource: OnboardingResource): void {
+    const content = this.getFeedbackContent(resource);
+
+    if (!content) {
+      return;
+    }
+
+    const submissions = this.getFeedbackSubmissions(resource);
+    submissions.push({ content, submittedAt: new Date().toISOString() });
+    localStorage.setItem(this.getFeedbackSubmissionsStorageKey(resource), JSON.stringify(submissions));
+  }
+
+  formatSubmittedDate(submittedAt: string): string {
+    return new Date(submittedAt).toLocaleString();
+  }
+
+  private getFeedbackSubmissionsStorageKey(resource: OnboardingResource): string {
+    return `mockAssessment.feedback.${this.getResourceKey(resource)}.submissions`;
+  }
+
+  private getResourceKey(resource: OnboardingResource): string {
+    return String(resource.eid || resource.id);
   }
 
 

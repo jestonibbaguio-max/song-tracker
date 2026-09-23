@@ -160,7 +160,50 @@
   </div>
 
   <div class="tab-pane fade" [id]="feedbackTab.targetId" role="tabpanel">
-    <quill-editor style="width: 100%;"></quill-editor>
+    @for (onBoardingResource of feedbackResources; track $index) {
+      <div class="feedback-item">
+        <div class="feedback-item__header" (click)="toggleFeedback(onBoardingResource)">
+          <span class="feedback-item__name">{{ onBoardingResource.name }}</span>
+          <i class="bi" [class.bi-chevron-down]="!isFeedbackExpanded(onBoardingResource)" [class.bi-chevron-up]="isFeedbackExpanded(onBoardingResource)"></i>
+        </div>
+        @if (isFeedbackExpanded(onBoardingResource)) {
+          @if (getFeedbackSubmissions(onBoardingResource).length > 0) {
+            <div class="feedback-item__submissions">
+              @for (submission of getFeedbackSubmissions(onBoardingResource); track $index) {
+                <div class="feedback-item__submission">
+                  <div class="feedback-item__submission-date">Date Posted: {{ formatSubmittedDate(submission.submittedAt) }}</div>
+                  <div class="feedback-item__submission-content" [innerHTML]="submission.content"></div>
+                </div>
+              }
+            </div>
+          }
+          <quill-editor
+            class="feedback-item__editor"
+            style="width: 100%;"
+            [ngModel]="getFeedbackContent(onBoardingResource)"
+            (ngModelChange)="onFeedbackContentChange(onBoardingResource, $event)"
+          ></quill-editor>
+          <div class="feedback-item__actions">
+            <button type="button" class="btn-save" (click)="onSubmitFeedback(onBoardingResource)">Submit</button>
+          </div>
+        }
+      </div>
+    }
+    <ul class="pagination pagination-sm float-end mt-3">
+      <li class="page-item">
+        <button class="page-link" [disabled]="feedbackPage === 1" (click)="feedbackPage = feedbackPage - 1">Previous</button>
+      </li>
+
+      @for (p of feedbackVisiblePages; track p) {
+        <li class="page-item" [class.active]="feedbackPage === p">
+          <button class="page-link" (click)="feedbackPage = p">{{ p }}</button>
+        </li>
+      }
+
+      <li class="page-item">
+        <button class="page-link" [disabled]="feedbackPage === feedbackTotalPages" (click)="feedbackPage = feedbackPage + 1">Next</button>
+      </li>
+    </ul>
   </div>
 
   <div class="tab-pane fade" [id]="headCountTab.targetId" role="tabpanel">
@@ -168,7 +211,6 @@
         <thead>
           <tr>
             <th>Name</th>
-            <th class="text-center">Deployment Notice</th>
             <th class="text-center">Communication</th>
             <th class="text-center">Technical</th>
             <th class="text-center">Client</th>
@@ -178,16 +220,28 @@
         <tr>
           <td class="ps-1">{{ onBoardingResource.name }}</td>
           <td class="text-center">
-            <input type="checkbox" class="form-check-input">
+            <input
+              type="checkbox"
+              class="form-check-input"
+              [checked]="isHeadCountChecklistChecked(onBoardingResource, 'communication')"
+              (click)="onHeadCountChecklistChange(onBoardingResource, 'communication', $event)"
+            >
           </td>
           <td class="text-center">
-            <input type="checkbox" class="form-check-input">
+            <input
+              type="checkbox"
+              class="form-check-input"
+              [checked]="isHeadCountChecklistChecked(onBoardingResource, 'technical')"
+              (click)="onHeadCountChecklistChange(onBoardingResource, 'technical', $event)"
+            >
           </td>
           <td class="text-center">
-            <input type="checkbox" class="form-check-input">
-          </td>
-          <td class="text-center">
-            <input type="checkbox" class="form-check-input">
+            <input
+              type="checkbox"
+              class="form-check-input"
+              [checked]="isHeadCountChecklistChecked(onBoardingResource, 'client')"
+              (click)="onHeadCountChecklistChange(onBoardingResource, 'client', $event)"
+            >
           </td>
         </tr>
       }
