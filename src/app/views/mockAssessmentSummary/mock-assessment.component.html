@@ -1,125 +1,318 @@
 <div class="panel mock-summary" style="margin:1.5rem;padding:2rem;">
   <h2 style="margin:0 0 1rem 0;">{{ summary.title }}</h2>
-  <div style="text-align: right; margin-bottom: 1rem;">
-    <button (click)="onAddRow()" class="btn-add-row">+</button>
-  </div>
-  <div class="mock-summary__table-wrap">
-    <table class="mock-summary__table">
-      <thead>
-        <tr>
-          <th>Assessment Stream</th>
-          <th>Total Resources</th>
-          <th>Scheduled</th>
-          <th>Total Conducted</th>
-          <th>Total Passed</th>
-          <th>Total Failed</th>
-          <th>Pass Rate(%)</th>
-          <th>Fail Rate(%)</th>
-          <th>Actions</th>
-        </tr>
-      </thead>
-      <tbody>
-        @for (row of summary.rows; track row.stream; let i = $index) {
+
+<ul class="nav nav-tabs" role="tablist">
+  <li>
+    <span style="cursor: pointer; color: #515151"
+      class="nav-link active"
+      data-bs-toggle="tab"
+      [attr.data-bs-target]="'#' + summaryTableTab.targetId"
+      aria-selected="true"
+      (click)="syncSummaryTable()"
+    >{{ summaryTableTab.title }}</span>
+  </li>
+  <li>
+    <span style="cursor: pointer; color: #515151"
+      class="nav-link"
+      data-bs-toggle="tab"
+      [attr.data-bs-target]="'#' + feedbackTab.targetId"
+      aria-selected="false"
+    >
+      {{ feedbackTab.title }}
+  </span>
+  </li>
+  <li>
+    <span style="cursor: pointer; color: #515151"
+      class="nav-link"
+      data-bs-toggle="tab"
+      [attr.data-bs-target]="'#' + headCountTab.targetId"
+      aria-selected="false"
+    >
+      {{ headCountTab.title }}
+  </span>
+  </li>
+
+</ul>
+
+<div class="tab-content">
+  <div class="tab-pane fade show active" [id]="summaryTableTab.targetId" role="tabpanel">
+    <div style="text-align: right; margin-bottom: 1rem; margin-top: 1rem;">
+      <button (click)="onAddRow()" class="btn-add-row">+</button>
+    </div>
+    <div class="mock-summary__table-wrap">
+      <table class="mock-summary__table">
+        <thead>
           <tr>
-            <td class="stream">{{ row.stream }}</td>
-            <td>{{ row.totalResources }}</td>
-            <td>{{ row.scheduled }}</td>
-            <td>{{ row.totalConducted }}</td>
-            <td>{{ row.totalPassed }}</td>
-            <td>{{ row.totalFailed }}</td>
-            <td>{{ row.passRate }}</td>
-            <td>{{ row.failRate }}</td>
-            <td class="actions">
-              <button (click)="onEdit(i)" title="Edit" style="background:none; border:none; cursor:pointer; color: #007bff; margin-right: 10px;">
-                ✏️
-              </button>
-              <button (click)="onDelete(i)" title="Delete" style="background:none; border:none; cursor:pointer; color: #dc3545;">
+            <th>Assessment Stream</th>
+            <th>Total Resources</th>
+            <th>Scheduled</th>
+            <th>Total Conducted</th>
+            <th>Total Passed</th>
+            <th>Total Failed</th>
+            <th>Pass Rate(%)</th>
+            <th>Fail Rate(%)</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          @for (row of summary.rows; track row.stream; let i = $index) {
+            <tr>
+              <td class="stream">{{ row.stream }}</td>
+              <td>{{ row.totalResources }}</td>
+              <td>{{ row.scheduled }}</td>
+              <td>{{ row.totalConducted }}</td>
+              <td>{{ row.totalPassed }}</td>
+              <td>{{ row.totalFailed }}</td>
+              <td>{{ row.passRate }}</td>
+              <td>{{ row.failRate }}</td>
+              <td class="actions">
+                <button (click)="onEdit(i)" title="Edit" style="background:none; border:none; cursor:pointer; color: #007bff; margin-right: 10px;">
+                  ✏️
+                </button>
+                <button (click)="onDelete(i)" title="Delete" style="background:none; border:none; cursor:pointer; color: #dc3545;">
+                  <i class="bi bi-trash3"></i>
+                </button>
+              </td>
+            </tr>
+          }
+        </tbody>
+      </table>
+    </div>
+
+    <div class="mock-summary__highlights">
+      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.5rem;">
+        <strong>Highlights:</strong>
+        <button (click)="onAddHighlight()" class="btn-add-highlight">+</button>
+      </div>
+      <ul>
+        @for (h of summary.highlights; track $index; let i = $index) {
+          <li>
+            <span>{{ h }}</span>
+            <div class="highlight-actions">
+              <button (click)="onEditHighlight(i)" title="Edit" class="btn-icon-small">✏️</button>
+              <button (click)="onDeleteHighlight(i)" title="Delete" class="btn-icon-small" style="color: #dc3545;">
                 <i class="bi bi-trash3"></i>
               </button>
-            </td>
-          </tr>
+            </div>
+          </li>
         }
-      </tbody>
-    </table>
+      </ul>
+    </div>
+
+    @if (showEditModal && editingRow) {
+      <div class="modal-overlay" (click)="closeModal()">
+        <div class="modal-content" (click)="$event.stopPropagation()">
+          <h3>Edit Assessment Row</h3>
+          <div class="form-group">
+            <label>Assessment Stream:</label>
+            <input [(ngModel)]="editingRow.stream" type="text" />
+          </div>
+          <div class="form-group">
+            <label>Total Resources:</label>
+            <input [(ngModel)]="editingRow.totalResources" type="number" />
+          </div>
+          <div class="form-group">
+            <label>Scheduled:</label>
+            <input [(ngModel)]="editingRow.scheduled" type="text" />
+          </div>
+          <div class="form-group">
+            <label>Total Conducted:</label>
+            <input [ngModel]="editingRow.totalConducted" type="number" readonly />
+          </div>
+          <div class="form-group">
+            <label>Total Passed:</label>
+            <input [(ngModel)]="editingRow.totalPassed" type="number" />
+          </div>
+          <div class="form-group">
+            <label>Total Failed:</label>
+            <input [(ngModel)]="editingRow.totalFailed" type="text" />
+          </div>
+          <div class="form-group">
+            <label>Pass Rate (%):</label>
+            <input [(ngModel)]="editingRow.passRate" type="text" />
+          </div>
+          <div class="form-group">
+            <label>Fail Rate (%):</label>
+            <input [(ngModel)]="editingRow.failRate" type="text" />
+          </div>
+          <div class="modal-actions">
+            <button (click)="onUpdate()" class="btn-save">Save</button>
+            <button (click)="closeModal()" class="btn-cancel">Cancel</button>
+          </div>
+        </div>
+      </div>
+    }
+
+    @if (showHighlightModal && editingHighlight !== null) {
+      <div class="modal-overlay" (click)="closeHighlightModal()">
+        <div class="modal-content" (click)="$event.stopPropagation()">
+          <h3>{{ editingHighlightIndex === summary.highlights.length ? 'Add Highlight' : 'Edit Highlight' }}</h3>
+          <div class="form-group">
+            <label>Highlight Text:</label>
+            <textarea [(ngModel)]="editingHighlight" rows="3" style="width: 100%; padding: 8px; border: 1px solid #ddd; border-radius: 4px; font-family: inherit; font-size: 0.95rem;"></textarea>
+          </div>
+          <div class="modal-actions">
+            <button (click)="onUpdateHighlight()" class="btn-save">Save</button>
+            <button (click)="closeHighlightModal()" class="btn-cancel">Cancel</button>
+          </div>
+        </div>
+      </div>
+    }
   </div>
 
-  <div class="mock-summary__highlights">
-    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.5rem;">
-      <strong>Highlights:</strong>
-      <button (click)="onAddHighlight()" class="btn-add-highlight">+</button>
+  <div class="tab-pane fade" [id]="feedbackTab.targetId" role="tabpanel">
+    <div class="resource-filter">
+      <input
+        type="text"
+        class="resource-filter__input"
+        placeholder="Filter by name or EID"
+        [(ngModel)]="feedbackSearchTerm"
+        (keyup)="onFeedbackSearchChange()"
+      >
     </div>
-    <ul>
-      @for (h of summary.highlights; track $index; let i = $index) {
-        <li>
-          <span>{{ h }}</span>
-          <div class="highlight-actions">
-            <button (click)="onEditHighlight(i)" title="Edit" class="btn-icon-small">✏️</button>
-            <button (click)="onDeleteHighlight(i)" title="Delete" class="btn-icon-small" style="color: #dc3545;">
-              <i class="bi bi-trash3"></i>
-            </button>
+    @if (feedbackResources.length === 0) {
+      <p class="resource-filter__empty">
+        @if (feedbackSearchTerm) {
+          No resource found matching "{{ feedbackSearchTerm }}".
+        } @else {
+          No resource found.
+        }
+      </p>
+    }
+    @for (onBoardingResource of feedbackResources; track $index) {
+      <div class="feedback-item">
+        <div class="feedback-item__header" (click)="toggleFeedback(onBoardingResource)">
+          <span class="feedback-item__name">{{ onBoardingResource.name }}</span>
+          <i class="bi" [class.bi-chevron-down]="!isFeedbackExpanded(onBoardingResource)" [class.bi-chevron-up]="isFeedbackExpanded(onBoardingResource)"></i>
+        </div>
+        @if (isFeedbackExpanded(onBoardingResource)) {
+          @if (getFeedbackSubmissions(onBoardingResource).length > 0) {
+            <div class="feedback-item__submissions">
+              @for (submission of getFeedbackSubmissions(onBoardingResource); track $index) {
+                <div class="feedback-item__submission">
+                  <div class="feedback-item__submission-date">Date Posted: {{ formatSubmittedDate(submission.submittedAt) }}</div>
+                  <div class="feedback-item__submission-content" [innerHTML]="submission.content"></div>
+                </div>
+              }
+            </div>
+          }
+          <quill-editor
+            class="feedback-item__editor"
+            style="width: 100%;"
+            [ngModel]="getFeedbackContent(onBoardingResource)"
+            (ngModelChange)="onFeedbackContentChange(onBoardingResource, $event)"
+          ></quill-editor>
+          <div class="feedback-item__actions">
+            <button type="button" class="btn-save" (click)="onSubmitFeedback(onBoardingResource)">Submit</button>
           </div>
+        }
+      </div>
+    }
+    <ul class="pagination pagination-sm float-end mt-3">
+      <li class="page-item">
+        <button class="page-link" [disabled]="feedbackPage === 1" (click)="feedbackPage = 1">First</button>
+      </li>
+      <li class="page-item">
+        <button class="page-link" [disabled]="feedbackPage === 1" (click)="feedbackPage = feedbackPage - 1">Previous</button>
+      </li>
+
+      @for (p of feedbackVisiblePages; track p) {
+        <li class="page-item" [class.active]="feedbackPage === p">
+          <button class="page-link" (click)="feedbackPage = p">{{ p }}</button>
         </li>
       }
+
+      <li class="page-item">
+        <button class="page-link" [disabled]="feedbackPage === feedbackTotalPages" (click)="feedbackPage = feedbackPage + 1">Next</button>
+      </li>
+      <li class="page-item">
+        <button class="page-link" [disabled]="feedbackPage === feedbackTotalPages" (click)="feedbackPage = feedbackTotalPages">Last</button>
+      </li>
     </ul>
   </div>
 
-  @if (showEditModal && editingRow) {
-    <div class="modal-overlay" (click)="closeModal()">
-      <div class="modal-content" (click)="$event.stopPropagation()">
-        <h3>Edit Assessment Row</h3>
-        <div class="form-group">
-          <label>Assessment Stream:</label>
-          <input [(ngModel)]="editingRow.stream" type="text" />
-        </div>
-        <div class="form-group">
-          <label>Total Resources:</label>
-          <input [(ngModel)]="editingRow.totalResources" type="number" />
-        </div>
-        <div class="form-group">
-          <label>Scheduled:</label>
-          <input [(ngModel)]="editingRow.scheduled" type="text" />
-        </div>
-        <div class="form-group">
-          <label>Total Conducted:</label>
-          <input [(ngModel)]="editingRow.totalConducted" type="number" />
-        </div>
-        <div class="form-group">
-          <label>Total Passed:</label>
-          <input [(ngModel)]="editingRow.totalPassed" type="number" />
-        </div>
-        <div class="form-group">
-          <label>Total Failed:</label>
-          <input [(ngModel)]="editingRow.totalFailed" type="text" />
-        </div>
-        <div class="form-group">
-          <label>Pass Rate (%):</label>
-          <input [(ngModel)]="editingRow.passRate" type="text" />
-        </div>
-        <div class="form-group">
-          <label>Fail Rate (%):</label>
-          <input [(ngModel)]="editingRow.failRate" type="text" />
-        </div>
-        <div class="modal-actions">
-          <button (click)="onUpdate()" class="btn-save">Save</button>
-          <button (click)="closeModal()" class="btn-cancel">Cancel</button>
-        </div>
+  <div class="tab-pane fade" [id]="headCountTab.targetId" role="tabpanel">
+      <div class="resource-filter">
+        <input
+          type="text"
+          class="resource-filter__input"
+          placeholder="Filter by name or EID"
+          [(ngModel)]="headCountSearchTerm"
+          (keyup)="onHeadCountSearchChange()"
+        >
       </div>
-    </div>
-  }
+      <table class="mock-summary__table" style="height: 500px;">
+        <thead>
+          <tr>
+            <th>Name</th>
+            <th class="text-center headcount-filterable" [class.active]="headCountFilter === 'communication'" (click)="toggleHeadCountFilter('communication')">Communication ({{ getHeadCountChecklistTotal('communication') }})</th>
+            <th class="text-center headcount-filterable" [class.active]="headCountFilter === 'technical'" (click)="toggleHeadCountFilter('technical')">Technical ({{ getHeadCountChecklistTotal('technical') }})</th>
+            <th class="text-center headcount-filterable" [class.active]="headCountFilter === 'client'" (click)="toggleHeadCountFilter('client')">Client Interview ({{ getHeadCountChecklistTotal('client') }})</th>
+          </tr>
+      </thead>
+      @if (onBoardingResources.length === 0) {
+        <tr>
+          <td colspan="4" class="resource-filter__empty">
+            @if (headCountSearchTerm) {
+              No resource found matching "{{ headCountSearchTerm }}".
+            } @else {
+              No resource found.
+            }
+          </td>
+        </tr>
+      }
+      @for (onBoardingResource of onBoardingResources; track $index) {
+        <tr>
+          <td class="ps-1">{{ onBoardingResource.name }}</td>
+          <td class="text-center">
+            <input
+              type="checkbox"
+              class="form-check-input"
+              [checked]="isHeadCountChecklistChecked(onBoardingResource, 'communication')"
+              (click)="onHeadCountChecklistChange(onBoardingResource, 'communication', $event)"
+            >
+          </td>
+          <td class="text-center">
+            <input
+              type="checkbox"
+              class="form-check-input"
+              [checked]="isHeadCountChecklistChecked(onBoardingResource, 'technical')"
+              (click)="onHeadCountChecklistChange(onBoardingResource, 'technical', $event)"
+            >
+          </td>
+          <td class="text-center">
+            <input
+              type="checkbox"
+              class="form-check-input"
+              [checked]="isHeadCountChecklistChecked(onBoardingResource, 'client')"
+              (click)="onHeadCountChecklistChange(onBoardingResource, 'client', $event)"
+            >
+          </td>
+        </tr>
+      }
+    </table>
+    <ul class="pagination pagination-sm float-end mt-3">
+      <li class="page-item">
+        <button class="page-link" [disabled]="page === 1" (click)="page = 1">First</button>
+      </li>
+      <li class="page-item">
+        <button class="page-link" [disabled]="page === 1" (click)="page = page - 1">Previous</button>
+      </li>
+      
+      @for (p of visiblePages; track p){
+        <li class="page-item" [class.active]="page === p">
+          <button class="page-link" (click)="page = p">{{ p }}</button>
+        </li>
+      }
 
-  @if (showHighlightModal && editingHighlight !== null) {
-    <div class="modal-overlay" (click)="closeHighlightModal()">
-      <div class="modal-content" (click)="$event.stopPropagation()">
-        <h3>{{ editingHighlightIndex === summary.highlights.length ? 'Add Highlight' : 'Edit Highlight' }}</h3>
-        <div class="form-group">
-          <label>Highlight Text:</label>
-          <textarea [(ngModel)]="editingHighlight" rows="3" style="width: 100%; padding: 8px; border: 1px solid #ddd; border-radius: 4px; font-family: inherit; font-size: 0.95rem;"></textarea>
-        </div>
-        <div class="modal-actions">
-          <button (click)="onUpdateHighlight()" class="btn-save">Save</button>
-          <button (click)="closeHighlightModal()" class="btn-cancel">Cancel</button>
-        </div>
-      </div>
-    </div>
-  }
+      <li class="page-item">
+        <button class="page-link" [disabled]="page === totalPages" (click)="page = page + 1">Next</button>
+      </li>
+      <li class="page-item">
+        <button class="page-link" [disabled]="page === totalPages" (click)="page = totalPages">Last</button>
+      </li>
+    </ul>
+  </div>
+</div>
+<br/><br/>
 </div>

@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
+import { environment } from '../../../envinronments/environment.development';
+
 import {
   DashboardData,
   DashboardStat,
@@ -59,7 +61,7 @@ export class DashboardComponent implements OnInit {
 
   private apiUrl(path: string): string {
     const port = window.location.port;
-    if (port === '4200' || port === '4201') return `http://127.0.0.1:3000${path}`;
+    if (port === '4200' || port === '4201') return `${environment.apiUrl}${path}`;
     return path;
   }
 }

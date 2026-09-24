@@ -92,7 +92,22 @@ export class AppComponent {
         failRate: '0'
       }
     ],
-    highlights: ['4 newly onboarded resources in sprint 11']
+    highlights: ['4 newly onboarded resources in sprint 11'],
+    tabMenusItems: [
+      {
+        title: 'Summary Table',
+        targetId: 'summary-table'
+      },
+      {
+        title: 'Feedback',
+        targetId: 'feedback'
+      },
+      {
+        title: 'Head Count',
+        targetId: 'head-count'
+      }
+
+    ]
   };
   constructor(private http: HttpClient, public sharedData: SharedDataService) {
     const saved = localStorage.getItem('active-view') as typeof this.activeView;
