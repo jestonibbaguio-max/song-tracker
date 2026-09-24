@@ -29,12 +29,25 @@
           <button class="nav-item" [class.active]="isNavActive(item)" type="button" (click)="selectNav(item)">
             <i class="bi {{ item.icon }}"></i>
             <span>{{ item.label }}</span>
+            @if (item.label === 'Planner') {
+              <i class="bi nav-expand-icon" [class.bi-chevron-down]="plannerMenuExpanded" [class.bi-chevron-right]="!plannerMenuExpanded"></i>
+            }
             @if (item.label === 'Resources') {
               <span class="nav-badge">{{ resourcesBadgeCount }}</span>
             } @else if (item.badge) {
               <span class="nav-badge">{{ item.badge }}</span>
             }
           </button>
+          @if (item.label === 'Planner' && plannerMenuExpanded) {
+            <div class="nav-submenu" aria-label="Planner">
+              <button class="nav-subitem" [class.active]="activeView === 'planner'" type="button" (click)="selectPlannerGroup()">
+                <span>Sprint Dashboard</span>
+              </button>
+              <button class="nav-subitem" [class.active]="activeView === 'sprintretros'" type="button" (click)="selectSprintRetros()">
+                <span>Sprint Retrospective</span>
+              </button>
+            </div>
+          }
         }
       </nav>
     }
@@ -50,6 +63,8 @@
       <app-attendance></app-attendance>
     } @else if (activeView === 'planner') {
       <app-planner></app-planner>
+    } @else if (activeView === 'sprintretros') {
+      <app-sprint-retros></app-sprint-retros>
     } @else if (activeView === 'mycompetency') {
       <app-mycompetency></app-mycompetency>
     } @else if (activeView === 'trainings') {

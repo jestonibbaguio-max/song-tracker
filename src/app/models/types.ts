@@ -129,6 +129,17 @@ export interface PlannerComment {
   createdAt: string;
 }
 
+export type SprintRetroCategory = 'improve' | 'didnt-go-well' | 'went-well';
+
+export interface SprintRetroItem {
+  id: number;
+  sprintId: number;
+  groupNumber: number;
+  category: SprintRetroCategory;
+  text: string;
+  createdAt: string;
+}
+
 export interface DeletionLog {
   type: 'comment-deletion' | 'task-deletion';
   taskId: number | string | undefined;

@@ -12,6 +12,7 @@ import { MockAssessmentComponent, MockAssessmentSummary } from './views/mockAsse
 import { TrainingComponent } from './views/training/training.component';
 import { PocHowToComponent } from './views/pochowto/pochowto.component';
 import { TrainingsComponent } from './views/trainings/trainings.component';
+import { SprintRetrosComponent } from './views/sprint-retros/sprint-retros.component';
 
 export interface StubView {
   heading: string;
@@ -34,14 +35,16 @@ export interface StubView {
     TrainingComponent,
     PocHowToComponent,
     TrainingsComponent,
+    SprintRetrosComponent,
   ],
   templateUrl: './app.component.html',
   styleUrl: './app.component.css',
   encapsulation: ViewEncapsulation.None
 })
 export class AppComponent {
-  activeView: 'dashboard' | 'onboarding' | 'attendance' | 'planner' | 'training' | 'mycompetency' | 'trainings' | 'mockinterview' | 'reachout' | 'pochowto' | 'initiatives' | 'reports' | 'resourcetracking' | 'announcements' | 'settings' = 'dashboard';
-  private readonly validViews = ['dashboard', 'onboarding', 'attendance', 'planner', 'training', 'mycompetency', 'trainings', 'mockinterview', 'reachout', 'pochowto', 'initiatives', 'reports', 'resourcetracking', 'announcements', 'settings'] as const;
+  activeView: 'dashboard' | 'onboarding' | 'attendance' | 'planner' | 'sprintretros' | 'training' | 'mycompetency' | 'trainings' | 'mockinterview' | 'reachout' | 'pochowto' | 'initiatives' | 'reports' | 'resourcetracking' | 'announcements' | 'settings' = 'dashboard';
+  private readonly validViews = ['dashboard', 'onboarding', 'attendance', 'planner', 'sprintretros', 'training', 'mycompetency', 'trainings', 'mockinterview', 'reachout', 'pochowto', 'initiatives', 'reports', 'resourcetracking', 'announcements', 'settings'] as const;
+  plannerMenuExpanded = false;
 
   navGroups: NavGroup[] = [];
   loading = true;
@@ -109,6 +112,7 @@ export class AppComponent {
   constructor(private http: HttpClient, public sharedData: SharedDataService) {
     const saved = localStorage.getItem('active-view') as typeof this.activeView;
     if (this.validViews.includes(saved)) this.activeView = saved;
+    this.plannerMenuExpanded = false;
 
     this.loadDashboard();
     this.sharedData.loadOnboardingResources();
@@ -144,6 +148,21 @@ export class AppComponent {
       'Settings': 'settings',
     };
     this.activeView = viewMap[item.label] ?? 'dashboard';
+    if (item.label === 'Planner') {
+      this.plannerMenuExpanded = !this.plannerMenuExpanded;
+    }
+    localStorage.setItem('active-view', this.activeView);
+  }
+
+  selectPlannerGroup(): void {
+    this.activeView = 'planner';
+    this.plannerMenuExpanded = true;
+    localStorage.setItem('active-view', this.activeView);
+  }
+
+  selectSprintRetros(): void {
+    this.activeView = 'sprintretros';
+    this.plannerMenuExpanded = true;
     localStorage.setItem('active-view', this.activeView);
   }
 

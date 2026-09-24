@@ -162,6 +162,38 @@
   color: #ffffff;
 }
 
+.nav-expand-icon {
+  margin-left: auto;
+  font-size: 0.7rem;
+}
+
+.nav-submenu {
+  display: grid;
+  gap: 2px;
+  margin: 3px 0 7px 18px;
+  padding-left: 12px;
+  border-left: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.nav-subitem {
+  width: 100%;
+  min-height: 34px;
+  border: 0;
+  border-radius: 5px;
+  background: transparent;
+  padding: 7px 9px;
+  color: rgba(255, 255, 255, 0.78);
+  font-size: 0.75rem;
+  line-height: 1.25;
+  text-align: left;
+}
+
+.nav-subitem:hover,
+.nav-subitem.active {
+  background: rgba(161, 0, 255, 0.2);
+  color: #fff;
+}
+
 .nav-badge {
   margin-left: auto;
   min-width: 24px;
