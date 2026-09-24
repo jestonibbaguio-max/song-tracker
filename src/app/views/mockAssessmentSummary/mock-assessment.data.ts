@@ -30,7 +30,8 @@ export interface MockAssessmentSummaryTabItem {
   targetId: string;
 }
 
-type HeadCountChecklistField = 'communication' | 'technical' | 'client';
+const HEAD_COUNT_CHECKLIST_FIELDS = ['communication', 'technical', 'client'] as const;
+type HeadCountChecklistField = typeof HEAD_COUNT_CHECKLIST_FIELDS[number];
 
 export interface FeedbackSubmission {
   content: string;
@@ -160,9 +161,27 @@ export class MockAssessmentComponent {
     }
 
     if (this.sharedData.onboardingResources.length === 0) {
-      this.sharedData.loadOnboardingResources();
+      this.sharedData.loadOnboardingResources(() => this.syncSummaryTotals());
+    } else {
+      this.syncSummaryTotals();
     }
 
+  }
+
+  private syncSummaryTotals(): void {
+    const totalResources = this.sharedData.onboardingResources.length;
+    this.summary.rows.forEach((row, index) => {
+      row.totalResources = totalResources;
+      row.totalConducted = this.getSummaryTotalConducted(index);
+    });
+    this.saveMockAssessment();
+  }
+
+  syncSummaryTable(): void {
+    this.summary.rows.forEach((row, index) => {
+      row.totalConducted = this.getSummaryTotalConducted(index);
+    });
+    this.saveMockAssessment();
   }
 
   get onBoardingResources(): OnboardingResource[] {
@@ -199,6 +218,12 @@ export class MockAssessmentComponent {
     ).length;
   }
 
+  getSummaryTotalConducted(rowIndex: number): number {
+    const field = HEAD_COUNT_CHECKLIST_FIELDS[rowIndex];
+
+    return field ? this.getHeadCountChecklistTotal(field) : 0;
+  }
+
   headCountFilter: HeadCountChecklistField | null = null;
 
   toggleHeadCountFilter(field: HeadCountChecklistField): void {
@@ -228,10 +253,15 @@ export class MockAssessmentComponent {
 
     if (isChecked) {
       localStorage.setItem(storageKey, 'true');
-      return;
+    } else {
+      localStorage.removeItem(storageKey);
     }
 
-    localStorage.removeItem(storageKey);
+    const rowIndex = HEAD_COUNT_CHECKLIST_FIELDS.indexOf(field);
+    if (rowIndex !== -1 && this.summary.rows[rowIndex]) {
+      this.summary.rows[rowIndex].totalConducted = this.getSummaryTotalConducted(rowIndex);
+      this.saveMockAssessment();
+    }
   }
 
   private getHeadCountChecklistStorageKey(resource: OnboardingResource, field: HeadCountChecklistField): string {
