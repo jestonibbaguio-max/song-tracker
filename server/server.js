@@ -455,10 +455,10 @@ app.post('/api/sprint-retros', (req, res) => {
   const sprintExists = (db['sprints'] || []).some(sprint => Number(sprint.id) === sprintId);
 
   if (!Number.isInteger(sprintId) || !sprintExists) {
-    return res.status(400).json({ error: 'a valid sprintId is required' });
+    return res.status(400).json({ error: 'a valid sprint number is required' });
   }
   if (!Number.isInteger(groupNumber) || groupNumber < 1) {
-    return res.status(400).json({ error: 'a valid groupNumber is required' });
+    return res.status(400).json({ error: 'a valid group number is required' });
   }
   if (!sprintRetroCategories.has(category)) {
     return res.status(400).json({ error: 'a valid category is required' });
