@@ -1,0 +1,182 @@
+<section class="page-header retro-page-header">
+  <div>
+    <div class="retro-eyebrow">Planner / {{ groupLabel }}</div>
+    <h1>Sprint Retrospective</h1>
+    <p>Capture ideas, challenges, and wins for {{ groupLabel }}.</p>
+  </div>
+
+  <div class="retro-sprint-control">
+    <label for="retro-sprint">Sprint</label>
+    <select
+      id="retro-sprint"
+      class="form-select"
+      [ngModel]="selectedSprintId"
+      (ngModelChange)="onSprintChange($event)"
+      [disabled]="sprints.length === 0">
+      @for (sprint of sprints; track sprint.id) {
+        <option [ngValue]="sprint.id">{{ sprint.name }}</option>
+      }
+    </select>
+    @if (selectedSprint) {
+      <small>{{ formatSprintDates(selectedSprint!) }}</small>
+    }
+  </div>
+</section>
+
+@if (errorMessage) {
+  <div class="retro-alert" role="alert">
+    <i class="bi bi-exclamation-triangle"></i>
+    <span>{{ errorMessage }}</span>
+  </div>
+}
+
+@if (!hasGroupSelected) {
+  <div class="retro-alert" role="status">
+    <i class="bi bi-info-circle"></i>
+    <span>Select a group from the sidebar to add retrospective items. Showing items for all groups.</span>
+  </div>
+}
+
+@if (loading) {
+  <div class="retro-state">
+    <span class="spinner-border spinner-border-sm" aria-hidden="true"></span>
+    Loading retrospective...
+  </div>
+} @else if (sprints.length === 0) {
+  <div class="retro-state">Create a sprint in Planner before adding retrospective items.</div>
+} @else if (hasGroupSelected) {
+  <div class="retro-board" [attr.aria-label]="selectedSprint?.name + ' retrospective'">
+    @for (column of columns; track column.category) {
+      <section class="retro-column" [attr.data-tone]="column.tone">
+        <header class="retro-column-header">
+          <div class="retro-column-title">
+            <i class="bi {{ column.icon }}"></i>
+            <h2>{{ column.title }}</h2>
+          </div>
+          <span class="retro-count">{{ itemsFor(column.category).length }}</span>
+        </header>
+
+        <div class="retro-items">
+          @for (item of itemsFor(column.category); track item.id) {
+            <article class="retro-card">
+              @if (editingId === item.id) {
+                <textarea
+                  class="retro-edit-textarea"
+                  rows="3"
+                  maxlength="500"
+                  [(ngModel)]="editDraft"></textarea>
+                <div class="retro-edit-actions">
+                  <button
+                    type="button"
+                    class="btn btn-primary btn-sm"
+                    [disabled]="!editDraft.trim() || savingEdit"
+                    (click)="saveEdit(item)">
+                    @if (savingEdit) {
+                      <span class="spinner-border spinner-border-sm" aria-hidden="true"></span>
+                      Saving...
+                    } @else {
+                      Save
+                    }
+                  </button>
+                  <button
+                    type="button"
+                    class="btn btn-outline-secondary btn-sm"
+                    [disabled]="savingEdit"
+                    (click)="cancelEdit()">
+                    Cancel
+                  </button>
+                </div>
+              } @else {
+                <p>{{ item.text }}</p>
+                <button
+                  type="button"
+                  class="retro-edit"
+                  [disabled]="deletingIds.has(item.id)"
+                  (click)="startEdit(item)"
+                  [attr.aria-label]="'Edit: ' + item.text"
+                  title="Edit item">
+                  <i class="bi bi-pencil"></i>
+                </button>
+                <button
+                  type="button"
+                  class="retro-remove"
+                  [disabled]="deletingIds.has(item.id)"
+                  (click)="removeItem(item)"
+                  [attr.aria-label]="'Remove: ' + item.text"
+                  title="Remove item">
+                  <i class="bi" [class.bi-trash]="!deletingIds.has(item.id)" [class.bi-hourglass-split]="deletingIds.has(item.id)"></i>
+                </button>
+              }
+            </article>
+          } @empty {
+            <div class="retro-empty">No items yet</div>
+          }
+        </div>
+
+        <div class="retro-add">
+          <textarea
+            rows="3"
+            maxlength="500"
+            [placeholder]="column.placeholder"
+            [(ngModel)]="drafts[column.category]"></textarea>
+          <button
+            type="button"
+            class="btn btn-primary"
+            [disabled]="!drafts[column.category].trim() || savingCategory !== null"
+            (click)="addItem(column.category)">
+            @if (savingCategory === column.category) {
+              <span class="spinner-border spinner-border-sm" aria-hidden="true"></span>
+              Adding...
+            } @else {
+              <i class="bi bi-plus-lg"></i>
+              Add item
+            }
+          </button>
+        </div>
+      </section>
+    }
+  </div>
+} @else {
+  @for (group of groupsOverview; track group.groupNumber) {
+    <section class="retro-group-section">
+      <button
+        type="button"
+        class="retro-group-toggle"
+        [class.retro-group-toggle--expanded]="isGroupExpanded(group.groupNumber)"
+        (click)="toggleGroup(group.groupNumber)"
+        [attr.aria-expanded]="isGroupExpanded(group.groupNumber)">
+        <i class="bi retro-group-toggle-icon" [class.bi-chevron-down]="isGroupExpanded(group.groupNumber)" [class.bi-chevron-right]="!isGroupExpanded(group.groupNumber)"></i>
+        <span>{{ group.label }}</span>
+        <span class="retro-group-count" [attr.aria-label]="group.totalEntries + ' total entries'">{{ group.totalEntries }}</span>
+      </button>
+
+      @if (isGroupExpanded(group.groupNumber)) {
+        <div class="retro-board retro-board--nested" [attr.aria-label]="group.label + ' retrospective'">
+          @for (column of columns; track column.category) {
+            <section class="retro-column" [attr.data-tone]="column.tone">
+              <header class="retro-column-header">
+                <div class="retro-column-title">
+                  <i class="bi {{ column.icon }}"></i>
+                  <h2>{{ column.title }}</h2>
+                </div>
+                <span class="retro-count">{{ itemsForGroup(group.groupNumber, column.category).length }}</span>
+              </header>
+
+              <div class="retro-items">
+                @for (item of itemsForGroup(group.groupNumber, column.category); track item.id) {
+                  <article class="retro-card retro-card--readonly">
+                    <p>{{ item.text }}</p>
+                  </article>
+                } @empty {
+                  <div class="retro-empty">No items yet</div>
+                }
+              </div>
+            </section>
+          }
+        </div>
+      }
+    </section>
+  } @empty {
+    <div class="retro-state">No retrospective items for any group yet.</div>
+  }
+}
