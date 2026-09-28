@@ -719,6 +719,90 @@ app.post('/api/deletion-logs', (req, res) => {
 });
 // ─────────────────────────────────────────────────────────────────────────────
 
+// ── Project reachouts ─────────────────────────────────────────────────────────
+const REACHOUT_DEFAULT_STATUS = 'CV Requested';
+const REACHOUT_REQUIRED_FIELDS = ['eid', 'projectName', 'techRole', 'pocEid'];
+
+function normalizeEid(value) {
+  return String(value || '').trim().split('@')[0].toLowerCase();
+}
+
+function normalizeReachoutGroup(value) {
+  const group = Number(value);
+  return Number.isInteger(group) && group >= 1 && group <= 6 ? group : null;
+}
+
+function normalizeReachoutPayload(body) {
+  return {
+    eid: normalizeEid(body?.eid),
+    projectName: String(body?.projectName || '').trim(),
+    techRole: String(body?.techRole || '').trim(),
+    pocEid: normalizeEid(body?.pocEid),
+    status: String(body?.status || '').trim() || REACHOUT_DEFAULT_STATUS,
+    details: String(body?.details || '').trim(),
+    groupNumber: normalizeReachoutGroup(body?.groupNumber),
+  };
+}
+
+app.get('/api/project-reachouts', (req, res) => {
+  const db = loadDb();
+  let rows = db['project-reachouts'] || [];
+  if (req.query.group) rows = rows.filter(r => String(r.groupNumber) === String(req.query.group));
+  res.json(rows.map(r => ({ ...r, id: Number(r.id) })));
+});
+
+app.post('/api/project-reachouts', (req, res) => {
+  const payload = normalizeReachoutPayload(req.body);
+  const missing = REACHOUT_REQUIRED_FIELDS.filter(field => !payload[field]);
+  if (missing.length) return res.status(400).json({ error: `${missing.join(', ')} required` });
+
+  const db = loadDb();
+  const rows = db['project-reachouts'] || [];
+  const row = { id: nextId(rows), ...payload, createdAt: new Date().toISOString() };
+  rows.push(row);
+  db['project-reachouts'] = rows;
+  saveDb(db);
+  res.status(201).json(row);
+});
+
+app.patch('/api/project-reachouts/:id', (req, res) => {
+  const id = Number(req.params.id);
+  const db = loadDb();
+  const rows = db['project-reachouts'] || [];
+  const idx = rows.findIndex(r => Number(r.id) === id);
+  if (idx === -1) return res.status(404).json({ error: 'reachout not found' });
+
+  const body = req.body || {};
+  if (body.eid !== undefined) rows[idx].eid = normalizeEid(body.eid);
+  if (body.projectName !== undefined) rows[idx].projectName = String(body.projectName).trim();
+  if (body.techRole !== undefined) rows[idx].techRole = String(body.techRole).trim();
+  if (body.pocEid !== undefined) rows[idx].pocEid = normalizeEid(body.pocEid);
+  if (body.status !== undefined) rows[idx].status = String(body.status).trim() || REACHOUT_DEFAULT_STATUS;
+  if (body.details !== undefined) rows[idx].details = String(body.details).trim();
+  if (body.groupNumber !== undefined) rows[idx].groupNumber = normalizeReachoutGroup(body.groupNumber);
+
+  const missing = REACHOUT_REQUIRED_FIELDS.filter(field => !rows[idx][field]);
+  if (missing.length) return res.status(400).json({ error: `${missing.join(', ')} required` });
+
+  rows[idx].updatedAt = new Date().toISOString();
+  db['project-reachouts'] = rows;
+  saveDb(db);
+  res.json({ ...rows[idx], id: Number(rows[idx].id) });
+});
+
+app.delete('/api/project-reachouts/:id', (req, res) => {
+  const id = Number(req.params.id);
+  const db = loadDb();
+  const rows = db['project-reachouts'] || [];
+  const idx = rows.findIndex(r => Number(r.id) === id);
+  if (idx === -1) return res.status(404).json({ error: 'reachout not found' });
+  rows.splice(idx, 1);
+  db['project-reachouts'] = rows;
+  saveDb(db);
+  res.json({ deleted: true });
+});
+// ─────────────────────────────────────────────────────────────────────────────
+
 // ── Test Bench: Fruits CRUD ───────────────────────────────────────────────────
 const fruitsDbPath = path.join(__dirname, 'data', 'test_bwd', 'db.json');
 

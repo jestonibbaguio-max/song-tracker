@@ -1,0 +1,304 @@
+.reachout-add-btn {
+  white-space: nowrap;
+}
+
+.reachout-toolbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  flex-wrap: wrap;
+  font-size: 0.8rem;
+  color: var(--muted, #888);
+}
+
+.reachout-error {
+  color: #c62828;
+}
+
+.reachout-table-wrap {
+  margin: 0.75rem 0 1.5rem;
+  max-height: 72vh;
+  overflow: auto;
+  border: 1px solid var(--line, #e5ded5);
+  border-radius: 8px;
+  background: var(--panel, #fff);
+}
+
+.reachout-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.85rem;
+}
+
+.reachout-table th {
+  position: sticky;
+  top: 0;
+  text-align: left;
+  padding: 0.5rem 0.75rem;
+  font-size: 0.72rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.4px;
+  color: var(--muted, #888);
+  background: var(--panel, #fff);
+  border-bottom: 2px solid var(--line, #e5ded5);
+  z-index: 1;
+}
+
+.reachout-table td {
+  padding: 0.6rem 0.75rem;
+  border-bottom: 1px solid var(--line, #e5ded5);
+  vertical-align: middle;
+}
+
+.reachout-table tbody tr:hover td {
+  background: rgba(124, 58, 237, 0.04);
+}
+
+.reachout-empty-row td {
+  color: var(--muted, #888);
+  text-align: center;
+  padding: 1.5rem 0.75rem;
+}
+
+.reachout-empty-row:hover td {
+  background: none;
+}
+
+.reachout-eid {
+  font-weight: 600;
+  color: #1a0040;
+}
+
+.reachout-eid-name {
+  display: block;
+  font-size: 0.72rem;
+  color: var(--muted, #888);
+}
+
+.reachout-muted {
+  color: var(--muted, #888);
+}
+
+.reachout-col-status {
+  width: 180px;
+}
+
+.reachout-col-details {
+  width: 220px;
+  max-width: 220px;
+}
+
+/* Details run long, so the cell shows two lines and the full text sits in the tooltip. */
+.reachout-details {
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  color: #4b5563;
+}
+
+.reachout-col-group {
+  width: 110px;
+}
+
+.reachout-col-actions {
+  width: 84px;
+  text-align: right;
+  white-space: nowrap;
+}
+
+.reachout-group-pill {
+  display: inline-block;
+  padding: 0.15rem 0.55rem;
+  border-radius: 999px;
+  font-size: 0.72rem;
+  font-weight: 600;
+  background: #ede9ff;
+  color: #5b21b6;
+}
+
+/* ── Status pills ─────────────────────────────────────────── */
+
+.reachout-status {
+  display: inline-block;
+  padding: 0.15rem 0.55rem;
+  border-radius: 999px;
+  font-size: 0.72rem;
+  font-weight: 600;
+  background: #eef1f5;
+  color: #475569;
+  white-space: nowrap;
+}
+
+.reachout-status-cv-requested { background: #fff7e6; color: #b45309; }
+.reachout-status-interview-scheduled { background: #ede9ff; color: #5b21b6; }
+.reachout-status-passed { background: #dcfce7; color: #15803d; }
+.reachout-status-failed { background: #fee2e2; color: #b91c1c; }
+.reachout-status-pending-update { background: #e6f1ff; color: #1d4ed8; }
+
+/* Retired statuses. Kept so rows saved before the list changed still read as pills. */
+.reachout-status-cv-submitted { background: #e6f1ff; color: #1d4ed8; }
+.reachout-status-interview-done { background: #e0f2fe; color: #0369a1; }
+.reachout-status-selected { background: #dcfce7; color: #15803d; }
+.reachout-status-on-hold { background: #f3f4f6; color: #4b5563; }
+.reachout-status-rejected { background: #fee2e2; color: #b91c1c; }
+.reachout-status-deployed { background: #c8e6c9; color: #1b5e20; }
+
+/*
+ * The inline editor wears the pill styling above. These longhands must stay after the
+ * status rules, which set `background` as a shorthand and would otherwise drop the chevron.
+ */
+.reachout-status-select {
+  appearance: none;
+  -webkit-appearance: none;
+  border: 1px solid transparent;
+  font: inherit;
+  font-size: 0.72rem;
+  font-weight: 600;
+  max-width: 100%;
+  cursor: pointer;
+  padding-right: 1.4rem;
+  background-image: url("data:image/svg+xml;charset=utf-8,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 10 6'%3E%3Cpath d='M1 1l4 4 4-4' fill='none' stroke='%23334155' stroke-width='1.6' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 0.5rem center;
+  background-size: 8px 5px;
+}
+
+.reachout-status-select:hover:not(:disabled) {
+  border-color: rgba(0, 0, 0, 0.18);
+}
+
+.reachout-status-select:focus-visible {
+  outline: none;
+  border-color: #7c3aed;
+  box-shadow: 0 0 0 3px rgba(124, 58, 237, 0.15);
+}
+
+.reachout-status-select:disabled {
+  cursor: wait;
+  opacity: 0.6;
+}
+
+/* The popup list is drawn by the OS, so give the options readable defaults. */
+.reachout-status-select option {
+  background: #fff;
+  color: #1a0040;
+  font-weight: 500;
+}
+
+/* ── Row actions ──────────────────────────────────────────── */
+
+.reachout-icon-btn {
+  border: 1px solid transparent;
+  background: transparent;
+  color: var(--muted, #888);
+  border-radius: 6px;
+  width: 30px;
+  height: 30px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+}
+
+.reachout-icon-btn:hover:not(:disabled) {
+  background: rgba(0, 0, 0, 0.05);
+  color: var(--accent-dark, #7b5e3b);
+}
+
+.reachout-icon-danger:hover:not(:disabled) {
+  background: #fee2e2;
+  color: #c53030;
+}
+
+/* ── Add / edit dialog ────────────────────────────────────── */
+
+.reachout-form-dialog {
+  width: 460px;
+}
+
+.reachout-form-icon {
+  background: #ede9ff;
+  border-color: #c4b5fd;
+  color: #7c3aed;
+}
+
+.reachout-form-body {
+  padding: 1rem 1.25rem;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.85rem;
+}
+
+.reachout-field {
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+  min-width: 0;
+}
+
+/* Free-text fields read better across the full dialog width. */
+.reachout-field-wide {
+  grid-column: 1 / -1;
+}
+
+.reachout-field-label {
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: #4b5563;
+}
+
+.reachout-field-label em {
+  font-style: normal;
+  color: #e53e3e;
+}
+
+.reachout-optional {
+  font-weight: 400;
+  font-size: 0.7rem;
+  color: #9ca3af;
+}
+
+.reachout-input {
+  border: 1.5px solid #e2dff0;
+  border-radius: 7px;
+  padding: 0.45rem 0.7rem;
+  font-size: 0.85rem;
+  outline: none;
+  width: 100%;
+  box-sizing: border-box;
+  background: #fff;
+  color: #1a0040;
+  transition: border-color 0.15s, box-shadow 0.15s;
+}
+
+.reachout-input:focus {
+  border-color: #7c3aed;
+  box-shadow: 0 0 0 3px rgba(124, 58, 237, 0.12);
+}
+
+.reachout-textarea {
+  resize: vertical;
+  min-height: 62px;
+  line-height: 1.4;
+}
+
+.reachout-form-error {
+  grid-column: 1 / -1;
+  margin: 0;
+  font-size: 0.8rem;
+  color: #c53030;
+}
+
+.reachout-delete-error {
+  padding: 0 1.25rem;
+}
+
+@media (max-width: 640px) {
+  .reachout-form-body {
+    grid-template-columns: 1fr;
+  }
+}

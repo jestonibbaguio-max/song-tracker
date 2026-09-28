@@ -14,6 +14,7 @@ import { TrainingComponent } from './views/training/training.component';
 import { PocHowToComponent } from './views/pochowto/pochowto.component';
 import { TrainingsComponent } from './views/trainings/trainings.component';
 import { SprintRetrosComponent } from './views/sprint-retros/sprint-retros.component';
+import { ReachoutComponent } from './views/reachout/reachout.component';
 
 export interface StubView {
   heading: string;
@@ -37,6 +38,7 @@ export interface StubView {
     PocHowToComponent,
     TrainingsComponent,
     SprintRetrosComponent,
+    ReachoutComponent,
   ],
   templateUrl: './app.component.html',
   styleUrl: './app.component.css',
@@ -88,7 +90,6 @@ export class AppComponent {
   loading = true;
 
   readonly stubViews: Record<string, StubView> = {
-    reachout: { heading: 'Projects and Reachouts', subtitle: 'Connect and reach out to team members', icon: 'bi-send', label: 'Reachout' },
     initiatives: { heading: 'Initiatives', subtitle: 'Track team initiatives and improvement drives', icon: 'bi-kanban', label: 'Initiatives' },
     reports: { heading: 'Reports', subtitle: 'Generate and review POC reports', icon: 'bi-file-earmark-bar-graph', label: 'Reports' },
     resourcetracking: { heading: 'Resource tracking', subtitle: 'Monitor resource allocation and utilisation', icon: 'bi-people', label: 'Resource tracking' },
