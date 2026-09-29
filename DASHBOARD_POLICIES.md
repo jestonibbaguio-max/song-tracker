@@ -21,6 +21,7 @@ implemented in the dashboard so they do not need to be re-explained in future se
 12. [Planner — Grid View Details](#12-planner--grid-view-details)
 13. [Planner — Task Dialog](#13-planner--task-dialog)
 14. [Planner — Data Integrity Rules](#14-planner--data-integrity-rules)
+15. [Project Reachouts](#15-project-reachouts)
 
 ---
 
@@ -233,7 +234,7 @@ Editing `db.json` nav entries has no effect — only `json-store.js` is read.
 | myCompetency | `mycompetency` | Competency assessment grid |
 | Trainings | `trainings` | Coming soon |
 | Mock Interview | `mockinterview` | Coming soon |
-| Projects and Reachouts | `reachout` | Coming soon |
+| Project Reachouts | `reachout` | Reachout tracker table — see section 15 |
 | Training | `training` | Coming soon |
 | Initiatives | — | Coming soon |
 
@@ -427,3 +428,94 @@ This normalization happens in `openBoard()` in `app.component.ts` so Angular's
 Always write `db.json` using Node.js `fs.writeFileSync(path, JSON.stringify(db, null, 2), 'utf8')`.
 **Never use PowerShell's `ConvertTo-Json`** — it adds a UTF-8 BOM that silently corrupts
 JSON.parse (the `loadDb()` catch returns `{}`, breaking all API responses).
+
+---
+
+## 15. Project Reachouts
+
+The **Project Reachouts** nav item (view key `reachout`) tracks resources put forward
+for a project. One row = one reachout.
+
+### Columns
+
+| Column | Notes |
+|--------|-------|
+| EID | Resource being reached out for. Normalised to lowercase, `@domain` stripped. The resource's name shows underneath when the EID matches an onboarding profile |
+| Project Name | Free text |
+| Tech / Role | Free text, e.g. `Angular Developer` |
+| POC EID | Point of contact, normalised the same way as EID |
+| Status | Pill badge, coloured per status. Editable inline — see below |
+| Details | Optional free-text note. Clamped to two lines, full text in the tooltip; empty rows show `—` |
+| Group | `1`–`6`. Null rows show `—` and only appear under "All Groups" |
+| _(icons)_ | Edit (pencil) and delete (trash), rightmost column |
+
+There is **no inline add row** at the bottom of the table — unlike the Group Trainings
+and Bench Trainings tables. New entries come from the **Add new reachout** button in the
+page header.
+
+### Status Values
+
+Ordered earliest stage to last: `CV Requested` · `Interview Scheduled` · `Passed` ·
+`Failed` · `Pending Update`.
+
+New entries default to **`CV Requested`**. The server applies that default whenever the
+status is missing or blank, so the default holds for API clients too.
+
+An earlier, longer list (`CV submitted`, `Interview done`, `Selected`, `On hold`,
+`Rejected`, `Deployed`) was replaced by the five above. Rows already carrying a retired
+value are left alone rather than migrated — their pill colours are still defined, and the
+dropdown keeps the value as an option until someone picks a new one.
+
+### Editing Status Inline
+
+Status is the one column editable straight from the table — its cell is a dropdown styled
+as the status pill. Picking a value saves immediately (`PATCH` with only the `status` field);
+the pill updates optimistically and reverts, with an error in the toolbar, if the save fails.
+Every dropdown locks while a save is in flight so two rows cannot be changed at once.
+
+A status that is no longer in the list (say it was renamed) still gets an option of its own,
+so an older row never renders as a blank dropdown.
+
+All other columns are edited through the pencil icon and the dialog below.
+
+### Add / Edit Dialog
+
+The same dialog serves both actions; editing pre-fills it from the row.
+
+| Field | Required |
+|-------|----------|
+| EID | Yes |
+| Group | No — auto-filled from the EID's onboarding profile, and overridable |
+| Project Name | Yes |
+| Tech / Role | Yes |
+| POC EID | Yes |
+| Status | No — defaults to `CV Requested` |
+| Details | No — multi-line textarea |
+
+Group is not typed by hand in the normal case: entering a known EID fills it from that
+resource's `groupNumber`. A new row also pre-fills Group from the sidebar filter so it
+stays visible after saving.
+
+### Deleting
+
+The trash icon opens a confirmation dialog showing the project, EID, tech/role and group.
+Unlike the Resources delete dialog, no `DELETE` needs to be typed — a single confirm click
+is enough.
+
+### Group Filtering
+
+The sidebar **Group** selector filters the table: "All Groups" shows every row, Group 5
+shows only `groupNumber === 5`, and so on. Filtering happens on the client over the full
+loaded list, so switching groups is instant and never refetches. Note the sidebar only
+offers groups 1–5, so group 6 rows are reachable only under "All Groups".
+
+### Storage
+
+Rows live in `server/data/db.json` under the `project-reachouts` key.
+
+| Method | Path | Description |
+|--------|------|-------------|
+| GET | `/api/project-reachouts` | All rows; optional `?group=N` filter |
+| POST | `/api/project-reachouts` | Create — EID, project name, tech/role and POC EID are required |
+| PATCH | `/api/project-reachouts/:id` | Partial update; rejects blanking a required field |
+| DELETE | `/api/project-reachouts/:id` | Permanent delete |

@@ -237,3 +237,19 @@ export interface DashboardData {
   poc: PocPerson[];
   quickTools: QuickTool[];
 }
+
+/** One row of the Project Reachouts table — a resource put forward for a project. */
+export interface ProjectReachout {
+  id: number;
+  eid: string;
+  projectName: string;
+  techRole: string;
+  pocEid: string;
+  status: string;
+  /** Free-text note on the reachout. Optional — empty string when not filled in. */
+  details: string;
+  /** 1–6, or null when the EID does not match a known resource. Drives the sidebar group filter. */
+  groupNumber: number | null;
+  createdAt?: string;
+  updatedAt?: string;
+}

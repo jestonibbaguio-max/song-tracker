@@ -1,0 +1,249 @@
+<section class="page-header">
+  <div>
+    <h1>Project Reachouts</h1>
+    <p>Track resources put forward for project reachouts</p>
+  </div>
+  <div class="header-actions">
+    <button type="button" class="btn btn-primary reachout-add-btn" (click)="openAddDialog()">
+      <i class="bi bi-plus-lg"></i> Add new reachout
+    </button>
+  </div>
+</section>
+
+<div class="reachout-toolbar">
+  <span class="reachout-scope">
+    Showing <strong>{{ visibleReachouts.length }}</strong>
+    {{ visibleReachouts.length === 1 ? 'reachout' : 'reachouts' }}
+    for <strong>{{ sharedData.getGroupLabel(sharedData.attendanceGroup) }}</strong>
+  </span>
+  @if (loadError) {
+    <span class="reachout-error">{{ loadError }}</span>
+  }
+  @if (statusError) {
+    <span class="reachout-error">{{ statusError }}</span>
+  }
+</div>
+
+<div class="reachout-table-wrap">
+  <table class="reachout-table">
+    <thead>
+      <tr>
+        <th>EID</th>
+        <th>Project Name</th>
+        <th>Tech / Role</th>
+        <th>POC EID</th>
+        <th class="reachout-col-status">Status</th>
+        <th class="reachout-col-details">Details</th>
+        <th class="reachout-col-group">Group</th>
+        <th class="reachout-col-actions"></th>
+      </tr>
+    </thead>
+    <tbody>
+      @if (loading) {
+        <tr class="reachout-empty-row">
+          <td colspan="8">Loading reachouts…</td>
+        </tr>
+      } @else if (visibleReachouts.length === 0) {
+        <tr class="reachout-empty-row">
+          <td colspan="8">
+            No reachouts for {{ sharedData.getGroupLabel(sharedData.attendanceGroup) }} yet
+          </td>
+        </tr>
+      }
+      @for (reachout of visibleReachouts; track reachout.id) {
+        <tr>
+          <td>
+            <span class="reachout-eid">{{ reachout.eid }}</span>
+            @if (resourceName(reachout.eid)) {
+              <span class="reachout-eid-name">{{ resourceName(reachout.eid) }}</span>
+            }
+          </td>
+          <td>{{ reachout.projectName }}</td>
+          <td>{{ reachout.techRole }}</td>
+          <td><span class="reachout-eid">{{ reachout.pocEid }}</span></td>
+          <td class="reachout-col-status">
+            <select
+              [class]="statusClasses(reachout.status) + ' reachout-status-select'"
+              [attr.aria-label]="'Status for ' + reachout.eid"
+              [ngModel]="reachout.status"
+              (ngModelChange)="onStatusChange(reachout, $event)"
+              [disabled]="savingStatusId !== null">
+              @for (status of statusOptions(reachout.status); track status) {
+                <option [value]="status">{{ status }}</option>
+              }
+            </select>
+          </td>
+          <td class="reachout-col-details">
+            @if (reachout.details) {
+              <span class="reachout-details" [title]="reachout.details">{{ reachout.details }}</span>
+            } @else {
+              <span class="reachout-muted">—</span>
+            }
+          </td>
+          <td class="reachout-col-group">
+            @if (reachout.groupNumber) {
+              <span class="reachout-group-pill">Group {{ reachout.groupNumber }}</span>
+            } @else {
+              <span class="reachout-muted">—</span>
+            }
+          </td>
+          <td class="reachout-col-actions">
+            <button type="button" class="reachout-icon-btn" title="Edit reachout" (click)="openEditDialog(reachout)">
+              <i class="bi bi-pencil"></i>
+            </button>
+            <button type="button" class="reachout-icon-btn reachout-icon-danger" title="Delete reachout" (click)="openDeleteDialog(reachout)">
+              <i class="bi bi-trash"></i>
+            </button>
+          </td>
+        </tr>
+      }
+    </tbody>
+  </table>
+</div>
+
+<!-- Add / edit reachout dialog -->
+@if (formDialog.open) {
+  <div class="del-dialog-backdrop" (click)="closeFormDialog()">
+    <div class="del-dialog reachout-form-dialog" (click)="$event.stopPropagation()">
+
+      <div class="del-dialog-header">
+        <div class="del-dialog-icon reachout-form-icon"><i class="bi bi-send"></i></div>
+        <div>
+          <h3 class="del-dialog-title">
+            {{ formDialog.mode === 'edit' ? 'Edit reachout' : 'New reachout' }}
+          </h3>
+          <p class="del-dialog-subtitle">
+            {{ formDialog.mode === 'edit'
+              ? 'Update the details of this reachout.'
+              : 'Status defaults to ' + statuses[0] + ' and can be changed later.' }}
+          </p>
+        </div>
+        <button type="button" class="del-dialog-close" (click)="closeFormDialog()">
+          <i class="bi bi-x-lg"></i>
+        </button>
+      </div>
+
+      <div class="reachout-form-body">
+        <label class="reachout-field">
+          <span class="reachout-field-label">EID <em>*</em></span>
+          <input class="reachout-input"
+                 list="reachout-eid-options"
+                 [(ngModel)]="formDialog.fields.eid"
+                 (ngModelChange)="onFormEidChange()"
+                 placeholder="juan.dela.cruz"
+                 autocomplete="off" />
+          <datalist id="reachout-eid-options">
+            @for (resource of resourceOptions; track resource.id) {
+              <option [value]="resource.eid">{{ resource.name }}</option>
+            }
+          </datalist>
+        </label>
+
+        <label class="reachout-field">
+          <span class="reachout-field-label">Group <span class="reachout-optional">from EID</span></span>
+          <select class="reachout-input" [(ngModel)]="formDialog.fields.groupNumber">
+            <option value="">No group</option>
+            @for (group of groupNumbers; track group) {
+              <option [value]="group">Group {{ group }}</option>
+            }
+          </select>
+        </label>
+
+        <label class="reachout-field reachout-field-wide">
+          <span class="reachout-field-label">Project Name <em>*</em></span>
+          <input class="reachout-input" [(ngModel)]="formDialog.fields.projectName" placeholder="Project name" autocomplete="off" />
+        </label>
+
+        <label class="reachout-field reachout-field-wide">
+          <span class="reachout-field-label">Tech / Role <em>*</em></span>
+          <input class="reachout-input" [(ngModel)]="formDialog.fields.techRole" placeholder="e.g. Angular Developer" autocomplete="off" />
+        </label>
+
+        <label class="reachout-field">
+          <span class="reachout-field-label">POC EID <em>*</em></span>
+          <input class="reachout-input"
+                 list="reachout-eid-options"
+                 [(ngModel)]="formDialog.fields.pocEid"
+                 placeholder="poc.eid"
+                 autocomplete="off" />
+        </label>
+
+        <label class="reachout-field">
+          <span class="reachout-field-label">Status <span class="reachout-optional">optional</span></span>
+          <select class="reachout-input" [(ngModel)]="formDialog.fields.status">
+            @for (status of statuses; track status) {
+              <option [value]="status">{{ status }}</option>
+            }
+          </select>
+        </label>
+
+        <label class="reachout-field reachout-field-wide">
+          <span class="reachout-field-label">Details <span class="reachout-optional">optional</span></span>
+          <textarea class="reachout-input reachout-textarea"
+                    rows="3"
+                    [(ngModel)]="formDialog.fields.details"
+                    placeholder="Notes on this reachout"></textarea>
+        </label>
+
+        @if (formDialog.error) {
+          <p class="reachout-form-error">{{ formDialog.error }}</p>
+        }
+      </div>
+
+      <div class="del-dialog-footer">
+        <button type="button" class="btn btn-outline-secondary" [disabled]="formDialog.saving" (click)="closeFormDialog()">
+          Cancel
+        </button>
+        <button type="button" class="btn btn-primary" [disabled]="!isFormValid || formDialog.saving" (click)="saveReachout()">
+          {{ formDialog.saving ? 'Saving…' : (formDialog.mode === 'edit' ? 'Save changes' : 'Add reachout') }}
+        </button>
+      </div>
+
+    </div>
+  </div>
+}
+
+<!-- Delete confirmation dialog -->
+@if (deleteDialog.open && deleteDialog.reachout) {
+  <div class="del-dialog-backdrop" (click)="closeDeleteDialog()">
+    <div class="del-dialog" (click)="$event.stopPropagation()">
+
+      <div class="del-dialog-header">
+        <div class="del-dialog-icon"><i class="bi bi-trash3"></i></div>
+        <div>
+          <h3 class="del-dialog-title">Delete reachout</h3>
+          <p class="del-dialog-subtitle">This action cannot be undone. The row will be permanently removed.</p>
+        </div>
+        <button type="button" class="del-dialog-close" (click)="closeDeleteDialog()">
+          <i class="bi bi-x-lg"></i>
+        </button>
+      </div>
+
+      <div class="del-dialog-preview">
+        <div class="del-dialog-preview-author">
+          <span class="del-task-icon"><i class="bi bi-send"></i></span>
+          <span class="del-preview-name">{{ deleteDialog.reachout.projectName }}</span>
+        </div>
+        <p class="del-dialog-preview-text" style="margin-top: 0.35rem; color: #888;">
+          {{ deleteDialog.reachout.eid }} &nbsp;·&nbsp;
+          {{ deleteDialog.reachout.techRole }} &nbsp;·&nbsp;
+          {{ deleteDialog.reachout.groupNumber ? 'Group ' + deleteDialog.reachout.groupNumber : 'No group' }}
+        </p>
+      </div>
+
+      @if (deleteDialog.error) {
+        <p class="reachout-form-error reachout-delete-error">{{ deleteDialog.error }}</p>
+      }
+
+      <div class="del-dialog-footer">
+        <button type="button" class="btn btn-outline-secondary" [disabled]="deleteDialog.saving" (click)="closeDeleteDialog()">
+          Cancel
+        </button>
+        <button type="button" class="btn del-dialog-confirm-btn" [disabled]="deleteDialog.saving" (click)="confirmDelete()">
+          <i class="bi bi-trash3"></i> {{ deleteDialog.saving ? 'Deleting…' : 'Delete reachout' }}
+        </button>
+      </div>
+
+    </div>
+  </div>
+}

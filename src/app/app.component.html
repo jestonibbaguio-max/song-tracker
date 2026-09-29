@@ -96,6 +96,8 @@
     } @else if (activeView === 'mockinterview') {
       <app-mock-assessment [summary]="mockSummary" [group]="sharedData.attendanceGroup" [filterTerm]="mockFilterTerm" [activeTab]="activeMockTab"
         (activeTabChange)="activeMockTab = $event; filterDropdownOpen = false"></app-mock-assessment>
+    } @else if (activeView === 'reachout') {
+      <app-reachout></app-reachout>
     } @else if (stubView) {
       <section class="page-header">
         <div>
