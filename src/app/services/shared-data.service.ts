@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { OnboardingResource } from '../models/types';
+import { environment } from '../../envinronments/environment.development';
 
 @Injectable({ providedIn: 'root' })
 export class SharedDataService {
@@ -20,7 +21,7 @@ export class SharedDataService {
 
   apiUrl(path: string): string {
     const port = window.location.port;
-    if (port === '4200' || port === '4201') return `http://127.0.0.1:3000${path}`;
+    if (port === '4200' || port === '4201') return `${environment.apiUrl}${path}`;
     return path;
   }
 

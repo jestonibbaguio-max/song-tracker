@@ -9,6 +9,7 @@ import { AttendanceComponent } from './views/attendance/attendance.component';
 import { PlannerComponent } from './views/planner/planner.component';
 import { MyCompetencyComponent } from './views/mycompetency/mycompetency.component';
 import { MockAssessmentComponent, MockAssessmentSummary } from './views/mockAssessmentSummary/mock-assessment.data';
+import { MOCK_ASSESSMENT_PAGE_SIZE, MOCK_ASSESSMENT_TABS, MockAssessmentTab } from './views/mockAssessmentSummary/mock-assessment-tabs.const';
 import { TrainingComponent } from './views/training/training.component';
 import { PocHowToComponent } from './views/pochowto/pochowto.component';
 import { TrainingsComponent } from './views/trainings/trainings.component';
@@ -42,9 +43,46 @@ export interface StubView {
   encapsulation: ViewEncapsulation.None
 })
 export class AppComponent {
+  readonly mockTabs = MOCK_ASSESSMENT_TABS;
   activeView: 'dashboard' | 'onboarding' | 'attendance' | 'planner' | 'sprintretros' | 'training' | 'mycompetency' | 'trainings' | 'mockinterview' | 'reachout' | 'pochowto' | 'initiatives' | 'reports' | 'resourcetracking' | 'announcements' | 'settings' = 'dashboard';
   private readonly validViews = ['dashboard', 'onboarding', 'attendance', 'planner', 'sprintretros', 'training', 'mycompetency', 'trainings', 'mockinterview', 'reachout', 'pochowto', 'initiatives', 'reports', 'resourcetracking', 'announcements', 'settings'] as const;
   plannerMenuExpanded = false;
+  activeMockTab: MockAssessmentTab = MOCK_ASSESSMENT_TABS.SUMMARY.id;
+  feedbackFilterTerm = '';
+  headCountFilterTerm = '';
+  filterDropdownOpen = false;
+
+  get showMockResourceFilter(): boolean {
+    return this.activeView === 'mockinterview' &&
+      this.activeMockTab !== MOCK_ASSESSMENT_TABS.SUMMARY.id &&
+      this.resourcesBadgeCount > MOCK_ASSESSMENT_PAGE_SIZE;
+  }
+
+  get mockFilterTerm(): string {
+    return this.activeMockTab === MOCK_ASSESSMENT_TABS.FEEDBACK.id ? this.feedbackFilterTerm : this.headCountFilterTerm;
+  }
+
+  set mockFilterTerm(term: string) {
+    if (this.activeMockTab === MOCK_ASSESSMENT_TABS.FEEDBACK.id) this.feedbackFilterTerm = term;
+    if (this.activeMockTab === MOCK_ASSESSMENT_TABS.HEAD_COUNT.id) this.headCountFilterTerm = term;
+  }
+
+  get mockFilterOptions() {
+    const term = this.mockFilterTerm.trim().toLowerCase();
+    return this.sharedData.onboardingResources.filter(resource =>
+      (!this.sharedData.attendanceGroup || String(resource.groupNumber) === this.sharedData.attendanceGroup) &&
+      (!term || resource.name?.toLowerCase().includes(term) || resource.eid?.toLowerCase().includes(term))
+    ).slice(0, 8);
+  }
+
+  onGroupChange(group: string): void {
+    this.sharedData.setAttendanceGroup(group);
+    if (this.activeView === 'mockinterview') {
+      this.feedbackFilterTerm = '';
+      this.headCountFilterTerm = '';
+      this.filterDropdownOpen = false;
+    }
+  }
 
   navGroups: NavGroup[] = [];
   loading = true;
@@ -92,7 +130,22 @@ export class AppComponent {
         failRate: '0'
       }
     ],
-    highlights: ['4 newly onboarded resources in sprint 11']
+    highlights: ['4 newly onboarded resources in sprint 11'],
+    tabMenusItems: [
+      {
+        title: MOCK_ASSESSMENT_TABS.SUMMARY.title,
+        targetId: MOCK_ASSESSMENT_TABS.SUMMARY.targetId
+      },
+      {
+        title: MOCK_ASSESSMENT_TABS.FEEDBACK.title,
+        targetId: MOCK_ASSESSMENT_TABS.FEEDBACK.targetId
+      },
+      {
+        title: MOCK_ASSESSMENT_TABS.HEAD_COUNT.title,
+        targetId: MOCK_ASSESSMENT_TABS.HEAD_COUNT.targetId
+      }
+
+    ]
   };
   constructor(private http: HttpClient, public sharedData: SharedDataService) {
     const saved = localStorage.getItem('active-view') as typeof this.activeView;
@@ -132,7 +185,12 @@ export class AppComponent {
       'Announcements': 'announcements',
       'Settings': 'settings',
     };
-    this.activeView = viewMap[item.label] ?? 'dashboard';
+    const nextView = viewMap[item.label] ?? 'dashboard';
+    if (nextView === 'mockinterview' && this.activeView !== 'mockinterview') {
+      this.activeMockTab = MOCK_ASSESSMENT_TABS.SUMMARY.id;
+      this.filterDropdownOpen = false;
+    }
+    this.activeView = nextView;
     if (item.label === 'Planner') {
       this.plannerMenuExpanded = !this.plannerMenuExpanded;
     }
