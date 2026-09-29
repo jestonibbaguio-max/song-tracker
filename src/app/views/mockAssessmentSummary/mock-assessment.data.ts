@@ -247,8 +247,7 @@ export class MockAssessmentComponent {
     let end = Math.min(this.totalPages, start + this.maxVisiblePages - 1);
 
     start = Math.max(1, end - this.maxVisiblePages + 1);
-   
-    console.log(start, end)
+
     return Array.from({ length: end - start + 1 }, (_, i) => start + i);
   }
 
@@ -431,6 +430,5 @@ export class MockAssessmentComponent {
       JSON.stringify(this.summary)
     );
 
-    console.log('Mock assessment saved locally');
   }
 }
