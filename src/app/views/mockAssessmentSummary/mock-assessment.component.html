@@ -60,9 +60,9 @@
           @for (row of summary.rows; track row.stream; let i = $index) {
             <tr>
               <td class="stream">{{ row.stream }}</td>
-              <td>{{ row.totalResources }}</td>
+              <td>{{ groupResources.length }}</td>
               <td>{{ row.scheduled }}</td>
-              <td>{{ row.totalConducted }}</td>
+              <td>{{ getSummaryTotalConducted(i) }}</td>
               <td>{{ row.totalPassed }}</td>
               <td>{{ row.totalFailed }}</td>
               <td>{{ row.passRate }}</td>

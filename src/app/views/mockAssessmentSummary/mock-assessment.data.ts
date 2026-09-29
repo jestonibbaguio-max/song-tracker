@@ -49,6 +49,7 @@ export interface FeedbackSubmission {
 export class MockAssessmentComponent {
   readonly tabs = MOCK_ASSESSMENT_TABS;
   @Input() summary!: MockAssessmentSummary;
+  @Input() group = '';
   @Input() filterTerm = '';
   @Input() activeTab: MockAssessmentTab = MOCK_ASSESSMENT_TABS.SUMMARY.id;
   @Output() activeTabChange = new EventEmitter<MockAssessmentTab>();
@@ -63,6 +64,7 @@ export class MockAssessmentComponent {
 
   feedbackPage: number = 1;
   private expandedFeedbackKeys = new Set<string>();
+  private initialSummary?: MockAssessmentSummary;
 
   selectTab(tab: MockAssessmentTab): void {
     this.activeTab = tab;
@@ -70,9 +72,14 @@ export class MockAssessmentComponent {
   }
 
   ngOnChanges(changes: SimpleChanges): void {
-    if (changes['filterTerm'] || changes['activeTab']) {
+    if (changes['filterTerm'] || changes['activeTab'] || changes['group']) {
       this.page = 1;
       this.feedbackPage = 1;
+    }
+    if (changes['group'] && !changes['group'].firstChange && this.initialSummary) {
+      this.closeModal();
+      this.closeHighlightModal();
+      this.loadSummary();
     }
   }
 
@@ -169,11 +176,8 @@ export class MockAssessmentComponent {
   }
 
   ngOnInit(): void {
-    const savedData = localStorage.getItem('mockAssessment');
-
-    if (savedData) {
-      this.summary = JSON.parse(savedData);
-    }
+    this.initialSummary = structuredClone(this.summary);
+    this.loadSummary();
 
     if (this.sharedData.onboardingResources.length === 0) {
       this.sharedData.loadOnboardingResources(() => this.syncSummaryTotals());
@@ -183,8 +187,32 @@ export class MockAssessmentComponent {
 
   }
 
+  private get summaryStorageKey(): string {
+    return this.group ? `mockAssessment.group.${this.group}` : 'mockAssessment';
+  }
+
+  private loadSummary(): void {
+    const savedData = localStorage.getItem(this.summaryStorageKey);
+    if (savedData) {
+      this.summary = JSON.parse(savedData);
+    } else {
+      this.summary = structuredClone(this.initialSummary!);
+      if (this.group) {
+        this.summary.rows.forEach(row => {
+          row.scheduled = '-';
+          row.totalPassed = 0;
+          row.totalFailed = '-';
+          row.passRate = '0%';
+          row.failRate = '0';
+        });
+        this.summary.highlights = [];
+      }
+    }
+    this.syncSummaryTotals();
+  }
+
   private syncSummaryTotals(): void {
-    const totalResources = this.sharedData.onboardingResources.length;
+    const totalResources = this.groupResources.length;
     this.summary.rows.forEach((row, index) => {
       row.totalResources = totalResources;
       row.totalConducted = this.getSummaryTotalConducted(index);
@@ -194,6 +222,7 @@ export class MockAssessmentComponent {
 
   syncSummaryTable(): void {
     this.summary.rows.forEach((row, index) => {
+      row.totalResources = this.groupResources.length;
       row.totalConducted = this.getSummaryTotalConducted(index);
     });
     this.saveMockAssessment();
@@ -228,7 +257,7 @@ export class MockAssessmentComponent {
   }
 
   getHeadCountChecklistTotal(field: HeadCountChecklistField): number {
-    return this.sharedData.onboardingResources.filter((resource) =>
+    return this.groupResources.filter((resource) =>
       this.isHeadCountChecklistChecked(resource, field)
     ).length;
   }
@@ -376,8 +405,14 @@ export class MockAssessmentComponent {
     return String(resource.eid || resource.id);
   }
 
+  get groupResources(): OnboardingResource[] {
+    return this.sharedData.onboardingResources.filter(resource =>
+      !this.group || String(resource.groupNumber) === this.group
+    );
+  }
+
   private get sortedOnboardingResources(): OnboardingResource[] {
-    return [...this.sharedData.onboardingResources].sort((a, b) =>
+    return this.groupResources.sort((a, b) =>
       a.name.localeCompare(b.name)
     );
   }
@@ -392,7 +427,7 @@ export class MockAssessmentComponent {
   // Save to backend API
   saveMockAssessment(): void {
     localStorage.setItem(
-      'mockAssessment',
+      this.summaryStorageKey,
       JSON.stringify(this.summary)
     );
 

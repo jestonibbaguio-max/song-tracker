@@ -64,8 +64,18 @@ export class AppComponent {
   get mockFilterOptions() {
     const term = this.mockFilterTerm.trim().toLowerCase();
     return this.sharedData.onboardingResources.filter(resource =>
-      !term || resource.name?.toLowerCase().includes(term) || resource.eid?.toLowerCase().includes(term)
+      (!this.sharedData.attendanceGroup || String(resource.groupNumber) === this.sharedData.attendanceGroup) &&
+      (!term || resource.name?.toLowerCase().includes(term) || resource.eid?.toLowerCase().includes(term))
     ).slice(0, 8);
+  }
+
+  onGroupChange(group: string): void {
+    this.sharedData.setAttendanceGroup(group);
+    if (this.activeView === 'mockinterview') {
+      this.feedbackFilterTerm = '';
+      this.headCountFilterTerm = '';
+      this.filterDropdownOpen = false;
+    }
   }
 
   navGroups: NavGroup[] = [];

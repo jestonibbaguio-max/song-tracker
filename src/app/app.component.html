@@ -14,7 +14,7 @@
 
     <div class="sidebar-group-filter">
       <label class="sidebar-group-label">Group</label>
-      <select class="sidebar-group-select" [ngModel]="sharedData.attendanceGroup" (ngModelChange)="sharedData.setAttendanceGroup($event)">
+      <select class="sidebar-group-select" [ngModel]="sharedData.attendanceGroup" (ngModelChange)="onGroupChange($event)">
         <option value="">All Groups</option>
         @for (g of sharedData.groupOptions; track g.value) {
           <option [value]="g.value">{{ g.label }}</option>
@@ -94,7 +94,7 @@
     } @else if (activeView === 'trainings') {
       <app-trainings></app-trainings>
     } @else if (activeView === 'mockinterview') {
-      <app-mock-assessment [summary]="mockSummary" [filterTerm]="mockFilterTerm" [activeTab]="activeMockTab"
+      <app-mock-assessment [summary]="mockSummary" [group]="sharedData.attendanceGroup" [filterTerm]="mockFilterTerm" [activeTab]="activeMockTab"
         (activeTabChange)="activeMockTab = $event; filterDropdownOpen = false"></app-mock-assessment>
     } @else if (stubView) {
       <section class="page-header">
