@@ -1,9 +1,10 @@
-import { Component, Input } from '@angular/core';
+import { Component, EventEmitter, Input, OnChanges, Output, SimpleChanges } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { QuillModule } from 'ngx-quill';
 import { SharedDataService } from '../../services/shared-data.service';
 import { OnboardingResource } from '../../models/types';
+import { MOCK_ASSESSMENT_TABS, MockAssessmentTab } from './mock-assessment-tabs.const';
 
 export interface MockAssessmentRow {
   stream: string;
@@ -46,7 +47,11 @@ export interface FeedbackSubmission {
   styleUrls: ['./mock-assessment.component.css']
 })
 export class MockAssessmentComponent {
+  readonly tabs = MOCK_ASSESSMENT_TABS;
   @Input() summary!: MockAssessmentSummary;
+  @Input() filterTerm = '';
+  @Input() activeTab: MockAssessmentTab = MOCK_ASSESSMENT_TABS.SUMMARY.id;
+  @Output() activeTabChange = new EventEmitter<MockAssessmentTab>();
   summaryTableTab!: MockAssessmentSummaryTabItem;
   feedbackTab!: MockAssessmentSummaryTabItem;
   headCountTab!: MockAssessmentSummaryTabItem;
@@ -57,9 +62,19 @@ export class MockAssessmentComponent {
   onBoardingResourcesPerPage: number = 10
 
   feedbackPage: number = 1;
-  feedbackSearchTerm: string = '';
-  headCountSearchTerm: string = '';
   private expandedFeedbackKeys = new Set<string>();
+
+  selectTab(tab: MockAssessmentTab): void {
+    this.activeTab = tab;
+    this.activeTabChange.emit(tab);
+  }
+
+  ngOnChanges(changes: SimpleChanges): void {
+    if (changes['filterTerm'] || changes['activeTab']) {
+      this.page = 1;
+      this.feedbackPage = 1;
+    }
+  }
 
   editingIndex: number | null = null;
   editingRow: MockAssessmentRow | null = null;
@@ -231,10 +246,6 @@ export class MockAssessmentComponent {
     this.page = 1;
   }
 
-  onHeadCountSearchChange(): void {
-    this.page = 1;
-  }
-
   private get filteredOnboardingResources(): OnboardingResource[] {
     let resources = this.sortedOnboardingResources;
 
@@ -244,7 +255,7 @@ export class MockAssessmentComponent {
       );
     }
 
-    return this.filterByNameOrEid(resources, this.headCountSearchTerm);
+    return this.filterByNameOrEid(resources, this.activeTab === MOCK_ASSESSMENT_TABS.HEAD_COUNT.id ? this.filterTerm : '');
   }
 
   onHeadCountChecklistChange(resource: OnboardingResource, field: HeadCountChecklistField, event: Event): void {
@@ -277,12 +288,8 @@ export class MockAssessmentComponent {
     return this.feedbackFilteredResources.slice(start, start + this.pageSize);
   }
 
-  onFeedbackSearchChange(): void {
-    this.feedbackPage = 1;
-  }
-
   private get feedbackFilteredResources(): OnboardingResource[] {
-    return this.filterByNameOrEid(this.sortedOnboardingResources, this.feedbackSearchTerm);
+    return this.filterByNameOrEid(this.sortedOnboardingResources, this.activeTab === MOCK_ASSESSMENT_TABS.FEEDBACK.id ? this.filterTerm : '');
   }
 
   private filterByNameOrEid(resources: OnboardingResource[], searchTerm: string): OnboardingResource[] {

@@ -8,7 +8,7 @@
       data-bs-toggle="tab"
       [attr.data-bs-target]="'#' + summaryTableTab.targetId"
       aria-selected="true"
-      (click)="syncSummaryTable()"
+      (click)="selectTab(tabs.SUMMARY.id); syncSummaryTable()"
     >{{ summaryTableTab.title }}</span>
   </li>
   <li>
@@ -17,6 +17,7 @@
       data-bs-toggle="tab"
       [attr.data-bs-target]="'#' + feedbackTab.targetId"
       aria-selected="false"
+      (click)="selectTab(tabs.FEEDBACK.id)"
     >
       {{ feedbackTab.title }}
   </span>
@@ -27,6 +28,7 @@
       data-bs-toggle="tab"
       [attr.data-bs-target]="'#' + headCountTab.targetId"
       aria-selected="false"
+      (click)="selectTab(tabs.HEAD_COUNT.id)"
     >
       {{ headCountTab.title }}
   </span>
@@ -160,20 +162,11 @@
     }
   </div>
 
-  <div class="tab-pane fade" [id]="feedbackTab.targetId" role="tabpanel">
-    <div class="resource-filter">
-      <input
-        type="text"
-        class="resource-filter__input"
-        placeholder="Filter by name or EID"
-        [(ngModel)]="feedbackSearchTerm"
-        (keyup)="onFeedbackSearchChange()"
-      >
-    </div>
+  <div class="tab-pane fade pt-5" [id]="feedbackTab.targetId" role="tabpanel">
     @if (feedbackResources.length === 0) {
       <p class="resource-filter__empty">
-        @if (feedbackSearchTerm) {
-          No resource found matching "{{ feedbackSearchTerm }}".
+        @if (filterTerm) {
+          No resource found matching "{{ filterTerm }}".
         } @else {
           No resource found.
         }
@@ -231,16 +224,7 @@
     </ul>
   </div>
 
-  <div class="tab-pane fade" [id]="headCountTab.targetId" role="tabpanel">
-      <div class="resource-filter">
-        <input
-          type="text"
-          class="resource-filter__input"
-          placeholder="Filter by name or EID"
-          [(ngModel)]="headCountSearchTerm"
-          (keyup)="onHeadCountSearchChange()"
-        >
-      </div>
+  <div class="tab-pane fade pt-5" [id]="headCountTab.targetId" role="tabpanel">
       <table class="mock-summary__table" style="height: 500px;">
         <thead>
           <tr>
@@ -253,8 +237,8 @@
       @if (onBoardingResources.length === 0) {
         <tr>
           <td colspan="4" class="resource-filter__empty">
-            @if (headCountSearchTerm) {
-              No resource found matching "{{ headCountSearchTerm }}".
+            @if (filterTerm) {
+              No resource found matching "{{ filterTerm }}".
             } @else {
               No resource found.
             }

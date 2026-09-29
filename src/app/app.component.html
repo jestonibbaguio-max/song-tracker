@@ -20,6 +20,30 @@
           <option [value]="g.value">{{ g.label }}</option>
         }
       </select>
+      @if (activeView === 'mockinterview' && activeMockTab !== mockTabs.SUMMARY.id) {
+        <label class="sidebar-group-label" for="mock-resource-filter">Filter {{ activeMockTab === mockTabs.FEEDBACK.id ? mockTabs.FEEDBACK.title : mockTabs.HEAD_COUNT.title }}</label>
+        <div class="sidebar-resource-filter">
+          <input id="mock-resource-filter" type="text" class="sidebar-resource-input" placeholder="Name or EID"
+            [ngModel]="mockFilterTerm" (ngModelChange)="mockFilterTerm = $event; filterDropdownOpen = true"
+            (focus)="filterDropdownOpen = true" (blur)="filterDropdownOpen = false" autocomplete="off">
+          @if (mockFilterTerm) {
+            <button type="button" class="sidebar-filter-action sidebar-filter-clear" aria-label="Clear filter" title="Clear filter"
+              (mousedown)="$event.preventDefault()" (click)="mockFilterTerm = ''; filterDropdownOpen = false"><i class="bi bi-x"></i></button>
+          }
+          <button type="button" class="sidebar-filter-action sidebar-filter-toggle" aria-label="Show resources" title="Show resources"
+            (mousedown)="$event.preventDefault()" (click)="filterDropdownOpen = !filterDropdownOpen"><i class="bi bi-chevron-down"></i></button>
+          @if (filterDropdownOpen && mockFilterOptions.length) {
+            <div class="sidebar-filter-options" role="listbox" aria-label="Resources">
+              @for (resource of mockFilterOptions; track resource.id) {
+                <button type="button" role="option" class="sidebar-filter-option"
+                  (mousedown)="$event.preventDefault()" (click)="mockFilterTerm = resource.name; filterDropdownOpen = false">
+                  {{ resource.name }} <small>{{ resource.eid }}</small>
+                </button>
+              }
+            </div>
+          }
+        </div>
+      }
     </div>
 
     @for (group of navGroups; track group.label) {
@@ -70,7 +94,8 @@
     } @else if (activeView === 'trainings') {
       <app-trainings></app-trainings>
     } @else if (activeView === 'mockinterview') {
-      <app-mock-assessment [summary]="mockSummary"></app-mock-assessment>
+      <app-mock-assessment [summary]="mockSummary" [filterTerm]="mockFilterTerm" [activeTab]="activeMockTab"
+        (activeTabChange)="activeMockTab = $event; filterDropdownOpen = false"></app-mock-assessment>
     } @else if (stubView) {
       <section class="page-header">
         <div>
