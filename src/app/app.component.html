@@ -20,7 +20,7 @@
           <option [value]="g.value">{{ g.label }}</option>
         }
       </select>
-      @if (activeView === 'mockinterview' && activeMockTab !== mockTabs.SUMMARY.id) {
+      @if (showMockResourceFilter) {
         <label class="sidebar-group-label" for="mock-resource-filter">Filter {{ activeMockTab === mockTabs.FEEDBACK.id ? mockTabs.FEEDBACK.title : mockTabs.HEAD_COUNT.title }}</label>
         <div class="sidebar-resource-filter">
           <input id="mock-resource-filter" type="text" class="sidebar-resource-input" placeholder="Name or EID"

@@ -9,7 +9,7 @@ import { AttendanceComponent } from './views/attendance/attendance.component';
 import { PlannerComponent } from './views/planner/planner.component';
 import { MyCompetencyComponent } from './views/mycompetency/mycompetency.component';
 import { MockAssessmentComponent, MockAssessmentSummary } from './views/mockAssessmentSummary/mock-assessment.data';
-import { MOCK_ASSESSMENT_TABS, MockAssessmentTab } from './views/mockAssessmentSummary/mock-assessment-tabs.const';
+import { MOCK_ASSESSMENT_PAGE_SIZE, MOCK_ASSESSMENT_TABS, MockAssessmentTab } from './views/mockAssessmentSummary/mock-assessment-tabs.const';
 import { TrainingComponent } from './views/training/training.component';
 import { PocHowToComponent } from './views/pochowto/pochowto.component';
 import { TrainingsComponent } from './views/trainings/trainings.component';
@@ -51,6 +51,12 @@ export class AppComponent {
   feedbackFilterTerm = '';
   headCountFilterTerm = '';
   filterDropdownOpen = false;
+
+  get showMockResourceFilter(): boolean {
+    return this.activeView === 'mockinterview' &&
+      this.activeMockTab !== MOCK_ASSESSMENT_TABS.SUMMARY.id &&
+      this.resourcesBadgeCount > MOCK_ASSESSMENT_PAGE_SIZE;
+  }
 
   get mockFilterTerm(): string {
     return this.activeMockTab === MOCK_ASSESSMENT_TABS.FEEDBACK.id ? this.feedbackFilterTerm : this.headCountFilterTerm;

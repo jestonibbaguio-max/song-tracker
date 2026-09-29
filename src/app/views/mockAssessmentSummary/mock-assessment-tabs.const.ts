@@ -5,3 +5,4 @@ export const MOCK_ASSESSMENT_TABS = {
 } as const;
 
 export type MockAssessmentTab = typeof MOCK_ASSESSMENT_TABS[keyof typeof MOCK_ASSESSMENT_TABS]['id'];
+export const MOCK_ASSESSMENT_PAGE_SIZE = 10;

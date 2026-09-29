@@ -4,7 +4,7 @@ import { FormsModule } from '@angular/forms';
 import { QuillModule } from 'ngx-quill';
 import { SharedDataService } from '../../services/shared-data.service';
 import { OnboardingResource } from '../../models/types';
-import { MOCK_ASSESSMENT_TABS, MockAssessmentTab } from './mock-assessment-tabs.const';
+import { MOCK_ASSESSMENT_PAGE_SIZE, MOCK_ASSESSMENT_TABS, MockAssessmentTab } from './mock-assessment-tabs.const';
 
 export interface MockAssessmentRow {
   stream: string;
@@ -58,7 +58,7 @@ export class MockAssessmentComponent {
   headCountTab!: MockAssessmentSummaryTabItem;
 
   page: number = 1;
-  pageSize: number = 10;
+  pageSize: number = MOCK_ASSESSMENT_PAGE_SIZE;
   maxVisiblePages: number = 5;
   onBoardingResourcesPerPage: number = 10
 
