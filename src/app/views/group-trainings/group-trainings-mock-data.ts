@@ -1,15 +1,15 @@
-export interface TrainingCourse {
+export interface GroupTrainingsCourse {
   id: string;
   title: string;
   length: string;
   link: string;
 }
 
-export interface TrainingTrack {
+export interface GroupTrainingsTrack {
   id: string;
   label: string;
   icon: string;
-  courses: TrainingCourse[];
+  courses: GroupTrainingsCourse[];
 }
 
 /**
@@ -17,7 +17,7 @@ export interface TrainingTrack {
  * group value (see SharedDataService.groupOptions) — only Group 5
  * ("AEM/Angular") has a stack assigned for now.
  */
-export const TRAINING_TRACKS_BY_GROUP: Record<string, TrainingTrack[]> = {
+export const GROUP_TRAININGS_TRACKS_BY_GROUP: Record<string, GroupTrainingsTrack[]> = {
   '5': [
     {
       id: 'angular',

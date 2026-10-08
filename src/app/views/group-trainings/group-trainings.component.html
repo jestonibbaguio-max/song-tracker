@@ -12,11 +12,15 @@
 } @else {
   <div class="training-toolbar">
     <div class="training-resource-picker">
+      @if (saving) {
+        <span class="training-saving" role="status">Saving…</span>
+      }
       <label for="training-resource">Resource</label>
       <select
         id="training-resource"
         class="comp-group-select training-resource-select"
         [(ngModel)]="selectedEid"
+        [disabled]="saving"
         (ngModelChange)="onResourceChange()">
         <option value="">Select a resource</option>
         @for (member of groupMembers; track member.id) {
@@ -33,6 +37,7 @@
         role="tab"
         [class.active]="activeTab === tab.id"
         [attr.aria-selected]="activeTab === tab.id"
+        [disabled]="saving && activeTab !== tab.id"
         (click)="selectTab(tab.id)">
         <i class="bi {{ tab.icon }}"></i>
         {{ tab.label }}
@@ -82,8 +87,8 @@
                     class="training-check"
                     [attr.aria-label]="'Mark ' + course.title + ' completed'"
                     [checked]="isCompleted(tab.id, course.id)"
-                    [disabled]="!selectedEid || progressLoading || isSaving(tab.id, course.id)"
-                    (change)="toggleCompleted(tab.id, course.id, $any($event.target).checked)" />
+                    [disabled]="!selectedEid || progressLoading || saving"
+                    (click)="toggleCompleted(tab.id, course.id, $event)" />
                 </td>
                 <td class="training-col-actions">
                   <button type="button" class="training-icon-btn" title="Remove course" (click)="removeCourse(tab, course)">

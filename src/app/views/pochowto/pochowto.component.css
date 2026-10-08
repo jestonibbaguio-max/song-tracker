@@ -41,3 +41,13 @@
   gap: 0.5rem;
   margin-top: 1rem;
 }
+
+.pochowto-tabs button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.pochowto-actions .spinner-border-sm {
+  margin-right: 0.35rem;
+  vertical-align: -0.125em;
+}

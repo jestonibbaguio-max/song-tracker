@@ -8,7 +8,9 @@
     "json-api": "npx json-server server/data/db.json --port 3000",
     "build": "ng build",
     "watch": "ng build --watch --configuration development",
-    "test": "ng test"
+    "test": "ng test",
+    "dev": "concurrently -n api,web -c blue,green \"node server/server.js\" \"ng serve\"",
+    "codegen": "playwright codegen http://localhost:4200"
   },
   "private": true,
   "dependencies": {
@@ -36,8 +38,11 @@
     "@angular-devkit/build-angular": "^19.1.4",
     "@angular/cli": "^19.1.4",
     "@angular/compiler-cli": "^19.1.0",
+    "@playwright/test": "^1.63.0",
     "@types/bootstrap": "^5.2.11",
     "@types/jasmine": "~5.1.0",
+    "@types/node": "^26.6.4",
+    "concurrently": "^10.0.5",
     "jasmine-core": "~5.5.0",
     "karma": "~6.4.0",
     "karma-chrome-launcher": "~3.2.0",

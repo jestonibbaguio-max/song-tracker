@@ -2,9 +2,9 @@ import { Component, OnInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { SharedDataService } from '../../services/shared-data.service';
 import { OnboardingResource } from '../../models/types';
-import { TrainingsProgressService } from './trainings-progress.service';
+import { BenchTrainingsProgressService } from './bench-trainings-progress.service';
 
-export interface TrainingsCourse {
+export interface BenchTrainingsCourse {
   id: string;
   title: string;
   length: string;
@@ -12,29 +12,32 @@ export interface TrainingsCourse {
 }
 
 @Component({
-  selector: 'app-trainings',
+  selector: 'app-bench-trainings',
   standalone: true,
   imports: [FormsModule],
-  templateUrl: './trainings.component.html',
-  styleUrl: './trainings.component.css'
+  templateUrl: './bench-trainings.component.html',
+  styleUrl: './bench-trainings.component.css'
 })
-export class TrainingsComponent implements OnInit {
-  courses: TrainingsCourse[] = [
-    { id: crypto.randomUUID(), title: 'TQ Training on Udacity', length: '', link: 'https://www.udacity.com/learning-plan/tq-at-accenture' },
-    { id: crypto.randomUUID(), title: 'Ethics and Compliance', length: '', link: 'https://wd103.myworkday.com/accenture/learning/viewmore/6964690f7fd810001c749ba92ee68ceb' },
-    { id: crypto.randomUUID(), title: 'ISA Advocate', length: '', link: 'https://isadvocate.accenture.com/' },
-    { id: crypto.randomUUID(), title: 'GenAI', length: '', link: 'https://atci.lkm.delivery.accenture.com/TT/Automation/genAI' },
+export class BenchTrainingsComponent implements OnInit {
+  // Stable ids: progress is keyed by course id, so ids minted per construction
+  // (crypto.randomUUID()) orphaned all stored progress on every remount.
+  courses: BenchTrainingsCourse[] = [
+    { id: 'bench-1', title: 'TQ Training on Udacity', length: '', link: 'https://www.udacity.com/learning-plan/tq-at-accenture' },
+    { id: 'bench-2', title: 'Ethics and Compliance', length: '', link: 'https://wd103.myworkday.com/accenture/learning/viewmore/6964690f7fd810001c749ba92ee68ceb' },
+    { id: 'bench-3', title: 'ISA Advocate', length: '', link: 'https://isadvocate.accenture.com/' },
+    { id: 'bench-4', title: 'GenAI', length: '', link: 'https://atci.lkm.delivery.accenture.com/TT/Automation/genAI' },
   ];
 
   selectedEid = '';
   progressLoading = false;
-  savingCourseId: string | null = null;
+  /** One save at a time: while true, every checkbox and the resource picker are locked. */
+  saving = false;
   progressError = '';
   newCourse = { title: '', length: '', link: '' };
 
   private completedCourseIds = new Set<string>();
 
-  constructor(private trainingsProgress: TrainingsProgressService, public sharedData: SharedDataService) {}
+  constructor(private trainingsProgress: BenchTrainingsProgressService, public sharedData: SharedDataService) {}
 
   ngOnInit(): void {
     if (this.sharedData.onboardingResources.length === 0) {
@@ -67,19 +70,26 @@ export class TrainingsComponent implements OnInit {
     return this.completedCourseIds.has(courseId);
   }
 
-  toggleCompleted(courseId: string, completed: boolean): void {
-    if (!this.selectedEid) return;
+  toggleCompleted(courseId: string, event: Event): void {
+    // Cancel the browser's own flip so [checked] is the only writer of the box;
+    // otherwise an early return below would leave it ticked against the model.
+    event.preventDefault();
+    if (!this.selectedEid || this.saving) return;
+
+    const eid = this.selectedEid;
+    const completed = !this.isCompleted(courseId);
 
     // Optimistic — the checkbox reflects the click immediately, and rolls back on failure.
+    // The resource picker is locked until this settles, so the rollback can't land on another resource.
     this.applyCompleted(courseId, completed);
     this.progressError = '';
-    this.savingCourseId = courseId;
+    this.saving = true;
 
-    this.trainingsProgress.setCourseCompleted(this.selectedEid, courseId, completed).subscribe({
-      next: () => { this.savingCourseId = null; },
+    this.trainingsProgress.setCourseCompleted(eid, courseId, completed).subscribe({
+      next: () => { this.saving = false; },
       error: () => {
         this.applyCompleted(courseId, !completed);
-        this.savingCourseId = null;
+        this.saving = false;
         this.progressError = 'Could not save progress. Please try again.';
       }
     });
@@ -97,7 +107,7 @@ export class TrainingsComponent implements OnInit {
     this.newCourse = { title: '', length: '', link: '' };
   }
 
-  removeCourse(course: TrainingsCourse): void {
+  removeCourse(course: BenchTrainingsCourse): void {
     this.courses = this.courses.filter(c => c.id !== course.id);
   }
 
@@ -111,13 +121,14 @@ export class TrainingsComponent implements OnInit {
 
   private loadProgress(): void {
     this.progressError = '';
-    this.savingCourseId = null;
-    if (!this.selectedEid) {
-      this.completedCourseIds = new Set<string>();
-      return;
-    }
+    // Clear up front so the previous resource's ticks never show under this one.
+    this.completedCourseIds = new Set<string>();
+    if (!this.selectedEid) return;
+
     this.progressLoading = true;
     this.trainingsProgress.getProgress(this.selectedEid).subscribe(progress => {
+      // A read superseded by a newer selection is dropped, not rendered.
+      if (progress.eid !== this.selectedEid) return;
       this.completedCourseIds = new Set(progress.completedCourseIds);
       this.progressLoading = false;
     });

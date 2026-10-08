@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable, of } from 'rxjs';
-import { catchError } from 'rxjs/operators';
+import { catchError, delay } from 'rxjs/operators';
 
 @Injectable({ providedIn: 'root' })
 export class PocHowToContentService {
@@ -20,6 +20,8 @@ export class PocHowToContentService {
 
   saveContent(tabId: string, html: string): Observable<void> {
     this.content[tabId] = html;
-    return of(undefined);
+    // TEMPORARY: artificial latency so the "Saving…" indicator is visible while
+    // this is still in-memory. Remove once saving hits a real endpoint.
+    return of(undefined).pipe(delay(1200));
   }
 }

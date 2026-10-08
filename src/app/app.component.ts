@@ -10,9 +10,9 @@ import { PlannerComponent } from './views/planner/planner.component';
 import { MyCompetencyComponent } from './views/mycompetency/mycompetency.component';
 import { MockAssessmentComponent, MockAssessmentSummary } from './views/mockAssessmentSummary/mock-assessment.data';
 import { MOCK_ASSESSMENT_PAGE_SIZE, MOCK_ASSESSMENT_TABS, MockAssessmentTab } from './views/mockAssessmentSummary/mock-assessment-tabs.const';
-import { TrainingComponent } from './views/training/training.component';
+import { GroupTrainingsComponent } from './views/group-trainings/group-trainings.component';
 import { PocHowToComponent } from './views/pochowto/pochowto.component';
-import { TrainingsComponent } from './views/trainings/trainings.component';
+import { BenchTrainingsComponent } from './views/bench-trainings/bench-trainings.component';
 import { SprintRetrosComponent } from './views/sprint-retros/sprint-retros.component';
 import { ReachoutComponent } from './views/reachout/reachout.component';
 
@@ -34,9 +34,9 @@ export interface StubView {
     PlannerComponent,
     MyCompetencyComponent,
     MockAssessmentComponent,
-    TrainingComponent,
+    GroupTrainingsComponent,
     PocHowToComponent,
-    TrainingsComponent,
+    BenchTrainingsComponent,
     SprintRetrosComponent,
     ReachoutComponent,
   ],
@@ -46,8 +46,8 @@ export interface StubView {
 })
 export class AppComponent {
   readonly mockTabs = MOCK_ASSESSMENT_TABS;
-  activeView: 'dashboard' | 'onboarding' | 'attendance' | 'planner' | 'sprintretros' | 'training' | 'mycompetency' | 'trainings' | 'mockinterview' | 'reachout' | 'pochowto' | 'initiatives' | 'reports' | 'resourcetracking' | 'announcements' | 'settings' = 'dashboard';
-  private readonly validViews = ['dashboard', 'onboarding', 'attendance', 'planner', 'sprintretros', 'training', 'mycompetency', 'trainings', 'mockinterview', 'reachout', 'pochowto', 'initiatives', 'reports', 'resourcetracking', 'announcements', 'settings'] as const;
+  activeView: 'dashboard' | 'onboarding' | 'attendance' | 'planner' | 'sprintretros' | 'grouptrainings' | 'mycompetency' | 'benchtrainings' | 'mockinterview' | 'reachout' | 'pochowto' | 'initiatives' | 'reports' | 'resourcetracking' | 'announcements' | 'settings' = 'dashboard';
+  private readonly validViews = ['dashboard', 'onboarding', 'attendance', 'planner', 'sprintretros', 'grouptrainings', 'mycompetency', 'benchtrainings', 'mockinterview', 'reachout', 'pochowto', 'initiatives', 'reports', 'resourcetracking', 'announcements', 'settings'] as const;
   plannerMenuExpanded = false;
   activeMockTab: MockAssessmentTab = MOCK_ASSESSMENT_TABS.SUMMARY.id;
   feedbackFilterTerm = '';
@@ -174,9 +174,9 @@ export class AppComponent {
       'Resources': 'onboarding',
       'Attendance Tracker': 'attendance',
       'Planner': 'planner',
-      'Group Trainings': 'training',
+      'Group Trainings': 'grouptrainings',
       'myCompetency': 'mycompetency',
-      'Bench Trainings': 'trainings',
+      'Bench Trainings': 'benchtrainings',
       'Mock Interview': 'mockinterview',
       'Project Reachouts': 'reachout',
       'POC how-to': 'pochowto',
@@ -216,9 +216,9 @@ export class AppComponent {
       'Resources': 'onboarding',
       'Attendance Tracker': 'attendance',
       'Planner': 'planner',
-      'Group Trainings': 'training',
+      'Group Trainings': 'grouptrainings',
       'myCompetency': 'mycompetency',
-      'Bench Trainings': 'trainings',
+      'Bench Trainings': 'benchtrainings',
       'Mock Interview': 'mockinterview',
       'Project Reachouts': 'reachout',
       'POC how-to': 'pochowto',

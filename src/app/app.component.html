@@ -91,8 +91,8 @@
       <app-sprint-retros></app-sprint-retros>
     } @else if (activeView === 'mycompetency') {
       <app-mycompetency></app-mycompetency>
-    } @else if (activeView === 'trainings') {
-      <app-trainings></app-trainings>
+    } @else if (activeView === 'benchtrainings') {
+      <app-bench-trainings></app-bench-trainings>
     } @else if (activeView === 'mockinterview') {
       <app-mock-assessment [summary]="mockSummary" [group]="sharedData.attendanceGroup" [filterTerm]="mockFilterTerm" [activeTab]="activeMockTab"
         (activeTabChange)="activeMockTab = $event; filterDropdownOpen = false"></app-mock-assessment>
@@ -111,8 +111,8 @@
       </div>
     } @else if (activeView === 'pochowto') {
       <app-pochowto></app-pochowto>
-    } @else if (activeView === 'training') {
-      <app-training></app-training>
+    } @else if (activeView === 'grouptrainings') {
+      <app-group-trainings></app-group-trainings>
     }
 
   </main>

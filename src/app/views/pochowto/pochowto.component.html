@@ -12,6 +12,7 @@
       role="tab"
       [class.active]="activeTab === tab.id"
       [attr.aria-selected]="activeTab === tab.id"
+      [disabled]="isSaving && activeTab !== tab.id"
       (click)="selectTab(tab.id)">
       <i class="bi {{ tab.icon }}"></i>
       {{ tab.label }}
@@ -28,13 +29,20 @@
         class="pochowto-editor"
         [class.pochowto-toolbar-hidden]="!editing[tab.id]"
         [(ngModel)]="draftContent[tab.id]"
-        [readOnly]="!editing[tab.id]"
+        [readOnly]="!editing[tab.id] || !!saving[tab.id]"
         [placeholder]="'Write notes for ' + tab.label + '…'">
       </quill-editor>
       <div class="pochowto-actions">
         @if (editing[tab.id]) {
-          <button class="btn btn-outline-secondary" type="button" (click)="cancelEdit(tab.id)">Cancel</button>
-          <button class="btn btn-primary" type="button" (click)="saveEdit(tab.id)">Save</button>
+          <button class="btn btn-outline-secondary" type="button" [disabled]="saving[tab.id]" (click)="cancelEdit(tab.id)">Cancel</button>
+          <button class="btn btn-primary" type="button" [disabled]="saving[tab.id]" (click)="saveEdit(tab.id)">
+            @if (saving[tab.id]) {
+              <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+              Saving…
+            } @else {
+              Save
+            }
+          </button>
         } @else {
           <button class="btn btn-outline-secondary" type="button" (click)="startEdit(tab.id)">
             <i class="bi bi-pencil"></i>
