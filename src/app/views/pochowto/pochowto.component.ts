@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { QuillModule } from 'ngx-quill';
+import { finalize } from 'rxjs/operators';
 import { PocHowToContentService } from '../../services/poc-howto-content.service';
 
 interface PocHowToTab {
@@ -30,6 +31,7 @@ export class PocHowToComponent implements OnInit {
   savedContent: Record<string, string> = {};
   draftContent: Record<string, string> = {};
   editing: Record<string, boolean> = {};
+  saving: Record<string, boolean> = {};
 
   constructor(private contentService: PocHowToContentService) {}
 
@@ -39,11 +41,17 @@ export class PocHowToComponent implements OnInit {
         this.savedContent[tab.id] = html;
         this.draftContent[tab.id] = html;
         this.editing[tab.id] = false;
+        this.saving[tab.id] = false;
       });
     }
   }
 
+  get isSaving(): boolean {
+    return Object.values(this.saving).some(Boolean);
+  }
+
   selectTab(id: string): void {
+    if (this.isSaving) return;
     this.activeTab = id;
   }
 
@@ -52,13 +60,18 @@ export class PocHowToComponent implements OnInit {
   }
 
   saveEdit(tabId: string): void {
-    this.contentService.saveContent(tabId, this.draftContent[tabId]).subscribe(() => {
-      this.savedContent[tabId] = this.draftContent[tabId];
-      this.editing[tabId] = false;
-    });
+    if (this.saving[tabId]) return;
+    this.saving[tabId] = true;
+    this.contentService.saveContent(tabId, this.draftContent[tabId])
+      .pipe(finalize(() => this.saving[tabId] = false))
+      .subscribe(() => {
+        this.savedContent[tabId] = this.draftContent[tabId];
+        this.editing[tabId] = false;
+      });
   }
 
   cancelEdit(tabId: string): void {
+    if (this.saving[tabId]) return;
     this.draftContent[tabId] = this.savedContent[tabId];
     this.editing[tabId] = false;
   }

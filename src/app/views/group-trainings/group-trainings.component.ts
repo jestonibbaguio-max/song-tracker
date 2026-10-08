@@ -2,34 +2,35 @@ import { Component, DoCheck, OnInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { SharedDataService } from '../../services/shared-data.service';
 import { OnboardingResource } from '../../models/types';
-import { TrainingDataService } from './training-data.service';
-import { TrainingProgressService } from './training-progress.service';
-import { TrainingTrack } from './training-mock-data';
+import { GroupTrainingsDataService } from './group-trainings-data.service';
+import { GroupTrainingsProgressService } from './group-trainings-progress.service';
+import { GroupTrainingsTrack } from './group-trainings-mock-data';
 
 @Component({
-  selector: 'app-training',
+  selector: 'app-group-trainings',
   standalone: true,
   imports: [FormsModule],
-  templateUrl: './training.component.html',
-  styleUrl: './training.component.css'
+  templateUrl: './group-trainings.component.html',
+  styleUrl: './group-trainings.component.css'
 })
-export class TrainingComponent implements OnInit, DoCheck {
-  tracks: TrainingTrack[] = [];
+export class GroupTrainingsComponent implements OnInit, DoCheck {
+  tracks: GroupTrainingsTrack[] = [];
   activeTab = '';
   loading = true;
   newCourse = { title: '', length: '', link: '' };
 
   selectedEid = '';
   progressLoading = false;
-  savingCourseKey: string | null = null;
+  /** One save at a time: while true, every checkbox, the track tabs and the resource picker are locked. */
+  saving = false;
   progressError = '';
 
   private completedCourseKeys = new Set<string>();
   private lastGroup: string | null = null;
 
   constructor(
-    private trainingData: TrainingDataService,
-    private trainingProgress: TrainingProgressService,
+    private trainingData: GroupTrainingsDataService,
+    private trainingProgress: GroupTrainingsProgressService,
     public sharedData: SharedDataService
   ) {}
 
@@ -59,7 +60,7 @@ export class TrainingComponent implements OnInit, DoCheck {
     return this.groupMembers.find(m => m.eid === this.selectedEid)?.name ?? '';
   }
 
-  get activeTrack(): TrainingTrack | undefined {
+  get activeTrack(): GroupTrainingsTrack | undefined {
     return this.tracks.find(t => t.id === this.activeTab);
   }
 
@@ -75,6 +76,7 @@ export class TrainingComponent implements OnInit, DoCheck {
   }
 
   selectTab(id: string): void {
+    if (this.saving) return;
     this.activeTab = id;
     this.newCourse = { title: '', length: '', link: '' };
   }
@@ -84,32 +86,37 @@ export class TrainingComponent implements OnInit, DoCheck {
   }
 
   isCompleted(trackId: string, courseId: string): boolean {
-    return this.completedCourseKeys.has(TrainingProgressService.key(trackId, courseId));
+    return this.completedCourseKeys.has(GroupTrainingsProgressService.key(trackId, courseId));
   }
 
-  isSaving(trackId: string, courseId: string): boolean {
-    return this.savingCourseKey === TrainingProgressService.key(trackId, courseId);
-  }
+  toggleCompleted(trackId: string, courseId: string, event: Event): void {
+    // Cancel the browser's own flip so [checked] is the only writer of the box;
+    // otherwise an early return below would leave it ticked against the model.
+    event.preventDefault();
+    if (!this.selectedEid || this.saving) return;
 
-  toggleCompleted(trackId: string, courseId: string, completed: boolean): void {
-    if (!this.selectedEid) return;
+    const eid = this.selectedEid;
+    const completed = !this.isCompleted(trackId, courseId);
 
     // Optimistic — the checkbox reflects the click immediately, and rolls back on failure.
     this.applyCompleted(trackId, courseId, completed);
     this.progressError = '';
-    this.savingCourseKey = TrainingProgressService.key(trackId, courseId);
+    this.saving = true;
 
-    this.trainingProgress.setCourseCompleted(this.selectedEid, trackId, courseId, completed).subscribe({
-      next: () => { this.savingCourseKey = null; },
+    this.trainingProgress.setCourseCompleted(eid, trackId, courseId, completed).subscribe({
+      next: () => { this.saving = false; },
       error: () => {
+        this.saving = false;
+        // The resource picker is locked mid-save, but a sidebar group change can
+        // still clear the selection; a late rollback must not land on what is shown now.
+        if (this.selectedEid !== eid) return;
         this.applyCompleted(trackId, courseId, !completed);
-        this.savingCourseKey = null;
         this.progressError = 'Could not save progress. Please try again.';
       }
     });
   }
 
-  addCourse(track: TrainingTrack): void {
+  addCourse(track: GroupTrainingsTrack): void {
     const title = this.newCourse.title.trim();
     if (!title) return;
     track.courses.push({
@@ -121,12 +128,12 @@ export class TrainingComponent implements OnInit, DoCheck {
     this.newCourse = { title: '', length: '', link: '' };
   }
 
-  removeCourse(track: TrainingTrack, course: TrainingTrack['courses'][number]): void {
+  removeCourse(track: GroupTrainingsTrack, course: GroupTrainingsTrack['courses'][number]): void {
     track.courses = track.courses.filter(c => c.id !== course.id);
   }
 
   private applyCompleted(trackId: string, courseId: string, completed: boolean): void {
-    const key = TrainingProgressService.key(trackId, courseId);
+    const key = GroupTrainingsProgressService.key(trackId, courseId);
     if (completed) {
       this.completedCourseKeys.add(key);
     } else {
@@ -136,13 +143,17 @@ export class TrainingComponent implements OnInit, DoCheck {
 
   private loadProgress(): void {
     this.progressError = '';
-    this.savingCourseKey = null;
+    // Clear up front so the previous resource's ticks never show under this one.
+    this.completedCourseKeys = new Set<string>();
     if (!this.selectedEid) {
-      this.completedCourseKeys = new Set<string>();
+      this.progressLoading = false;
       return;
     }
+
     this.progressLoading = true;
     this.trainingProgress.getProgress(this.selectedEid).subscribe(progress => {
+      // A read superseded by a newer selection is dropped, not rendered.
+      if (progress.eid !== this.selectedEid) return;
       this.completedCourseKeys = new Set(progress.completedCourseIds);
       this.progressLoading = false;
     });
@@ -155,6 +166,8 @@ export class TrainingComponent implements OnInit, DoCheck {
     this.selectedEid = '';
     this.loadProgress();
     this.trainingData.getTracksForGroup(group).subscribe(tracks => {
+      // Tracks for a group the sidebar has since moved off are dropped.
+      if (group !== this.lastGroup) return;
       this.tracks = tracks;
       this.activeTab = tracks[0]?.id ?? '';
       this.newCourse = { title: '', length: '', link: '' };

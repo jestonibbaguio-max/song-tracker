@@ -1,19 +1,19 @@
-.trainings-toolbar {
+.training-toolbar {
   display: flex;
   align-items: center;
   justify-content: flex-end;
   gap: 1rem;
-  margin: 0 1.5rem;
+  margin: 0 1.5rem 0.75rem;
   flex-wrap: wrap;
 }
 
-.trainings-resource-picker {
+.training-resource-picker {
   display: flex;
   align-items: center;
   gap: 0.5rem;
 }
 
-.trainings-resource-picker label {
+.training-resource-picker label {
   font-size: 0.72rem;
   font-weight: 700;
   text-transform: uppercase;
@@ -21,11 +21,27 @@
   color: var(--muted, #888);
 }
 
-.trainings-resource-select {
+.training-resource-select {
   min-width: 220px;
 }
 
-.trainings-progress-bar {
+.training-resource-select:disabled,
+.training-tabs button:disabled {
+  opacity: 0.55;
+  cursor: not-allowed;
+}
+
+.training-saving {
+  font-size: 0.8rem;
+  font-style: italic;
+  color: var(--muted, #888);
+}
+
+.training-tabs {
+  margin: 0 1.5rem 0;
+}
+
+.training-progress-bar {
   display: flex;
   align-items: center;
   gap: 0.75rem;
@@ -34,16 +50,16 @@
   color: var(--muted, #888);
 }
 
-.trainings-hint {
+.training-hint {
   font-style: italic;
 }
 
-.trainings-error {
+.training-error {
   color: #c62828;
   font-style: normal;
 }
 
-.trainings-table-wrap {
+.training-table-wrap {
   margin: 1rem 1.5rem 1.5rem;
   max-height: 80vh;
   overflow: auto;
@@ -51,13 +67,13 @@
   border-radius: 8px;
 }
 
-.trainings-table {
+.training-table {
   width: 100%;
   border-collapse: collapse;
   font-size: 0.85rem;
 }
 
-.trainings-table th {
+.training-table th {
   position: sticky;
   top: 0;
   text-align: left;
@@ -72,27 +88,27 @@
   z-index: 1;
 }
 
-.trainings-table td {
+.training-table td {
   padding: 0.6rem 0.75rem;
   border-bottom: 1px solid var(--line, #e5ded5);
 }
 
-.trainings-table tbody tr:last-child td {
+.training-table tbody tr:last-child td {
   border-bottom: 1px solid var(--line, #e5ded5);
 }
 
-.trainings-empty-row td {
+.training-empty-row td {
   color: var(--muted, #888);
   text-align: center;
   padding: 1.25rem 0.75rem;
 }
 
-.trainings-col-actions {
+.training-col-actions {
   width: 44px;
   text-align: center;
 }
 
-.trainings-icon-btn {
+.training-icon-btn {
   border: 1px solid transparent;
   background: transparent;
   color: var(--muted, #888);
@@ -104,41 +120,41 @@
   justify-content: center;
 }
 
-.trainings-icon-btn:hover:not(:disabled) {
+.training-icon-btn:hover:not(:disabled) {
   background: rgba(0, 0, 0, 0.05);
   color: var(--accent-dark, #7b5e3b);
 }
 
-.trainings-icon-btn:disabled {
+.training-icon-btn:disabled {
   opacity: 0.35;
 }
 
-.trainings-col-completed {
+.training-col-completed {
   width: 100px;
   text-align: center;
 }
 
-.trainings-check {
+.training-check {
   width: 16px;
   height: 16px;
   cursor: pointer;
   accent-color: var(--accent, #7b5e3b);
 }
 
-.trainings-check:disabled {
+.training-check:disabled {
   cursor: not-allowed;
   opacity: 0.45;
 }
 
-.trainings-row-done td {
+.training-row-done td {
   background: rgba(200, 230, 201, 0.35);
 }
 
-.trainings-row-done a {
+.training-row-done a {
   text-decoration: line-through;
 }
 
-.trainings-add-row td {
+.training-add-row td {
   position: sticky;
   bottom: 0;
   background: var(--panel, #fff);
@@ -147,13 +163,13 @@
   padding-top: 0.75rem;
 }
 
-.trainings-add-form {
+.training-add-form {
   display: flex;
   align-items: center;
   gap: 0.5rem;
 }
 
-.trainings-add-form input {
+.training-add-form input {
   border: 1px solid var(--line, #e5ded5);
   border-radius: 6px;
   padding: 0.4rem 0.6rem;
@@ -161,13 +177,13 @@
   background: rgba(255, 255, 255, 0.6);
 }
 
-.trainings-add-title,
-.trainings-add-link {
+.training-add-title,
+.training-add-link {
   flex: 2;
   min-width: 0;
 }
 
-.trainings-add-length {
+.training-add-length {
   flex: 1;
   min-width: 0;
 }
