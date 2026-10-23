@@ -122,21 +122,27 @@
             <input [ngModel]="editingRow.totalConducted" type="number" readonly />
           </div>
           <div class="form-group">
-            <label>Total Passed:</label>
-            <input [(ngModel)]="editingRow.totalPassed" type="number" />
+            <label for="assessment-total-passed">Total Passed:</label>
+            <input [(ngModel)]="editingRow.totalPassed" (ngModelChange)="updateEditingRowTotals()"
+              id="assessment-total-passed" type="number" min="0" [readonly]="hasAutomaticResults(editingIndex)" />
           </div>
           <div class="form-group">
-            <label>Total Failed:</label>
-            <input [(ngModel)]="editingRow.totalFailed" type="text" />
+            <label for="assessment-total-failed">Total Failed:</label>
+            <input [(ngModel)]="editingRow.totalFailed" (ngModelChange)="updateEditingRowTotals()"
+              id="assessment-total-failed" type="number" min="0" [readonly]="hasAutomaticResults(editingIndex)" />
           </div>
           <div class="form-group">
-            <label>Pass Rate (%):</label>
-            <input [(ngModel)]="editingRow.passRate" type="text" />
+            <label for="assessment-pass-rate">Pass Rate (%):</label>
+            <input id="assessment-pass-rate" [ngModel]="editingRow.passRate" type="text" readonly />
           </div>
           <div class="form-group">
-            <label>Fail Rate (%):</label>
-            <input [(ngModel)]="editingRow.failRate" type="text" />
+            <label for="assessment-fail-rate">Fail Rate (%):</label>
+            <input id="assessment-fail-rate" [ngModel]="editingRow.failRate" type="text" readonly />
           </div>
+          @if (hasAutomaticResults(editingIndex)) {
+            <p>Pass/fail counts are calculated from Head Count results.</p>
+          }
+          <p>Rates are calculated using total conducted, including assessments awaiting results.</p>
           <div class="modal-actions">
             <button (click)="onUpdate()" class="btn-save">Save</button>
             <button (click)="closeModal()" class="btn-cancel">Cancel</button>
@@ -163,6 +169,34 @@
   </div>
 
   <div class="tab-pane fade pt-5" [id]="feedbackTab.targetId" role="tabpanel">
+    @if (showResourceFilter) {
+      <div class="w-100 d-inline-block">
+        <div class="w-25 float-end">
+          <label class="resource-filter__label" for="feedback-resource-filter">Filter Feedback</label>
+          <div class="resource-filter">
+            <input id="feedback-resource-filter" type="text" class="resource-filter__input" placeholder="Name or EID"
+              [ngModel]="filterTerm" (ngModelChange)="filterTermChange.emit($event); filterDropdownOpenChange.emit(true)"
+              (focus)="filterDropdownOpenChange.emit(true)" (blur)="filterDropdownOpenChange.emit(false)" autocomplete="off">
+            @if (filterTerm) {
+              <button type="button" class="resource-filter__action resource-filter__clear" aria-label="Clear filter" title="Clear filter"
+                (mousedown)="$event.preventDefault()" (click)="filterTermChange.emit(''); filterDropdownOpenChange.emit(false)"><i class="bi bi-x"></i></button>
+            }
+            <button type="button" class="resource-filter__action resource-filter__toggle" aria-label="Show resources" title="Show resources"
+              (mousedown)="$event.preventDefault()" (click)="filterDropdownOpenChange.emit(!filterDropdownOpen)"><i class="bi bi-chevron-down"></i></button>
+            @if (filterDropdownOpen && filterOptions.length) {
+              <div class="resource-filter__options" role="listbox" aria-label="Resources">
+                @for (resource of filterOptions; track resource.id) {
+                  <button type="button" role="option" class="resource-filter__option"
+                    (mousedown)="$event.preventDefault()" (click)="filterTermChange.emit(resource.name); filterDropdownOpenChange.emit(false)">
+                    {{ resource.name }} <small>{{ resource.eid }}</small>
+                  </button>
+                }
+              </div>
+            }
+          </div>
+        </div>
+      </div>
+    }
     @if (feedbackResources.length === 0) {
       <p class="resource-filter__empty">
         @if (filterTerm) {
@@ -227,6 +261,32 @@
   </div>
 
   <div class="tab-pane fade pt-5" [id]="headCountTab.targetId" role="tabpanel">
+    @if (showResourceFilter) {
+      <div class="w-25 float-end">
+        <label class="resource-filter__label" for="head-count-resource-filter">Filter Head Count</label>
+        <div class="resource-filter">
+          <input id="head-count-resource-filter" type="text" class="resource-filter__input" placeholder="Name or EID"
+            [ngModel]="filterTerm" (ngModelChange)="filterTermChange.emit($event); filterDropdownOpenChange.emit(true)"
+            (focus)="filterDropdownOpenChange.emit(true)" (blur)="filterDropdownOpenChange.emit(false)" autocomplete="off">
+          @if (filterTerm) {
+            <button type="button" class="resource-filter__action resource-filter__clear" aria-label="Clear filter" title="Clear filter"
+              (mousedown)="$event.preventDefault()" (click)="filterTermChange.emit(''); filterDropdownOpenChange.emit(false)"><i class="bi bi-x"></i></button>
+          }
+          <button type="button" class="resource-filter__action resource-filter__toggle" aria-label="Show resources" title="Show resources"
+            (mousedown)="$event.preventDefault()" (click)="filterDropdownOpenChange.emit(!filterDropdownOpen)"><i class="bi bi-chevron-down"></i></button>
+          @if (filterDropdownOpen && filterOptions.length) {
+            <div class="resource-filter__options" role="listbox" aria-label="Resources">
+              @for (resource of filterOptions; track resource.id) {
+                <button type="button" role="option" class="resource-filter__option"
+                  (mousedown)="$event.preventDefault()" (click)="filterTermChange.emit(resource.name); filterDropdownOpenChange.emit(false)">
+                  {{ resource.name }} <small>{{ resource.eid }}</small>
+                </button>
+              }
+            </div>
+          }
+        </div>
+      </div>
+    }
       <table class="mock-summary__table" style="height: 500px;">
         <thead>
           <tr>
@@ -251,28 +311,52 @@
         <tr>
           <td class="ps-1">{{ onBoardingResource.name }}</td>
           <td class="text-center">
-            <input
-              type="checkbox"
-              class="form-check-input"
-              [checked]="isHeadCountChecklistChecked(onBoardingResource, 'communication')"
-              (click)="onHeadCountChecklistChange(onBoardingResource, 'communication', $event)"
-            >
+            <div class="headcount-cell-controls">
+              <button type="button" class="headcount-status"
+                [class.headcount-status--idle]="!isHeadCountChecklistChecked(onBoardingResource, 'communication')"
+                [class.headcount-status--conducted]="isHeadCountChecklistChecked(onBoardingResource, 'communication')"
+                [attr.aria-pressed]="isHeadCountChecklistChecked(onBoardingResource, 'communication')"
+                [attr.aria-label]="'Communication status: ' + (isHeadCountChecklistChecked(onBoardingResource, 'communication') ? 'Conducted' : 'Idle')"
+                [title]="'Communication status: ' + (isHeadCountChecklistChecked(onBoardingResource, 'communication') ? 'Conducted' : 'Idle') + ' (click to change)'"
+                (click)="toggleCommunicationStatus(onBoardingResource)">
+                <i class="bi" [class.bi-square]="!isHeadCountChecklistChecked(onBoardingResource, 'communication')" [class.bi-check-square-fill]="isHeadCountChecklistChecked(onBoardingResource, 'communication')"></i>
+                {{ isHeadCountChecklistChecked(onBoardingResource, 'communication') ? 'Conducted' : 'Idle' }}
+              </button>
+            </div>
           </td>
           <td class="text-center">
-            <input
-              type="checkbox"
-              class="form-check-input"
-              [checked]="isHeadCountChecklistChecked(onBoardingResource, 'technical')"
-              (click)="onHeadCountChecklistChange(onBoardingResource, 'technical', $event)"
-            >
+            <div class="headcount-cell-controls">
+              <button type="button" class="headcount-status"
+                [class.headcount-status--pass]="isHeadCountChecklistChecked(onBoardingResource, 'technical') && getHeadCountAssessmentStatus(onBoardingResource, 'technical') === 'pass'"
+                [class.headcount-status--fail]="isHeadCountChecklistChecked(onBoardingResource, 'technical') && getHeadCountAssessmentStatus(onBoardingResource, 'technical') === 'fail'"
+                [class.headcount-status--pending]="isHeadCountChecklistChecked(onBoardingResource, 'technical') && getHeadCountAssessmentStatus(onBoardingResource, 'technical') === 'not-taken'"
+                [class.headcount-status--conducted]="isHeadCountChecklistChecked(onBoardingResource, 'technical') && getHeadCountAssessmentStatus(onBoardingResource, 'technical') === 'not-taken'"
+                [class.headcount-status--idle]="!isHeadCountChecklistChecked(onBoardingResource, 'technical')"
+                [attr.aria-pressed]="isHeadCountChecklistChecked(onBoardingResource, 'technical')"
+                [attr.aria-label]="'Technical status: ' + getHeadCountAssessmentStatusDisplay(onBoardingResource, 'technical')"
+                [title]="'Technical status: ' + getHeadCountAssessmentStatusDisplay(onBoardingResource, 'technical') + ' (click to change)'"
+                (click)="cycleHeadCountAssessmentStatus(onBoardingResource, 'technical')">
+                <i class="bi" [class.bi-square]="!isHeadCountChecklistChecked(onBoardingResource, 'technical')" [class.bi-check-square-fill]="isHeadCountChecklistChecked(onBoardingResource, 'technical') && getHeadCountAssessmentStatus(onBoardingResource, 'technical') === 'not-taken'" [class.bi-check-lg]="getHeadCountAssessmentStatus(onBoardingResource, 'technical') === 'pass'" [class.bi-x-lg]="getHeadCountAssessmentStatus(onBoardingResource, 'technical') === 'fail'"></i>
+                {{ getHeadCountAssessmentStatusDisplay(onBoardingResource, 'technical') }}
+              </button>
+            </div>
           </td>
           <td class="text-center">
-            <input
-              type="checkbox"
-              class="form-check-input"
-              [checked]="isHeadCountChecklistChecked(onBoardingResource, 'client')"
-              (click)="onHeadCountChecklistChange(onBoardingResource, 'client', $event)"
-            >
+            <div class="headcount-cell-controls">
+              <button type="button" class="headcount-status"
+                [class.headcount-status--pass]="isHeadCountChecklistChecked(onBoardingResource, 'client') && getHeadCountAssessmentStatus(onBoardingResource, 'client') === 'pass'"
+                [class.headcount-status--fail]="isHeadCountChecklistChecked(onBoardingResource, 'client') && getHeadCountAssessmentStatus(onBoardingResource, 'client') === 'fail'"
+                [class.headcount-status--pending]="isHeadCountChecklistChecked(onBoardingResource, 'client') && getHeadCountAssessmentStatus(onBoardingResource, 'client') === 'not-taken'"
+                [class.headcount-status--conducted]="isHeadCountChecklistChecked(onBoardingResource, 'client') && getHeadCountAssessmentStatus(onBoardingResource, 'client') === 'not-taken'"
+                [class.headcount-status--idle]="!isHeadCountChecklistChecked(onBoardingResource, 'client')"
+                [attr.aria-pressed]="isHeadCountChecklistChecked(onBoardingResource, 'client')"
+                [attr.aria-label]="'Client interview status: ' + getHeadCountAssessmentStatusDisplay(onBoardingResource, 'client')"
+                [title]="'Client interview status: ' + getHeadCountAssessmentStatusDisplay(onBoardingResource, 'client') + ' (click to change)'"
+                (click)="cycleHeadCountAssessmentStatus(onBoardingResource, 'client')">
+                <i class="bi" [class.bi-square]="!isHeadCountChecklistChecked(onBoardingResource, 'client')" [class.bi-check-square-fill]="isHeadCountChecklistChecked(onBoardingResource, 'client') && getHeadCountAssessmentStatus(onBoardingResource, 'client') === 'not-taken'" [class.bi-check-lg]="getHeadCountAssessmentStatus(onBoardingResource, 'client') === 'pass'" [class.bi-x-lg]="getHeadCountAssessmentStatus(onBoardingResource, 'client') === 'fail'"></i>
+                {{ getHeadCountAssessmentStatusDisplay(onBoardingResource, 'client') }}
+              </button>
+            </div>
           </td>
         </tr>
       }

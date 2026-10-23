@@ -36,12 +36,137 @@
   background: #17a2b8;
 }
 
+.headcount-cell-controls {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  min-width: 130px;
+}
+
+.headcount-status {
+  display: inline-flex;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 5px;
+  width: 96px;
+  min-height: 30px;
+  padding: 4px 8px 4px 12px;
+  border: 1px solid #87909a;
+  border-radius: 15px;
+  background: #f1f3f5;
+  color: #515b66;
+  font-size: 0.75rem;
+  font-weight: 700;
+  text-align: left;
+  cursor: pointer;
+}
+
+.headcount-status--pass {
+  border-color: #2e7d32;
+  background: #e7f4e8;
+  color: #236528;
+}
+
+.headcount-status--pending {
+  border-color: #87909a;
+  background: #f1f3f5;
+  color: #515b66;
+}
+
+.headcount-status--conducted {
+  font-size: 0.68rem;
+}
+
+.headcount-status--fail {
+  border-color: #c62828;
+  background: #fdeaea;
+  color: #a82020;
+}
+
+.headcount-status--idle {
+  border-color: #c7ccd1;
+  background: #f1f3f5;
+  color: #737b84;
+}
+
+.headcount-status:focus-visible {
+  outline: 2px solid #0b3b71;
+  outline-offset: 2px;
+}
+
 .resource-filter__empty {
   padding: 14px 12px;
   color: var(--muted);
   font-style: italic;
   text-align: center;
 }
+
+.resource-filter__label {
+  display: block;
+  margin-bottom: 4px;
+  font-size: 0.78rem;
+  font-weight: 700;
+}
+
+.resource-filter {
+  position: relative;
+  width: min(100%, 360px);
+  margin-bottom: 1rem;
+}
+
+.resource-filter__input {
+  width: 100%;
+  padding: 7px 48px 7px 10px;
+  border: 1px solid #c9cdd2;
+  border-radius: 4px;
+  background: #fff;
+  color: inherit;
+  font: inherit;
+}
+
+.resource-filter__action {
+  position: absolute;
+  top: 0;
+  width: 24px;
+  height: 100%;
+  padding: 0;
+  border: 0;
+  background: none;
+  cursor: pointer;
+}
+
+.resource-filter__clear { right: 24px; }
+.resource-filter__toggle { right: 0; }
+
+.resource-filter__options {
+  position: absolute;
+  z-index: 10;
+  top: 100%;
+  right: 0;
+  left: 0;
+  max-height: 220px;
+  overflow-y: auto;
+  border: 1px solid #c9cdd2;
+  border-radius: 4px;
+  background: #fff;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.12);
+}
+
+.resource-filter__option {
+  display: block;
+  width: 100%;
+  padding: 7px 10px;
+  border: 0;
+  background: none;
+  color: inherit;
+  text-align: left;
+  cursor: pointer;
+}
+
+.resource-filter__option:hover,
+.resource-filter__option:focus { background: #f0f2f4; }
+.resource-filter__option small { display: block; color: var(--muted); }
 
 .mock-summary__table tbody td {
   background: #e6e5e5;
