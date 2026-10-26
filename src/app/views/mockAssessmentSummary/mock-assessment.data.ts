@@ -33,6 +33,8 @@ export interface MockAssessmentSummaryTabItem {
 
 const HEAD_COUNT_CHECKLIST_FIELDS = ['communication', 'technical', 'client'] as const;
 type HeadCountChecklistField = typeof HEAD_COUNT_CHECKLIST_FIELDS[number];
+type HeadCountStatusField = Exclude<HeadCountChecklistField, 'communication'>;
+type HeadCountAssessmentStatus = 'not-taken' | 'pass' | 'fail';
 
 export interface FeedbackSubmission {
   content: string;
@@ -52,7 +54,12 @@ export class MockAssessmentComponent {
   @Input() group = '';
   @Input() filterTerm = '';
   @Input() activeTab: MockAssessmentTab = MOCK_ASSESSMENT_TABS.SUMMARY.id;
+  @Input() showResourceFilter = false;
+  @Input() filterOptions: OnboardingResource[] = [];
+  @Input() filterDropdownOpen = false;
   @Output() activeTabChange = new EventEmitter<MockAssessmentTab>();
+  @Output() filterTermChange = new EventEmitter<string>();
+  @Output() filterDropdownOpenChange = new EventEmitter<boolean>();
   summaryTableTab!: MockAssessmentSummaryTabItem;
   feedbackTab!: MockAssessmentSummaryTabItem;
   headCountTab!: MockAssessmentSummaryTabItem;
@@ -91,7 +98,8 @@ export class MockAssessmentComponent {
 
   onEdit(index: number): void {
     this.editingIndex = index;
-    this.editingRow = JSON.parse(JSON.stringify(this.summary.rows[index]));
+    this.editingRow = structuredClone(this.summary.rows[index]);
+    this.updateEditingRowTotals();
     this.showEditModal = true;
   }
 
@@ -104,6 +112,7 @@ export class MockAssessmentComponent {
 
   onUpdate(): void {
     if (this.editingIndex !== null && this.editingRow) {
+      this.updateEditingRowTotals();
       this.summary.rows[this.editingIndex] = this.editingRow;
       this.closeModal();
       this.saveMockAssessment();
@@ -123,13 +132,14 @@ export class MockAssessmentComponent {
       scheduled: '-',
       totalConducted: 0,
       totalPassed: 0,
-      totalFailed: '-',
+      totalFailed: 0,
       passRate: '0%',
-      failRate: '0'
+      failRate: '0%'
     };
     this.summary.rows.push(newRow);
     this.editingIndex = this.summary.rows.length - 1;
     this.editingRow = JSON.parse(JSON.stringify(newRow));
+    this.updateEditingRowTotals();
     this.showEditModal = true;
   }
 
@@ -215,17 +225,51 @@ export class MockAssessmentComponent {
     const totalResources = this.groupResources.length;
     this.summary.rows.forEach((row, index) => {
       row.totalResources = totalResources;
-      row.totalConducted = this.getSummaryTotalConducted(index);
+      this.updateRowTotals(row, index);
     });
+    this.updateEditingRowTotals();
     this.saveMockAssessment();
   }
 
   syncSummaryTable(): void {
-    this.summary.rows.forEach((row, index) => {
-      row.totalResources = this.groupResources.length;
-      row.totalConducted = this.getSummaryTotalConducted(index);
-    });
-    this.saveMockAssessment();
+    this.syncSummaryTotals();
+  }
+
+  hasAutomaticResults(rowIndex: number | null): boolean {
+    const field = rowIndex === null ? undefined : HEAD_COUNT_CHECKLIST_FIELDS[rowIndex];
+    return field === 'technical' || field === 'client';
+  }
+
+  updateEditingRowTotals(): void {
+    if (this.editingRow && this.editingIndex !== null) {
+      this.updateRowTotals(this.editingRow, this.editingIndex);
+    }
+  }
+
+  private updateRowTotals(row: MockAssessmentRow, rowIndex: number): void {
+    row.totalConducted = this.getSummaryTotalConducted(rowIndex);
+    const field = HEAD_COUNT_CHECKLIST_FIELDS[rowIndex];
+
+    if (field === 'technical' || field === 'client') {
+      const assessedResources = this.groupResources.filter(resource =>
+        this.isHeadCountChecklistChecked(resource, field)
+      );
+      row.totalPassed = assessedResources.filter(resource =>
+        this.getHeadCountAssessmentStatus(resource, field) === 'pass'
+      ).length;
+      row.totalFailed = assessedResources.filter(resource =>
+        this.getHeadCountAssessmentStatus(resource, field) === 'fail'
+      ).length;
+    } else if (row.totalFailed === '-') {
+      row.totalFailed = 0;
+    }
+
+    row.passRate = this.calculateRate(row.totalPassed, row.totalConducted);
+    row.failRate = this.calculateRate(Number(row.totalFailed), row.totalConducted);
+  }
+
+  private calculateRate(count: number, totalConducted: number): string {
+    return `${totalConducted > 0 ? Number((count / totalConducted * 100).toFixed(2)) : 0}%`;
   }
 
   get onBoardingResources(): OnboardingResource[] {
@@ -253,6 +297,43 @@ export class MockAssessmentComponent {
 
   isHeadCountChecklistChecked(resource: OnboardingResource, field: HeadCountChecklistField): boolean {
     return localStorage.getItem(this.getHeadCountChecklistStorageKey(resource, field)) === 'true';
+  }
+
+  getHeadCountAssessmentStatus(resource: OnboardingResource, field: HeadCountStatusField): HeadCountAssessmentStatus {
+    const status = localStorage.getItem(this.getHeadCountAssessmentStatusStorageKey(resource, field));
+    return status === 'pass' || status === 'fail' ? status : 'not-taken';
+  }
+
+  cycleHeadCountAssessmentStatus(resource: OnboardingResource, field: HeadCountStatusField): void {
+    if (!this.isHeadCountChecklistChecked(resource, field)) {
+      this.setHeadCountChecklistChecked(resource, field, true);
+      return;
+    }
+
+    const currentStatus = this.getHeadCountAssessmentStatus(resource, field);
+    if (currentStatus === 'fail') {
+      this.setHeadCountChecklistChecked(resource, field, false);
+      return;
+    }
+
+    const nextStatus: HeadCountAssessmentStatus = currentStatus === 'not-taken' ? 'pass' : 'fail';
+    localStorage.setItem(this.getHeadCountAssessmentStatusStorageKey(resource, field), nextStatus);
+    this.syncSummaryTotals();
+  }
+
+  toggleCommunicationStatus(resource: OnboardingResource): void {
+    const isChecked = this.isHeadCountChecklistChecked(resource, 'communication');
+    this.setHeadCountChecklistChecked(resource, 'communication', !isChecked);
+  }
+
+  getHeadCountAssessmentStatusLabel(status: HeadCountAssessmentStatus): string {
+    return status === 'not-taken' ? 'Conducted' : status === 'pass' ? 'Pass' : 'Fail';
+  }
+
+  getHeadCountAssessmentStatusDisplay(resource: OnboardingResource, field: HeadCountStatusField): string {
+    return this.isHeadCountChecklistChecked(resource, field)
+      ? this.getHeadCountAssessmentStatusLabel(this.getHeadCountAssessmentStatus(resource, field))
+      : 'Pending';
   }
 
   getHeadCountChecklistTotal(field: HeadCountChecklistField): number {
@@ -288,6 +369,10 @@ export class MockAssessmentComponent {
 
   onHeadCountChecklistChange(resource: OnboardingResource, field: HeadCountChecklistField, event: Event): void {
     const isChecked = (event.target as HTMLInputElement).checked;
+    this.setHeadCountChecklistChecked(resource, field, isChecked);
+  }
+
+  private setHeadCountChecklistChecked(resource: OnboardingResource, field: HeadCountChecklistField, isChecked: boolean): void {
     const storageKey = this.getHeadCountChecklistStorageKey(resource, field);
 
     if (isChecked) {
@@ -296,15 +381,24 @@ export class MockAssessmentComponent {
       localStorage.removeItem(storageKey);
     }
 
-    const rowIndex = HEAD_COUNT_CHECKLIST_FIELDS.indexOf(field);
-    if (rowIndex !== -1 && this.summary.rows[rowIndex]) {
-      this.summary.rows[rowIndex].totalConducted = this.getSummaryTotalConducted(rowIndex);
-      this.saveMockAssessment();
+    if (field === 'technical' || field === 'client') {
+      const statusKey = this.getHeadCountAssessmentStatusStorageKey(resource, field);
+      if (isChecked) {
+        localStorage.setItem(statusKey, 'not-taken');
+      } else {
+        localStorage.removeItem(statusKey);
+      }
     }
+
+    this.syncSummaryTotals();
   }
 
   private getHeadCountChecklistStorageKey(resource: OnboardingResource, field: HeadCountChecklistField): string {
     return `mockAssessment.headCount.${resource.eid || resource.id}.${field}.checked`;
+  }
+
+  private getHeadCountAssessmentStatusStorageKey(resource: OnboardingResource, field: HeadCountStatusField): string {
+    return `mockAssessment.headCount.${resource.eid || resource.id}.${field}.status`;
   }
 
   get feedbackTotalPages(): number {
