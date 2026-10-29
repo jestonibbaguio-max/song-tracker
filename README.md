@@ -47,6 +47,19 @@ The ATCP Song Dashboard provides two primary views:
 - **Dashboard** — A summary view showing KPI stats, an onboarding checklist, active Song initiatives, announcements, POC contacts, and quick-access tools.
 - **Onboarding** — A form and searchable table for managing resource onboarding records (EID, name, project assignment, skill tags, dates, and more).
 
+### Mock Assessment Summary
+
+In Head Count, the Communication, Technical, and Client Interview status pills cycle
+through Pending, Conducted, Pass, and Fail, then back to Pending. Results are saved
+per resource in browser local storage. Previously conducted communication assessments
+remain Conducted until a result is selected.
+
+The summary table automatically calculates conducted, passed, and failed counts for
+each stream within the selected group. Pass and fail rates are the respective counts
+divided by total conducted (including assessments awaiting results), rounded to two
+decimal places; both rates are 0% when none have been conducted. These counts and
+rates are read-only in the edit dialog.
+
 ---
 
 ## Tech Stack
