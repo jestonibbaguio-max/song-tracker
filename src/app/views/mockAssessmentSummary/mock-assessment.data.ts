@@ -33,7 +33,7 @@ export interface MockAssessmentSummaryTabItem {
 
 const HEAD_COUNT_CHECKLIST_FIELDS = ['communication', 'technical', 'client'] as const;
 type HeadCountChecklistField = typeof HEAD_COUNT_CHECKLIST_FIELDS[number];
-type HeadCountStatusField = Exclude<HeadCountChecklistField, 'communication'>;
+type HeadCountStatusField = HeadCountChecklistField;
 type HeadCountAssessmentStatus = 'not-taken' | 'pass' | 'fail';
 
 export interface FeedbackSubmission {
@@ -237,7 +237,7 @@ export class MockAssessmentComponent {
 
   hasAutomaticResults(rowIndex: number | null): boolean {
     const field = rowIndex === null ? undefined : HEAD_COUNT_CHECKLIST_FIELDS[rowIndex];
-    return field === 'technical' || field === 'client';
+    return field !== undefined;
   }
 
   updateEditingRowTotals(): void {
@@ -250,7 +250,7 @@ export class MockAssessmentComponent {
     row.totalConducted = this.getSummaryTotalConducted(rowIndex);
     const field = HEAD_COUNT_CHECKLIST_FIELDS[rowIndex];
 
-    if (field === 'technical' || field === 'client') {
+    if (field) {
       const assessedResources = this.groupResources.filter(resource =>
         this.isHeadCountChecklistChecked(resource, field)
       );
@@ -321,11 +321,6 @@ export class MockAssessmentComponent {
     this.syncSummaryTotals();
   }
 
-  toggleCommunicationStatus(resource: OnboardingResource): void {
-    const isChecked = this.isHeadCountChecklistChecked(resource, 'communication');
-    this.setHeadCountChecklistChecked(resource, 'communication', !isChecked);
-  }
-
   getHeadCountAssessmentStatusLabel(status: HeadCountAssessmentStatus): string {
     return status === 'not-taken' ? 'Conducted' : status === 'pass' ? 'Pass' : 'Fail';
   }
@@ -381,13 +376,11 @@ export class MockAssessmentComponent {
       localStorage.removeItem(storageKey);
     }
 
-    if (field === 'technical' || field === 'client') {
-      const statusKey = this.getHeadCountAssessmentStatusStorageKey(resource, field);
-      if (isChecked) {
-        localStorage.setItem(statusKey, 'not-taken');
-      } else {
-        localStorage.removeItem(statusKey);
-      }
+    const statusKey = this.getHeadCountAssessmentStatusStorageKey(resource, field);
+    if (isChecked) {
+      localStorage.setItem(statusKey, 'not-taken');
+    } else {
+      localStorage.removeItem(statusKey);
     }
 
     this.syncSummaryTotals();

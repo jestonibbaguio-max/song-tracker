@@ -313,14 +313,17 @@
           <td class="text-center">
             <div class="headcount-cell-controls">
               <button type="button" class="headcount-status"
+                [class.headcount-status--pass]="isHeadCountChecklistChecked(onBoardingResource, 'communication') && getHeadCountAssessmentStatus(onBoardingResource, 'communication') === 'pass'"
+                [class.headcount-status--fail]="isHeadCountChecklistChecked(onBoardingResource, 'communication') && getHeadCountAssessmentStatus(onBoardingResource, 'communication') === 'fail'"
+                [class.headcount-status--pending]="isHeadCountChecklistChecked(onBoardingResource, 'communication') && getHeadCountAssessmentStatus(onBoardingResource, 'communication') === 'not-taken'"
+                [class.headcount-status--conducted]="isHeadCountChecklistChecked(onBoardingResource, 'communication') && getHeadCountAssessmentStatus(onBoardingResource, 'communication') === 'not-taken'"
                 [class.headcount-status--idle]="!isHeadCountChecklistChecked(onBoardingResource, 'communication')"
-                [class.headcount-status--conducted]="isHeadCountChecklistChecked(onBoardingResource, 'communication')"
                 [attr.aria-pressed]="isHeadCountChecklistChecked(onBoardingResource, 'communication')"
-                [attr.aria-label]="'Communication status: ' + (isHeadCountChecklistChecked(onBoardingResource, 'communication') ? 'Conducted' : 'Idle')"
-                [title]="'Communication status: ' + (isHeadCountChecklistChecked(onBoardingResource, 'communication') ? 'Conducted' : 'Idle') + ' (click to change)'"
-                (click)="toggleCommunicationStatus(onBoardingResource)">
-                <i class="bi" [class.bi-square]="!isHeadCountChecklistChecked(onBoardingResource, 'communication')" [class.bi-check-square-fill]="isHeadCountChecklistChecked(onBoardingResource, 'communication')"></i>
-                {{ isHeadCountChecklistChecked(onBoardingResource, 'communication') ? 'Conducted' : 'Idle' }}
+                [attr.aria-label]="'Communication status: ' + getHeadCountAssessmentStatusDisplay(onBoardingResource, 'communication')"
+                [title]="'Communication status: ' + getHeadCountAssessmentStatusDisplay(onBoardingResource, 'communication') + ' (click to change)'"
+                (click)="cycleHeadCountAssessmentStatus(onBoardingResource, 'communication')">
+                <i class="bi" [class.bi-square]="!isHeadCountChecklistChecked(onBoardingResource, 'communication')" [class.bi-check-square-fill]="isHeadCountChecklistChecked(onBoardingResource, 'communication') && getHeadCountAssessmentStatus(onBoardingResource, 'communication') === 'not-taken'" [class.bi-check-lg]="getHeadCountAssessmentStatus(onBoardingResource, 'communication') === 'pass'" [class.bi-x-lg]="getHeadCountAssessmentStatus(onBoardingResource, 'communication') === 'fail'"></i>
+                {{ getHeadCountAssessmentStatusDisplay(onBoardingResource, 'communication') }}
               </button>
             </div>
           </td>
