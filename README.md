@@ -66,13 +66,13 @@ rates are read-only in the edit dialog.
 
 | Layer | Technology | Version |
 |---|---|---|
-| Frontend framework | Angular (standalone API) | 19.1.0 |
-| Frontend build | Angular CLI / esbuild (Vite) | 19.1.4 |
+| Frontend framework | Angular (standalone API) | 19.2.x (`^19.1.0` in package.json) |
+| Frontend build | Angular CLI / esbuild (Vite) | 19.2.x (`^19.1.4` in package.json) |
 | CSS framework | Bootstrap | 5.3.8 |
 | Icons | Bootstrap Icons | 1.13.1 |
-| Backend runtime | Node.js | — |
+| Backend runtime | Node.js | 22 LTS or newer (see Prerequisites) |
 | Backend framework | Express | 5.2.1 |
-| Language | TypeScript (frontend) / JavaScript (backend) | 5.7.2 |
+| Language | TypeScript (frontend) / JavaScript (backend) | 5.7.x |
 | Data persistence | JSON files (file-based, no database) | — |
 | Test runner | Karma + Jasmine | — |
 
@@ -115,8 +115,11 @@ The app has **three separate service runners**. You need to start at least two o
 
 ### Prerequisites
 
-- Node.js v18+
-- npm
+- Node.js **v22 or newer** (22 LTS recommended)
+  - `npm run dev` (via `concurrently` 10) and the Playwright e2e tests require Node 22+ and 20+ respectively.
+  - Angular 19.2 alone supports `^18.19.1 || ^20.11.1 || >=22.0.0`, so `npm start` and `npm run api` run separately also work on Node 18.19.1+, but Node 22 covers every script.
+- npm 8 or newer (ships with Node 22)
+- No global Angular CLI is needed; the npm scripts use the project's local Angular CLI 19.2.x
 
 ### Step 1 — Install dependencies
 
