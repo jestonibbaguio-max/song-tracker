@@ -6,10 +6,6 @@ const {
   browserIndexPath
 } = require('./config');
 const {
-  getTasks,
-  addTask,
-  updateTask,
-  deleteTask,
   getSkillOptions
 } = require('./json-store');
 const {
@@ -22,6 +18,12 @@ const healthRoutes = require('./features/health/health.routes');
 const dashboardRoutes = require('./features/dashboard/dashboard.routes');
 const fruitsRoutes = require('./features/test-bench/fruits.routes');
 const lookupsRoutes = require('./features/lookups/lookups.routes');
+const {
+  getTasks,
+  addTask,
+  updateTask,
+  deleteTask
+} = require('./features/legacy-tasks/legacy-tasks.service');
 const { loadDb, saveDb } = require('./persistence/db-file.repository');
 const { nextId } = require('./utils/ids');
 

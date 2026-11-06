@@ -114,7 +114,7 @@ There's no ORM and no database. "Persistence" means synchronous `fs.readFileSync
 |---|---|---|
 | `server/data/custom-onboarding.json` | `onboarding-store.js` | Onboarding resources (98 records). If the file is missing it's **seeded from `custom.csv`** on first read. Record IDs get back-filled and the file is rewritten on read |
 | `server/data/db.json` | `server.js` (`loadDb`/`saveDb`) | Every other collection listed in §4 |
-| `server/data/tasks.json` | `json-store.js` | Legacy tasks. It doesn't exist yet and is created on the first GET `/api/tasks` |
+| `server/data/tasks.json` | `persistence/tasks-file.repository.js` | Legacy tasks. It doesn't exist yet and is created on the first GET `/api/tasks` |
 | `server/data/test_bwd/db.json` | `server.js` | Fruits test data |
 | `server/data/custom.csv` | seed only | Columns `EID`, `GROUP`, `Primary Skill` |
 | `attendance.json`, `attendance-options.json`, `routes.json`, `custom.xlsx`, `groupings name` | – | Not read by the Express server. `routes.json` looks like a json-server rewrite map, but the `json-api` script doesn't pass it |
@@ -249,7 +249,7 @@ These services return `of(...)` with fake delays and say in comments which endpo
 These are things I saw while reading. None of them have been changed.
 
 1. **No auth, open CORS, and no validation on several write routes.** `POST/PATCH /api/attendance`, `POST/PATCH /api/planner-tasks`, `POST /api/deletion-logs`, and `PATCH /api/competency-records/:eid` spread `req.body` straight into stored records, so a client can write any fields, including overwriting `createdAt`.
-2. **`getSkillOptions()` reads only snake_case keys** (`primary_skill`, `another_skills`, [json-store.js:168-180](../server/json-store.js#L168-L180)), so skills from records created through the API (stored in camelCase) never appear. The frontend doesn't call this endpoint, which hides the bug.
+2. **`getSkillOptions()` reads only snake_case keys** (`primary_skill`, `another_skills`, [json-store.js](../server/json-store.js)), so skills from records created through the API (stored in camelCase) never appear. The frontend doesn't call this endpoint, which hides the bug.
 3. **Changing an EID through PATCH duplicates the resource.** The old record stays, which [server.js:303-306](../server/server.js#L303-L306) does on purpose and the README documents. It's still surprising.
 4. **The attendance location sticks around.** When a cell changes from `RTO` to another status, the client sends `{ status }` without `location` (`undefined` is dropped from JSON), and the server merges, so the old `location` stays on the stored record.
 5. **Unknown `/api` GETs return `index.html` with 200** because of the SPA catch-all (§3).

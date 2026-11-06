@@ -93,7 +93,7 @@ atcpsongdashboard/
 │   └── styles.css                # Global styles (Bootstrap, CSS variables)
 ├── server/                       # Node.js/Express API backend
 │   ├── server.js                 # Main Express server with all API routes
-│   ├── json-store.js             # JSON file store for legacy tasks
+│   ├── json-store.js             # skill options read from the roster
 │   ├── onboarding-store.js       # JSON/CSV store for onboarding records
 │   ├── schema.sql                # Reference SQLite schema (not yet active)
 │   └── data/
@@ -356,7 +356,7 @@ Dates are stored and returned in **MM/DD/YYYY** format. The server normalizes an
 - Dashboard payload is currently **hardcoded** as a JavaScript object
 - `server/schema.sql` defines the full intended SQLite relational schema for dynamic dashboard content (nav groups, stats, checklist items, initiatives, announcements, POC, quick tools) — this is the planned future data source
 
-### Tasks store (`server/json-store.js`)
+### Tasks store (`server/persistence/tasks-file.repository.js`)
 
 - Persisted in `server/data/tasks.json` with a seeded default task
 
