@@ -116,4 +116,4 @@ function restoreDataDir(previous) {
   else process.env.DATA_DIR = previous;
 }
 
-module.exports = { startTestServer, createDataDir, FIXTURES_DIR };
+module.exports = { startTestServer, createDataDir, loadFreshApp, FIXTURES_DIR, SERVER_DIR };

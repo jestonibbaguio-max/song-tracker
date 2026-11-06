@@ -4,7 +4,7 @@ const { test } = require('node:test');
 const assert = require('node:assert/strict');
 const http = require('node:http');
 const outbound = require('./helpers/outbound-recorder');
-const { unifiedDiff, jsonDiff, toLines } = require('./helpers/characterize');
+const { unifiedDiff, jsonDiff, toLines, normalise } = require('./helpers/characterize');
 
 test('outbound fake records and blocks a non-loopback fetch', async () => {
   outbound.reset();
@@ -64,4 +64,35 @@ test('jsonDiff matches records by id, keeps string and number ids apart, and rep
     { op: 'reorder', path: '/rows', from: ['2', '3'], to: ['3', '2'] },
     { op: 'add', path: '/extra', value: true },
   ]);
+});
+
+// Guardrail 2 (docs/server-restructure-plan.md, step 0): only timestamps stamped
+// during the case's own run may be hidden behind <generated-timestamp>.
+test('normalise hides only new timestamps that fall inside the run window', () => {
+  const start = Date.parse('2026-11-06T08:00:00.000Z');
+  const ctx = {
+    knownTimestamps: new Set(['2026-10-28T02:00:00.000Z']),
+    dataDir: '/nowhere',
+    runWindow: { start, end: start + 250 },
+  };
+  const out = normalise({
+    inWindow: '2026-11-06T08:00:00.100Z',
+    atStart: '2026-11-06T08:00:00.000Z',
+    atEnd: '2026-11-06T08:00:00.250Z',
+    known: '2026-10-28T02:00:00.000Z',
+    epoch: new Date(0).toISOString(),
+    aDayEarly: '2026-11-05T08:00:00.100Z',
+    justAfter: '2026-11-06T08:00:00.251Z',
+    justBefore: '2026-11-06T07:59:59.999Z',
+  }, ctx);
+  assert.deepEqual(out, {
+    inWindow: '<generated-timestamp>',
+    atStart: '<generated-timestamp>',
+    atEnd: '<generated-timestamp>',
+    known: '2026-10-28T02:00:00.000Z',
+    epoch: '1970-01-01T00:00:00.000Z',
+    aDayEarly: '2026-11-05T08:00:00.100Z',
+    justAfter: '2026-11-06T08:00:00.251Z',
+    justBefore: '2026-11-06T07:59:59.999Z',
+  });
 });
