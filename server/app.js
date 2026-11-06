@@ -21,6 +21,7 @@ const {
 const healthRoutes = require('./features/health/health.routes');
 const dashboardRoutes = require('./features/dashboard/dashboard.routes');
 const fruitsRoutes = require('./features/test-bench/fruits.routes');
+const lookupsRoutes = require('./features/lookups/lookups.routes');
 const { loadDb, saveDb } = require('./persistence/db-file.repository');
 const { nextId } = require('./utils/ids');
 
@@ -534,12 +535,10 @@ app.post('/api/capacity-entries', (req, res) => {
   res.status(201).json(entry);
 });
 
-// ── Attendance ────────────────────────────────────────────────────────────────
-app.get('/api/attendance-options', (req, res) => {
-  const db = loadDb();
-  res.json(db['attendance-options'] || []);
-});
+// ── Lookups: attendance options, office locations, planner labels ─────────────
+app.use(lookupsRoutes);
 
+// ── Attendance ────────────────────────────────────────────────────────────────
 app.get('/api/attendance', (req, res) => {
   const db = loadDb();
   let records = db['attendance'] || [];
@@ -582,18 +581,6 @@ app.delete('/api/attendance/:id', (req, res) => {
   db['attendance'] = records;
   saveDb(db);
   res.json({ deleted: true });
-});
-
-// ── Office locations ──────────────────────────────────────────────────────────
-app.get('/api/office-locations', (req, res) => {
-  const db = loadDb();
-  res.json(db['office-locations'] || []);
-});
-
-// ── Planner labels ────────────────────────────────────────────────────────────
-app.get('/api/planner-labels', (req, res) => {
-  const db = loadDb();
-  res.json(db['planner-labels'] || []);
 });
 
 // ── Planner boards ────────────────────────────────────────────────────────────
