@@ -1,0 +1,3752 @@
+exports[`DELETE /api/planner-tasks/:id > happy path › deletes task 5 1`] = `
+
+DELETE /api/planner-tasks/5
+credentials: group 5 POC (rafael.t.mendoza, role poc)
+
+status: 200
+content-type: application/json; charset=utf-8
+access-control-allow-origin: *
+x-powered-by: Express
+response body:
+  {
+    "deleted": true
+  }
+
+data files:
+  db.json: modified
+    raw text diff:
+      @@ -423,23 +423,4 @@
+           },
+           {
+      -      "id": 5,
+      -      "boardId": 2,
+      -      "bucketId": 3,
+      -      "title": "Plan component library audit",
+      -      "status": "Not started",
+      -      "priority": "Medium",
+      -      "startDate": "",
+      -      "dueDate": "",
+      -      "labels": [],
+      -      "assignee": "rafael.t.mendoza",
+      -      "checklist": [],
+      -      "description": "",
+      -      "acceptanceCriteria": "",
+      -      "comments": [],
+      -      "completed": false,
+      -      "createdAt": "2026-11-05T10:02:37.155Z",
+      -      "updatedAt": "2026-11-05T10:02:37.155Z"
+      -    },
+      -    {
+             "id": 6,
+             "boardId": 1,
+    parsed JSON diff:
+      - /planner-tasks[id=5]: {"id":5,"boardId":2,"bucketId":3,"title":"Plan component library audit","status":"Not started","priority":"Medium","startDate":"","dueDate":"","labels":[],"assignee":"rafael.t.mendoza","checklist":[],"description":"","acceptanceCriteria":"","comments":[],"completed":false,"createdAt":"2026-11-05T10:02:37.155Z","updatedAt":"2026-11-05T10:02:37.155Z"}
+
+outbound calls: none
+
+`;
+
+exports[`DELETE /api/planner-tasks/:id > invalid input › malformed JSON body 1`] = `
+
+DELETE /api/planner-tasks/5
+credentials: group 5 POC (rafael.t.mendoza, role poc)
+request body (raw):
+  {"broken": 
+
+status: 400
+content-type: text/html; charset=utf-8
+access-control-allow-origin: *
+x-powered-by: Express
+response body:
+  <!DOCTYPE html>
+  <html lang="en">
+  <head>
+  <meta charset="utf-8">
+  <title>Error</title>
+  </head>
+  <body>
+  <pre>SyntaxError: Unexpected end of JSON input<br> &nbsp; &nbsp;at <stack trace removed></pre>
+  </body>
+  </html>
+  
+
+data files: unchanged
+
+outbound calls: none
+
+`;
+
+exports[`DELETE /api/planner-tasks/:id > invalid input › non-numeric id 1`] = `
+
+DELETE /api/planner-tasks/abc
+credentials: group 5 POC (rafael.t.mendoza, role poc)
+
+status: 404
+content-type: application/json; charset=utf-8
+access-control-allow-origin: *
+x-powered-by: Express
+response body:
+  {
+    "error": "task not found"
+  }
+
+data files: unchanged
+
+outbound calls: none
+
+`;
+
+exports[`DELETE /api/planner-tasks/:id > no auth 1`] = `
+
+DELETE /api/planner-tasks/5
+credentials: none
+
+=> identical to the happy path (deletes task 5): same status, body, data-file changes and outbound calls
+
+`;
+
+exports[`DELETE /api/planner-tasks/:id > not found › already-deleted task 4 1`] = `
+
+DELETE /api/planner-tasks/4
+credentials: group 5 POC (rafael.t.mendoza, role poc)
+
+status: 404
+content-type: application/json; charset=utf-8
+access-control-allow-origin: *
+x-powered-by: Express
+response body:
+  {
+    "error": "task not found"
+  }
+
+data files: unchanged
+
+outbound calls: none
+
+`;
+
+exports[`DELETE /api/planner-tasks/:id > not found › unknown id 1`] = `
+
+DELETE /api/planner-tasks/999
+credentials: group 5 POC (rafael.t.mendoza, role poc)
+
+status: 404
+content-type: application/json; charset=utf-8
+access-control-allow-origin: *
+x-powered-by: Express
+response body:
+  {
+    "error": "task not found"
+  }
+
+data files: unchanged
+
+outbound calls: none
+
+`;
+
+exports[`DELETE /api/planner-tasks/:id > wrong role 1`] = `
+
+DELETE /api/planner-tasks/5
+credentials: no-group new joiner (paolo.d.ramos, role viewer)
+
+=> identical to the happy path (deletes task 5): same status, body, data-file changes and outbound calls
+
+`;
+
+exports[`GET /api/deletion-logs > happy path › filters by deletedByEid 1`] = `
+
+GET /api/deletion-logs?eid=rafael.t.mendoza
+credentials: group 5 POC (rafael.t.mendoza, role poc)
+
+status: 200
+content-type: application/json; charset=utf-8
+access-control-allow-origin: *
+x-powered-by: Express
+response body:
+  [
+    {
+      "type": "task-deletion",
+      "taskId": 4,
+      "taskTitle": "Duplicate: Set up AEM local author instance",
+      "deletedBy": "Rafael Mendoza",
+      "deletedByEid": "rafael.t.mendoza",
+      "id": 1,
+      "deletedAt": "2026-10-14T03:10:52.448Z"
+    },
+    {
+      "type": "comment-deletion",
+      "taskId": 3,
+      "taskTitle": "PoC: Attendance export to CSV",
+      "deletedBy": "Rafael Mendoza",
+      "deletedByEid": "rafael.t.mendoza",
+      "commentAuthor": "Jomar Pascual",
+      "commentText": "Posted on the wrong task, sorry",
+      "commentCreatedAt": "2026-11-03T02:01:18.902Z",
+      "id": 2,
+      "deletedAt": "2026-11-03T02:05:40.017Z"
+    }
+  ]
+
+data files: unchanged
+
+outbound calls: none
+
+`;
+
+exports[`GET /api/deletion-logs > happy path › lists every log 1`] = `
+
+GET /api/deletion-logs
+credentials: group 5 POC (rafael.t.mendoza, role poc)
+
+status: 200
+content-type: application/json; charset=utf-8
+access-control-allow-origin: *
+x-powered-by: Express
+response body:
+  [
+    {
+      "type": "task-deletion",
+      "taskId": 4,
+      "taskTitle": "Duplicate: Set up AEM local author instance",
+      "deletedBy": "Rafael Mendoza",
+      "deletedByEid": "rafael.t.mendoza",
+      "id": 1,
+      "deletedAt": "2026-10-14T03:10:52.448Z"
+    },
+    {
+      "type": "comment-deletion",
+      "taskId": 3,
+      "taskTitle": "PoC: Attendance export to CSV",
+      "deletedBy": "Rafael Mendoza",
+      "deletedByEid": "rafael.t.mendoza",
+      "commentAuthor": "Jomar Pascual",
+      "commentText": "Posted on the wrong task, sorry",
+      "commentCreatedAt": "2026-11-03T02:01:18.902Z",
+      "id": 2,
+      "deletedAt": "2026-11-03T02:05:40.017Z"
+    }
+  ]
+
+data files: unchanged
+
+outbound calls: none
+
+`;
+
+exports[`GET /api/deletion-logs > invalid input › eid filter is not normalised (case, @domain) 1`] = `
+
+GET /api/deletion-logs?eid=Rafael.T.Mendoza%40accenture.com
+credentials: group 5 POC (rafael.t.mendoza, role poc)
+
+status: 200
+content-type: application/json; charset=utf-8
+access-control-allow-origin: *
+x-powered-by: Express
+response body:
+  []
+
+data files: unchanged
+
+outbound calls: none
+
+`;
+
+exports[`GET /api/deletion-logs > invalid input › malformed JSON body 1`] = `
+
+GET /api/deletion-logs
+credentials: group 5 POC (rafael.t.mendoza, role poc)
+request body (raw):
+  {"broken": 
+
+status: 400
+content-type: text/html; charset=utf-8
+access-control-allow-origin: *
+x-powered-by: Express
+response body:
+  <!DOCTYPE html>
+  <html lang="en">
+  <head>
+  <meta charset="utf-8">
+  <title>Error</title>
+  </head>
+  <body>
+  <pre>SyntaxError: Unexpected end of JSON input<br> &nbsp; &nbsp;at <stack trace removed></pre>
+  </body>
+  </html>
+  
+
+data files: unchanged
+
+outbound calls: none
+
+`;
+
+exports[`GET /api/deletion-logs > no auth 1`] = `
+
+GET /api/deletion-logs
+credentials: none
+
+=> identical to the happy path (lists every log): same status, body, data-file changes and outbound calls
+
+`;
+
+exports[`GET /api/deletion-logs > not found › deletion-logs collection missing 1`] = `
+
+GET /api/deletion-logs
+credentials: group 5 POC (rafael.t.mendoza, role poc)
+
+status: 200
+content-type: application/json; charset=utf-8
+access-control-allow-origin: *
+x-powered-by: Express
+response body:
+  []
+
+data files: unchanged
+
+outbound calls: none
+
+`;
+
+exports[`GET /api/deletion-logs > not found › eid with no logs 1`] = `
+
+GET /api/deletion-logs?eid=liza.m.navarro
+credentials: group 5 POC (rafael.t.mendoza, role poc)
+
+status: 200
+content-type: application/json; charset=utf-8
+access-control-allow-origin: *
+x-powered-by: Express
+response body:
+  []
+
+data files: unchanged
+
+outbound calls: none
+
+`;
+
+exports[`GET /api/deletion-logs > wrong role 1`] = `
+
+GET /api/deletion-logs
+credentials: no-group new joiner (paolo.d.ramos, role viewer)
+
+=> identical to the happy path (lists every log): same status, body, data-file changes and outbound calls
+
+`;
+
+exports[`GET /api/planner-boards > happy path › filters by groupNumber 1`] = `
+
+GET /api/planner-boards?groupNumber=5
+credentials: group 5 POC (rafael.t.mendoza, role poc)
+
+status: 200
+content-type: application/json; charset=utf-8
+access-control-allow-origin: *
+x-powered-by: Express
+response body:
+  [
+    {
+      "id": 2,
+      "groupNumber": 5,
+      "name": "Group 5 - AEM/Angular",
+      "description": "AEM and Angular workstream for bench resources"
+    }
+  ]
+
+data files: unchanged
+
+outbound calls: none
+
+`;
+
+exports[`GET /api/planner-boards > happy path › lists boards with ids coerced to numbers (as the planner sends it) 1`] = `
+
+GET /api/planner-boards
+credentials: group 5 POC (rafael.t.mendoza, role poc)
+
+status: 200
+content-type: application/json; charset=utf-8
+access-control-allow-origin: *
+x-powered-by: Express
+response body:
+  [
+    {
+      "id": 1,
+      "groupNumber": 1,
+      "name": "Group 1 - React",
+      "description": "React workstream for bench resources"
+    },
+    {
+      "id": 2,
+      "groupNumber": 5,
+      "name": "Group 5 - AEM/Angular",
+      "description": "AEM and Angular workstream for bench resources"
+    }
+  ]
+
+data files: unchanged
+
+outbound calls: none
+
+`;
+
+exports[`GET /api/planner-boards > invalid input › empty groupNumber matches nothing 1`] = `
+
+GET /api/planner-boards?groupNumber=
+credentials: group 5 POC (rafael.t.mendoza, role poc)
+
+status: 200
+content-type: application/json; charset=utf-8
+access-control-allow-origin: *
+x-powered-by: Express
+response body:
+  []
+
+data files: unchanged
+
+outbound calls: none
+
+`;
+
+exports[`GET /api/planner-boards > invalid input › malformed JSON body 1`] = `
+
+GET /api/planner-boards
+credentials: group 5 POC (rafael.t.mendoza, role poc)
+request body (raw):
+  {"broken": 
+
+status: 400
+content-type: text/html; charset=utf-8
+access-control-allow-origin: *
+x-powered-by: Express
+response body:
+  <!DOCTYPE html>
+  <html lang="en">
+  <head>
+  <meta charset="utf-8">
+  <title>Error</title>
+  </head>
+  <body>
+  <pre>SyntaxError: Unexpected end of JSON input<br> &nbsp; &nbsp;at <stack trace removed></pre>
+  </body>
+  </html>
+  
+
+data files: unchanged
+
+outbound calls: none
+
+`;
+
+exports[`GET /api/planner-boards > invalid input › non-numeric groupNumber matches nothing 1`] = `
+
+GET /api/planner-boards?groupNumber=abc
+credentials: group 5 POC (rafael.t.mendoza, role poc)
+
+status: 200
+content-type: application/json; charset=utf-8
+access-control-allow-origin: *
+x-powered-by: Express
+response body:
+  []
+
+data files: unchanged
+
+outbound calls: none
+
+`;
+
+exports[`GET /api/planner-boards > no auth 1`] = `
+
+GET /api/planner-boards
+credentials: none
+
+=> identical to the happy path (lists boards with ids coerced to numbers (as the planner sends it)): same status, body, data-file changes and outbound calls
+
+`;
+
+exports[`GET /api/planner-boards > not found › group with no board 1`] = `
+
+GET /api/planner-boards?groupNumber=3
+credentials: group 5 POC (rafael.t.mendoza, role poc)
+
+status: 200
+content-type: application/json; charset=utf-8
+access-control-allow-origin: *
+x-powered-by: Express
+response body:
+  []
+
+data files: unchanged
+
+outbound calls: none
+
+`;
+
+exports[`GET /api/planner-boards > not found › planner-boards collection missing 1`] = `
+
+GET /api/planner-boards
+credentials: group 5 POC (rafael.t.mendoza, role poc)
+
+status: 200
+content-type: application/json; charset=utf-8
+access-control-allow-origin: *
+x-powered-by: Express
+response body:
+  []
+
+data files: unchanged
+
+outbound calls: none
+
+`;
+
+exports[`GET /api/planner-boards > wrong role 1`] = `
+
+GET /api/planner-boards
+credentials: no-group new joiner (paolo.d.ramos, role viewer)
+
+=> identical to the happy path (lists boards with ids coerced to numbers (as the planner sends it)): same status, body, data-file changes and outbound calls
+
+`;
+
+exports[`GET /api/planner-buckets > happy path › filters by boardId (as the planner sends it) 1`] = `
+
+GET /api/planner-buckets?boardId=2
+credentials: group 5 POC (rafael.t.mendoza, role poc)
+
+status: 200
+content-type: application/json; charset=utf-8
+access-control-allow-origin: *
+x-powered-by: Express
+response body:
+  [
+    {
+      "id": 1,
+      "boardId": 2,
+      "name": "Sprint 1",
+      "order": 0
+    },
+    {
+      "id": 2,
+      "boardId": 2,
+      "name": "Sprint 2",
+      "order": 1
+    },
+    {
+      "id": 3,
+      "boardId": 2,
+      "name": "Sprint 3",
+      "order": 2
+    }
+  ]
+
+data files: unchanged
+
+outbound calls: none
+
+`;
+
+exports[`GET /api/planner-buckets > happy path › lists every bucket with ids coerced to numbers 1`] = `
+
+GET /api/planner-buckets
+credentials: group 5 POC (rafael.t.mendoza, role poc)
+
+status: 200
+content-type: application/json; charset=utf-8
+access-control-allow-origin: *
+x-powered-by: Express
+response body:
+  [
+    {
+      "id": 1,
+      "boardId": 2,
+      "name": "Sprint 1",
+      "order": 0
+    },
+    {
+      "id": 2,
+      "boardId": 2,
+      "name": "Sprint 2",
+      "order": 1
+    },
+    {
+      "id": 3,
+      "boardId": 2,
+      "name": "Sprint 3",
+      "order": 2
+    },
+    {
+      "id": 4,
+      "boardId": 1,
+      "name": "Sprint 2",
+      "order": 0
+    },
+    {
+      "id": 5,
+      "boardId": 1,
+      "name": "Sprint 3",
+      "order": 1
+    }
+  ]
+
+data files: unchanged
+
+outbound calls: none
+
+`;
+
+exports[`GET /api/planner-buckets > invalid input › malformed JSON body 1`] = `
+
+GET /api/planner-buckets
+credentials: group 5 POC (rafael.t.mendoza, role poc)
+request body (raw):
+  {"broken": 
+
+status: 400
+content-type: text/html; charset=utf-8
+access-control-allow-origin: *
+x-powered-by: Express
+response body:
+  <!DOCTYPE html>
+  <html lang="en">
+  <head>
+  <meta charset="utf-8">
+  <title>Error</title>
+  </head>
+  <body>
+  <pre>SyntaxError: Unexpected end of JSON input<br> &nbsp; &nbsp;at <stack trace removed></pre>
+  </body>
+  </html>
+  
+
+data files: unchanged
+
+outbound calls: none
+
+`;
+
+exports[`GET /api/planner-buckets > invalid input › non-numeric boardId matches nothing 1`] = `
+
+GET /api/planner-buckets?boardId=abc
+credentials: group 5 POC (rafael.t.mendoza, role poc)
+
+status: 200
+content-type: application/json; charset=utf-8
+access-control-allow-origin: *
+x-powered-by: Express
+response body:
+  []
+
+data files: unchanged
+
+outbound calls: none
+
+`;
+
+exports[`GET /api/planner-buckets > no auth 1`] = `
+
+GET /api/planner-buckets?boardId=2
+credentials: none
+
+=> identical to the happy path (filters by boardId (as the planner sends it)): same status, body, data-file changes and outbound calls
+
+`;
+
+exports[`GET /api/planner-buckets > not found › board that does not exist 1`] = `
+
+GET /api/planner-buckets?boardId=99
+credentials: group 5 POC (rafael.t.mendoza, role poc)
+
+status: 200
+content-type: application/json; charset=utf-8
+access-control-allow-origin: *
+x-powered-by: Express
+response body:
+  []
+
+data files: unchanged
+
+outbound calls: none
+
+`;
+
+exports[`GET /api/planner-buckets > not found › planner-buckets collection missing 1`] = `
+
+GET /api/planner-buckets?boardId=2
+credentials: group 5 POC (rafael.t.mendoza, role poc)
+
+status: 200
+content-type: application/json; charset=utf-8
+access-control-allow-origin: *
+x-powered-by: Express
+response body:
+  []
+
+data files: unchanged
+
+outbound calls: none
+
+`;
+
+exports[`GET /api/planner-buckets > wrong role 1`] = `
+
+GET /api/planner-buckets?boardId=2
+credentials: no-group new joiner (paolo.d.ramos, role viewer)
+
+=> identical to the happy path (filters by boardId (as the planner sends it)): same status, body, data-file changes and outbound calls
+
+`;
+
+exports[`GET /api/planner-labels > happy path › lists labels (mixed string and number ids, returned as stored) 1`] = `
+
+GET /api/planner-labels
+credentials: group 5 POC (rafael.t.mendoza, role poc)
+
+status: 200
+content-type: application/json; charset=utf-8
+access-control-allow-origin: *
+x-powered-by: Express
+response body:
+  [
+    {
+      "id": "1",
+      "name": "Sprint Delivery",
+      "color": "#a99bd4"
+    },
+    {
+      "id": "2",
+      "name": "Training",
+      "color": "#62b8bd"
+    },
+    {
+      "id": "3",
+      "name": "Story Point 1",
+      "color": "#f2cc8f"
+    },
+    {
+      "id": "4",
+      "name": "Story Point 2",
+      "color": "#ee8a5b"
+    },
+    {
+      "id": "5",
+      "name": "Story Point 3",
+      "color": "#d65f5f"
+    },
+    {
+      "id": 6,
+      "name": "Bug",
+      "color": "#4f7fcf"
+    }
+  ]
+
+data files: unchanged
+
+outbound calls: none
+
+`;
+
+exports[`GET /api/planner-labels > invalid input › malformed JSON body 1`] = `
+
+GET /api/planner-labels
+credentials: group 5 POC (rafael.t.mendoza, role poc)
+request body (raw):
+  {"broken": 
+
+status: 400
+content-type: text/html; charset=utf-8
+access-control-allow-origin: *
+x-powered-by: Express
+response body:
+  <!DOCTYPE html>
+  <html lang="en">
+  <head>
+  <meta charset="utf-8">
+  <title>Error</title>
+  </head>
+  <body>
+  <pre>SyntaxError: Unexpected end of JSON input<br> &nbsp; &nbsp;at <stack trace removed></pre>
+  </body>
+  </html>
+  
+
+data files: unchanged
+
+outbound calls: none
+
+`;
+
+exports[`GET /api/planner-labels > no auth 1`] = `
+
+GET /api/planner-labels
+credentials: none
+
+=> identical to the happy path (lists labels (mixed string and number ids, returned as stored)): same status, body, data-file changes and outbound calls
+
+`;
+
+exports[`GET /api/planner-labels > not found › planner-labels collection missing 1`] = `
+
+GET /api/planner-labels
+credentials: group 5 POC (rafael.t.mendoza, role poc)
+
+status: 200
+content-type: application/json; charset=utf-8
+access-control-allow-origin: *
+x-powered-by: Express
+response body:
+  []
+
+data files: unchanged
+
+outbound calls: none
+
+`;
+
+exports[`GET /api/planner-labels > wrong role 1`] = `
+
+GET /api/planner-labels
+credentials: no-group new joiner (paolo.d.ramos, role viewer)
+
+=> identical to the happy path (lists labels (mixed string and number ids, returned as stored)): same status, body, data-file changes and outbound calls
+
+`;
+
+exports[`GET /api/planner-tasks > happy path › filters by boardId (as the planner sends it) 1`] = `
+
+GET /api/planner-tasks?boardId=2
+credentials: group 5 POC (rafael.t.mendoza, role poc)
+
+status: 200
+content-type: application/json; charset=utf-8
+access-control-allow-origin: *
+x-powered-by: Express
+response body:
+  [
+    {
+      "id": 1,
+      "boardId": 2,
+      "bucketId": 1,
+      "title": "Set up AEM local author instance",
+      "status": "Completed",
+      "priority": "Medium",
+      "startDate": "2026-10-13",
+      "dueDate": "2026-10-16",
+      "labels": [
+        2,
+        3
+      ],
+      "assignee": "liza.m.navarro",
+      "checklist": [
+        {
+          "id": 1,
+          "text": "Install AEM SDK",
+          "done": true
+        },
+        {
+          "id": 2,
+          "text": "Deploy sample site",
+          "done": true
+        }
+      ],
+      "completed": true,
+      "createdAt": "2026-10-13T01:20:44.512Z",
+      "updatedAt": "2026-10-16T08:02:19.377Z",
+      "completedDate": "2026-10-16",
+      "notes": ""
+    },
+    {
+      "id": 2,
+      "boardId": 2,
+      "bucketId": 2,
+      "title": "Angular signals refresher",
+      "status": "In progress",
+      "priority": "Medium",
+      "startDate": "2026-10-27",
+      "dueDate": "2026-11-04",
+      "labels": [
+        2,
+        4
+      ],
+      "assignee": "jomar.c.pascual",
+      "checklist": [
+        {
+          "id": 1,
+          "text": "Finish signals module",
+          "done": true
+        },
+        {
+          "id": 2,
+          "text": "Convert a sample component",
+          "done": false
+        }
+      ],
+      "completed": false,
+      "createdAt": "2026-10-27T02:11:08.940Z",
+      "updatedAt": "2026-11-02T03:45:51.006Z",
+      "completedDate": "",
+      "notes": ""
+    },
+    {
+      "id": 3,
+      "boardId": 2,
+      "bucketId": 2,
+      "title": "PoC: Attendance export to CSV",
+      "status": "Review",
+      "priority": "Medium",
+      "startDate": "2026-10-28",
+      "dueDate": "2026-11-06",
+      "labels": [
+        1,
+        "5"
+      ],
+      "assignee": "teresa.villanueva",
+      "checklist": [],
+      "description": "Let POCs download a month of attendance as CSV for the weekly report.",
+      "acceptanceCriteria": "As a POC, I can export the selected month and group to a CSV with one row per resource.",
+      "comments": [
+        {
+          "id": 1793515223418,
+          "author": "Rafael Mendoza",
+          "text": "Looks good. Please add the office location column before we close this.",
+          "createdAt": "2026-11-04T06:40:23.418Z"
+        }
+      ],
+      "completed": false,
+      "createdAt": "2026-10-28T05:30:12.261Z",
+      "updatedAt": "2026-11-04T06:40:31.902Z",
+      "completedDate": ""
+    },
+    {
+      "id": 5,
+      "boardId": 2,
+      "bucketId": 3,
+      "title": "Plan component library audit",
+      "status": "Not started",
+      "priority": "Medium",
+      "startDate": "",
+      "dueDate": "",
+      "labels": [],
+      "assignee": "rafael.t.mendoza",
+      "checklist": [],
+      "description": "",
+      "acceptanceCriteria": "",
+      "comments": [],
+      "completed": false,
+      "createdAt": "2026-11-05T10:02:37.155Z",
+      "updatedAt": "2026-11-05T10:02:37.155Z"
+    }
+  ]
+
+data files: unchanged
+
+outbound calls: none
+
+`;
+
+exports[`GET /api/planner-tasks > happy path › lists every task with ids coerced to numbers 1`] = `
+
+GET /api/planner-tasks
+credentials: group 5 POC (rafael.t.mendoza, role poc)
+
+status: 200
+content-type: application/json; charset=utf-8
+access-control-allow-origin: *
+x-powered-by: Express
+response body:
+  [
+    {
+      "id": 1,
+      "boardId": 2,
+      "bucketId": 1,
+      "title": "Set up AEM local author instance",
+      "status": "Completed",
+      "priority": "Medium",
+      "startDate": "2026-10-13",
+      "dueDate": "2026-10-16",
+      "labels": [
+        2,
+        3
+      ],
+      "assignee": "liza.m.navarro",
+      "checklist": [
+        {
+          "id": 1,
+          "text": "Install AEM SDK",
+          "done": true
+        },
+        {
+          "id": 2,
+          "text": "Deploy sample site",
+          "done": true
+        }
+      ],
+      "completed": true,
+      "createdAt": "2026-10-13T01:20:44.512Z",
+      "updatedAt": "2026-10-16T08:02:19.377Z",
+      "completedDate": "2026-10-16",
+      "notes": ""
+    },
+    {
+      "id": 2,
+      "boardId": 2,
+      "bucketId": 2,
+      "title": "Angular signals refresher",
+      "status": "In progress",
+      "priority": "Medium",
+      "startDate": "2026-10-27",
+      "dueDate": "2026-11-04",
+      "labels": [
+        2,
+        4
+      ],
+      "assignee": "jomar.c.pascual",
+      "checklist": [
+        {
+          "id": 1,
+          "text": "Finish signals module",
+          "done": true
+        },
+        {
+          "id": 2,
+          "text": "Convert a sample component",
+          "done": false
+        }
+      ],
+      "completed": false,
+      "createdAt": "2026-10-27T02:11:08.940Z",
+      "updatedAt": "2026-11-02T03:45:51.006Z",
+      "completedDate": "",
+      "notes": ""
+    },
+    {
+      "id": 3,
+      "boardId": 2,
+      "bucketId": 2,
+      "title": "PoC: Attendance export to CSV",
+      "status": "Review",
+      "priority": "Medium",
+      "startDate": "2026-10-28",
+      "dueDate": "2026-11-06",
+      "labels": [
+        1,
+        "5"
+      ],
+      "assignee": "teresa.villanueva",
+      "checklist": [],
+      "description": "Let POCs download a month of attendance as CSV for the weekly report.",
+      "acceptanceCriteria": "As a POC, I can export the selected month and group to a CSV with one row per resource.",
+      "comments": [
+        {
+          "id": 1793515223418,
+          "author": "Rafael Mendoza",
+          "text": "Looks good. Please add the office location column before we close this.",
+          "createdAt": "2026-11-04T06:40:23.418Z"
+        }
+      ],
+      "completed": false,
+      "createdAt": "2026-10-28T05:30:12.261Z",
+      "updatedAt": "2026-11-04T06:40:31.902Z",
+      "completedDate": ""
+    },
+    {
+      "id": 5,
+      "boardId": 2,
+      "bucketId": 3,
+      "title": "Plan component library audit",
+      "status": "Not started",
+      "priority": "Medium",
+      "startDate": "",
+      "dueDate": "",
+      "labels": [],
+      "assignee": "rafael.t.mendoza",
+      "checklist": [],
+      "description": "",
+      "acceptanceCriteria": "",
+      "comments": [],
+      "completed": false,
+      "createdAt": "2026-11-05T10:02:37.155Z",
+      "updatedAt": "2026-11-05T10:02:37.155Z"
+    },
+    {
+      "id": 6,
+      "boardId": 1,
+      "bucketId": 4,
+      "title": "React Testing Library deep dive",
+      "status": "Completed",
+      "priority": "Medium",
+      "startDate": "2026-10-27",
+      "dueDate": "2026-10-30",
+      "labels": [
+        2,
+        3
+      ],
+      "assignee": "nina.g.castro",
+      "checklist": [
+        {
+          "id": 1,
+          "text": "Write tests for a form component",
+          "done": true
+        }
+      ],
+      "completed": true,
+      "createdAt": "2026-10-27T01:58:20.733Z",
+      "updatedAt": "2026-10-30T07:26:44.019Z",
+      "completedDate": "2026-10-30",
+      "notes": ""
+    },
+    {
+      "id": 7,
+      "boardId": 1,
+      "bucketId": 5,
+      "title": "Fix date picker timezone bug",
+      "status": "Not started",
+      "priority": "Medium",
+      "startDate": "2026-11-10",
+      "dueDate": "2026-11-13",
+      "labels": [
+        6,
+        4
+      ],
+      "assignee": "andrea.s.bautista",
+      "checklist": [],
+      "description": "Dates picked late in the day are saved as the next day.",
+      "acceptanceCriteria": "",
+      "comments": [],
+      "completed": false,
+      "createdAt": "2026-11-06T02:15:49.601Z",
+      "updatedAt": "2026-11-06T02:15:49.601Z"
+    }
+  ]
+
+data files: unchanged
+
+outbound calls: none
+
+`;
+
+exports[`GET /api/planner-tasks > invalid input › malformed JSON body 1`] = `
+
+GET /api/planner-tasks
+credentials: group 5 POC (rafael.t.mendoza, role poc)
+request body (raw):
+  {"broken": 
+
+status: 400
+content-type: text/html; charset=utf-8
+access-control-allow-origin: *
+x-powered-by: Express
+response body:
+  <!DOCTYPE html>
+  <html lang="en">
+  <head>
+  <meta charset="utf-8">
+  <title>Error</title>
+  </head>
+  <body>
+  <pre>SyntaxError: Unexpected end of JSON input<br> &nbsp; &nbsp;at <stack trace removed></pre>
+  </body>
+  </html>
+  
+
+data files: unchanged
+
+outbound calls: none
+
+`;
+
+exports[`GET /api/planner-tasks > invalid input › non-numeric boardId matches nothing 1`] = `
+
+GET /api/planner-tasks?boardId=abc
+credentials: group 5 POC (rafael.t.mendoza, role poc)
+
+status: 200
+content-type: application/json; charset=utf-8
+access-control-allow-origin: *
+x-powered-by: Express
+response body:
+  []
+
+data files: unchanged
+
+outbound calls: none
+
+`;
+
+exports[`GET /api/planner-tasks > no auth 1`] = `
+
+GET /api/planner-tasks?boardId=2
+credentials: none
+
+=> identical to the happy path (filters by boardId (as the planner sends it)): same status, body, data-file changes and outbound calls
+
+`;
+
+exports[`GET /api/planner-tasks > not found › board that does not exist 1`] = `
+
+GET /api/planner-tasks?boardId=99
+credentials: group 5 POC (rafael.t.mendoza, role poc)
+
+status: 200
+content-type: application/json; charset=utf-8
+access-control-allow-origin: *
+x-powered-by: Express
+response body:
+  []
+
+data files: unchanged
+
+outbound calls: none
+
+`;
+
+exports[`GET /api/planner-tasks > not found › planner-tasks collection missing 1`] = `
+
+GET /api/planner-tasks?boardId=2
+credentials: group 5 POC (rafael.t.mendoza, role poc)
+
+status: 200
+content-type: application/json; charset=utf-8
+access-control-allow-origin: *
+x-powered-by: Express
+response body:
+  []
+
+data files: unchanged
+
+outbound calls: none
+
+`;
+
+exports[`GET /api/planner-tasks > wrong role 1`] = `
+
+GET /api/planner-tasks?boardId=2
+credentials: no-group new joiner (paolo.d.ramos, role viewer)
+
+=> identical to the happy path (filters by boardId (as the planner sends it)): same status, body, data-file changes and outbound calls
+
+`;
+
+exports[`PATCH /api/planner-tasks/:id > happy path › kanban drag to Completed (as the planner sends it) 1`] = `
+
+PATCH /api/planner-tasks/2
+credentials: group 5 POC (rafael.t.mendoza, role poc)
+request body:
+  {
+    "status": "Completed",
+    "completed": true
+  }
+
+status: 200
+content-type: application/json; charset=utf-8
+access-control-allow-origin: *
+x-powered-by: Express
+response body:
+  {
+    "id": 2,
+    "boardId": 2,
+    "bucketId": 2,
+    "title": "Angular signals refresher",
+    "status": "Completed",
+    "priority": "Medium",
+    "startDate": "2026-10-27",
+    "dueDate": "2026-11-04",
+    "labels": [
+      2,
+      4
+    ],
+    "assignee": "jomar.c.pascual",
+    "checklist": [
+      {
+        "id": 1,
+        "text": "Finish signals module",
+        "done": true
+      },
+      {
+        "id": 2,
+        "text": "Convert a sample component",
+        "done": false
+      }
+    ],
+    "completed": true,
+    "createdAt": "2026-10-27T02:11:08.940Z",
+    "updatedAt": "<generated-timestamp>",
+    "completedDate": "",
+    "notes": ""
+  }
+
+data files:
+  db.json: modified
+    raw text diff:
+      @@ -365,5 +365,5 @@
+             "bucketId": 2,
+             "title": "Angular signals refresher",
+      -      "status": "In progress",
+      +      "status": "Completed",
+             "priority": "Medium",
+             "startDate": "2026-10-27",
+      @@ -386,7 +386,7 @@
+               }
+             ],
+      -      "completed": false,
+      +      "completed": true,
+             "createdAt": "2026-10-27T02:11:08.940Z",
+      -      "updatedAt": "2026-11-02T03:45:51.006Z",
+      +      "updatedAt": "<generated-timestamp>",
+             "completedDate": "",
+             "notes": ""
+    parsed JSON diff:
+      ~ /planner-tasks[id=2]/status: "In progress" → "Completed"
+      ~ /planner-tasks[id=2]/completed: false → true
+      ~ /planner-tasks[id=2]/updatedAt: "2026-11-02T03:45:51.006Z" → "<generated-timestamp>"
+
+outbound calls: none
+
+`;
+
+exports[`PATCH /api/planner-tasks/:id > happy path › modal save with the full task, including a new comment 1`] = `
+
+PATCH /api/planner-tasks/6
+credentials: group 5 POC (rafael.t.mendoza, role poc)
+request body:
+  {
+    "id": 6,
+    "boardId": 1,
+    "bucketId": 4,
+    "title": "Next.js routing walkthrough",
+    "status": "In progress",
+    "priority": "Low",
+    "startDate": "2026-10-29",
+    "dueDate": "2026-11-05",
+    "labels": [
+      2
+    ],
+    "assignee": "andrea.s.bautista",
+    "checklist": [],
+    "description": "<p>Walk through the app router</p>",
+    "acceptanceCriteria": "",
+    "comments": [
+      {
+        "id": 1,
+        "author": "Miguel Torres",
+        "text": "Can we cover layouts too?",
+        "createdAt": "2026-11-04T05:00:00.000Z"
+      }
+    ],
+    "completed": false,
+    "createdAt": "2026-10-29T02:00:00.000Z",
+    "updatedAt": "2026-11-01T02:00:00.000Z"
+  }
+
+status: 200
+content-type: application/json; charset=utf-8
+access-control-allow-origin: *
+x-powered-by: Express
+response body:
+  {
+    "id": 6,
+    "boardId": 1,
+    "bucketId": 4,
+    "title": "Next.js routing walkthrough",
+    "status": "In progress",
+    "priority": "Low",
+    "startDate": "2026-10-29",
+    "dueDate": "2026-11-05",
+    "labels": [
+      2
+    ],
+    "assignee": "andrea.s.bautista",
+    "checklist": [],
+    "completed": false,
+    "createdAt": "2026-10-29T02:00:00.000Z",
+    "updatedAt": "<generated-timestamp>",
+    "completedDate": "2026-10-30",
+    "notes": "",
+    "description": "<p>Walk through the app router</p>",
+    "acceptanceCriteria": "",
+    "comments": [
+      {
+        "id": 1,
+        "author": "Miguel Torres",
+        "text": "Can we cover layouts too?",
+        "createdAt": "2026-11-04T05:00:00.000Z"
+      }
+    ]
+  }
+
+data files:
+  db.json: modified
+    raw text diff:
+      @@ -445,26 +445,29 @@
+             "boardId": 1,
+             "bucketId": 4,
+      -      "title": "React Testing Library deep dive",
+      -      "status": "Completed",
+      -      "priority": "Medium",
+      -      "startDate": "2026-10-27",
+      -      "dueDate": "2026-10-30",
+      +      "title": "Next.js routing walkthrough",
+      +      "status": "In progress",
+      +      "priority": "Low",
+      +      "startDate": "2026-10-29",
+      +      "dueDate": "2026-11-05",
+             "labels": [
+      -        2,
+      -        3
+      +        2
+             ],
+      -      "assignee": "nina.g.castro",
+      -      "checklist": [
+      +      "assignee": "andrea.s.bautista",
+      +      "checklist": [],
+      +      "completed": false,
+      +      "createdAt": "2026-10-29T02:00:00.000Z",
+      +      "updatedAt": "<generated-timestamp>",
+      +      "completedDate": "2026-10-30",
+      +      "notes": "",
+      +      "description": "<p>Walk through the app router</p>",
+      +      "acceptanceCriteria": "",
+      +      "comments": [
+               {
+                 "id": 1,
+      -          "text": "Write tests for a form component",
+      -          "done": true
+      +          "author": "Miguel Torres",
+      +          "text": "Can we cover layouts too?",
+      +          "createdAt": "2026-11-04T05:00:00.000Z"
+               }
+      -      ],
+      -      "completed": true,
+      -      "createdAt": "2026-10-27T01:58:20.733Z",
+      -      "updatedAt": "2026-10-30T07:26:44.019Z",
+      -      "completedDate": "2026-10-30",
+      -      "notes": ""
+      +      ]
+           },
+           {
+    parsed JSON diff:
+      ~ /planner-tasks[id=6]/title: "React Testing Library deep dive" → "Next.js routing walkthrough"
+      ~ /planner-tasks[id=6]/status: "Completed" → "In progress"
+      ~ /planner-tasks[id=6]/priority: "Medium" → "Low"
+      ~ /planner-tasks[id=6]/startDate: "2026-10-27" → "2026-10-29"
+      ~ /planner-tasks[id=6]/dueDate: "2026-10-30" → "2026-11-05"
+      - /planner-tasks[id=6]/labels[1]: 3
+      ~ /planner-tasks[id=6]/assignee: "nina.g.castro" → "andrea.s.bautista"
+      - /planner-tasks[id=6]/checklist[id=1]: {"id":1,"text":"Write tests for a form component","done":true}
+      ~ /planner-tasks[id=6]/completed: true → false
+      ~ /planner-tasks[id=6]/createdAt: "2026-10-27T01:58:20.733Z" → "2026-10-29T02:00:00.000Z"
+      ~ /planner-tasks[id=6]/updatedAt: "2026-10-30T07:26:44.019Z" → "<generated-timestamp>"
+      + /planner-tasks[id=6]/description: "<p>Walk through the app router</p>"
+      + /planner-tasks[id=6]/acceptanceCriteria: ""
+      + /planner-tasks[id=6]/comments: [{"id":1,"author":"Miguel Torres","text":"Can we cover layouts too?","createdAt":"2026-11-04T05:00:00.000Z"}]
+
+outbound calls: none
+
+`;
+
+exports[`PATCH /api/planner-tasks/:id > invalid input › client can overwrite createdAt and add arbitrary fields; id is kept 1`] = `
+
+PATCH /api/planner-tasks/2
+credentials: group 5 POC (rafael.t.mendoza, role poc)
+request body:
+  {
+    "id": 99,
+    "createdAt": "2020-01-01T00:00:00.000Z",
+    "isAdmin": true
+  }
+
+status: 200
+content-type: application/json; charset=utf-8
+access-control-allow-origin: *
+x-powered-by: Express
+response body:
+  {
+    "id": 2,
+    "boardId": 2,
+    "bucketId": 2,
+    "title": "Angular signals refresher",
+    "status": "In progress",
+    "priority": "Medium",
+    "startDate": "2026-10-27",
+    "dueDate": "2026-11-04",
+    "labels": [
+      2,
+      4
+    ],
+    "assignee": "jomar.c.pascual",
+    "checklist": [
+      {
+        "id": 1,
+        "text": "Finish signals module",
+        "done": true
+      },
+      {
+        "id": 2,
+        "text": "Convert a sample component",
+        "done": false
+      }
+    ],
+    "completed": false,
+    "createdAt": "2020-01-01T00:00:00.000Z",
+    "updatedAt": "<generated-timestamp>",
+    "completedDate": "",
+    "notes": "",
+    "isAdmin": true
+  }
+
+data files:
+  db.json: modified
+    raw text diff:
+      @@ -387,8 +387,9 @@
+             ],
+             "completed": false,
+      -      "createdAt": "2026-10-27T02:11:08.940Z",
+      -      "updatedAt": "2026-11-02T03:45:51.006Z",
+      +      "createdAt": "2020-01-01T00:00:00.000Z",
+      +      "updatedAt": "<generated-timestamp>",
+             "completedDate": "",
+      -      "notes": ""
+      +      "notes": "",
+      +      "isAdmin": true
+           },
+           {
+    parsed JSON diff:
+      ~ /planner-tasks[id=2]/createdAt: "2026-10-27T02:11:08.940Z" → "2020-01-01T00:00:00.000Z"
+      ~ /planner-tasks[id=2]/updatedAt: "2026-11-02T03:45:51.006Z" → "<generated-timestamp>"
+      + /planner-tasks[id=2]/isAdmin: true
+
+outbound calls: none
+
+`;
+
+exports[`PATCH /api/planner-tasks/:id > invalid input › empty body still bumps updatedAt 1`] = `
+
+PATCH /api/planner-tasks/2
+credentials: group 5 POC (rafael.t.mendoza, role poc)
+request body:
+  {}
+
+status: 200
+content-type: application/json; charset=utf-8
+access-control-allow-origin: *
+x-powered-by: Express
+response body:
+  {
+    "id": 2,
+    "boardId": 2,
+    "bucketId": 2,
+    "title": "Angular signals refresher",
+    "status": "In progress",
+    "priority": "Medium",
+    "startDate": "2026-10-27",
+    "dueDate": "2026-11-04",
+    "labels": [
+      2,
+      4
+    ],
+    "assignee": "jomar.c.pascual",
+    "checklist": [
+      {
+        "id": 1,
+        "text": "Finish signals module",
+        "done": true
+      },
+      {
+        "id": 2,
+        "text": "Convert a sample component",
+        "done": false
+      }
+    ],
+    "completed": false,
+    "createdAt": "2026-10-27T02:11:08.940Z",
+    "updatedAt": "<generated-timestamp>",
+    "completedDate": "",
+    "notes": ""
+  }
+
+data files:
+  db.json: modified
+    raw text diff:
+      @@ -388,5 +388,5 @@
+             "completed": false,
+             "createdAt": "2026-10-27T02:11:08.940Z",
+      -      "updatedAt": "2026-11-02T03:45:51.006Z",
+      +      "updatedAt": "<generated-timestamp>",
+             "completedDate": "",
+             "notes": ""
+    parsed JSON diff:
+      ~ /planner-tasks[id=2]/updatedAt: "2026-11-02T03:45:51.006Z" → "<generated-timestamp>"
+
+outbound calls: none
+
+`;
+
+exports[`PATCH /api/planner-tasks/:id > invalid input › malformed JSON body 1`] = `
+
+PATCH /api/planner-tasks/2
+credentials: group 5 POC (rafael.t.mendoza, role poc)
+request body (raw):
+  {"broken": 
+
+status: 400
+content-type: text/html; charset=utf-8
+access-control-allow-origin: *
+x-powered-by: Express
+response body:
+  <!DOCTYPE html>
+  <html lang="en">
+  <head>
+  <meta charset="utf-8">
+  <title>Error</title>
+  </head>
+  <body>
+  <pre>SyntaxError: Unexpected end of JSON input<br> &nbsp; &nbsp;at <stack trace removed></pre>
+  </body>
+  </html>
+  
+
+data files: unchanged
+
+outbound calls: none
+
+`;
+
+exports[`PATCH /api/planner-tasks/:id > invalid input › no body 1`] = `
+
+PATCH /api/planner-tasks/2
+credentials: group 5 POC (rafael.t.mendoza, role poc)
+
+status: 200
+content-type: application/json; charset=utf-8
+access-control-allow-origin: *
+x-powered-by: Express
+response body:
+  {
+    "id": 2,
+    "boardId": 2,
+    "bucketId": 2,
+    "title": "Angular signals refresher",
+    "status": "In progress",
+    "priority": "Medium",
+    "startDate": "2026-10-27",
+    "dueDate": "2026-11-04",
+    "labels": [
+      2,
+      4
+    ],
+    "assignee": "jomar.c.pascual",
+    "checklist": [
+      {
+        "id": 1,
+        "text": "Finish signals module",
+        "done": true
+      },
+      {
+        "id": 2,
+        "text": "Convert a sample component",
+        "done": false
+      }
+    ],
+    "completed": false,
+    "createdAt": "2026-10-27T02:11:08.940Z",
+    "updatedAt": "<generated-timestamp>",
+    "completedDate": "",
+    "notes": ""
+  }
+
+data files:
+  db.json: modified
+    raw text diff:
+      @@ -388,5 +388,5 @@
+             "completed": false,
+             "createdAt": "2026-10-27T02:11:08.940Z",
+      -      "updatedAt": "2026-11-02T03:45:51.006Z",
+      +      "updatedAt": "<generated-timestamp>",
+             "completedDate": "",
+             "notes": ""
+    parsed JSON diff:
+      ~ /planner-tasks[id=2]/updatedAt: "2026-11-02T03:45:51.006Z" → "<generated-timestamp>"
+
+outbound calls: none
+
+`;
+
+exports[`PATCH /api/planner-tasks/:id > invalid input › non-numeric boardId is stored as null 1`] = `
+
+PATCH /api/planner-tasks/2
+credentials: group 5 POC (rafael.t.mendoza, role poc)
+request body:
+  {
+    "boardId": "abc"
+  }
+
+status: 200
+content-type: application/json; charset=utf-8
+access-control-allow-origin: *
+x-powered-by: Express
+response body:
+  {
+    "id": 2,
+    "boardId": null,
+    "bucketId": 2,
+    "title": "Angular signals refresher",
+    "status": "In progress",
+    "priority": "Medium",
+    "startDate": "2026-10-27",
+    "dueDate": "2026-11-04",
+    "labels": [
+      2,
+      4
+    ],
+    "assignee": "jomar.c.pascual",
+    "checklist": [
+      {
+        "id": 1,
+        "text": "Finish signals module",
+        "done": true
+      },
+      {
+        "id": 2,
+        "text": "Convert a sample component",
+        "done": false
+      }
+    ],
+    "completed": false,
+    "createdAt": "2026-10-27T02:11:08.940Z",
+    "updatedAt": "<generated-timestamp>",
+    "completedDate": "",
+    "notes": ""
+  }
+
+data files:
+  db.json: modified
+    raw text diff:
+      @@ -362,5 +362,5 @@
+           {
+             "id": 2,
+      -      "boardId": 2,
+      +      "boardId": null,
+             "bucketId": 2,
+             "title": "Angular signals refresher",
+      @@ -388,5 +388,5 @@
+             "completed": false,
+             "createdAt": "2026-10-27T02:11:08.940Z",
+      -      "updatedAt": "2026-11-02T03:45:51.006Z",
+      +      "updatedAt": "<generated-timestamp>",
+             "completedDate": "",
+             "notes": ""
+    parsed JSON diff:
+      ~ /planner-tasks[id=2]/boardId: 2 → null
+      ~ /planner-tasks[id=2]/updatedAt: "2026-11-02T03:45:51.006Z" → "<generated-timestamp>"
+
+outbound calls: none
+
+`;
+
+exports[`PATCH /api/planner-tasks/:id > no auth 1`] = `
+
+PATCH /api/planner-tasks/2
+credentials: none
+request body:
+  {
+    "status": "Completed",
+    "completed": true
+  }
+
+=> identical to the happy path (kanban drag to Completed (as the planner sends it)): same status, body, data-file changes and outbound calls
+
+`;
+
+exports[`PATCH /api/planner-tasks/:id > not found › deleted task 4 1`] = `
+
+PATCH /api/planner-tasks/4
+credentials: group 5 POC (rafael.t.mendoza, role poc)
+request body:
+  {
+    "status": "Completed",
+    "completed": true
+  }
+
+status: 404
+content-type: application/json; charset=utf-8
+access-control-allow-origin: *
+x-powered-by: Express
+response body:
+  {
+    "error": "task not found"
+  }
+
+data files: unchanged
+
+outbound calls: none
+
+`;
+
+exports[`PATCH /api/planner-tasks/:id > not found › non-numeric id 1`] = `
+
+PATCH /api/planner-tasks/abc
+credentials: group 5 POC (rafael.t.mendoza, role poc)
+request body:
+  {
+    "status": "Completed",
+    "completed": true
+  }
+
+status: 404
+content-type: application/json; charset=utf-8
+access-control-allow-origin: *
+x-powered-by: Express
+response body:
+  {
+    "error": "task not found"
+  }
+
+data files: unchanged
+
+outbound calls: none
+
+`;
+
+exports[`PATCH /api/planner-tasks/:id > not found › unknown id 1`] = `
+
+PATCH /api/planner-tasks/999
+credentials: group 5 POC (rafael.t.mendoza, role poc)
+request body:
+  {
+    "status": "Completed",
+    "completed": true
+  }
+
+status: 404
+content-type: application/json; charset=utf-8
+access-control-allow-origin: *
+x-powered-by: Express
+response body:
+  {
+    "error": "task not found"
+  }
+
+data files: unchanged
+
+outbound calls: none
+
+`;
+
+exports[`PATCH /api/planner-tasks/:id > wrong role 1`] = `
+
+PATCH /api/planner-tasks/2
+credentials: no-group new joiner (paolo.d.ramos, role viewer)
+request body:
+  {
+    "status": "Completed",
+    "completed": true
+  }
+
+=> identical to the happy path (kanban drag to Completed (as the planner sends it)): same status, body, data-file changes and outbound calls
+
+`;
+
+exports[`POST /api/deletion-logs > happy path › logs a comment deletion 1`] = `
+
+POST /api/deletion-logs
+credentials: group 5 POC (rafael.t.mendoza, role poc)
+request body:
+  {
+    "type": "comment-deletion",
+    "taskId": 3,
+    "taskTitle": "PoC: Attendance export to CSV",
+    "deletedBy": "Rafael Mendoza",
+    "deletedByEid": "rafael.t.mendoza",
+    "commentAuthor": "Rafael Mendoza",
+    "commentText": "Use the shared date helper for the filename",
+    "commentCreatedAt": "2026-11-02T07:44:30.112Z"
+  }
+
+status: 201
+content-type: application/json; charset=utf-8
+access-control-allow-origin: *
+x-powered-by: Express
+response body:
+  {
+    "type": "comment-deletion",
+    "taskId": 3,
+    "taskTitle": "PoC: Attendance export to CSV",
+    "deletedBy": "Rafael Mendoza",
+    "deletedByEid": "rafael.t.mendoza",
+    "commentAuthor": "Rafael Mendoza",
+    "commentText": "Use the shared date helper for the filename",
+    "commentCreatedAt": "2026-11-02T07:44:30.112Z",
+    "id": 3,
+    "deletedAt": "<generated-timestamp>"
+  }
+
+data files:
+  db.json: modified
+    raw text diff:
+      @@ -623,4 +623,16 @@
+             "id": 2,
+             "deletedAt": "2026-11-03T02:05:40.017Z"
+      +    },
+      +    {
+      +      "type": "comment-deletion",
+      +      "taskId": 3,
+      +      "taskTitle": "PoC: Attendance export to CSV",
+      +      "deletedBy": "Rafael Mendoza",
+      +      "deletedByEid": "rafael.t.mendoza",
+      +      "commentAuthor": "Rafael Mendoza",
+      +      "commentText": "Use the shared date helper for the filename",
+      +      "commentCreatedAt": "2026-11-02T07:44:30.112Z",
+      +      "id": 3,
+      +      "deletedAt": "<generated-timestamp>"
+           }
+         ]
+    parsed JSON diff:
+      + /deletion-logs[id=3] (at index 2): {"type":"comment-deletion","taskId":3,"taskTitle":"PoC: Attendance export to CSV","deletedBy":"Rafael Mendoza","deletedByEid":"rafael.t.mendoza","commentAuthor":"Rafael Mendoza","commentText":"Use the shared date helper for the filename","commentCreatedAt":"2026-11-02T07:44:30.112Z","id":3,"deletedAt":"<generated-timestamp>"}
+
+outbound calls: none
+
+`;
+
+exports[`POST /api/deletion-logs > happy path › logs a task deletion (as the planner sends it) 1`] = `
+
+POST /api/deletion-logs
+credentials: group 5 POC (rafael.t.mendoza, role poc)
+request body:
+  {
+    "type": "task-deletion",
+    "taskId": 5,
+    "taskTitle": "Accessibility audit of the onboarding form",
+    "deletedBy": "Rafael Mendoza",
+    "deletedByEid": "rafael.t.mendoza"
+  }
+
+status: 201
+content-type: application/json; charset=utf-8
+access-control-allow-origin: *
+x-powered-by: Express
+response body:
+  {
+    "type": "task-deletion",
+    "taskId": 5,
+    "taskTitle": "Accessibility audit of the onboarding form",
+    "deletedBy": "Rafael Mendoza",
+    "deletedByEid": "rafael.t.mendoza",
+    "id": 3,
+    "deletedAt": "<generated-timestamp>"
+  }
+
+data files:
+  db.json: modified
+    raw text diff:
+      @@ -623,4 +623,13 @@
+             "id": 2,
+             "deletedAt": "2026-11-03T02:05:40.017Z"
+      +    },
+      +    {
+      +      "type": "task-deletion",
+      +      "taskId": 5,
+      +      "taskTitle": "Accessibility audit of the onboarding form",
+      +      "deletedBy": "Rafael Mendoza",
+      +      "deletedByEid": "rafael.t.mendoza",
+      +      "id": 3,
+      +      "deletedAt": "<generated-timestamp>"
+           }
+         ]
+    parsed JSON diff:
+      + /deletion-logs[id=3] (at index 2): {"type":"task-deletion","taskId":5,"taskTitle":"Accessibility audit of the onboarding form","deletedBy":"Rafael Mendoza","deletedByEid":"rafael.t.mendoza","id":3,"deletedAt":"<generated-timestamp>"}
+
+outbound calls: none
+
+`;
+
+exports[`POST /api/deletion-logs > invalid input › client id and deletedAt are overwritten 1`] = `
+
+POST /api/deletion-logs
+credentials: group 5 POC (rafael.t.mendoza, role poc)
+request body:
+  {
+    "type": "task-deletion",
+    "taskId": 5,
+    "taskTitle": "Accessibility audit of the onboarding form",
+    "deletedBy": "Rafael Mendoza",
+    "deletedByEid": "rafael.t.mendoza",
+    "id": 1,
+    "deletedAt": "2020-01-01T00:00:00.000Z"
+  }
+
+status: 201
+content-type: application/json; charset=utf-8
+access-control-allow-origin: *
+x-powered-by: Express
+response body:
+  {
+    "type": "task-deletion",
+    "taskId": 5,
+    "taskTitle": "Accessibility audit of the onboarding form",
+    "deletedBy": "Rafael Mendoza",
+    "deletedByEid": "rafael.t.mendoza",
+    "id": 3,
+    "deletedAt": "<generated-timestamp>"
+  }
+
+data files:
+  db.json: modified
+    raw text diff:
+      @@ -623,4 +623,13 @@
+             "id": 2,
+             "deletedAt": "2026-11-03T02:05:40.017Z"
+      +    },
+      +    {
+      +      "type": "task-deletion",
+      +      "taskId": 5,
+      +      "taskTitle": "Accessibility audit of the onboarding form",
+      +      "deletedBy": "Rafael Mendoza",
+      +      "deletedByEid": "rafael.t.mendoza",
+      +      "id": 3,
+      +      "deletedAt": "<generated-timestamp>"
+           }
+         ]
+    parsed JSON diff:
+      + /deletion-logs[id=3] (at index 2): {"type":"task-deletion","taskId":5,"taskTitle":"Accessibility audit of the onboarding form","deletedBy":"Rafael Mendoza","deletedByEid":"rafael.t.mendoza","id":3,"deletedAt":"<generated-timestamp>"}
+
+outbound calls: none
+
+`;
+
+exports[`POST /api/deletion-logs > invalid input › empty object is stored with an id and deletedAt 1`] = `
+
+POST /api/deletion-logs
+credentials: group 5 POC (rafael.t.mendoza, role poc)
+request body:
+  {}
+
+status: 201
+content-type: application/json; charset=utf-8
+access-control-allow-origin: *
+x-powered-by: Express
+response body:
+  {
+    "id": 3,
+    "deletedAt": "<generated-timestamp>"
+  }
+
+data files:
+  db.json: modified
+    raw text diff:
+      @@ -623,4 +623,8 @@
+             "id": 2,
+             "deletedAt": "2026-11-03T02:05:40.017Z"
+      +    },
+      +    {
+      +      "id": 3,
+      +      "deletedAt": "<generated-timestamp>"
+           }
+         ]
+    parsed JSON diff:
+      + /deletion-logs[id=3] (at index 2): {"id":3,"deletedAt":"<generated-timestamp>"}
+
+outbound calls: none
+
+`;
+
+exports[`POST /api/deletion-logs > invalid input › malformed JSON body 1`] = `
+
+POST /api/deletion-logs
+credentials: group 5 POC (rafael.t.mendoza, role poc)
+request body (raw):
+  {"broken": 
+
+status: 400
+content-type: text/html; charset=utf-8
+access-control-allow-origin: *
+x-powered-by: Express
+response body:
+  <!DOCTYPE html>
+  <html lang="en">
+  <head>
+  <meta charset="utf-8">
+  <title>Error</title>
+  </head>
+  <body>
+  <pre>SyntaxError: Unexpected end of JSON input<br> &nbsp; &nbsp;at <stack trace removed></pre>
+  </body>
+  </html>
+  
+
+data files: unchanged
+
+outbound calls: none
+
+`;
+
+exports[`POST /api/deletion-logs > invalid input › no body 1`] = `
+
+POST /api/deletion-logs
+credentials: group 5 POC (rafael.t.mendoza, role poc)
+
+status: 201
+content-type: application/json; charset=utf-8
+access-control-allow-origin: *
+x-powered-by: Express
+response body:
+  {
+    "id": 3,
+    "deletedAt": "<generated-timestamp>"
+  }
+
+data files:
+  db.json: modified
+    raw text diff:
+      @@ -623,4 +623,8 @@
+             "id": 2,
+             "deletedAt": "2026-11-03T02:05:40.017Z"
+      +    },
+      +    {
+      +      "id": 3,
+      +      "deletedAt": "<generated-timestamp>"
+           }
+         ]
+    parsed JSON diff:
+      + /deletion-logs[id=3] (at index 2): {"id":3,"deletedAt":"<generated-timestamp>"}
+
+outbound calls: none
+
+`;
+
+exports[`POST /api/deletion-logs > invalid input › unknown type and arbitrary fields are accepted 1`] = `
+
+POST /api/deletion-logs
+credentials: group 5 POC (rafael.t.mendoza, role poc)
+request body:
+  {
+    "type": "anything",
+    "taskId": 5,
+    "taskTitle": "Accessibility audit of the onboarding form",
+    "deletedBy": "Rafael Mendoza",
+    "deletedByEid": "rafael.t.mendoza",
+    "extra": 1
+  }
+
+status: 201
+content-type: application/json; charset=utf-8
+access-control-allow-origin: *
+x-powered-by: Express
+response body:
+  {
+    "type": "anything",
+    "taskId": 5,
+    "taskTitle": "Accessibility audit of the onboarding form",
+    "deletedBy": "Rafael Mendoza",
+    "deletedByEid": "rafael.t.mendoza",
+    "extra": 1,
+    "id": 3,
+    "deletedAt": "<generated-timestamp>"
+  }
+
+data files:
+  db.json: modified
+    raw text diff:
+      @@ -623,4 +623,14 @@
+             "id": 2,
+             "deletedAt": "2026-11-03T02:05:40.017Z"
+      +    },
+      +    {
+      +      "type": "anything",
+      +      "taskId": 5,
+      +      "taskTitle": "Accessibility audit of the onboarding form",
+      +      "deletedBy": "Rafael Mendoza",
+      +      "deletedByEid": "rafael.t.mendoza",
+      +      "extra": 1,
+      +      "id": 3,
+      +      "deletedAt": "<generated-timestamp>"
+           }
+         ]
+    parsed JSON diff:
+      + /deletion-logs[id=3] (at index 2): {"type":"anything","taskId":5,"taskTitle":"Accessibility audit of the onboarding form","deletedBy":"Rafael Mendoza","deletedByEid":"rafael.t.mendoza","extra":1,"id":3,"deletedAt":"<generated-timestamp>"}
+
+outbound calls: none
+
+`;
+
+exports[`POST /api/deletion-logs > no auth 1`] = `
+
+POST /api/deletion-logs
+credentials: none
+request body:
+  {
+    "type": "task-deletion",
+    "taskId": 5,
+    "taskTitle": "Accessibility audit of the onboarding form",
+    "deletedBy": "Rafael Mendoza",
+    "deletedByEid": "rafael.t.mendoza"
+  }
+
+=> identical to the happy path (logs a task deletion (as the planner sends it)): same status, body, data-file changes and outbound calls
+
+`;
+
+exports[`POST /api/deletion-logs > not found › deletion-logs collection missing 1`] = `
+
+POST /api/deletion-logs
+credentials: group 5 POC (rafael.t.mendoza, role poc)
+request body:
+  {
+    "type": "task-deletion",
+    "taskId": 5,
+    "taskTitle": "Accessibility audit of the onboarding form",
+    "deletedBy": "Rafael Mendoza",
+    "deletedByEid": "rafael.t.mendoza"
+  }
+
+status: 201
+content-type: application/json; charset=utf-8
+access-control-allow-origin: *
+x-powered-by: Express
+response body:
+  {
+    "type": "task-deletion",
+    "taskId": 5,
+    "taskTitle": "Accessibility audit of the onboarding form",
+    "deletedBy": "Rafael Mendoza",
+    "deletedByEid": "rafael.t.mendoza",
+    "id": 1,
+    "deletedAt": "<generated-timestamp>"
+  }
+
+data files:
+  db.json: modified
+    raw text diff:
+      @@ -601,4 +601,15 @@
+             "createdAt": "2026-11-05T01:40:15.330Z"
+           }
+      +  ],
+      +  "deletion-logs": [
+      +    {
+      +      "type": "task-deletion",
+      +      "taskId": 5,
+      +      "taskTitle": "Accessibility audit of the onboarding form",
+      +      "deletedBy": "Rafael Mendoza",
+      +      "deletedByEid": "rafael.t.mendoza",
+      +      "id": 1,
+      +      "deletedAt": "<generated-timestamp>"
+      +    }
+         ]
+       }
+    parsed JSON diff:
+      + /deletion-logs: [{"type":"task-deletion","taskId":5,"taskTitle":"Accessibility audit of the onboarding form","deletedBy":"Rafael Mendoza","deletedByEid":"rafael.t.mendoza","id":1,"deletedAt":"<generated-timestamp>"}]
+
+outbound calls: none
+
+`;
+
+exports[`POST /api/deletion-logs > not found › task that does not exist is accepted 1`] = `
+
+POST /api/deletion-logs
+credentials: group 5 POC (rafael.t.mendoza, role poc)
+request body:
+  {
+    "type": "task-deletion",
+    "taskId": 999,
+    "taskTitle": "Accessibility audit of the onboarding form",
+    "deletedBy": "Rafael Mendoza",
+    "deletedByEid": "rafael.t.mendoza"
+  }
+
+status: 201
+content-type: application/json; charset=utf-8
+access-control-allow-origin: *
+x-powered-by: Express
+response body:
+  {
+    "type": "task-deletion",
+    "taskId": 999,
+    "taskTitle": "Accessibility audit of the onboarding form",
+    "deletedBy": "Rafael Mendoza",
+    "deletedByEid": "rafael.t.mendoza",
+    "id": 3,
+    "deletedAt": "<generated-timestamp>"
+  }
+
+data files:
+  db.json: modified
+    raw text diff:
+      @@ -623,4 +623,13 @@
+             "id": 2,
+             "deletedAt": "2026-11-03T02:05:40.017Z"
+      +    },
+      +    {
+      +      "type": "task-deletion",
+      +      "taskId": 999,
+      +      "taskTitle": "Accessibility audit of the onboarding form",
+      +      "deletedBy": "Rafael Mendoza",
+      +      "deletedByEid": "rafael.t.mendoza",
+      +      "id": 3,
+      +      "deletedAt": "<generated-timestamp>"
+           }
+         ]
+    parsed JSON diff:
+      + /deletion-logs[id=3] (at index 2): {"type":"task-deletion","taskId":999,"taskTitle":"Accessibility audit of the onboarding form","deletedBy":"Rafael Mendoza","deletedByEid":"rafael.t.mendoza","id":3,"deletedAt":"<generated-timestamp>"}
+
+outbound calls: none
+
+`;
+
+exports[`POST /api/deletion-logs > wrong role 1`] = `
+
+POST /api/deletion-logs
+credentials: no-group new joiner (paolo.d.ramos, role viewer)
+request body:
+  {
+    "type": "task-deletion",
+    "taskId": 5,
+    "taskTitle": "Accessibility audit of the onboarding form",
+    "deletedBy": "Rafael Mendoza",
+    "deletedByEid": "rafael.t.mendoza"
+  }
+
+=> identical to the happy path (logs a task deletion (as the planner sends it)): same status, body, data-file changes and outbound calls
+
+`;
+
+exports[`POST /api/planner-buckets > happy path › auto-creates a sprint bucket (as the planner sends it) 1`] = `
+
+POST /api/planner-buckets
+credentials: group 5 POC (rafael.t.mendoza, role poc)
+request body:
+  {
+    "boardId": 1,
+    "name": "Sprint 1",
+    "order": 0
+  }
+
+status: 201
+content-type: application/json; charset=utf-8
+access-control-allow-origin: *
+x-powered-by: Express
+response body:
+  {
+    "id": 6,
+    "boardId": 1,
+    "name": "Sprint 1",
+    "order": 0
+  }
+
+data files:
+  db.json: modified
+    raw text diff:
+      @@ -325,4 +325,10 @@
+             "name": "Sprint 3",
+             "order": 1
+      +    },
+      +    {
+      +      "id": 6,
+      +      "boardId": 1,
+      +      "name": "Sprint 1",
+      +      "order": 0
+           }
+         ],
+    parsed JSON diff:
+      + /planner-buckets[id=6] (at index 5): {"id":6,"boardId":1,"name":"Sprint 1","order":0}
+
+outbound calls: none
+
+`;
+
+exports[`POST /api/planner-buckets > happy path › string boardId and order are coerced; name trimmed 1`] = `
+
+POST /api/planner-buckets
+credentials: group 5 POC (rafael.t.mendoza, role poc)
+request body:
+  {
+    "boardId": "1",
+    "name": "  Sprint 1  ",
+    "order": "2"
+  }
+
+status: 201
+content-type: application/json; charset=utf-8
+access-control-allow-origin: *
+x-powered-by: Express
+response body:
+  {
+    "id": 6,
+    "boardId": 1,
+    "name": "Sprint 1",
+    "order": 2
+  }
+
+data files:
+  db.json: modified
+    raw text diff:
+      @@ -325,4 +325,10 @@
+             "name": "Sprint 3",
+             "order": 1
+      +    },
+      +    {
+      +      "id": 6,
+      +      "boardId": 1,
+      +      "name": "Sprint 1",
+      +      "order": 2
+           }
+         ],
+    parsed JSON diff:
+      + /planner-buckets[id=6] (at index 5): {"id":6,"boardId":1,"name":"Sprint 1","order":2}
+
+outbound calls: none
+
+`;
+
+exports[`POST /api/planner-buckets > invalid input › boardId 0 1`] = `
+
+POST /api/planner-buckets
+credentials: group 5 POC (rafael.t.mendoza, role poc)
+request body:
+  {
+    "boardId": 0,
+    "name": "Sprint 1"
+  }
+
+status: 400
+content-type: application/json; charset=utf-8
+access-control-allow-origin: *
+x-powered-by: Express
+response body:
+  {
+    "error": "boardId and name are required"
+  }
+
+data files: unchanged
+
+outbound calls: none
+
+`;
+
+exports[`POST /api/planner-buckets > invalid input › duplicate bucket name on the same board is accepted 1`] = `
+
+POST /api/planner-buckets
+credentials: group 5 POC (rafael.t.mendoza, role poc)
+request body:
+  {
+    "boardId": 2,
+    "name": "Sprint 2",
+    "order": 1
+  }
+
+status: 201
+content-type: application/json; charset=utf-8
+access-control-allow-origin: *
+x-powered-by: Express
+response body:
+  {
+    "id": 6,
+    "boardId": 2,
+    "name": "Sprint 2",
+    "order": 1
+  }
+
+data files:
+  db.json: modified
+    raw text diff:
+      @@ -325,4 +325,10 @@
+             "name": "Sprint 3",
+             "order": 1
+      +    },
+      +    {
+      +      "id": 6,
+      +      "boardId": 2,
+      +      "name": "Sprint 2",
+      +      "order": 1
+           }
+         ],
+    parsed JSON diff:
+      + /planner-buckets[id=6] (at index 5): {"id":6,"boardId":2,"name":"Sprint 2","order":1}
+
+outbound calls: none
+
+`;
+
+exports[`POST /api/planner-buckets > invalid input › malformed JSON body 1`] = `
+
+POST /api/planner-buckets
+credentials: group 5 POC (rafael.t.mendoza, role poc)
+request body (raw):
+  {"broken": 
+
+status: 400
+content-type: text/html; charset=utf-8
+access-control-allow-origin: *
+x-powered-by: Express
+response body:
+  <!DOCTYPE html>
+  <html lang="en">
+  <head>
+  <meta charset="utf-8">
+  <title>Error</title>
+  </head>
+  <body>
+  <pre>SyntaxError: Unexpected end of JSON input<br> &nbsp; &nbsp;at <stack trace removed></pre>
+  </body>
+  </html>
+  
+
+data files: unchanged
+
+outbound calls: none
+
+`;
+
+exports[`POST /api/planner-buckets > invalid input › missing name 1`] = `
+
+POST /api/planner-buckets
+credentials: group 5 POC (rafael.t.mendoza, role poc)
+request body:
+  {
+    "boardId": 1
+  }
+
+status: 400
+content-type: application/json; charset=utf-8
+access-control-allow-origin: *
+x-powered-by: Express
+response body:
+  {
+    "error": "boardId and name are required"
+  }
+
+data files: unchanged
+
+outbound calls: none
+
+`;
+
+exports[`POST /api/planner-buckets > invalid input › no body 1`] = `
+
+POST /api/planner-buckets
+credentials: group 5 POC (rafael.t.mendoza, role poc)
+
+status: 500
+content-type: text/html; charset=utf-8
+access-control-allow-origin: *
+x-powered-by: Express
+response body:
+  <!DOCTYPE html>
+  <html lang="en">
+  <head>
+  <meta charset="utf-8">
+  <title>Error</title>
+  </head>
+  <body>
+  <pre>TypeError: Cannot destructure property &#39;boardId&#39; of &#39;req.body&#39; as it is undefined.<br> &nbsp; &nbsp;at <stack trace removed></pre>
+  </body>
+  </html>
+  
+
+data files: unchanged
+
+outbound calls: none
+
+`;
+
+exports[`POST /api/planner-buckets > invalid input › non-numeric boardId is stored as null 1`] = `
+
+POST /api/planner-buckets
+credentials: group 5 POC (rafael.t.mendoza, role poc)
+request body:
+  {
+    "boardId": "abc",
+    "name": "Sprint 1"
+  }
+
+status: 201
+content-type: application/json; charset=utf-8
+access-control-allow-origin: *
+x-powered-by: Express
+response body:
+  {
+    "id": 6,
+    "boardId": null,
+    "name": "Sprint 1",
+    "order": 0
+  }
+
+data files:
+  db.json: modified
+    raw text diff:
+      @@ -325,4 +325,10 @@
+             "name": "Sprint 3",
+             "order": 1
+      +    },
+      +    {
+      +      "id": 6,
+      +      "boardId": null,
+      +      "name": "Sprint 1",
+      +      "order": 0
+           }
+         ],
+    parsed JSON diff:
+      + /planner-buckets[id=6] (at index 5): {"id":6,"boardId":null,"name":"Sprint 1","order":0}
+
+outbound calls: none
+
+`;
+
+exports[`POST /api/planner-buckets > invalid input › whitespace-only name is stored as empty 1`] = `
+
+POST /api/planner-buckets
+credentials: group 5 POC (rafael.t.mendoza, role poc)
+request body:
+  {
+    "boardId": 1,
+    "name": "   "
+  }
+
+status: 201
+content-type: application/json; charset=utf-8
+access-control-allow-origin: *
+x-powered-by: Express
+response body:
+  {
+    "id": 6,
+    "boardId": 1,
+    "name": "",
+    "order": 0
+  }
+
+data files:
+  db.json: modified
+    raw text diff:
+      @@ -325,4 +325,10 @@
+             "name": "Sprint 3",
+             "order": 1
+      +    },
+      +    {
+      +      "id": 6,
+      +      "boardId": 1,
+      +      "name": "",
+      +      "order": 0
+           }
+         ],
+    parsed JSON diff:
+      + /planner-buckets[id=6] (at index 5): {"id":6,"boardId":1,"name":"","order":0}
+
+outbound calls: none
+
+`;
+
+exports[`POST /api/planner-buckets > no auth 1`] = `
+
+POST /api/planner-buckets
+credentials: none
+request body:
+  {
+    "boardId": 1,
+    "name": "Sprint 1",
+    "order": 0
+  }
+
+=> identical to the happy path (auto-creates a sprint bucket (as the planner sends it)): same status, body, data-file changes and outbound calls
+
+`;
+
+exports[`POST /api/planner-buckets > not found › board that does not exist is accepted 1`] = `
+
+POST /api/planner-buckets
+credentials: group 5 POC (rafael.t.mendoza, role poc)
+request body:
+  {
+    "boardId": 99,
+    "name": "Sprint 1",
+    "order": 0
+  }
+
+status: 201
+content-type: application/json; charset=utf-8
+access-control-allow-origin: *
+x-powered-by: Express
+response body:
+  {
+    "id": 6,
+    "boardId": 99,
+    "name": "Sprint 1",
+    "order": 0
+  }
+
+data files:
+  db.json: modified
+    raw text diff:
+      @@ -325,4 +325,10 @@
+             "name": "Sprint 3",
+             "order": 1
+      +    },
+      +    {
+      +      "id": 6,
+      +      "boardId": 99,
+      +      "name": "Sprint 1",
+      +      "order": 0
+           }
+         ],
+    parsed JSON diff:
+      + /planner-buckets[id=6] (at index 5): {"id":6,"boardId":99,"name":"Sprint 1","order":0}
+
+outbound calls: none
+
+`;
+
+exports[`POST /api/planner-buckets > not found › planner-buckets collection missing 1`] = `
+
+POST /api/planner-buckets
+credentials: group 5 POC (rafael.t.mendoza, role poc)
+request body:
+  {
+    "boardId": 1,
+    "name": "Sprint 1",
+    "order": 0
+  }
+
+status: 201
+content-type: application/json; charset=utf-8
+access-control-allow-origin: *
+x-powered-by: Express
+response body:
+  {
+    "id": 1,
+    "boardId": 1,
+    "name": "Sprint 1",
+    "order": 0
+  }
+
+data files:
+  db.json: modified
+    raw text diff:
+      @@ -592,4 +592,12 @@
+             "deletedAt": "2026-11-03T02:05:40.017Z"
+           }
+      +  ],
+      +  "planner-buckets": [
+      +    {
+      +      "id": 1,
+      +      "boardId": 1,
+      +      "name": "Sprint 1",
+      +      "order": 0
+      +    }
+         ]
+       }
+    parsed JSON diff:
+      + /planner-buckets: [{"id":1,"boardId":1,"name":"Sprint 1","order":0}]
+
+outbound calls: none
+
+`;
+
+exports[`POST /api/planner-buckets > wrong role 1`] = `
+
+POST /api/planner-buckets
+credentials: no-group new joiner (paolo.d.ramos, role viewer)
+request body:
+  {
+    "boardId": 1,
+    "name": "Sprint 1",
+    "order": 0
+  }
+
+=> identical to the happy path (auto-creates a sprint bucket (as the planner sends it)): same status, body, data-file changes and outbound calls
+
+`;
+
+exports[`POST /api/planner-tasks > happy path › creates a task (as the planner sends it); client timestamps replaced 1`] = `
+
+POST /api/planner-tasks
+credentials: group 5 POC (rafael.t.mendoza, role poc)
+request body:
+  {
+    "boardId": 1,
+    "bucketId": 4,
+    "title": "Build a React form with validation",
+    "status": "Not started",
+    "priority": "Medium",
+    "startDate": "2026-10-28",
+    "dueDate": "2026-11-06",
+    "labels": [
+      2,
+      4
+    ],
+    "assignee": "miguel.a.torres",
+    "checklist": [
+      {
+        "id": 1,
+        "text": "Pick a form library",
+        "done": false
+      }
+    ],
+    "description": "<p>Practice controlled inputs</p>",
+    "acceptanceCriteria": "<ul><li>All fields validated</li></ul>",
+    "comments": [],
+    "completed": false,
+    "createdAt": "2026-10-28T01:00:00.000Z",
+    "updatedAt": "2026-10-28T01:00:00.000Z"
+  }
+
+status: 201
+content-type: application/json; charset=utf-8
+access-control-allow-origin: *
+x-powered-by: Express
+response body:
+  {
+    "boardId": 1,
+    "bucketId": 4,
+    "title": "Build a React form with validation",
+    "status": "Not started",
+    "priority": "Medium",
+    "startDate": "2026-10-28",
+    "dueDate": "2026-11-06",
+    "labels": [
+      2,
+      4
+    ],
+    "assignee": "miguel.a.torres",
+    "checklist": [
+      {
+        "id": 1,
+        "text": "Pick a form library",
+        "done": false
+      }
+    ],
+    "description": "<p>Practice controlled inputs</p>",
+    "acceptanceCriteria": "<ul><li>All fields validated</li></ul>",
+    "comments": [],
+    "completed": false,
+    "createdAt": "<generated-timestamp>",
+    "updatedAt": "<generated-timestamp>",
+    "id": 8
+  }
+
+data files:
+  db.json: modified
+    raw text diff:
+      @@ -489,4 +489,32 @@
+             "createdAt": "2026-11-06T02:15:49.601Z",
+             "updatedAt": "2026-11-06T02:15:49.601Z"
+      +    },
+      +    {
+      +      "boardId": 1,
+      +      "bucketId": 4,
+      +      "title": "Build a React form with validation",
+      +      "status": "Not started",
+      +      "priority": "Medium",
+      +      "startDate": "2026-10-28",
+      +      "dueDate": "2026-11-06",
+      +      "labels": [
+      +        2,
+      +        4
+      +      ],
+      +      "assignee": "miguel.a.torres",
+      +      "checklist": [
+      +        {
+      +          "id": 1,
+      +          "text": "Pick a form library",
+      +          "done": false
+      +        }
+      +      ],
+      +      "description": "<p>Practice controlled inputs</p>",
+      +      "acceptanceCriteria": "<ul><li>All fields validated</li></ul>",
+      +      "comments": [],
+      +      "completed": false,
+      +      "createdAt": "<generated-timestamp>",
+      +      "updatedAt": "<generated-timestamp>",
+      +      "id": 8
+           }
+         ],
+    parsed JSON diff:
+      + /planner-tasks[id=8] (at index 6): {"boardId":1,"bucketId":4,"title":"Build a React form with validation","status":"Not started","priority":"Medium","startDate":"2026-10-28","dueDate":"2026-11-06","labels":[2,4],"assignee":"miguel.a.torres","checklist":[{"id":1,"text":"Pick a form library","done":false}],"description":"<p>Practice controlled inputs</p>","acceptanceCriteria":"<ul><li>All fields validated</li></ul>","comments":[],"completed":false,"createdAt":"<generated-timestamp>","updatedAt":"<generated-timestamp>","id":8}
+
+outbound calls: none
+
+`;
+
+exports[`POST /api/planner-tasks > happy path › string boardId and bucketId are coerced 1`] = `
+
+POST /api/planner-tasks
+credentials: group 5 POC (rafael.t.mendoza, role poc)
+request body:
+  {
+    "boardId": "1",
+    "bucketId": "4",
+    "title": "Build a React form with validation",
+    "status": "Not started",
+    "priority": "Medium",
+    "startDate": "2026-10-28",
+    "dueDate": "2026-11-06",
+    "labels": [
+      2,
+      4
+    ],
+    "assignee": "miguel.a.torres",
+    "checklist": [
+      {
+        "id": 1,
+        "text": "Pick a form library",
+        "done": false
+      }
+    ],
+    "description": "<p>Practice controlled inputs</p>",
+    "acceptanceCriteria": "<ul><li>All fields validated</li></ul>",
+    "comments": [],
+    "completed": false,
+    "createdAt": "2026-10-28T01:00:00.000Z",
+    "updatedAt": "2026-10-28T01:00:00.000Z"
+  }
+
+status: 201
+content-type: application/json; charset=utf-8
+access-control-allow-origin: *
+x-powered-by: Express
+response body:
+  {
+    "boardId": 1,
+    "bucketId": 4,
+    "title": "Build a React form with validation",
+    "status": "Not started",
+    "priority": "Medium",
+    "startDate": "2026-10-28",
+    "dueDate": "2026-11-06",
+    "labels": [
+      2,
+      4
+    ],
+    "assignee": "miguel.a.torres",
+    "checklist": [
+      {
+        "id": 1,
+        "text": "Pick a form library",
+        "done": false
+      }
+    ],
+    "description": "<p>Practice controlled inputs</p>",
+    "acceptanceCriteria": "<ul><li>All fields validated</li></ul>",
+    "comments": [],
+    "completed": false,
+    "createdAt": "<generated-timestamp>",
+    "updatedAt": "<generated-timestamp>",
+    "id": 8
+  }
+
+data files:
+  db.json: modified
+    raw text diff:
+      @@ -489,4 +489,32 @@
+             "createdAt": "2026-11-06T02:15:49.601Z",
+             "updatedAt": "2026-11-06T02:15:49.601Z"
+      +    },
+      +    {
+      +      "boardId": 1,
+      +      "bucketId": 4,
+      +      "title": "Build a React form with validation",
+      +      "status": "Not started",
+      +      "priority": "Medium",
+      +      "startDate": "2026-10-28",
+      +      "dueDate": "2026-11-06",
+      +      "labels": [
+      +        2,
+      +        4
+      +      ],
+      +      "assignee": "miguel.a.torres",
+      +      "checklist": [
+      +        {
+      +          "id": 1,
+      +          "text": "Pick a form library",
+      +          "done": false
+      +        }
+      +      ],
+      +      "description": "<p>Practice controlled inputs</p>",
+      +      "acceptanceCriteria": "<ul><li>All fields validated</li></ul>",
+      +      "comments": [],
+      +      "completed": false,
+      +      "createdAt": "<generated-timestamp>",
+      +      "updatedAt": "<generated-timestamp>",
+      +      "id": 8
+           }
+         ],
+    parsed JSON diff:
+      + /planner-tasks[id=8] (at index 6): {"boardId":1,"bucketId":4,"title":"Build a React form with validation","status":"Not started","priority":"Medium","startDate":"2026-10-28","dueDate":"2026-11-06","labels":[2,4],"assignee":"miguel.a.torres","checklist":[{"id":1,"text":"Pick a form library","done":false}],"description":"<p>Practice controlled inputs</p>","acceptanceCriteria":"<ul><li>All fields validated</li></ul>","comments":[],"completed":false,"createdAt":"<generated-timestamp>","updatedAt":"<generated-timestamp>","id":8}
+
+outbound calls: none
+
+`;
+
+exports[`POST /api/planner-tasks > invalid input › client id is overwritten; arbitrary fields kept 1`] = `
+
+POST /api/planner-tasks
+credentials: group 5 POC (rafael.t.mendoza, role poc)
+request body:
+  {
+    "boardId": 1,
+    "bucketId": 4,
+    "title": "Build a React form with validation",
+    "status": "Not started",
+    "priority": "Medium",
+    "startDate": "2026-10-28",
+    "dueDate": "2026-11-06",
+    "labels": [
+      2,
+      4
+    ],
+    "assignee": "miguel.a.torres",
+    "checklist": [
+      {
+        "id": 1,
+        "text": "Pick a form library",
+        "done": false
+      }
+    ],
+    "description": "<p>Practice controlled inputs</p>",
+    "acceptanceCriteria": "<ul><li>All fields validated</li></ul>",
+    "comments": [],
+    "completed": false,
+    "createdAt": "2026-10-28T01:00:00.000Z",
+    "updatedAt": "2026-10-28T01:00:00.000Z",
+    "id": 1,
+    "isAdmin": true
+  }
+
+status: 201
+content-type: application/json; charset=utf-8
+access-control-allow-origin: *
+x-powered-by: Express
+response body:
+  {
+    "boardId": 1,
+    "bucketId": 4,
+    "title": "Build a React form with validation",
+    "status": "Not started",
+    "priority": "Medium",
+    "startDate": "2026-10-28",
+    "dueDate": "2026-11-06",
+    "labels": [
+      2,
+      4
+    ],
+    "assignee": "miguel.a.torres",
+    "checklist": [
+      {
+        "id": 1,
+        "text": "Pick a form library",
+        "done": false
+      }
+    ],
+    "description": "<p>Practice controlled inputs</p>",
+    "acceptanceCriteria": "<ul><li>All fields validated</li></ul>",
+    "comments": [],
+    "completed": false,
+    "createdAt": "<generated-timestamp>",
+    "updatedAt": "<generated-timestamp>",
+    "id": 8,
+    "isAdmin": true
+  }
+
+data files:
+  db.json: modified
+    raw text diff:
+      @@ -489,4 +489,33 @@
+             "createdAt": "2026-11-06T02:15:49.601Z",
+             "updatedAt": "2026-11-06T02:15:49.601Z"
+      +    },
+      +    {
+      +      "boardId": 1,
+      +      "bucketId": 4,
+      +      "title": "Build a React form with validation",
+      +      "status": "Not started",
+      +      "priority": "Medium",
+      +      "startDate": "2026-10-28",
+      +      "dueDate": "2026-11-06",
+      +      "labels": [
+      +        2,
+      +        4
+      +      ],
+      +      "assignee": "miguel.a.torres",
+      +      "checklist": [
+      +        {
+      +          "id": 1,
+      +          "text": "Pick a form library",
+      +          "done": false
+      +        }
+      +      ],
+      +      "description": "<p>Practice controlled inputs</p>",
+      +      "acceptanceCriteria": "<ul><li>All fields validated</li></ul>",
+      +      "comments": [],
+      +      "completed": false,
+      +      "createdAt": "<generated-timestamp>",
+      +      "updatedAt": "<generated-timestamp>",
+      +      "id": 8,
+      +      "isAdmin": true
+           }
+         ],
+    parsed JSON diff:
+      + /planner-tasks[id=8] (at index 6): {"boardId":1,"bucketId":4,"title":"Build a React form with validation","status":"Not started","priority":"Medium","startDate":"2026-10-28","dueDate":"2026-11-06","labels":[2,4],"assignee":"miguel.a.torres","checklist":[{"id":1,"text":"Pick a form library","done":false}],"description":"<p>Practice controlled inputs</p>","acceptanceCriteria":"<ul><li>All fields validated</li></ul>","comments":[],"completed":false,"createdAt":"<generated-timestamp>","updatedAt":"<generated-timestamp>","id":8,"isAdmin":true}
+
+outbound calls: none
+
+`;
+
+exports[`POST /api/planner-tasks > invalid input › completed flag contradicting status is accepted 1`] = `
+
+POST /api/planner-tasks
+credentials: group 5 POC (rafael.t.mendoza, role poc)
+request body:
+  {
+    "boardId": 1,
+    "bucketId": 4,
+    "title": "Build a React form with validation",
+    "status": "Not started",
+    "priority": "Medium",
+    "startDate": "2026-10-28",
+    "dueDate": "2026-11-06",
+    "labels": [
+      2,
+      4
+    ],
+    "assignee": "miguel.a.torres",
+    "checklist": [
+      {
+        "id": 1,
+        "text": "Pick a form library",
+        "done": false
+      }
+    ],
+    "description": "<p>Practice controlled inputs</p>",
+    "acceptanceCriteria": "<ul><li>All fields validated</li></ul>",
+    "comments": [],
+    "completed": true,
+    "createdAt": "2026-10-28T01:00:00.000Z",
+    "updatedAt": "2026-10-28T01:00:00.000Z"
+  }
+
+status: 201
+content-type: application/json; charset=utf-8
+access-control-allow-origin: *
+x-powered-by: Express
+response body:
+  {
+    "boardId": 1,
+    "bucketId": 4,
+    "title": "Build a React form with validation",
+    "status": "Not started",
+    "priority": "Medium",
+    "startDate": "2026-10-28",
+    "dueDate": "2026-11-06",
+    "labels": [
+      2,
+      4
+    ],
+    "assignee": "miguel.a.torres",
+    "checklist": [
+      {
+        "id": 1,
+        "text": "Pick a form library",
+        "done": false
+      }
+    ],
+    "description": "<p>Practice controlled inputs</p>",
+    "acceptanceCriteria": "<ul><li>All fields validated</li></ul>",
+    "comments": [],
+    "completed": true,
+    "createdAt": "<generated-timestamp>",
+    "updatedAt": "<generated-timestamp>",
+    "id": 8
+  }
+
+data files:
+  db.json: modified
+    raw text diff:
+      @@ -489,4 +489,32 @@
+             "createdAt": "2026-11-06T02:15:49.601Z",
+             "updatedAt": "2026-11-06T02:15:49.601Z"
+      +    },
+      +    {
+      +      "boardId": 1,
+      +      "bucketId": 4,
+      +      "title": "Build a React form with validation",
+      +      "status": "Not started",
+      +      "priority": "Medium",
+      +      "startDate": "2026-10-28",
+      +      "dueDate": "2026-11-06",
+      +      "labels": [
+      +        2,
+      +        4
+      +      ],
+      +      "assignee": "miguel.a.torres",
+      +      "checklist": [
+      +        {
+      +          "id": 1,
+      +          "text": "Pick a form library",
+      +          "done": false
+      +        }
+      +      ],
+      +      "description": "<p>Practice controlled inputs</p>",
+      +      "acceptanceCriteria": "<ul><li>All fields validated</li></ul>",
+      +      "comments": [],
+      +      "completed": true,
+      +      "createdAt": "<generated-timestamp>",
+      +      "updatedAt": "<generated-timestamp>",
+      +      "id": 8
+           }
+         ],
+    parsed JSON diff:
+      + /planner-tasks[id=8] (at index 6): {"boardId":1,"bucketId":4,"title":"Build a React form with validation","status":"Not started","priority":"Medium","startDate":"2026-10-28","dueDate":"2026-11-06","labels":[2,4],"assignee":"miguel.a.torres","checklist":[{"id":1,"text":"Pick a form library","done":false}],"description":"<p>Practice controlled inputs</p>","acceptanceCriteria":"<ul><li>All fields validated</li></ul>","comments":[],"completed":true,"createdAt":"<generated-timestamp>","updatedAt":"<generated-timestamp>","id":8}
+
+outbound calls: none
+
+`;
+
+exports[`POST /api/planner-tasks > invalid input › empty object: boardId and bucketId stored as null 1`] = `
+
+POST /api/planner-tasks
+credentials: group 5 POC (rafael.t.mendoza, role poc)
+request body:
+  {}
+
+status: 201
+content-type: application/json; charset=utf-8
+access-control-allow-origin: *
+x-powered-by: Express
+response body:
+  {
+    "id": 8,
+    "boardId": null,
+    "bucketId": null,
+    "createdAt": "<generated-timestamp>",
+    "updatedAt": "<generated-timestamp>"
+  }
+
+data files:
+  db.json: modified
+    raw text diff:
+      @@ -489,4 +489,11 @@
+             "createdAt": "2026-11-06T02:15:49.601Z",
+             "updatedAt": "2026-11-06T02:15:49.601Z"
+      +    },
+      +    {
+      +      "id": 8,
+      +      "boardId": null,
+      +      "bucketId": null,
+      +      "createdAt": "<generated-timestamp>",
+      +      "updatedAt": "<generated-timestamp>"
+           }
+         ],
+    parsed JSON diff:
+      + /planner-tasks[id=8] (at index 6): {"id":8,"boardId":null,"bucketId":null,"createdAt":"<generated-timestamp>","updatedAt":"<generated-timestamp>"}
+
+outbound calls: none
+
+`;
+
+exports[`POST /api/planner-tasks > invalid input › malformed JSON body 1`] = `
+
+POST /api/planner-tasks
+credentials: group 5 POC (rafael.t.mendoza, role poc)
+request body (raw):
+  {"broken": 
+
+status: 400
+content-type: text/html; charset=utf-8
+access-control-allow-origin: *
+x-powered-by: Express
+response body:
+  <!DOCTYPE html>
+  <html lang="en">
+  <head>
+  <meta charset="utf-8">
+  <title>Error</title>
+  </head>
+  <body>
+  <pre>SyntaxError: Unexpected end of JSON input<br> &nbsp; &nbsp;at <stack trace removed></pre>
+  </body>
+  </html>
+  
+
+data files: unchanged
+
+outbound calls: none
+
+`;
+
+exports[`POST /api/planner-tasks > invalid input › no body 1`] = `
+
+POST /api/planner-tasks
+credentials: group 5 POC (rafael.t.mendoza, role poc)
+
+status: 500
+content-type: text/html; charset=utf-8
+access-control-allow-origin: *
+x-powered-by: Express
+response body:
+  <!DOCTYPE html>
+  <html lang="en">
+  <head>
+  <meta charset="utf-8">
+  <title>Error</title>
+  </head>
+  <body>
+  <pre>TypeError: Cannot read properties of undefined (reading &#39;boardId&#39;)<br> &nbsp; &nbsp;at <stack trace removed></pre>
+  </body>
+  </html>
+  
+
+data files: unchanged
+
+outbound calls: none
+
+`;
+
+exports[`POST /api/planner-tasks > invalid input › no title, status or assignee is accepted 1`] = `
+
+POST /api/planner-tasks
+credentials: group 5 POC (rafael.t.mendoza, role poc)
+request body:
+  {
+    "boardId": 1,
+    "bucketId": 4
+  }
+
+status: 201
+content-type: application/json; charset=utf-8
+access-control-allow-origin: *
+x-powered-by: Express
+response body:
+  {
+    "boardId": 1,
+    "bucketId": 4,
+    "id": 8,
+    "createdAt": "<generated-timestamp>",
+    "updatedAt": "<generated-timestamp>"
+  }
+
+data files:
+  db.json: modified
+    raw text diff:
+      @@ -489,4 +489,11 @@
+             "createdAt": "2026-11-06T02:15:49.601Z",
+             "updatedAt": "2026-11-06T02:15:49.601Z"
+      +    },
+      +    {
+      +      "boardId": 1,
+      +      "bucketId": 4,
+      +      "id": 8,
+      +      "createdAt": "<generated-timestamp>",
+      +      "updatedAt": "<generated-timestamp>"
+           }
+         ],
+    parsed JSON diff:
+      + /planner-tasks[id=8] (at index 6): {"boardId":1,"bucketId":4,"id":8,"createdAt":"<generated-timestamp>","updatedAt":"<generated-timestamp>"}
+
+outbound calls: none
+
+`;
+
+exports[`POST /api/planner-tasks > no auth 1`] = `
+
+POST /api/planner-tasks
+credentials: none
+request body:
+  {
+    "boardId": 1,
+    "bucketId": 4,
+    "title": "Build a React form with validation",
+    "status": "Not started",
+    "priority": "Medium",
+    "startDate": "2026-10-28",
+    "dueDate": "2026-11-06",
+    "labels": [
+      2,
+      4
+    ],
+    "assignee": "miguel.a.torres",
+    "checklist": [
+      {
+        "id": 1,
+        "text": "Pick a form library",
+        "done": false
+      }
+    ],
+    "description": "<p>Practice controlled inputs</p>",
+    "acceptanceCriteria": "<ul><li>All fields validated</li></ul>",
+    "comments": [],
+    "completed": false,
+    "createdAt": "2026-10-28T01:00:00.000Z",
+    "updatedAt": "2026-10-28T01:00:00.000Z"
+  }
+
+=> identical to the happy path (creates a task (as the planner sends it); client timestamps replaced): same status, body, data-file changes and outbound calls
+
+`;
+
+exports[`POST /api/planner-tasks > not found › board and bucket that do not exist are accepted 1`] = `
+
+POST /api/planner-tasks
+credentials: group 5 POC (rafael.t.mendoza, role poc)
+request body:
+  {
+    "boardId": 99,
+    "bucketId": 99,
+    "title": "Build a React form with validation",
+    "status": "Not started",
+    "priority": "Medium",
+    "startDate": "2026-10-28",
+    "dueDate": "2026-11-06",
+    "labels": [
+      2,
+      4
+    ],
+    "assignee": "miguel.a.torres",
+    "checklist": [
+      {
+        "id": 1,
+        "text": "Pick a form library",
+        "done": false
+      }
+    ],
+    "description": "<p>Practice controlled inputs</p>",
+    "acceptanceCriteria": "<ul><li>All fields validated</li></ul>",
+    "comments": [],
+    "completed": false,
+    "createdAt": "2026-10-28T01:00:00.000Z",
+    "updatedAt": "2026-10-28T01:00:00.000Z"
+  }
+
+status: 201
+content-type: application/json; charset=utf-8
+access-control-allow-origin: *
+x-powered-by: Express
+response body:
+  {
+    "boardId": 99,
+    "bucketId": 99,
+    "title": "Build a React form with validation",
+    "status": "Not started",
+    "priority": "Medium",
+    "startDate": "2026-10-28",
+    "dueDate": "2026-11-06",
+    "labels": [
+      2,
+      4
+    ],
+    "assignee": "miguel.a.torres",
+    "checklist": [
+      {
+        "id": 1,
+        "text": "Pick a form library",
+        "done": false
+      }
+    ],
+    "description": "<p>Practice controlled inputs</p>",
+    "acceptanceCriteria": "<ul><li>All fields validated</li></ul>",
+    "comments": [],
+    "completed": false,
+    "createdAt": "<generated-timestamp>",
+    "updatedAt": "<generated-timestamp>",
+    "id": 8
+  }
+
+data files:
+  db.json: modified
+    raw text diff:
+      @@ -489,4 +489,32 @@
+             "createdAt": "2026-11-06T02:15:49.601Z",
+             "updatedAt": "2026-11-06T02:15:49.601Z"
+      +    },
+      +    {
+      +      "boardId": 99,
+      +      "bucketId": 99,
+      +      "title": "Build a React form with validation",
+      +      "status": "Not started",
+      +      "priority": "Medium",
+      +      "startDate": "2026-10-28",
+      +      "dueDate": "2026-11-06",
+      +      "labels": [
+      +        2,
+      +        4
+      +      ],
+      +      "assignee": "miguel.a.torres",
+      +      "checklist": [
+      +        {
+      +          "id": 1,
+      +          "text": "Pick a form library",
+      +          "done": false
+      +        }
+      +      ],
+      +      "description": "<p>Practice controlled inputs</p>",
+      +      "acceptanceCriteria": "<ul><li>All fields validated</li></ul>",
+      +      "comments": [],
+      +      "completed": false,
+      +      "createdAt": "<generated-timestamp>",
+      +      "updatedAt": "<generated-timestamp>",
+      +      "id": 8
+           }
+         ],
+    parsed JSON diff:
+      + /planner-tasks[id=8] (at index 6): {"boardId":99,"bucketId":99,"title":"Build a React form with validation","status":"Not started","priority":"Medium","startDate":"2026-10-28","dueDate":"2026-11-06","labels":[2,4],"assignee":"miguel.a.torres","checklist":[{"id":1,"text":"Pick a form library","done":false}],"description":"<p>Practice controlled inputs</p>","acceptanceCriteria":"<ul><li>All fields validated</li></ul>","comments":[],"completed":false,"createdAt":"<generated-timestamp>","updatedAt":"<generated-timestamp>","id":8}
+
+outbound calls: none
+
+`;
+
+exports[`POST /api/planner-tasks > not found › bucket on a different board is accepted 1`] = `
+
+POST /api/planner-tasks
+credentials: group 5 POC (rafael.t.mendoza, role poc)
+request body:
+  {
+    "boardId": 1,
+    "bucketId": 1,
+    "title": "Build a React form with validation",
+    "status": "Not started",
+    "priority": "Medium",
+    "startDate": "2026-10-28",
+    "dueDate": "2026-11-06",
+    "labels": [
+      2,
+      4
+    ],
+    "assignee": "miguel.a.torres",
+    "checklist": [
+      {
+        "id": 1,
+        "text": "Pick a form library",
+        "done": false
+      }
+    ],
+    "description": "<p>Practice controlled inputs</p>",
+    "acceptanceCriteria": "<ul><li>All fields validated</li></ul>",
+    "comments": [],
+    "completed": false,
+    "createdAt": "2026-10-28T01:00:00.000Z",
+    "updatedAt": "2026-10-28T01:00:00.000Z"
+  }
+
+status: 201
+content-type: application/json; charset=utf-8
+access-control-allow-origin: *
+x-powered-by: Express
+response body:
+  {
+    "boardId": 1,
+    "bucketId": 1,
+    "title": "Build a React form with validation",
+    "status": "Not started",
+    "priority": "Medium",
+    "startDate": "2026-10-28",
+    "dueDate": "2026-11-06",
+    "labels": [
+      2,
+      4
+    ],
+    "assignee": "miguel.a.torres",
+    "checklist": [
+      {
+        "id": 1,
+        "text": "Pick a form library",
+        "done": false
+      }
+    ],
+    "description": "<p>Practice controlled inputs</p>",
+    "acceptanceCriteria": "<ul><li>All fields validated</li></ul>",
+    "comments": [],
+    "completed": false,
+    "createdAt": "<generated-timestamp>",
+    "updatedAt": "<generated-timestamp>",
+    "id": 8
+  }
+
+data files:
+  db.json: modified
+    raw text diff:
+      @@ -489,4 +489,32 @@
+             "createdAt": "2026-11-06T02:15:49.601Z",
+             "updatedAt": "2026-11-06T02:15:49.601Z"
+      +    },
+      +    {
+      +      "boardId": 1,
+      +      "bucketId": 1,
+      +      "title": "Build a React form with validation",
+      +      "status": "Not started",
+      +      "priority": "Medium",
+      +      "startDate": "2026-10-28",
+      +      "dueDate": "2026-11-06",
+      +      "labels": [
+      +        2,
+      +        4
+      +      ],
+      +      "assignee": "miguel.a.torres",
+      +      "checklist": [
+      +        {
+      +          "id": 1,
+      +          "text": "Pick a form library",
+      +          "done": false
+      +        }
+      +      ],
+      +      "description": "<p>Practice controlled inputs</p>",
+      +      "acceptanceCriteria": "<ul><li>All fields validated</li></ul>",
+      +      "comments": [],
+      +      "completed": false,
+      +      "createdAt": "<generated-timestamp>",
+      +      "updatedAt": "<generated-timestamp>",
+      +      "id": 8
+           }
+         ],
+    parsed JSON diff:
+      + /planner-tasks[id=8] (at index 6): {"boardId":1,"bucketId":1,"title":"Build a React form with validation","status":"Not started","priority":"Medium","startDate":"2026-10-28","dueDate":"2026-11-06","labels":[2,4],"assignee":"miguel.a.torres","checklist":[{"id":1,"text":"Pick a form library","done":false}],"description":"<p>Practice controlled inputs</p>","acceptanceCriteria":"<ul><li>All fields validated</li></ul>","comments":[],"completed":false,"createdAt":"<generated-timestamp>","updatedAt":"<generated-timestamp>","id":8}
+
+outbound calls: none
+
+`;
+
+exports[`POST /api/planner-tasks > not found › planner-tasks collection missing 1`] = `
+
+POST /api/planner-tasks
+credentials: group 5 POC (rafael.t.mendoza, role poc)
+request body:
+  {
+    "boardId": 1,
+    "bucketId": 4,
+    "title": "Build a React form with validation",
+    "status": "Not started",
+    "priority": "Medium",
+    "startDate": "2026-10-28",
+    "dueDate": "2026-11-06",
+    "labels": [
+      2,
+      4
+    ],
+    "assignee": "miguel.a.torres",
+    "checklist": [
+      {
+        "id": 1,
+        "text": "Pick a form library",
+        "done": false
+      }
+    ],
+    "description": "<p>Practice controlled inputs</p>",
+    "acceptanceCriteria": "<ul><li>All fields validated</li></ul>",
+    "comments": [],
+    "completed": false,
+    "createdAt": "2026-10-28T01:00:00.000Z",
+    "updatedAt": "2026-10-28T01:00:00.000Z"
+  }
+
+status: 201
+content-type: application/json; charset=utf-8
+access-control-allow-origin: *
+x-powered-by: Express
+response body:
+  {
+    "boardId": 1,
+    "bucketId": 4,
+    "title": "Build a React form with validation",
+    "status": "Not started",
+    "priority": "Medium",
+    "startDate": "2026-10-28",
+    "dueDate": "2026-11-06",
+    "labels": [
+      2,
+      4
+    ],
+    "assignee": "miguel.a.torres",
+    "checklist": [
+      {
+        "id": 1,
+        "text": "Pick a form library",
+        "done": false
+      }
+    ],
+    "description": "<p>Practice controlled inputs</p>",
+    "acceptanceCriteria": "<ul><li>All fields validated</li></ul>",
+    "comments": [],
+    "completed": false,
+    "createdAt": "<generated-timestamp>",
+    "updatedAt": "<generated-timestamp>",
+    "id": 1
+  }
+
+data files:
+  db.json: modified
+    raw text diff:
+      @@ -460,4 +460,34 @@
+             "deletedAt": "2026-11-03T02:05:40.017Z"
+           }
+      +  ],
+      +  "planner-tasks": [
+      +    {
+      +      "boardId": 1,
+      +      "bucketId": 4,
+      +      "title": "Build a React form with validation",
+      +      "status": "Not started",
+      +      "priority": "Medium",
+      +      "startDate": "2026-10-28",
+      +      "dueDate": "2026-11-06",
+      +      "labels": [
+      +        2,
+      +        4
+      +      ],
+      +      "assignee": "miguel.a.torres",
+      +      "checklist": [
+      +        {
+      +          "id": 1,
+      +          "text": "Pick a form library",
+      +          "done": false
+      +        }
+      +      ],
+      +      "description": "<p>Practice controlled inputs</p>",
+      +      "acceptanceCriteria": "<ul><li>All fields validated</li></ul>",
+      +      "comments": [],
+      +      "completed": false,
+      +      "createdAt": "<generated-timestamp>",
+      +      "updatedAt": "<generated-timestamp>",
+      +      "id": 1
+      +    }
+         ]
+       }
+    parsed JSON diff:
+      + /planner-tasks: [{"boardId":1,"bucketId":4,"title":"Build a React form with validation","status":"Not started","priority":"Medium","startDate":"2026-10-28","dueDate":"2026-11-06","labels":[2,4],"assignee":"miguel.a.torres","checklist":[{"id":1,"text":"Pick a form library","done":false}],"description":"<p>Practice controlled inputs</p>","acceptanceCriteria":"<ul><li>All fields validated</li></ul>","comments":[],"completed":false,"createdAt":"<generated-timestamp>","updatedAt":"<generated-timestamp>","id":1}]
+
+outbound calls: none
+
+`;
+
+exports[`POST /api/planner-tasks > wrong role 1`] = `
+
+POST /api/planner-tasks
+credentials: no-group new joiner (paolo.d.ramos, role viewer)
+request body:
+  {
+    "boardId": 1,
+    "bucketId": 4,
+    "title": "Build a React form with validation",
+    "status": "Not started",
+    "priority": "Medium",
+    "startDate": "2026-10-28",
+    "dueDate": "2026-11-06",
+    "labels": [
+      2,
+      4
+    ],
+    "assignee": "miguel.a.torres",
+    "checklist": [
+      {
+        "id": 1,
+        "text": "Pick a form library",
+        "done": false
+      }
+    ],
+    "description": "<p>Practice controlled inputs</p>",
+    "acceptanceCriteria": "<ul><li>All fields validated</li></ul>",
+    "comments": [],
+    "completed": false,
+    "createdAt": "2026-10-28T01:00:00.000Z",
+    "updatedAt": "2026-10-28T01:00:00.000Z"
+  }
+
+=> identical to the happy path (creates a task (as the planner sends it); client timestamps replaced): same status, body, data-file changes and outbound calls
+
+`;

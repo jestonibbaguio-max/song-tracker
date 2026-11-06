@@ -1,8 +1,9 @@
 const fs = require('fs');
 const path = require('path');
 const onboardingStore = require('./onboarding-store');
+const { DATA_DIR } = require('./data-dir');
 
-const dataDir = path.join(__dirname, 'data');
+const dataDir = DATA_DIR;
 const tasksPath = path.join(dataDir, 'tasks.json');
 
 function ensureDataDirectory() {

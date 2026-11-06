@@ -1,0 +1,2922 @@
+exports[`DELETE /api/sprint-retros/:id > happy path › deletes retro 1 1`] = `
+
+DELETE /api/sprint-retros/1
+credentials: group 5 POC (rafael.t.mendoza, role poc)
+
+status: 200
+content-type: application/json; charset=utf-8
+access-control-allow-origin: *
+x-powered-by: Express
+response body:
+  {
+    "deleted": true
+  }
+
+data files:
+  db.json: modified
+    raw text diff:
+      @@ -44,12 +44,4 @@
+         "sprint-retros": [
+           {
+      -      "id": 1,
+      -      "sprintId": 1,
+      -      "groupNumber": 5,
+      -      "category": "improve",
+      -      "text": "Pair on AEM environment setup earlier so blockers surface on day one",
+      -      "createdAt": "2026-10-23T07:02:11.408Z"
+      -    },
+      -    {
+             "id": 2,
+             "sprintId": 1,
+    parsed JSON diff:
+      - /sprint-retros[id=1]: {"id":1,"sprintId":1,"groupNumber":5,"category":"improve","text":"Pair on AEM environment setup earlier so blockers surface on day one","createdAt":"2026-10-23T07:02:11.408Z"}
+
+outbound calls: none
+
+`;
+
+exports[`DELETE /api/sprint-retros/:id > invalid input › non-numeric id 1`] = `
+
+DELETE /api/sprint-retros/abc
+credentials: group 5 POC (rafael.t.mendoza, role poc)
+
+status: 404
+content-type: application/json; charset=utf-8
+access-control-allow-origin: *
+x-powered-by: Express
+response body:
+  {
+    "error": "retrospective item not found"
+  }
+
+data files: unchanged
+
+outbound calls: none
+
+`;
+
+exports[`DELETE /api/sprint-retros/:id > no auth 1`] = `
+
+DELETE /api/sprint-retros/1
+credentials: none
+
+=> identical to the happy path (deletes retro 1): same status, body, data-file changes and outbound calls
+
+`;
+
+exports[`DELETE /api/sprint-retros/:id > not found › id 3 (deleted earlier, gap in ids) 1`] = `
+
+DELETE /api/sprint-retros/3
+credentials: group 5 POC (rafael.t.mendoza, role poc)
+
+status: 404
+content-type: application/json; charset=utf-8
+access-control-allow-origin: *
+x-powered-by: Express
+response body:
+  {
+    "error": "retrospective item not found"
+  }
+
+data files: unchanged
+
+outbound calls: none
+
+`;
+
+exports[`DELETE /api/sprint-retros/:id > not found › unknown id 1`] = `
+
+DELETE /api/sprint-retros/999
+credentials: group 5 POC (rafael.t.mendoza, role poc)
+
+status: 404
+content-type: application/json; charset=utf-8
+access-control-allow-origin: *
+x-powered-by: Express
+response body:
+  {
+    "error": "retrospective item not found"
+  }
+
+data files: unchanged
+
+outbound calls: none
+
+`;
+
+exports[`DELETE /api/sprint-retros/:id > wrong role 1`] = `
+
+DELETE /api/sprint-retros/1
+credentials: no-group new joiner (paolo.d.ramos, role viewer)
+
+=> identical to the happy path (deletes retro 1): same status, body, data-file changes and outbound calls
+
+`;
+
+exports[`DELETE /api/sprints/:id > happy path › deletes sprint 1, which retros reference by id 1`] = `
+
+DELETE /api/sprints/1
+credentials: group 5 POC (rafael.t.mendoza, role poc)
+
+status: 200
+content-type: application/json; charset=utf-8
+access-control-allow-origin: *
+x-powered-by: Express
+response body:
+  {
+    "deleted": true
+  }
+
+data files:
+  db.json: modified
+    raw text diff:
+      @@ -78,10 +78,4 @@
+         "sprints": [
+           {
+      -      "id": 1,
+      -      "name": "Sprint 1",
+      -      "start": "2026-10-13",
+      -      "end": "2026-10-24"
+      -    },
+      -    {
+             "id": 2,
+             "name": "Sprint 2",
+    parsed JSON diff:
+      - /sprints[id=1]: {"id":1,"name":"Sprint 1","start":"2026-10-13","end":"2026-10-24"}
+
+outbound calls: none
+
+`;
+
+exports[`DELETE /api/sprints/:id > happy path › deletes sprint 3 (buckets, retros and capacity that reference it are left in place) 1`] = `
+
+DELETE /api/sprints/3
+credentials: group 5 POC (rafael.t.mendoza, role poc)
+
+status: 200
+content-type: application/json; charset=utf-8
+access-control-allow-origin: *
+x-powered-by: Express
+response body:
+  {
+    "deleted": true
+  }
+
+data files:
+  db.json: modified
+    raw text diff:
+      @@ -88,10 +88,4 @@
+             "start": "2026-10-27",
+             "end": "2026-11-07"
+      -    },
+      -    {
+      -      "id": 3,
+      -      "name": "Sprint 3",
+      -      "start": "2026-11-10",
+      -      "end": "2026-11-21"
+           }
+         ],
+    parsed JSON diff:
+      - /sprints[id=3]: {"id":3,"name":"Sprint 3","start":"2026-11-10","end":"2026-11-21"}
+
+outbound calls: none
+
+`;
+
+exports[`DELETE /api/sprints/:id > invalid input › malformed JSON body 1`] = `
+
+DELETE /api/sprints/3
+credentials: group 5 POC (rafael.t.mendoza, role poc)
+request body (raw):
+  {"broken": 
+
+status: 400
+content-type: text/html; charset=utf-8
+access-control-allow-origin: *
+x-powered-by: Express
+response body:
+  <!DOCTYPE html>
+  <html lang="en">
+  <head>
+  <meta charset="utf-8">
+  <title>Error</title>
+  </head>
+  <body>
+  <pre>SyntaxError: Unexpected end of JSON input<br> &nbsp; &nbsp;at <stack trace removed></pre>
+  </body>
+  </html>
+  
+
+data files: unchanged
+
+outbound calls: none
+
+`;
+
+exports[`DELETE /api/sprints/:id > invalid input › non-numeric id 1`] = `
+
+DELETE /api/sprints/abc
+credentials: group 5 POC (rafael.t.mendoza, role poc)
+
+status: 404
+content-type: application/json; charset=utf-8
+access-control-allow-origin: *
+x-powered-by: Express
+response body:
+  {
+    "error": "sprint not found"
+  }
+
+data files: unchanged
+
+outbound calls: none
+
+`;
+
+exports[`DELETE /api/sprints/:id > no auth 1`] = `
+
+DELETE /api/sprints/3
+credentials: none
+
+=> identical to the happy path (deletes sprint 3 (buckets, retros and capacity that reference it are left in place)): same status, body, data-file changes and outbound calls
+
+`;
+
+exports[`DELETE /api/sprints/:id > not found › unknown id 1`] = `
+
+DELETE /api/sprints/999
+credentials: group 5 POC (rafael.t.mendoza, role poc)
+
+status: 404
+content-type: application/json; charset=utf-8
+access-control-allow-origin: *
+x-powered-by: Express
+response body:
+  {
+    "error": "sprint not found"
+  }
+
+data files: unchanged
+
+outbound calls: none
+
+`;
+
+exports[`DELETE /api/sprints/:id > wrong role 1`] = `
+
+DELETE /api/sprints/3
+credentials: no-group new joiner (paolo.d.ramos, role viewer)
+
+=> identical to the happy path (deletes sprint 3 (buckets, retros and capacity that reference it are left in place)): same status, body, data-file changes and outbound calls
+
+`;
+
+exports[`GET /api/sprint-retros > happy path › filters by sprintId (as the retros page sends it) 1`] = `
+
+GET /api/sprint-retros?sprintId=1
+credentials: group 5 POC (rafael.t.mendoza, role poc)
+
+status: 200
+content-type: application/json; charset=utf-8
+access-control-allow-origin: *
+x-powered-by: Express
+response body:
+  [
+    {
+      "id": 1,
+      "sprintId": 1,
+      "groupNumber": 5,
+      "category": "improve",
+      "text": "Pair on AEM environment setup earlier so blockers surface on day one",
+      "createdAt": "2026-10-23T07:02:11.408Z"
+    },
+    {
+      "id": 2,
+      "sprintId": 1,
+      "groupNumber": 5,
+      "category": "didnt-go-well",
+      "text": "Local author instance setup took most of the first week",
+      "createdAt": "2026-10-23T07:03:40.917Z"
+    },
+    {
+      "id": 4,
+      "sprintId": 1,
+      "groupNumber": 5,
+      "category": "went-well",
+      "text": "Daily knowledge-share sessions kept the new joiners unblocked",
+      "createdAt": "2026-10-23T07:05:02.233Z"
+    }
+  ]
+
+data files: unchanged
+
+outbound calls: none
+
+`;
+
+exports[`GET /api/sprint-retros > happy path › filters by sprintId and groupNumber 1`] = `
+
+GET /api/sprint-retros?sprintId=2&groupNumber=1
+credentials: group 5 POC (rafael.t.mendoza, role poc)
+
+status: 200
+content-type: application/json; charset=utf-8
+access-control-allow-origin: *
+x-powered-by: Express
+response body:
+  [
+    {
+      "id": 5,
+      "sprintId": 2,
+      "groupNumber": 1,
+      "category": "went-well",
+      "text": "Testing Library session was well attended and recorded for later",
+      "createdAt": "2026-11-05T09:14:56.780Z"
+    }
+  ]
+
+data files: unchanged
+
+outbound calls: none
+
+`;
+
+exports[`GET /api/sprint-retros > happy path › lists every retro item 1`] = `
+
+GET /api/sprint-retros
+credentials: group 5 POC (rafael.t.mendoza, role poc)
+
+status: 200
+content-type: application/json; charset=utf-8
+access-control-allow-origin: *
+x-powered-by: Express
+response body:
+  [
+    {
+      "id": 1,
+      "sprintId": 1,
+      "groupNumber": 5,
+      "category": "improve",
+      "text": "Pair on AEM environment setup earlier so blockers surface on day one",
+      "createdAt": "2026-10-23T07:02:11.408Z"
+    },
+    {
+      "id": 2,
+      "sprintId": 1,
+      "groupNumber": 5,
+      "category": "didnt-go-well",
+      "text": "Local author instance setup took most of the first week",
+      "createdAt": "2026-10-23T07:03:40.917Z"
+    },
+    {
+      "id": 4,
+      "sprintId": 1,
+      "groupNumber": 5,
+      "category": "went-well",
+      "text": "Daily knowledge-share sessions kept the new joiners unblocked",
+      "createdAt": "2026-10-23T07:05:02.233Z"
+    },
+    {
+      "id": 5,
+      "sprintId": 2,
+      "groupNumber": 1,
+      "category": "went-well",
+      "text": "Testing Library session was well attended and recorded for later",
+      "createdAt": "2026-11-05T09:14:56.780Z"
+    }
+  ]
+
+data files: unchanged
+
+outbound calls: none
+
+`;
+
+exports[`GET /api/sprint-retros > invalid input › empty groupNumber 1`] = `
+
+GET /api/sprint-retros?groupNumber=
+credentials: group 5 POC (rafael.t.mendoza, role poc)
+
+status: 200
+content-type: application/json; charset=utf-8
+access-control-allow-origin: *
+x-powered-by: Express
+response body:
+  []
+
+data files: unchanged
+
+outbound calls: none
+
+`;
+
+exports[`GET /api/sprint-retros > invalid input › malformed JSON body 1`] = `
+
+GET /api/sprint-retros
+credentials: group 5 POC (rafael.t.mendoza, role poc)
+request body (raw):
+  {"broken": 
+
+status: 400
+content-type: text/html; charset=utf-8
+access-control-allow-origin: *
+x-powered-by: Express
+response body:
+  <!DOCTYPE html>
+  <html lang="en">
+  <head>
+  <meta charset="utf-8">
+  <title>Error</title>
+  </head>
+  <body>
+  <pre>SyntaxError: Unexpected end of JSON input<br> &nbsp; &nbsp;at <stack trace removed></pre>
+  </body>
+  </html>
+  
+
+data files: unchanged
+
+outbound calls: none
+
+`;
+
+exports[`GET /api/sprint-retros > invalid input › non-numeric sprintId 1`] = `
+
+GET /api/sprint-retros?sprintId=abc
+credentials: group 5 POC (rafael.t.mendoza, role poc)
+
+status: 200
+content-type: application/json; charset=utf-8
+access-control-allow-origin: *
+x-powered-by: Express
+response body:
+  []
+
+data files: unchanged
+
+outbound calls: none
+
+`;
+
+exports[`GET /api/sprint-retros > no auth 1`] = `
+
+GET /api/sprint-retros
+credentials: none
+
+=> identical to the happy path (lists every retro item): same status, body, data-file changes and outbound calls
+
+`;
+
+exports[`GET /api/sprint-retros > not found › sprint that does not exist 1`] = `
+
+GET /api/sprint-retros?sprintId=999
+credentials: group 5 POC (rafael.t.mendoza, role poc)
+
+status: 200
+content-type: application/json; charset=utf-8
+access-control-allow-origin: *
+x-powered-by: Express
+response body:
+  []
+
+data files: unchanged
+
+outbound calls: none
+
+`;
+
+exports[`GET /api/sprint-retros > not found › sprint with no retros 1`] = `
+
+GET /api/sprint-retros?sprintId=3
+credentials: group 5 POC (rafael.t.mendoza, role poc)
+
+status: 200
+content-type: application/json; charset=utf-8
+access-control-allow-origin: *
+x-powered-by: Express
+response body:
+  []
+
+data files: unchanged
+
+outbound calls: none
+
+`;
+
+exports[`GET /api/sprint-retros > not found › sprint-retros collection missing 1`] = `
+
+GET /api/sprint-retros
+credentials: group 5 POC (rafael.t.mendoza, role poc)
+
+status: 200
+content-type: application/json; charset=utf-8
+access-control-allow-origin: *
+x-powered-by: Express
+response body:
+  []
+
+data files: unchanged
+
+outbound calls: none
+
+`;
+
+exports[`GET /api/sprint-retros > wrong role 1`] = `
+
+GET /api/sprint-retros
+credentials: no-group new joiner (paolo.d.ramos, role viewer)
+
+=> identical to the happy path (lists every retro item): same status, body, data-file changes and outbound calls
+
+`;
+
+exports[`GET /api/sprints > happy path › lists every sprint 1`] = `
+
+GET /api/sprints
+credentials: group 5 POC (rafael.t.mendoza, role poc)
+
+status: 200
+content-type: application/json; charset=utf-8
+access-control-allow-origin: *
+x-powered-by: Express
+response body:
+  [
+    {
+      "id": 1,
+      "name": "Sprint 1",
+      "start": "2026-10-13",
+      "end": "2026-10-24"
+    },
+    {
+      "id": 2,
+      "name": "Sprint 2",
+      "start": "2026-10-27",
+      "end": "2026-11-07"
+    },
+    {
+      "id": 3,
+      "name": "Sprint 3",
+      "start": "2026-11-10",
+      "end": "2026-11-21"
+    }
+  ]
+
+data files: unchanged
+
+outbound calls: none
+
+`;
+
+exports[`GET /api/sprints > invalid input › malformed JSON body 1`] = `
+
+GET /api/sprints
+credentials: group 5 POC (rafael.t.mendoza, role poc)
+request body (raw):
+  {"broken": 
+
+status: 400
+content-type: text/html; charset=utf-8
+access-control-allow-origin: *
+x-powered-by: Express
+response body:
+  <!DOCTYPE html>
+  <html lang="en">
+  <head>
+  <meta charset="utf-8">
+  <title>Error</title>
+  </head>
+  <body>
+  <pre>SyntaxError: Unexpected end of JSON input<br> &nbsp; &nbsp;at <stack trace removed></pre>
+  </body>
+  </html>
+  
+
+data files: unchanged
+
+outbound calls: none
+
+`;
+
+exports[`GET /api/sprints > no auth 1`] = `
+
+GET /api/sprints
+credentials: none
+
+=> identical to the happy path (lists every sprint): same status, body, data-file changes and outbound calls
+
+`;
+
+exports[`GET /api/sprints > not found › db.json missing 1`] = `
+
+GET /api/sprints
+credentials: group 5 POC (rafael.t.mendoza, role poc)
+
+status: 200
+content-type: application/json; charset=utf-8
+access-control-allow-origin: *
+x-powered-by: Express
+response body:
+  []
+
+data files: unchanged
+
+outbound calls: none
+
+`;
+
+exports[`GET /api/sprints > not found › db.json starts with a UTF-8 BOM 1`] = `
+
+GET /api/sprints
+credentials: group 5 POC (rafael.t.mendoza, role poc)
+
+status: 200
+content-type: application/json; charset=utf-8
+access-control-allow-origin: *
+x-powered-by: Express
+response body:
+  []
+
+data files: unchanged
+
+outbound calls: none
+
+`;
+
+exports[`GET /api/sprints > not found › sprints collection missing 1`] = `
+
+GET /api/sprints
+credentials: group 5 POC (rafael.t.mendoza, role poc)
+
+status: 200
+content-type: application/json; charset=utf-8
+access-control-allow-origin: *
+x-powered-by: Express
+response body:
+  []
+
+data files: unchanged
+
+outbound calls: none
+
+`;
+
+exports[`GET /api/sprints > wrong role 1`] = `
+
+GET /api/sprints
+credentials: no-group new joiner (paolo.d.ramos, role viewer)
+
+=> identical to the happy path (lists every sprint): same status, body, data-file changes and outbound calls
+
+`;
+
+exports[`PATCH /api/sprint-retros/:id > happy path › edits the text (as the retros page sends it) 1`] = `
+
+PATCH /api/sprint-retros/2
+credentials: group 5 POC (rafael.t.mendoza, role poc)
+request body:
+  {
+    "text": "Author instance setup took three days"
+  }
+
+status: 200
+content-type: application/json; charset=utf-8
+access-control-allow-origin: *
+x-powered-by: Express
+response body:
+  {
+    "id": 2,
+    "sprintId": 1,
+    "groupNumber": 5,
+    "category": "didnt-go-well",
+    "text": "Author instance setup took three days",
+    "createdAt": "2026-10-23T07:03:40.917Z"
+  }
+
+data files:
+  db.json: modified
+    raw text diff:
+      @@ -56,5 +56,5 @@
+             "groupNumber": 5,
+             "category": "didnt-go-well",
+      -      "text": "Local author instance setup took most of the first week",
+      +      "text": "Author instance setup took three days",
+             "createdAt": "2026-10-23T07:03:40.917Z"
+           },
+    parsed JSON diff:
+      ~ /sprint-retros[id=2]/text: "Local author instance setup took most of the first week" → "Author instance setup took three days"
+
+outbound calls: none
+
+`;
+
+exports[`PATCH /api/sprint-retros/:id > happy path › only text is updatable; other fields are ignored 1`] = `
+
+PATCH /api/sprint-retros/2
+credentials: group 5 POC (rafael.t.mendoza, role poc)
+request body:
+  {
+    "text": "Edited",
+    "category": "went-well",
+    "sprintId": 3,
+    "groupNumber": 1,
+    "createdAt": "2020-01-01T00:00:00.000Z"
+  }
+
+status: 200
+content-type: application/json; charset=utf-8
+access-control-allow-origin: *
+x-powered-by: Express
+response body:
+  {
+    "id": 2,
+    "sprintId": 1,
+    "groupNumber": 5,
+    "category": "didnt-go-well",
+    "text": "Edited",
+    "createdAt": "2026-10-23T07:03:40.917Z"
+  }
+
+data files:
+  db.json: modified
+    raw text diff:
+      @@ -56,5 +56,5 @@
+             "groupNumber": 5,
+             "category": "didnt-go-well",
+      -      "text": "Local author instance setup took most of the first week",
+      +      "text": "Edited",
+             "createdAt": "2026-10-23T07:03:40.917Z"
+           },
+    parsed JSON diff:
+      ~ /sprint-retros[id=2]/text: "Local author instance setup took most of the first week" → "Edited"
+
+outbound calls: none
+
+`;
+
+exports[`PATCH /api/sprint-retros/:id > invalid input › empty text 1`] = `
+
+PATCH /api/sprint-retros/2
+credentials: group 5 POC (rafael.t.mendoza, role poc)
+request body:
+  {
+    "text": ""
+  }
+
+status: 400
+content-type: application/json; charset=utf-8
+access-control-allow-origin: *
+x-powered-by: Express
+response body:
+  {
+    "error": "text is required and must not exceed 500 characters"
+  }
+
+data files: unchanged
+
+outbound calls: none
+
+`;
+
+exports[`PATCH /api/sprint-retros/:id > invalid input › malformed JSON body 1`] = `
+
+PATCH /api/sprint-retros/2
+credentials: group 5 POC (rafael.t.mendoza, role poc)
+request body (raw):
+  {"broken": 
+
+status: 400
+content-type: text/html; charset=utf-8
+access-control-allow-origin: *
+x-powered-by: Express
+response body:
+  <!DOCTYPE html>
+  <html lang="en">
+  <head>
+  <meta charset="utf-8">
+  <title>Error</title>
+  </head>
+  <body>
+  <pre>SyntaxError: Unexpected end of JSON input<br> &nbsp; &nbsp;at <stack trace removed></pre>
+  </body>
+  </html>
+  
+
+data files: unchanged
+
+outbound calls: none
+
+`;
+
+exports[`PATCH /api/sprint-retros/:id > invalid input › no body 1`] = `
+
+PATCH /api/sprint-retros/2
+credentials: group 5 POC (rafael.t.mendoza, role poc)
+
+status: 400
+content-type: application/json; charset=utf-8
+access-control-allow-origin: *
+x-powered-by: Express
+response body:
+  {
+    "error": "text is required and must not exceed 500 characters"
+  }
+
+data files: unchanged
+
+outbound calls: none
+
+`;
+
+exports[`PATCH /api/sprint-retros/:id > invalid input › numeric text is stringified 1`] = `
+
+PATCH /api/sprint-retros/2
+credentials: group 5 POC (rafael.t.mendoza, role poc)
+request body:
+  {
+    "text": 12345
+  }
+
+status: 200
+content-type: application/json; charset=utf-8
+access-control-allow-origin: *
+x-powered-by: Express
+response body:
+  {
+    "id": 2,
+    "sprintId": 1,
+    "groupNumber": 5,
+    "category": "didnt-go-well",
+    "text": "12345",
+    "createdAt": "2026-10-23T07:03:40.917Z"
+  }
+
+data files:
+  db.json: modified
+    raw text diff:
+      @@ -56,5 +56,5 @@
+             "groupNumber": 5,
+             "category": "didnt-go-well",
+      -      "text": "Local author instance setup took most of the first week",
+      +      "text": "12345",
+             "createdAt": "2026-10-23T07:03:40.917Z"
+           },
+    parsed JSON diff:
+      ~ /sprint-retros[id=2]/text: "Local author instance setup took most of the first week" → "12345"
+
+outbound calls: none
+
+`;
+
+exports[`PATCH /api/sprint-retros/:id > invalid input › text over 500 characters 1`] = `
+
+PATCH /api/sprint-retros/2
+credentials: group 5 POC (rafael.t.mendoza, role poc)
+request body:
+  {
+    "text": "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
+  }
+
+status: 400
+content-type: application/json; charset=utf-8
+access-control-allow-origin: *
+x-powered-by: Express
+response body:
+  {
+    "error": "text is required and must not exceed 500 characters"
+  }
+
+data files: unchanged
+
+outbound calls: none
+
+`;
+
+exports[`PATCH /api/sprint-retros/:id > no auth 1`] = `
+
+PATCH /api/sprint-retros/2
+credentials: none
+request body:
+  {
+    "text": "Author instance setup took three days"
+  }
+
+=> identical to the happy path (edits the text (as the retros page sends it)): same status, body, data-file changes and outbound calls
+
+`;
+
+exports[`PATCH /api/sprint-retros/:id > not found › id 3 (deleted earlier, gap in ids) 1`] = `
+
+PATCH /api/sprint-retros/3
+credentials: group 5 POC (rafael.t.mendoza, role poc)
+request body:
+  {
+    "text": "x"
+  }
+
+status: 404
+content-type: application/json; charset=utf-8
+access-control-allow-origin: *
+x-powered-by: Express
+response body:
+  {
+    "error": "retrospective item not found"
+  }
+
+data files: unchanged
+
+outbound calls: none
+
+`;
+
+exports[`PATCH /api/sprint-retros/:id > not found › non-numeric id 1`] = `
+
+PATCH /api/sprint-retros/abc
+credentials: group 5 POC (rafael.t.mendoza, role poc)
+request body:
+  {
+    "text": "x"
+  }
+
+status: 404
+content-type: application/json; charset=utf-8
+access-control-allow-origin: *
+x-powered-by: Express
+response body:
+  {
+    "error": "retrospective item not found"
+  }
+
+data files: unchanged
+
+outbound calls: none
+
+`;
+
+exports[`PATCH /api/sprint-retros/:id > not found › unknown id 1`] = `
+
+PATCH /api/sprint-retros/999
+credentials: group 5 POC (rafael.t.mendoza, role poc)
+request body:
+  {
+    "text": "x"
+  }
+
+status: 404
+content-type: application/json; charset=utf-8
+access-control-allow-origin: *
+x-powered-by: Express
+response body:
+  {
+    "error": "retrospective item not found"
+  }
+
+data files: unchanged
+
+outbound calls: none
+
+`;
+
+exports[`PATCH /api/sprint-retros/:id > wrong role 1`] = `
+
+PATCH /api/sprint-retros/2
+credentials: no-group new joiner (paolo.d.ramos, role viewer)
+request body:
+  {
+    "text": "Author instance setup took three days"
+  }
+
+=> identical to the happy path (edits the text (as the retros page sends it)): same status, body, data-file changes and outbound calls
+
+`;
+
+exports[`PATCH /api/sprints/:id > happy path › ignores unknown fields 1`] = `
+
+PATCH /api/sprints/3
+credentials: group 5 POC (rafael.t.mendoza, role poc)
+request body:
+  {
+    "id": 99,
+    "goal": "ship it"
+  }
+
+status: 200
+content-type: application/json; charset=utf-8
+access-control-allow-origin: *
+x-powered-by: Express
+response body:
+  {
+    "id": 3,
+    "name": "Sprint 3",
+    "start": "2026-11-10",
+    "end": "2026-11-21"
+  }
+
+data files: unchanged
+
+outbound calls: none
+
+`;
+
+exports[`PATCH /api/sprints/:id > happy path › partial update: end only 1`] = `
+
+PATCH /api/sprints/3
+credentials: group 5 POC (rafael.t.mendoza, role poc)
+request body:
+  {
+    "end": "2026-11-28"
+  }
+
+status: 200
+content-type: application/json; charset=utf-8
+access-control-allow-origin: *
+x-powered-by: Express
+response body:
+  {
+    "id": 3,
+    "name": "Sprint 3",
+    "start": "2026-11-10",
+    "end": "2026-11-28"
+  }
+
+data files:
+  db.json: modified
+    raw text diff:
+      @@ -93,5 +93,5 @@
+             "name": "Sprint 3",
+             "start": "2026-11-10",
+      -      "end": "2026-11-21"
+      +      "end": "2026-11-28"
+           }
+         ],
+    parsed JSON diff:
+      ~ /sprints[id=3]/end: "2026-11-21" → "2026-11-28"
+
+outbound calls: none
+
+`;
+
+exports[`PATCH /api/sprints/:id > happy path › renames and moves sprint 3 (as the planner sends it) 1`] = `
+
+PATCH /api/sprints/3
+credentials: group 5 POC (rafael.t.mendoza, role poc)
+request body:
+  {
+    "name": "Sprint 3 (extended)",
+    "start": "2026-11-10",
+    "end": "2026-11-28"
+  }
+
+status: 200
+content-type: application/json; charset=utf-8
+access-control-allow-origin: *
+x-powered-by: Express
+response body:
+  {
+    "id": 3,
+    "name": "Sprint 3 (extended)",
+    "start": "2026-11-10",
+    "end": "2026-11-28"
+  }
+
+data files:
+  db.json: modified
+    raw text diff:
+      @@ -91,7 +91,7 @@
+           {
+             "id": 3,
+      -      "name": "Sprint 3",
+      +      "name": "Sprint 3 (extended)",
+             "start": "2026-11-10",
+      -      "end": "2026-11-21"
+      +      "end": "2026-11-28"
+           }
+         ],
+    parsed JSON diff:
+      ~ /sprints[id=3]/name: "Sprint 3" → "Sprint 3 (extended)"
+      ~ /sprints[id=3]/end: "2026-11-21" → "2026-11-28"
+
+outbound calls: none
+
+`;
+
+exports[`PATCH /api/sprints/:id > invalid input › empty name is accepted 1`] = `
+
+PATCH /api/sprints/3
+credentials: group 5 POC (rafael.t.mendoza, role poc)
+request body:
+  {
+    "name": ""
+  }
+
+status: 200
+content-type: application/json; charset=utf-8
+access-control-allow-origin: *
+x-powered-by: Express
+response body:
+  {
+    "id": 3,
+    "name": "",
+    "start": "2026-11-10",
+    "end": "2026-11-21"
+  }
+
+data files:
+  db.json: modified
+    raw text diff:
+      @@ -91,5 +91,5 @@
+           {
+             "id": 3,
+      -      "name": "Sprint 3",
+      +      "name": "",
+             "start": "2026-11-10",
+             "end": "2026-11-21"
+    parsed JSON diff:
+      ~ /sprints[id=3]/name: "Sprint 3" → ""
+
+outbound calls: none
+
+`;
+
+exports[`PATCH /api/sprints/:id > invalid input › malformed JSON body 1`] = `
+
+PATCH /api/sprints/3
+credentials: group 5 POC (rafael.t.mendoza, role poc)
+request body (raw):
+  {"broken": 
+
+status: 400
+content-type: text/html; charset=utf-8
+access-control-allow-origin: *
+x-powered-by: Express
+response body:
+  <!DOCTYPE html>
+  <html lang="en">
+  <head>
+  <meta charset="utf-8">
+  <title>Error</title>
+  </head>
+  <body>
+  <pre>SyntaxError: Unexpected end of JSON input<br> &nbsp; &nbsp;at <stack trace removed></pre>
+  </body>
+  </html>
+  
+
+data files: unchanged
+
+outbound calls: none
+
+`;
+
+exports[`PATCH /api/sprints/:id > invalid input › no body 1`] = `
+
+PATCH /api/sprints/3
+credentials: group 5 POC (rafael.t.mendoza, role poc)
+
+status: 500
+content-type: text/html; charset=utf-8
+access-control-allow-origin: *
+x-powered-by: Express
+response body:
+  <!DOCTYPE html>
+  <html lang="en">
+  <head>
+  <meta charset="utf-8">
+  <title>Error</title>
+  </head>
+  <body>
+  <pre>TypeError: Cannot destructure property &#39;name&#39; of &#39;req.body&#39; as it is undefined.<br> &nbsp; &nbsp;at <stack trace removed></pre>
+  </body>
+  </html>
+  
+
+data files: unchanged
+
+outbound calls: none
+
+`;
+
+exports[`PATCH /api/sprints/:id > invalid input › null start becomes the string \"null\" 1`] = `
+
+PATCH /api/sprints/3
+credentials: group 5 POC (rafael.t.mendoza, role poc)
+request body:
+  {
+    "start": null
+  }
+
+status: 200
+content-type: application/json; charset=utf-8
+access-control-allow-origin: *
+x-powered-by: Express
+response body:
+  {
+    "id": 3,
+    "name": "Sprint 3",
+    "start": "null",
+    "end": "2026-11-21"
+  }
+
+data files:
+  db.json: modified
+    raw text diff:
+      @@ -92,5 +92,5 @@
+             "id": 3,
+             "name": "Sprint 3",
+      -      "start": "2026-11-10",
+      +      "start": "null",
+             "end": "2026-11-21"
+           }
+    parsed JSON diff:
+      ~ /sprints[id=3]/start: "2026-11-10" → "null"
+
+outbound calls: none
+
+`;
+
+exports[`PATCH /api/sprints/:id > no auth 1`] = `
+
+PATCH /api/sprints/3
+credentials: none
+request body:
+  {
+    "name": "Sprint 3 (extended)",
+    "start": "2026-11-10",
+    "end": "2026-11-28"
+  }
+
+=> identical to the happy path (renames and moves sprint 3 (as the planner sends it)): same status, body, data-file changes and outbound calls
+
+`;
+
+exports[`PATCH /api/sprints/:id > not found › non-numeric id 1`] = `
+
+PATCH /api/sprints/abc
+credentials: group 5 POC (rafael.t.mendoza, role poc)
+request body:
+  {
+    "name": "Nope"
+  }
+
+status: 404
+content-type: application/json; charset=utf-8
+access-control-allow-origin: *
+x-powered-by: Express
+response body:
+  {
+    "error": "sprint not found"
+  }
+
+data files: unchanged
+
+outbound calls: none
+
+`;
+
+exports[`PATCH /api/sprints/:id > not found › unknown id 1`] = `
+
+PATCH /api/sprints/999
+credentials: group 5 POC (rafael.t.mendoza, role poc)
+request body:
+  {
+    "name": "Nope"
+  }
+
+status: 404
+content-type: application/json; charset=utf-8
+access-control-allow-origin: *
+x-powered-by: Express
+response body:
+  {
+    "error": "sprint not found"
+  }
+
+data files: unchanged
+
+outbound calls: none
+
+`;
+
+exports[`PATCH /api/sprints/:id > not found › unknown id with no body 1`] = `
+
+PATCH /api/sprints/999
+credentials: group 5 POC (rafael.t.mendoza, role poc)
+
+status: 404
+content-type: application/json; charset=utf-8
+access-control-allow-origin: *
+x-powered-by: Express
+response body:
+  {
+    "error": "sprint not found"
+  }
+
+data files: unchanged
+
+outbound calls: none
+
+`;
+
+exports[`PATCH /api/sprints/:id > wrong role 1`] = `
+
+PATCH /api/sprints/3
+credentials: no-group new joiner (paolo.d.ramos, role viewer)
+request body:
+  {
+    "name": "Sprint 3 (extended)",
+    "start": "2026-11-10",
+    "end": "2026-11-28"
+  }
+
+=> identical to the happy path (renames and moves sprint 3 (as the planner sends it)): same status, body, data-file changes and outbound calls
+
+`;
+
+exports[`POST /api/sprint-retros > happy path › adds a retro item (as the retros page sends it) 1`] = `
+
+POST /api/sprint-retros
+credentials: group 5 POC (rafael.t.mendoza, role poc)
+request body:
+  {
+    "sprintId": 2,
+    "groupNumber": 5,
+    "category": "went-well",
+    "text": "Daily pairing on AEM components kept everyone unblocked"
+  }
+
+status: 201
+content-type: application/json; charset=utf-8
+access-control-allow-origin: *
+x-powered-by: Express
+response body:
+  {
+    "id": 6,
+    "sprintId": 2,
+    "groupNumber": 5,
+    "category": "went-well",
+    "text": "Daily pairing on AEM components kept everyone unblocked",
+    "createdAt": "<generated-timestamp>"
+  }
+
+data files:
+  db.json: modified
+    raw text diff:
+      @@ -74,4 +74,12 @@
+             "text": "Testing Library session was well attended and recorded for later",
+             "createdAt": "2026-11-05T09:14:56.780Z"
+      +    },
+      +    {
+      +      "id": 6,
+      +      "sprintId": 2,
+      +      "groupNumber": 5,
+      +      "category": "went-well",
+      +      "text": "Daily pairing on AEM components kept everyone unblocked",
+      +      "createdAt": "<generated-timestamp>"
+           }
+         ],
+    parsed JSON diff:
+      + /sprint-retros[id=6] (at index 4): {"id":6,"sprintId":2,"groupNumber":5,"category":"went-well","text":"Daily pairing on AEM components kept everyone unblocked","createdAt":"<generated-timestamp>"}
+
+outbound calls: none
+
+`;
+
+exports[`POST /api/sprint-retros > happy path › coerces numeric strings and trims text 1`] = `
+
+POST /api/sprint-retros
+credentials: group 5 POC (rafael.t.mendoza, role poc)
+request body:
+  {
+    "sprintId": "2",
+    "groupNumber": "1",
+    "category": "went-well",
+    "text": "  padded  "
+  }
+
+status: 201
+content-type: application/json; charset=utf-8
+access-control-allow-origin: *
+x-powered-by: Express
+response body:
+  {
+    "id": 6,
+    "sprintId": 2,
+    "groupNumber": 1,
+    "category": "went-well",
+    "text": "padded",
+    "createdAt": "<generated-timestamp>"
+  }
+
+data files:
+  db.json: modified
+    raw text diff:
+      @@ -74,4 +74,12 @@
+             "text": "Testing Library session was well attended and recorded for later",
+             "createdAt": "2026-11-05T09:14:56.780Z"
+      +    },
+      +    {
+      +      "id": 6,
+      +      "sprintId": 2,
+      +      "groupNumber": 1,
+      +      "category": "went-well",
+      +      "text": "padded",
+      +      "createdAt": "<generated-timestamp>"
+           }
+         ],
+    parsed JSON diff:
+      + /sprint-retros[id=6] (at index 4): {"id":6,"sprintId":2,"groupNumber":1,"category":"went-well","text":"padded","createdAt":"<generated-timestamp>"}
+
+outbound calls: none
+
+`;
+
+exports[`POST /api/sprint-retros > happy path › text of exactly 500 characters 1`] = `
+
+POST /api/sprint-retros
+credentials: group 5 POC (rafael.t.mendoza, role poc)
+request body:
+  {
+    "sprintId": 2,
+    "groupNumber": 5,
+    "category": "went-well",
+    "text": "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
+  }
+
+status: 201
+content-type: application/json; charset=utf-8
+access-control-allow-origin: *
+x-powered-by: Express
+response body:
+  {
+    "id": 6,
+    "sprintId": 2,
+    "groupNumber": 5,
+    "category": "went-well",
+    "text": "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",
+    "createdAt": "<generated-timestamp>"
+  }
+
+data files:
+  db.json: modified
+    raw text diff:
+      @@ -74,4 +74,12 @@
+             "text": "Testing Library session was well attended and recorded for later",
+             "createdAt": "2026-11-05T09:14:56.780Z"
+      +    },
+      +    {
+      +      "id": 6,
+      +      "sprintId": 2,
+      +      "groupNumber": 5,
+      +      "category": "went-well",
+      +      "text": "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",
+      +      "createdAt": "<generated-timestamp>"
+           }
+         ],
+    parsed JSON diff:
+      + /sprint-retros[id=6] (at index 4): {"id":6,"sprintId":2,"groupNumber":5,"category":"went-well","text":"xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx","createdAt":"<generated-timestamp>"}
+
+outbound calls: none
+
+`;
+
+exports[`POST /api/sprint-retros > invalid input › extra fields are dropped 1`] = `
+
+POST /api/sprint-retros
+credentials: group 5 POC (rafael.t.mendoza, role poc)
+request body:
+  {
+    "sprintId": 2,
+    "groupNumber": 5,
+    "category": "went-well",
+    "text": "Daily pairing on AEM components kept everyone unblocked",
+    "id": 42,
+    "createdAt": "2020-01-01T00:00:00.000Z",
+    "author": "x"
+  }
+
+status: 201
+content-type: application/json; charset=utf-8
+access-control-allow-origin: *
+x-powered-by: Express
+response body:
+  {
+    "id": 6,
+    "sprintId": 2,
+    "groupNumber": 5,
+    "category": "went-well",
+    "text": "Daily pairing on AEM components kept everyone unblocked",
+    "createdAt": "<generated-timestamp>"
+  }
+
+data files:
+  db.json: modified
+    raw text diff:
+      @@ -74,4 +74,12 @@
+             "text": "Testing Library session was well attended and recorded for later",
+             "createdAt": "2026-11-05T09:14:56.780Z"
+      +    },
+      +    {
+      +      "id": 6,
+      +      "sprintId": 2,
+      +      "groupNumber": 5,
+      +      "category": "went-well",
+      +      "text": "Daily pairing on AEM components kept everyone unblocked",
+      +      "createdAt": "<generated-timestamp>"
+           }
+         ],
+    parsed JSON diff:
+      + /sprint-retros[id=6] (at index 4): {"id":6,"sprintId":2,"groupNumber":5,"category":"went-well","text":"Daily pairing on AEM components kept everyone unblocked","createdAt":"<generated-timestamp>"}
+
+outbound calls: none
+
+`;
+
+exports[`POST /api/sprint-retros > invalid input › fractional sprintId 1`] = `
+
+POST /api/sprint-retros
+credentials: group 5 POC (rafael.t.mendoza, role poc)
+request body:
+  {
+    "sprintId": 1.5,
+    "groupNumber": 5,
+    "category": "went-well",
+    "text": "Daily pairing on AEM components kept everyone unblocked"
+  }
+
+status: 400
+content-type: application/json; charset=utf-8
+access-control-allow-origin: *
+x-powered-by: Express
+response body:
+  {
+    "error": "a valid sprint number is required"
+  }
+
+data files: unchanged
+
+outbound calls: none
+
+`;
+
+exports[`POST /api/sprint-retros > invalid input › groupNumber 0 1`] = `
+
+POST /api/sprint-retros
+credentials: group 5 POC (rafael.t.mendoza, role poc)
+request body:
+  {
+    "sprintId": 2,
+    "groupNumber": 0,
+    "category": "went-well",
+    "text": "Daily pairing on AEM components kept everyone unblocked"
+  }
+
+status: 400
+content-type: application/json; charset=utf-8
+access-control-allow-origin: *
+x-powered-by: Express
+response body:
+  {
+    "error": "a valid group number is required"
+  }
+
+data files: unchanged
+
+outbound calls: none
+
+`;
+
+exports[`POST /api/sprint-retros > invalid input › groupNumber 99 is accepted (no upper bound) 1`] = `
+
+POST /api/sprint-retros
+credentials: group 5 POC (rafael.t.mendoza, role poc)
+request body:
+  {
+    "sprintId": 2,
+    "groupNumber": 99,
+    "category": "went-well",
+    "text": "Daily pairing on AEM components kept everyone unblocked"
+  }
+
+status: 201
+content-type: application/json; charset=utf-8
+access-control-allow-origin: *
+x-powered-by: Express
+response body:
+  {
+    "id": 6,
+    "sprintId": 2,
+    "groupNumber": 99,
+    "category": "went-well",
+    "text": "Daily pairing on AEM components kept everyone unblocked",
+    "createdAt": "<generated-timestamp>"
+  }
+
+data files:
+  db.json: modified
+    raw text diff:
+      @@ -74,4 +74,12 @@
+             "text": "Testing Library session was well attended and recorded for later",
+             "createdAt": "2026-11-05T09:14:56.780Z"
+      +    },
+      +    {
+      +      "id": 6,
+      +      "sprintId": 2,
+      +      "groupNumber": 99,
+      +      "category": "went-well",
+      +      "text": "Daily pairing on AEM components kept everyone unblocked",
+      +      "createdAt": "<generated-timestamp>"
+           }
+         ],
+    parsed JSON diff:
+      + /sprint-retros[id=6] (at index 4): {"id":6,"sprintId":2,"groupNumber":99,"category":"went-well","text":"Daily pairing on AEM components kept everyone unblocked","createdAt":"<generated-timestamp>"}
+
+outbound calls: none
+
+`;
+
+exports[`POST /api/sprint-retros > invalid input › malformed JSON body 1`] = `
+
+POST /api/sprint-retros
+credentials: group 5 POC (rafael.t.mendoza, role poc)
+request body (raw):
+  {"broken": 
+
+status: 400
+content-type: text/html; charset=utf-8
+access-control-allow-origin: *
+x-powered-by: Express
+response body:
+  <!DOCTYPE html>
+  <html lang="en">
+  <head>
+  <meta charset="utf-8">
+  <title>Error</title>
+  </head>
+  <body>
+  <pre>SyntaxError: Unexpected end of JSON input<br> &nbsp; &nbsp;at <stack trace removed></pre>
+  </body>
+  </html>
+  
+
+data files: unchanged
+
+outbound calls: none
+
+`;
+
+exports[`POST /api/sprint-retros > invalid input › no body 1`] = `
+
+POST /api/sprint-retros
+credentials: group 5 POC (rafael.t.mendoza, role poc)
+
+status: 400
+content-type: application/json; charset=utf-8
+access-control-allow-origin: *
+x-powered-by: Express
+response body:
+  {
+    "error": "a valid sprint number is required"
+  }
+
+data files: unchanged
+
+outbound calls: none
+
+`;
+
+exports[`POST /api/sprint-retros > invalid input › text over 500 characters 1`] = `
+
+POST /api/sprint-retros
+credentials: group 5 POC (rafael.t.mendoza, role poc)
+request body:
+  {
+    "sprintId": 2,
+    "groupNumber": 5,
+    "category": "went-well",
+    "text": "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
+  }
+
+status: 400
+content-type: application/json; charset=utf-8
+access-control-allow-origin: *
+x-powered-by: Express
+response body:
+  {
+    "error": "text is required and must not exceed 500 characters"
+  }
+
+data files: unchanged
+
+outbound calls: none
+
+`;
+
+exports[`POST /api/sprint-retros > invalid input › unknown category 1`] = `
+
+POST /api/sprint-retros
+credentials: group 5 POC (rafael.t.mendoza, role poc)
+request body:
+  {
+    "sprintId": 2,
+    "groupNumber": 5,
+    "category": "meh",
+    "text": "Daily pairing on AEM components kept everyone unblocked"
+  }
+
+status: 400
+content-type: application/json; charset=utf-8
+access-control-allow-origin: *
+x-powered-by: Express
+response body:
+  {
+    "error": "a valid category is required"
+  }
+
+data files: unchanged
+
+outbound calls: none
+
+`;
+
+exports[`POST /api/sprint-retros > invalid input › whitespace-only text 1`] = `
+
+POST /api/sprint-retros
+credentials: group 5 POC (rafael.t.mendoza, role poc)
+request body:
+  {
+    "sprintId": 2,
+    "groupNumber": 5,
+    "category": "went-well",
+    "text": "   "
+  }
+
+status: 400
+content-type: application/json; charset=utf-8
+access-control-allow-origin: *
+x-powered-by: Express
+response body:
+  {
+    "error": "text is required and must not exceed 500 characters"
+  }
+
+data files: unchanged
+
+outbound calls: none
+
+`;
+
+exports[`POST /api/sprint-retros > no auth 1`] = `
+
+POST /api/sprint-retros
+credentials: none
+request body:
+  {
+    "sprintId": 2,
+    "groupNumber": 5,
+    "category": "went-well",
+    "text": "Daily pairing on AEM components kept everyone unblocked"
+  }
+
+=> identical to the happy path (adds a retro item (as the retros page sends it)): same status, body, data-file changes and outbound calls
+
+`;
+
+exports[`POST /api/sprint-retros > not found › sprint does not exist 1`] = `
+
+POST /api/sprint-retros
+credentials: group 5 POC (rafael.t.mendoza, role poc)
+request body:
+  {
+    "sprintId": 999,
+    "groupNumber": 5,
+    "category": "went-well",
+    "text": "Daily pairing on AEM components kept everyone unblocked"
+  }
+
+status: 400
+content-type: application/json; charset=utf-8
+access-control-allow-origin: *
+x-powered-by: Express
+response body:
+  {
+    "error": "a valid sprint number is required"
+  }
+
+data files: unchanged
+
+outbound calls: none
+
+`;
+
+exports[`POST /api/sprint-retros > not found › sprints collection missing 1`] = `
+
+POST /api/sprint-retros
+credentials: group 5 POC (rafael.t.mendoza, role poc)
+request body:
+  {
+    "sprintId": 2,
+    "groupNumber": 5,
+    "category": "went-well",
+    "text": "Daily pairing on AEM components kept everyone unblocked"
+  }
+
+status: 400
+content-type: application/json; charset=utf-8
+access-control-allow-origin: *
+x-powered-by: Express
+response body:
+  {
+    "error": "a valid sprint number is required"
+  }
+
+data files: unchanged
+
+outbound calls: none
+
+`;
+
+exports[`POST /api/sprint-retros > wrong role 1`] = `
+
+POST /api/sprint-retros
+credentials: no-group new joiner (paolo.d.ramos, role viewer)
+request body:
+  {
+    "sprintId": 2,
+    "groupNumber": 5,
+    "category": "went-well",
+    "text": "Daily pairing on AEM components kept everyone unblocked"
+  }
+
+=> identical to the happy path (adds a retro item (as the retros page sends it)): same status, body, data-file changes and outbound calls
+
+`;
+
+exports[`POST /api/sprints > happy path › creates a sprint (as the planner sends it) 1`] = `
+
+POST /api/sprints
+credentials: group 5 POC (rafael.t.mendoza, role poc)
+request body:
+  {
+    "name": "Sprint 4",
+    "start": "2026-11-24",
+    "end": "2026-12-05"
+  }
+
+status: 201
+content-type: application/json; charset=utf-8
+access-control-allow-origin: *
+x-powered-by: Express
+response body:
+  {
+    "id": 4,
+    "name": "Sprint 4",
+    "start": "2026-11-24",
+    "end": "2026-12-05"
+  }
+
+data files:
+  db.json: modified
+    raw text diff:
+      @@ -94,4 +94,10 @@
+             "start": "2026-11-10",
+             "end": "2026-11-21"
+      +    },
+      +    {
+      +      "id": 4,
+      +      "name": "Sprint 4",
+      +      "start": "2026-11-24",
+      +      "end": "2026-12-05"
+           }
+         ],
+    parsed JSON diff:
+      + /sprints[id=4] (at index 3): {"id":4,"name":"Sprint 4","start":"2026-11-24","end":"2026-12-05"}
+
+outbound calls: none
+
+`;
+
+exports[`POST /api/sprints > happy path › trims the name and stringifies dates 1`] = `
+
+POST /api/sprints
+credentials: group 5 POC (rafael.t.mendoza, role poc)
+request body:
+  {
+    "name": "  Sprint 4  ",
+    "start": 20261124,
+    "end": 20261205
+  }
+
+status: 201
+content-type: application/json; charset=utf-8
+access-control-allow-origin: *
+x-powered-by: Express
+response body:
+  {
+    "id": 4,
+    "name": "Sprint 4",
+    "start": "20261124",
+    "end": "20261205"
+  }
+
+data files:
+  db.json: modified
+    raw text diff:
+      @@ -94,4 +94,10 @@
+             "start": "2026-11-10",
+             "end": "2026-11-21"
+      +    },
+      +    {
+      +      "id": 4,
+      +      "name": "Sprint 4",
+      +      "start": "20261124",
+      +      "end": "20261205"
+           }
+         ],
+    parsed JSON diff:
+      + /sprints[id=4] (at index 3): {"id":4,"name":"Sprint 4","start":"20261124","end":"20261205"}
+
+outbound calls: none
+
+`;
+
+exports[`POST /api/sprints > invalid input › dates are not validated 1`] = `
+
+POST /api/sprints
+credentials: group 5 POC (rafael.t.mendoza, role poc)
+request body:
+  {
+    "name": "Sprint 4",
+    "start": "not-a-date",
+    "end": "yesterday"
+  }
+
+status: 201
+content-type: application/json; charset=utf-8
+access-control-allow-origin: *
+x-powered-by: Express
+response body:
+  {
+    "id": 4,
+    "name": "Sprint 4",
+    "start": "not-a-date",
+    "end": "yesterday"
+  }
+
+data files:
+  db.json: modified
+    raw text diff:
+      @@ -94,4 +94,10 @@
+             "start": "2026-11-10",
+             "end": "2026-11-21"
+      +    },
+      +    {
+      +      "id": 4,
+      +      "name": "Sprint 4",
+      +      "start": "not-a-date",
+      +      "end": "yesterday"
+           }
+         ],
+    parsed JSON diff:
+      + /sprints[id=4] (at index 3): {"id":4,"name":"Sprint 4","start":"not-a-date","end":"yesterday"}
+
+outbound calls: none
+
+`;
+
+exports[`POST /api/sprints > invalid input › empty name 1`] = `
+
+POST /api/sprints
+credentials: group 5 POC (rafael.t.mendoza, role poc)
+request body:
+  {
+    "name": "",
+    "start": "2026-11-24",
+    "end": "2026-12-05"
+  }
+
+status: 400
+content-type: application/json; charset=utf-8
+access-control-allow-origin: *
+x-powered-by: Express
+response body:
+  {
+    "error": "name, start and end are required"
+  }
+
+data files: unchanged
+
+outbound calls: none
+
+`;
+
+exports[`POST /api/sprints > invalid input › end before start 1`] = `
+
+POST /api/sprints
+credentials: group 5 POC (rafael.t.mendoza, role poc)
+request body:
+  {
+    "name": "Sprint 4",
+    "start": "2026-12-05",
+    "end": "2026-11-24"
+  }
+
+status: 201
+content-type: application/json; charset=utf-8
+access-control-allow-origin: *
+x-powered-by: Express
+response body:
+  {
+    "id": 4,
+    "name": "Sprint 4",
+    "start": "2026-12-05",
+    "end": "2026-11-24"
+  }
+
+data files:
+  db.json: modified
+    raw text diff:
+      @@ -94,4 +94,10 @@
+             "start": "2026-11-10",
+             "end": "2026-11-21"
+      +    },
+      +    {
+      +      "id": 4,
+      +      "name": "Sprint 4",
+      +      "start": "2026-12-05",
+      +      "end": "2026-11-24"
+           }
+         ],
+    parsed JSON diff:
+      + /sprints[id=4] (at index 3): {"id":4,"name":"Sprint 4","start":"2026-12-05","end":"2026-11-24"}
+
+outbound calls: none
+
+`;
+
+exports[`POST /api/sprints > invalid input › malformed JSON body 1`] = `
+
+POST /api/sprints
+credentials: group 5 POC (rafael.t.mendoza, role poc)
+request body (raw):
+  {"broken": 
+
+status: 400
+content-type: text/html; charset=utf-8
+access-control-allow-origin: *
+x-powered-by: Express
+response body:
+  <!DOCTYPE html>
+  <html lang="en">
+  <head>
+  <meta charset="utf-8">
+  <title>Error</title>
+  </head>
+  <body>
+  <pre>SyntaxError: Unexpected end of JSON input<br> &nbsp; &nbsp;at <stack trace removed></pre>
+  </body>
+  </html>
+  
+
+data files: unchanged
+
+outbound calls: none
+
+`;
+
+exports[`POST /api/sprints > invalid input › missing end 1`] = `
+
+POST /api/sprints
+credentials: group 5 POC (rafael.t.mendoza, role poc)
+request body:
+  {
+    "name": "Sprint 4",
+    "start": "2026-11-24"
+  }
+
+status: 400
+content-type: application/json; charset=utf-8
+access-control-allow-origin: *
+x-powered-by: Express
+response body:
+  {
+    "error": "name, start and end are required"
+  }
+
+data files: unchanged
+
+outbound calls: none
+
+`;
+
+exports[`POST /api/sprints > invalid input › no body 1`] = `
+
+POST /api/sprints
+credentials: group 5 POC (rafael.t.mendoza, role poc)
+
+status: 500
+content-type: text/html; charset=utf-8
+access-control-allow-origin: *
+x-powered-by: Express
+response body:
+  <!DOCTYPE html>
+  <html lang="en">
+  <head>
+  <meta charset="utf-8">
+  <title>Error</title>
+  </head>
+  <body>
+  <pre>TypeError: Cannot destructure property &#39;name&#39; of &#39;req.body&#39; as it is undefined.<br> &nbsp; &nbsp;at <stack trace removed></pre>
+  </body>
+  </html>
+  
+
+data files: unchanged
+
+outbound calls: none
+
+`;
+
+exports[`POST /api/sprints > invalid input › whitespace-only name 1`] = `
+
+POST /api/sprints
+credentials: group 5 POC (rafael.t.mendoza, role poc)
+request body:
+  {
+    "name": "   ",
+    "start": "2026-11-24",
+    "end": "2026-12-05"
+  }
+
+status: 201
+content-type: application/json; charset=utf-8
+access-control-allow-origin: *
+x-powered-by: Express
+response body:
+  {
+    "id": 4,
+    "name": "",
+    "start": "2026-11-24",
+    "end": "2026-12-05"
+  }
+
+data files:
+  db.json: modified
+    raw text diff:
+      @@ -94,4 +94,10 @@
+             "start": "2026-11-10",
+             "end": "2026-11-21"
+      +    },
+      +    {
+      +      "id": 4,
+      +      "name": "",
+      +      "start": "2026-11-24",
+      +      "end": "2026-12-05"
+           }
+         ],
+    parsed JSON diff:
+      + /sprints[id=4] (at index 3): {"id":4,"name":"","start":"2026-11-24","end":"2026-12-05"}
+
+outbound calls: none
+
+`;
+
+exports[`POST /api/sprints > no auth 1`] = `
+
+POST /api/sprints
+credentials: none
+request body:
+  {
+    "name": "Sprint 4",
+    "start": "2026-11-24",
+    "end": "2026-12-05"
+  }
+
+=> identical to the happy path (creates a sprint (as the planner sends it)): same status, body, data-file changes and outbound calls
+
+`;
+
+exports[`POST /api/sprints > not found › db.json starts with a UTF-8 BOM 1`] = `
+
+POST /api/sprints
+credentials: group 5 POC (rafael.t.mendoza, role poc)
+request body:
+  {
+    "name": "Sprint 4",
+    "start": "2026-11-24",
+    "end": "2026-12-05"
+  }
+
+status: 201
+content-type: application/json; charset=utf-8
+access-control-allow-origin: *
+x-powered-by: Express
+response body:
+  {
+    "id": 1,
+    "name": "Sprint 4",
+    "start": "2026-11-24",
+    "end": "2026-12-05"
+  }
+
+data files:
+  db.json: modified
+    raw text diff:
+      @@ -1,627 +1,9 @@
+      -<UTF-8 BOM>
+       {
+      -  "capacity-entries": [
+      -    {
+      -      "id": 1,
+      -      "sprintName": "Sprint 2",
+      -      "eid": "rafael.t.mendoza",
+      -      "cadence": 4,
+      -      "admin": 0,
+      -      "holiday": 0
+      -    },
+      -    {
+      -      "id": 2,
+      -      "sprintName": "Sprint 2",
+      -      "eid": "teresa.villanueva",
+      -      "cadence": 2,
+      -      "admin": 0,
+      -      "holiday": 0
+      -    },
+      -    {
+      -      "id": 3,
+      -      "sprintName": "Sprint 2",
+      -      "eid": "jomar.c.pascual",
+      -      "cadence": 3,
+      -      "admin": 0,
+      -      "holiday": 1
+      -    },
+      -    {
+      -      "id": 4,
+      -      "sprintName": "Sprint 2",
+      -      "eid": "liza.m.navarro",
+      -      "cadence": 4,
+      -      "admin": 0,
+      -      "holiday": 0
+      -    },
+      -    {
+      -      "id": 5,
+      -      "sprintName": "Sprint 2",
+      -      "eid": "andrea.s.bautista",
+      -      "cadence": 3,
+      -      "admin": 0,
+      -      "holiday": 0
+      -    }
+      -  ],
+      -  "sprint-retros": [
+      -    {
+      -      "id": 1,
+      -      "sprintId": 1,
+      -      "groupNumber": 5,
+      -      "category": "improve",
+      -      "text": "Pair on AEM environment setup earlier so blockers surface on day one",
+      -      "createdAt": "2026-10-23T07:02:11.408Z"
+      -    },
+      -    {
+      -      "id": 2,
+      -      "sprintId": 1,
+      -      "groupNumber": 5,
+      -      "category": "didnt-go-well",
+      -      "text": "Local author instance setup took most of the first week",
+      -      "createdAt": "2026-10-23T07:03:40.917Z"
+      -    },
+      -    {
+      -      "id": 4,
+      -      "sprintId": 1,
+      -      "groupNumber": 5,
+      -      "category": "went-well",
+      -      "text": "Daily knowledge-share sessions kept the new joiners unblocked",
+      -      "createdAt": "2026-10-23T07:05:02.233Z"
+      -    },
+      -    {
+      -      "id": 5,
+      -      "sprintId": 2,
+      -      "groupNumber": 1,
+      -      "category": "went-well",
+      -      "text": "Testing Library session was well attended and recorded for later",
+      -      "createdAt": "2026-11-05T09:14:56.780Z"
+      -    }
+      -  ],
+         "sprints": [
+           {
+             "id": 1,
+      -      "name": "Sprint 1",
+      -      "start": "2026-10-13",
+      -      "end": "2026-10-24"
+      -    },
+      -    {
+      -      "id": 2,
+      -      "name": "Sprint 2",
+      -      "start": "2026-10-27",
+      -      "end": "2026-11-07"
+      -    },
+      -    {
+      -      "id": 3,
+      -      "name": "Sprint 3",
+      -      "start": "2026-11-10",
+      -      "end": "2026-11-21"
+      -    }
+      -  ],
+      -  "attendance-options": [
+      -    {
+      -      "id": "1",
+      -      "label": "Present"
+      -    },
+      -    {
+      -      "id": "2",
+      -      "label": "Absent"
+      -    },
+      -    {
+      -      "id": "3",
+      -      "label": "SL"
+      -    },
+      -    {
+      -      "id": "4",
+      -      "label": "VL"
+      -    },
+      -    {
+      -      "id": "5",
+      -      "label": "PL"
+      -    },
+      -    {
+      -      "id": "6",
+      -      "label": "ML"
+      -    },
+      -    {
+      -      "id": "7",
+      -      "label": "EH"
+      -    },
+      -    {
+      -      "id": "8",
+      -      "label": "BL"
+      -    },
+      -    {
+      -      "id": "9",
+      -      "label": "Deployed"
+      -    },
+      -    {
+      -      "id": "10",
+      -      "label": "RTO"
+      -    },
+      -    {
+      -      "id": "11",
+      -      "label": "NITC"
+      -    },
+      -    {
+      -      "id": "12",
+      -      "label": "Transferred"
+      -    }
+      -  ],
+      -  "attendance": [
+      -    {
+      -      "id": "1",
+      -      "eid": "rafael.t.mendoza",
+      -      "year": 2026,
+      -      "month": 10,
+      -      "day": 27,
+      -      "status": "RTO",
+      -      "location": "Riverside Tech Tower 2"
+      -    },
+      -    {
+      -      "id": "2",
+      -      "eid": "liza.m.navarro",
+      -      "year": 2026,
+      -      "month": 10,
+      -      "day": 27,
+      -      "status": "Present"
+      -    },
+      -    {
+      -      "id": "3",
+      -      "eid": "jomar.c.pascual",
+      -      "year": 2026,
+      -      "month": 10,
+      -      "day": 27,
+      -      "status": "Present"
+      -    },
+      -    {
+      -      "id": "4",
+      -      "eid": "teresa.villanueva",
+      -      "year": 2026,
+      -      "month": 10,
+      -      "day": 27,
+      -      "status": "VL"
+      -    },
+      -    {
+      -      "id": 5,
+      -      "eid": "rafael.t.mendoza",
+      -      "year": 2026,
+      -      "month": 10,
+      -      "day": 28,
+      -      "status": "Present"
+      -    },
+      -    {
+      -      "id": 6,
+      -      "eid": "liza.m.navarro",
+      -      "year": 2026,
+      -      "month": 10,
+      -      "day": 28,
+      -      "status": "RTO",
+      -      "location": "Harbor Point Building"
+      -    },
+      -    {
+      -      "id": 7,
+      -      "eid": "jomar.c.pascual",
+      -      "year": 2026,
+      -      "month": 10,
+      -      "day": 28,
+      -      "status": "SL"
+      -    },
+      -    {
+      -      "id": 8,
+      -      "eid": "miguel.a.torres",
+      -      "year": 2026,
+      -      "month": 10,
+      -      "day": 28,
+      -      "status": "Deployed"
+      -    },
+      -    {
+      -      "id": 9,
+      -      "eid": "teresa.villanueva",
+      -      "year": 2026,
+      -      "month": 11,
+      -      "day": 3,
+      -      "status": "RTO",
+      -      "location": "Riverside Tech Tower 2"
+      -    },
+      -    {
+      -      "id": 10,
+      -      "eid": "liza.m.navarro",
+      -      "year": 2026,
+      -      "month": 11,
+      -      "day": 3,
+      -      "status": "Present"
+      -    },
+      -    {
+      -      "id": 11,
+      -      "eid": "kevin.r.lim",
+      -      "year": 2026,
+      -      "month": 11,
+      -      "day": 4,
+      -      "status": "Present"
+      -    }
+      -  ],
+      -  "office-locations": [
+      -    {
+      -      "id": "1",
+      -      "name": "Manila"
+      -    },
+      -    {
+      -      "id": "2",
+      -      "name": "Cebu"
+      -    }
+      -  ],
+      -  "planner-labels": [
+      -    {
+      -      "id": "1",
+      -      "name": "Sprint Delivery",
+      -      "color": "#a99bd4"
+      -    },
+      -    {
+      -      "id": "2",
+      -      "name": "Training",
+      -      "color": "#62b8bd"
+      -    },
+      -    {
+      -      "id": "3",
+      -      "name": "Story Point 1",
+      -      "color": "#f2cc8f"
+      -    },
+      -    {
+      -      "id": "4",
+      -      "name": "Story Point 2",
+      -      "color": "#ee8a5b"
+      -    },
+      -    {
+      -      "id": "5",
+      -      "name": "Story Point 3",
+      -      "color": "#d65f5f"
+      -    },
+      -    {
+      -      "id": 6,
+      -      "name": "Bug",
+      -      "color": "#4f7fcf"
+      -    }
+      -  ],
+      -  "planner-boards": [
+      -    {
+      -      "id": "1",
+      -      "groupNumber": 1,
+      -      "name": "Group 1 - React",
+      -      "description": "React workstream for bench resources"
+      -    },
+      -    {
+      -      "id": "2",
+      -      "groupNumber": 5,
+      -      "name": "Group 5 - AEM/Angular",
+      -      "description": "AEM and Angular workstream for bench resources"
+      -    }
+      -  ],
+      -  "planner-buckets": [
+      -    {
+      -      "id": "1",
+      -      "boardId": 2,
+      -      "name": "Sprint 1",
+      -      "order": 0
+      -    },
+      -    {
+      -      "id": "2",
+      -      "boardId": 2,
+      -      "name": "Sprint 2",
+      -      "order": 1
+      -    },
+      -    {
+      -      "id": 3,
+      -      "boardId": 2,
+      -      "name": "Sprint 3",
+      -      "order": 2
+      -    },
+      -    {
+      -      "id": 4,
+      -      "boardId": 1,
+      -      "name": "Sprint 2",
+      -      "order": 0
+      -    },
+      -    {
+      -      "id": 5,
+      -      "boardId": 1,
+      -      "name": "Sprint 3",
+      -      "order": 1
+      -    }
+      -  ],
+      -  "planner-tasks": [
+      -    {
+      -      "id": 1,
+      -      "boardId": 2,
+      -      "bucketId": 1,
+      -      "title": "Set up AEM local author instance",
+      -      "status": "Completed",
+      -      "priority": "Medium",
+      -      "startDate": "2026-10-13",
+      -      "dueDate": "2026-10-16",
+      -      "labels": [
+      -        2,
+      -        3
+      -      ],
+      -      "assignee": "liza.m.navarro",
+      -      "checklist": [
+      -        {
+      -          "id": 1,
+      -          "text": "Install AEM SDK",
+      -          "done": true
+      -        },
+      -        {
+      -          "id": 2,
+      -          "text": "Deploy sample site",
+      -          "done": true
+      -        }
+      -      ],
+      -      "completed": true,
+      -      "createdAt": "2026-10-13T01:20:44.512Z",
+      -      "updatedAt": "2026-10-16T08:02:19.377Z",
+      -      "completedDate": "2026-10-16",
+      -      "notes": ""
+      -    },
+      -    {
+      -      "id": 2,
+      -      "boardId": 2,
+      -      "bucketId": 2,
+      -      "title": "Angular signals refresher",
+      -      "status": "In progress",
+      -      "priority": "Medium",
+      -      "startDate": "2026-10-27",
+      -      "dueDate": "2026-11-04",
+      -      "labels": [
+      -        2,
+      -        4
+      -      ],
+      -      "assignee": "jomar.c.pascual",
+      -      "checklist": [
+      -        {
+      -          "id": 1,
+      -          "text": "Finish signals module",
+      -          "done": true
+      -        },
+      -        {
+      -          "id": 2,
+      -          "text": "Convert a sample component",
+      -          "done": false
+      -        }
+      -      ],
+      -      "completed": false,
+      -      "createdAt": "2026-10-27T02:11:08.940Z",
+      -      "updatedAt": "2026-11-02T03:45:51.006Z",
+      -      "completedDate": "",
+      -      "notes": ""
+      -    },
+      -    {
+      -      "id": 3,
+      -      "boardId": 2,
+      -      "bucketId": 2,
+      -      "title": "PoC: Attendance export to CSV",
+      -      "status": "Review",
+      -      "priority": "Medium",
+      -      "startDate": "2026-10-28",
+      -      "dueDate": "2026-11-06",
+      -      "labels": [
+      -        1,
+      -        "5"
+      -      ],
+      -      "assignee": "teresa.villanueva",
+      -      "checklist": [],
+      -      "description": "Let POCs download a month of attendance as CSV for the weekly report.",
+      -      "acceptanceCriteria": "As a POC, I can export the selected month and group to a CSV with one row per resource.",
+      -      "comments": [
+      -        {
+      -          "id": 1793515223418,
+      -          "author": "Rafael Mendoza",
+      -          "text": "Looks good. Please add the office location column before we close this.",
+      -          "createdAt": "2026-11-04T06:40:23.418Z"
+      -        }
+      -      ],
+      -      "completed": false,
+      -      "createdAt": "2026-10-28T05:30:12.261Z",
+      -      "updatedAt": "2026-11-04T06:40:31.902Z",
+      -      "completedDate": ""
+      -    },
+      -    {
+      -      "id": 5,
+      -      "boardId": 2,
+      -      "bucketId": 3,
+      -      "title": "Plan component library audit",
+      -      "status": "Not started",
+      -      "priority": "Medium",
+      -      "startDate": "",
+      -      "dueDate": "",
+      -      "labels": [],
+      -      "assignee": "rafael.t.mendoza",
+      -      "checklist": [],
+      -      "description": "",
+      -      "acceptanceCriteria": "",
+      -      "comments": [],
+      -      "completed": false,
+      -      "createdAt": "2026-11-05T10:02:37.155Z",
+      -      "updatedAt": "2026-11-05T10:02:37.155Z"
+      -    },
+      -    {
+      -      "id": 6,
+      -      "boardId": 1,
+      -      "bucketId": 4,
+      -      "title": "React Testing Library deep dive",
+      -      "status": "Completed",
+      -      "priority": "Medium",
+      -      "startDate": "2026-10-27",
+      -      "dueDate": "2026-10-30",
+      -      "labels": [
+      -        2,
+      -        3
+      -      ],
+      -      "assignee": "nina.g.castro",
+      -      "checklist": [
+      -        {
+      -          "id": 1,
+      -          "text": "Write tests for a form component",
+      -          "done": true
+      -        }
+      -      ],
+      -      "completed": true,
+      -      "createdAt": "2026-10-27T01:58:20.733Z",
+      -      "updatedAt": "2026-10-30T07:26:44.019Z",
+      -      "completedDate": "2026-10-30",
+      -      "notes": ""
+      -    },
+      -    {
+      -      "id": 7,
+      -      "boardId": 1,
+      -      "bucketId": 5,
+      -      "title": "Fix date picker timezone bug",
+      -      "status": "Not started",
+      -      "priority": "Medium",
+      -      "startDate": "2026-11-10",
+      -      "dueDate": "2026-11-13",
+      -      "labels": [
+      -        6,
+      -        4
+      -      ],
+      -      "assignee": "andrea.s.bautista",
+      -      "checklist": [],
+      -      "description": "Dates picked late in the day are saved as the next day.",
+      -      "acceptanceCriteria": "",
+      -      "comments": [],
+      -      "completed": false,
+      -      "createdAt": "2026-11-06T02:15:49.601Z",
+      -      "updatedAt": "2026-11-06T02:15:49.601Z"
+      -    }
+      -  ],
+      -  "competency-records": [
+      -    {
+      -      "eid": "rafael.t.mendoza",
+      -      "primarySkill": "Angular",
+      -      "primaryProficiency": "P3+",
+      -      "recentRetakeDate": "2026-08-20",
+      -      "nextRetakeDate": "",
+      -      "secondarySkill": "AEM",
+      -      "secondaryProficiency": "P3",
+      -      "retakeDate": ""
+      -    },
+      -    {
+      -      "eid": "teresa.villanueva",
+      -      "primarySkill": "AEM",
+      -      "primaryProficiency": "P2",
+      -      "recentRetakeDate": "2026-09-28",
+      -      "nextRetakeDate": "2026-11-12",
+      -      "secondarySkill": "Java",
+      -      "secondaryProficiency": "P1",
+      -      "retakeDate": ""
+      -    },
+      -    {
+      -      "eid": "jomar.c.pascual",
+      -      "primarySkill": "AEM",
+      -      "primaryProficiency": "P1",
+      -      "recentRetakeDate": "2026-10-20",
+      -      "nextRetakeDate": "2026-11-17",
+      -      "secondarySkill": "",
+      -      "secondaryProficiency": "N/A",
+      -      "retakeDate": ""
+      -    },
+      -    {
+      -      "eid": "liza.m.navarro",
+      -      "primarySkill": "Angular",
+      -      "primaryProficiency": "P2",
+      -      "recentRetakeDate": "2026-10-22",
+      -      "nextRetakeDate": "",
+      -      "secondarySkill": "TBD",
+      -      "secondaryProficiency": "TBD",
+      -      "retakeDate": ""
+      -    },
+      -    {
+      -      "eid": "andrea.s.bautista",
+      -      "primarySkill": "React",
+      -      "primaryProficiency": "P3",
+      -      "recentRetakeDate": "2026-08-25",
+      -      "nextRetakeDate": "",
+      -      "secondarySkill": "React Native",
+      -      "secondaryProficiency": "P3",
+      -      "retakeDate": ""
+      -    }
+      -  ],
+      -  "project-reachouts": [
+      -    {
+      -      "id": 1,
+      -      "eid": "teresa.villanueva",
+      -      "projectName": "Harborline Insurance Portal",
+      -      "techRole": "AEM Developer",
+      -      "pocEid": "rafael.t.mendoza",
+      -      "status": "Interview Scheduled",
+      -      "details": "Client interview on 11/10, 2pm",
+      -      "groupNumber": 5,
+      -      "createdAt": "2026-10-29T03:12:40.551Z",
+      -      "updatedAt": "2026-11-03T05:48:09.207Z"
+      -    },
+      -    {
+      -      "id": 2,
+      -      "eid": "liza.m.navarro",
+      -      "projectName": "Harborline Insurance Portal",
+      -      "techRole": "Angular Developer",
+      -      "pocEid": "rafael.t.mendoza",
+      -      "status": "CV Requested",
+      -      "details": "",
+      -      "groupNumber": 5,
+      -      "createdAt": "2026-11-03T05:50:22.874Z"
+      -    },
+      -    {
+      -      "id": 3,
+      -      "eid": "nina.g.castro",
+      -      "projectName": "Northwind Commerce",
+      -      "techRole": "React Native Developer",
+      -      "pocEid": "andrea.s.bautista",
+      -      "status": "Passed",
+      -      "details": "Start date to be confirmed by the client",
+      -      "groupNumber": 1,
+      -      "createdAt": "2026-10-14T02:05:33.119Z",
+      -      "updatedAt": "2026-10-30T09:31:57.642Z"
+      -    },
+      -    {
+      -      "id": 4,
+      -      "eid": "jomar.c.pascual",
+      -      "projectName": "Atlas Banking Revamp",
+      -      "techRole": "AEM Developer",
+      -      "pocEid": "rafael.t.mendoza",
+      -      "status": "On hold",
+      -      "details": "Uses a retired status value; the UI keeps it until someone changes it",
+      -      "groupNumber": 5,
+      -      "createdAt": "2026-10-08T04:22:10.006Z"
+      -    },
+      -    {
+      -      "id": 5,
+      -      "eid": "external.candidate",
+      -      "projectName": "Northwind Commerce",
+      -      "techRole": "QA Engineer",
+      -      "pocEid": "andrea.s.bautista",
+      -      "status": "Pending Update",
+      -      "details": "Not on the bench roster yet",
+      -      "groupNumber": null,
+      -      "createdAt": "2026-11-05T01:40:15.330Z"
+      -    }
+      -  ],
+      -  "deletion-logs": [
+      -    {
+      -      "type": "task-deletion",
+      -      "taskId": 4,
+      -      "taskTitle": "Duplicate: Set up AEM local author instance",
+      -      "deletedBy": "Rafael Mendoza",
+      -      "deletedByEid": "rafael.t.mendoza",
+      -      "id": 1,
+      -      "deletedAt": "2026-10-14T03:10:52.448Z"
+      -    },
+      -    {
+      -      "type": "comment-deletion",
+      -      "taskId": 3,
+      -      "taskTitle": "PoC: Attendance export to CSV",
+      -      "deletedBy": "Rafael Mendoza",
+      -      "deletedByEid": "rafael.t.mendoza",
+      -      "commentAuthor": "Jomar Pascual",
+      -      "commentText": "Posted on the wrong task, sorry",
+      -      "commentCreatedAt": "2026-11-03T02:01:18.902Z",
+      -      "id": 2,
+      -      "deletedAt": "2026-11-03T02:05:40.017Z"
+      +      "name": "Sprint 4",
+      +      "start": "2026-11-24",
+      +      "end": "2026-12-05"
+           }
+         ]
+    parsed JSON diff:
+      before: not valid JSON: Unexpected token '﻿', "﻿{
+        "capa"... is not valid JSON
+      after: valid JSON
+
+outbound calls: none
+
+`;
+
+exports[`POST /api/sprints > not found › sprints collection missing 1`] = `
+
+POST /api/sprints
+credentials: group 5 POC (rafael.t.mendoza, role poc)
+request body:
+  {
+    "name": "Sprint 1",
+    "start": "2026-10-13",
+    "end": "2026-10-24"
+  }
+
+status: 201
+content-type: application/json; charset=utf-8
+access-control-allow-origin: *
+x-powered-by: Express
+response body:
+  {
+    "id": 1,
+    "name": "Sprint 1",
+    "start": "2026-10-13",
+    "end": "2026-10-24"
+  }
+
+data files:
+  db.json: modified
+    raw text diff:
+      @@ -604,4 +604,12 @@
+             "deletedAt": "2026-11-03T02:05:40.017Z"
+           }
+      +  ],
+      +  "sprints": [
+      +    {
+      +      "id": 1,
+      +      "name": "Sprint 1",
+      +      "start": "2026-10-13",
+      +      "end": "2026-10-24"
+      +    }
+         ]
+       }
+    parsed JSON diff:
+      + /sprints: [{"id":1,"name":"Sprint 1","start":"2026-10-13","end":"2026-10-24"}]
+
+outbound calls: none
+
+`;
+
+exports[`POST /api/sprints > wrong role 1`] = `
+
+POST /api/sprints
+credentials: no-group new joiner (paolo.d.ramos, role viewer)
+request body:
+  {
+    "name": "Sprint 4",
+    "start": "2026-11-24",
+    "end": "2026-12-05"
+  }
+
+=> identical to the happy path (creates a sprint (as the planner sends it)): same status, body, data-file changes and outbound calls
+
+`;

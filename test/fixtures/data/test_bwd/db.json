@@ -1,0 +1,28 @@
+{
+  "fruits": [
+    {
+      "id": 1,
+      "name": "Calamansi",
+      "emoji": "🍋",
+      "category": "Citrus",
+      "price": 0.4,
+      "stock": 320
+    },
+    {
+      "id": 2,
+      "name": "Mango",
+      "emoji": "🥭",
+      "category": "Tropical",
+      "price": 1.8,
+      "stock": 95
+    },
+    {
+      "id": 3,
+      "name": "Pear",
+      "emoji": "🍐",
+      "category": "Temperate",
+      "price": 1.1,
+      "stock": 40
+    }
+  ]
+}

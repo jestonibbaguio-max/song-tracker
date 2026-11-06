@@ -1,8 +1,9 @@
 const fs = require('fs');
 const path = require('path');
+const { DATA_DIR } = require('./data-dir');
 
-const csvPath = path.join(__dirname, 'data', 'custom.csv');
-const jsonPath = path.join(__dirname, 'data', 'custom-onboarding.json');
+const csvPath = path.join(DATA_DIR, 'custom.csv');
+const jsonPath = path.join(DATA_DIR, 'custom-onboarding.json');
 
 function ensureDataDirectory() {
   fs.mkdirSync(path.dirname(jsonPath), { recursive: true });
