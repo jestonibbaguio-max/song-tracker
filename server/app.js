@@ -21,11 +21,7 @@ const {
 } = require('./onboarding-store');
 const healthRoutes = require('./features/health/health.routes');
 const dashboardRoutes = require('./features/dashboard/dashboard.routes');
-const {
-  loadFruitsDb,
-  saveFruitsDb,
-  fruitsNextId
-} = require('./persistence/fruits-file.repository');
+const fruitsRoutes = require('./features/test-bench/fruits.routes');
 
 const app = express();
 
@@ -809,57 +805,7 @@ app.delete('/api/project-reachouts/:id', (req, res) => {
 // ─────────────────────────────────────────────────────────────────────────────
 
 // ── Test Bench: Fruits CRUD ───────────────────────────────────────────────────
-app.get('/api/fruits', (req, res) => {
-  const db = loadFruitsDb();
-  let list = db.fruits || [];
-  if (req.query.category) list = list.filter(f => f.category === req.query.category);
-  if (req.query.q) {
-    const q = req.query.q.toLowerCase();
-    list = list.filter(f => f.name.toLowerCase().includes(q) || f.category.toLowerCase().includes(q));
-  }
-  res.json(list);
-});
-
-app.get('/api/fruits/:id', (req, res) => {
-  const db = loadFruitsDb();
-  const fruit = (db.fruits || []).find(f => Number(f.id) === Number(req.params.id));
-  if (!fruit) return res.status(404).json({ error: 'not found' });
-  res.json(fruit);
-});
-
-app.post('/api/fruits', (req, res) => {
-  const db = loadFruitsDb();
-  const fruits = db.fruits || [];
-  const { name, emoji, category, price, stock } = req.body;
-  if (!name || !category) return res.status(400).json({ error: 'name and category are required' });
-  const fruit = { id: fruitsNextId(fruits), name, emoji: emoji || '🍎', category, price: Number(price) || 0, stock: Number(stock) || 0 };
-  fruits.push(fruit);
-  db.fruits = fruits;
-  saveFruitsDb(db);
-  res.status(201).json(fruit);
-});
-
-app.patch('/api/fruits/:id', (req, res) => {
-  const db = loadFruitsDb();
-  const fruits = db.fruits || [];
-  const id = Number(req.params.id);
-  const idx = fruits.findIndex(f => Number(f.id) === id);
-  if (idx === -1) return res.status(404).json({ error: 'not found' });
-  fruits[idx] = { ...fruits[idx], ...req.body, id };
-  db.fruits = fruits;
-  saveFruitsDb(db);
-  res.json(fruits[idx]);
-});
-
-app.delete('/api/fruits/:id', (req, res) => {
-  const db = loadFruitsDb();
-  const id = Number(req.params.id);
-  const before = (db.fruits || []).length;
-  db.fruits = (db.fruits || []).filter(f => Number(f.id) !== id);
-  if (db.fruits.length === before) return res.status(404).json({ error: 'not found' });
-  saveFruitsDb(db);
-  res.json({ deleted: true });
-});
+app.use(fruitsRoutes);
 
 // Competency Records
 app.get('/api/competency-records', (req, res) => {
