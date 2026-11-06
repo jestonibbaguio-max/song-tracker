@@ -19,6 +19,7 @@ const dashboardRoutes = require('./features/dashboard/dashboard.routes');
 const fruitsRoutes = require('./features/test-bench/fruits.routes');
 const lookupsRoutes = require('./features/lookups/lookups.routes');
 const legacyTasksRoutes = require('./features/legacy-tasks/legacy-tasks.routes');
+const sprintsRoutes = require('./features/sprints/sprints.routes');
 const { loadDb, saveDb } = require('./persistence/db-file.repository');
 const { nextId } = require('./utils/ids');
 
@@ -327,143 +328,8 @@ app.delete('/api/onboarding-resources/:id', (req, res) => {
 
 app.use(dashboardRoutes);
 
-// ── Sprints ───────────────────────────────────────────────────────────────────
-app.get('/api/sprints', (req, res) => {
-  const db = loadDb();
-  res.json((db['sprints'] || []).map(s => ({ ...s, id: Number(s.id) })));
-});
-
-app.post('/api/sprints', (req, res) => {
-  const { name, start, end } = req.body;
-  if (!name || !start || !end) return res.status(400).json({ error: 'name, start and end are required' });
-  const db = loadDb();
-  const sprints = db['sprints'] || [];
-  const id = nextId(sprints);
-  const sprint = { id, name: String(name).trim(), start: String(start), end: String(end) };
-  sprints.push(sprint);
-  db['sprints'] = sprints;
-  saveDb(db);
-  res.status(201).json(sprint);
-});
-
-app.patch('/api/sprints/:id', (req, res) => {
-  const id = Number(req.params.id);
-  const db = loadDb();
-  const sprints = db['sprints'] || [];
-  const idx = sprints.findIndex(s => Number(s.id) === id);
-  if (idx === -1) return res.status(404).json({ error: 'sprint not found' });
-  const { name, start, end } = req.body;
-  if (name !== undefined) sprints[idx].name = String(name).trim();
-  if (start !== undefined) sprints[idx].start = String(start);
-  if (end !== undefined) sprints[idx].end = String(end);
-  db['sprints'] = sprints;
-  saveDb(db);
-  res.json({ ...sprints[idx], id: Number(sprints[idx].id) });
-});
-
-app.delete('/api/sprints/:id', (req, res) => {
-  const id = Number(req.params.id);
-  const db = loadDb();
-  const sprints = db['sprints'] || [];
-  const idx = sprints.findIndex(s => Number(s.id) === id);
-  if (idx === -1) return res.status(404).json({ error: 'sprint not found' });
-  sprints.splice(idx, 1);
-  db['sprints'] = sprints;
-  saveDb(db);
-  res.json({ deleted: true });
-});
-
-// ── Sprint retrospectives ─────────────────────────────────────────────────────
-const sprintRetroCategories = new Set(['improve', 'didnt-go-well', 'went-well']);
-
-app.get('/api/sprint-retros', (req, res) => {
-  const db = loadDb();
-  let items = (db['sprint-retros'] || []).map(item => ({
-    ...item,
-    id: Number(item.id),
-    sprintId: Number(item.sprintId),
-    groupNumber: Number(item.groupNumber)
-  }));
-  if (req.query.sprintId !== undefined) {
-    items = items.filter(item => item.sprintId === Number(req.query.sprintId));
-  }
-  if (req.query.groupNumber !== undefined) {
-    items = items.filter(item => item.groupNumber === Number(req.query.groupNumber));
-  }
-  res.json(items);
-});
-
-app.post('/api/sprint-retros', (req, res) => {
-  const sprintId = Number(req.body?.sprintId);
-  const groupNumber = Number(req.body?.groupNumber);
-  const category = String(req.body?.category || '');
-  const text = String(req.body?.text || '').trim();
-  const db = loadDb();
-  const sprintExists = (db['sprints'] || []).some(sprint => Number(sprint.id) === sprintId);
-
-  if (!Number.isInteger(sprintId) || !sprintExists) {
-    return res.status(400).json({ error: 'a valid sprint number is required' });
-  }
-  if (!Number.isInteger(groupNumber) || groupNumber < 1) {
-    return res.status(400).json({ error: 'a valid group number is required' });
-  }
-  if (!sprintRetroCategories.has(category)) {
-    return res.status(400).json({ error: 'a valid category is required' });
-  }
-  if (!text || text.length > 500) {
-    return res.status(400).json({ error: 'text is required and must not exceed 500 characters' });
-  }
-
-  const items = db['sprint-retros'] || [];
-  const item = {
-    id: nextId(items),
-    sprintId,
-    groupNumber,
-    category,
-    text,
-    createdAt: new Date().toISOString()
-  };
-  items.push(item);
-  db['sprint-retros'] = items;
-  saveDb(db);
-  res.status(201).json(item);
-});
-
-app.patch('/api/sprint-retros/:id', (req, res) => {
-  const id = Number(req.params.id);
-  const db = loadDb();
-  const items = db['sprint-retros'] || [];
-  const index = items.findIndex(item => Number(item.id) === id);
-  if (index === -1) return res.status(404).json({ error: 'retrospective item not found' });
-
-  const text = String(req.body?.text ?? '').trim();
-  if (!text || text.length > 500) {
-    return res.status(400).json({ error: 'text is required and must not exceed 500 characters' });
-  }
-
-  items[index] = { ...items[index], text };
-  db['sprint-retros'] = items;
-  saveDb(db);
-  res.json({
-    ...items[index],
-    id: Number(items[index].id),
-    sprintId: Number(items[index].sprintId),
-    groupNumber: Number(items[index].groupNumber)
-  });
-});
-
-app.delete('/api/sprint-retros/:id', (req, res) => {
-  const id = Number(req.params.id);
-  const db = loadDb();
-  const items = db['sprint-retros'] || [];
-  const index = items.findIndex(item => Number(item.id) === id);
-  if (index === -1) return res.status(404).json({ error: 'retrospective item not found' });
-
-  items.splice(index, 1);
-  db['sprint-retros'] = items;
-  saveDb(db);
-  res.json({ deleted: true });
-});
+// ── Sprints and sprint retrospectives ──────────────────────────────────────────
+app.use(sprintsRoutes);
 
 // ── Capacity entries ──────────────────────────────────────────────────────────
 app.get('/api/capacity-entries', (req, res) => {
