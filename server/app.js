@@ -21,6 +21,7 @@ const lookupsRoutes = require('./features/lookups/lookups.routes');
 const legacyTasksRoutes = require('./features/legacy-tasks/legacy-tasks.routes');
 const sprintsRoutes = require('./features/sprints/sprints.routes');
 const capacityRoutes = require('./features/capacity/capacity.routes');
+const attendanceRoutes = require('./features/attendance/attendance.routes');
 const { loadDb, saveDb } = require('./persistence/db-file.repository');
 const { nextId } = require('./utils/ids');
 
@@ -339,49 +340,7 @@ app.use(capacityRoutes);
 app.use(lookupsRoutes);
 
 // ── Attendance ────────────────────────────────────────────────────────────────
-app.get('/api/attendance', (req, res) => {
-  const db = loadDb();
-  let records = db['attendance'] || [];
-  const { year, month } = req.query;
-  if (year) records = records.filter(r => Number(r.year) === Number(year));
-  if (month) records = records.filter(r => Number(r.month) === Number(month));
-  res.json(records);
-});
-
-app.post('/api/attendance', (req, res) => {
-  const db = loadDb();
-  const records = db['attendance'] || [];
-  const id = nextId(records);
-  const record = { ...req.body, id };
-  records.push(record);
-  db['attendance'] = records;
-  saveDb(db);
-  res.status(201).json(record);
-});
-
-app.patch('/api/attendance/:id', (req, res) => {
-  const db = loadDb();
-  const records = db['attendance'] || [];
-  const id = Number(req.params.id);
-  const idx = records.findIndex(r => Number(r.id) === id);
-  if (idx === -1) return res.status(404).json({ error: 'record not found' });
-  records[idx] = { ...records[idx], ...req.body, id };
-  db['attendance'] = records;
-  saveDb(db);
-  res.json(records[idx]);
-});
-
-app.delete('/api/attendance/:id', (req, res) => {
-  const db = loadDb();
-  const records = db['attendance'] || [];
-  const id = Number(req.params.id);
-  const idx = records.findIndex(r => Number(r.id) === id);
-  if (idx === -1) return res.status(404).json({ error: 'record not found' });
-  records.splice(idx, 1);
-  db['attendance'] = records;
-  saveDb(db);
-  res.json({ deleted: true });
-});
+app.use(attendanceRoutes);
 
 // ── Planner boards ────────────────────────────────────────────────────────────
 app.get('/api/planner-boards', (req, res) => {
