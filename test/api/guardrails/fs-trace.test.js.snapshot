@@ -1,0 +1,351 @@
+exports[`guardrail: fs calls per request > db.json routes that answer 400 or 404 1`] = `
+
+PATCH /api/sprints/999 (unknown id, no body) → 404
+  readFileSync db.json
+POST /api/sprints → 400
+  (no fs calls in DATA_DIR)
+POST /api/sprint-retros → 400
+  readFileSync db.json
+PATCH /api/sprint-retros/999 → 404
+  readFileSync db.json
+POST /api/capacity-entries → 400
+  (no fs calls in DATA_DIR)
+PATCH /api/attendance/999 → 404
+  readFileSync db.json
+POST /api/planner-buckets → 400
+  (no fs calls in DATA_DIR)
+PATCH /api/planner-tasks/999 → 404
+  readFileSync db.json
+DELETE /api/project-reachouts/999 → 404
+  readFileSync db.json
+POST /api/sprints (malformed JSON) → 400
+  (no fs calls in DATA_DIR)
+
+`;
+
+exports[`guardrail: fs calls per request > db.json routes, in order on one app (each re-reads; at most one write) 1`] = `
+
+GET /api/sprints → 200
+  readFileSync db.json
+POST /api/sprints → 201
+  readFileSync db.json
+  writeFileSync db.json
+GET /api/sprints (read back) → 200
+  readFileSync db.json
+PATCH /api/sprints/1 → 200
+  readFileSync db.json
+  writeFileSync db.json
+GET /api/sprints (read back) → 200
+  readFileSync db.json
+DELETE /api/sprints/3 → 200
+  readFileSync db.json
+  writeFileSync db.json
+GET /api/sprints (read back) → 200
+  readFileSync db.json
+GET /api/sprint-retros → 200
+  readFileSync db.json
+POST /api/sprint-retros → 201
+  readFileSync db.json
+  writeFileSync db.json
+GET /api/sprints (read back) → 200
+  readFileSync db.json
+PATCH /api/sprint-retros/2 → 200
+  readFileSync db.json
+  writeFileSync db.json
+GET /api/sprint-retros (read back) → 200
+  readFileSync db.json
+DELETE /api/sprint-retros/1 → 200
+  readFileSync db.json
+  writeFileSync db.json
+GET /api/sprint-retros (read back) → 200
+  readFileSync db.json
+GET /api/capacity-entries → 200
+  readFileSync db.json
+POST /api/capacity-entries → 201
+  readFileSync db.json
+  writeFileSync db.json
+GET /api/capacity-entries (read back) → 200
+  readFileSync db.json
+GET /api/attendance → 200
+  readFileSync db.json
+POST /api/attendance → 201
+  readFileSync db.json
+  writeFileSync db.json
+GET /api/attendance (read back) → 200
+  readFileSync db.json
+PATCH /api/attendance/6 → 200
+  readFileSync db.json
+  writeFileSync db.json
+GET /api/attendance (read back) → 200
+  readFileSync db.json
+DELETE /api/attendance/6 → 200
+  readFileSync db.json
+  writeFileSync db.json
+GET /api/attendance (read back) → 200
+  readFileSync db.json
+GET /api/attendance-options → 200
+  readFileSync db.json
+GET /api/office-locations → 200
+  readFileSync db.json
+GET /api/planner-labels → 200
+  readFileSync db.json
+GET /api/planner-boards → 200
+  readFileSync db.json
+GET /api/planner-buckets → 200
+  readFileSync db.json
+POST /api/planner-buckets → 201
+  readFileSync db.json
+  writeFileSync db.json
+GET /api/planner-buckets (read back) → 200
+  readFileSync db.json
+GET /api/planner-tasks → 200
+  readFileSync db.json
+POST /api/planner-tasks → 201
+  readFileSync db.json
+  writeFileSync db.json
+GET /api/planner-tasks (read back) → 200
+  readFileSync db.json
+PATCH /api/planner-tasks/2 → 200
+  readFileSync db.json
+  writeFileSync db.json
+GET /api/planner-tasks (read back) → 200
+  readFileSync db.json
+DELETE /api/planner-tasks/5 → 200
+  readFileSync db.json
+  writeFileSync db.json
+GET /api/planner-tasks (read back) → 200
+  readFileSync db.json
+GET /api/deletion-logs → 200
+  readFileSync db.json
+POST /api/deletion-logs → 201
+  readFileSync db.json
+  writeFileSync db.json
+GET /api/deletion-logs (read back) → 200
+  readFileSync db.json
+GET /api/project-reachouts → 200
+  readFileSync db.json
+POST /api/project-reachouts → 201
+  readFileSync db.json
+  writeFileSync db.json
+GET /api/project-reachouts (read back) → 200
+  readFileSync db.json
+PATCH /api/project-reachouts/2 → 200
+  readFileSync db.json
+  writeFileSync db.json
+GET /api/project-reachouts (read back) → 200
+  readFileSync db.json
+DELETE /api/project-reachouts/4 → 200
+  readFileSync db.json
+  writeFileSync db.json
+GET /api/project-reachouts (read back) → 200
+  readFileSync db.json
+GET /api/competency-records?group=5 → 200
+  readFileSync db.json
+  mkdirSync .
+  existsSync custom-onboarding.json
+  readFileSync custom-onboarding.json
+PATCH /api/competency-records/liza.m.navarro → 200
+  readFileSync db.json
+  writeFileSync db.json
+GET /api/competency-records?group=5 (read back) → 200
+  readFileSync db.json
+  mkdirSync .
+  existsSync custom-onboarding.json
+  readFileSync custom-onboarding.json
+
+`;
+
+exports[`guardrail: fs calls per request > fruits test bench, including its crash paths (bugs M1, M14) 1`] = `
+
+GET /api/fruits → 200
+  readFileSync test_bwd/db.json
+GET /api/fruits?category=Tropical&q=man → 200
+  readFileSync test_bwd/db.json
+GET /api/fruits?q=a&q=b (repeated q: 500) → 500
+  readFileSync test_bwd/db.json
+GET /api/fruits/2 → 200
+  readFileSync test_bwd/db.json
+GET /api/fruits/999 → 404
+  readFileSync test_bwd/db.json
+POST /api/fruits → 201
+  readFileSync test_bwd/db.json
+  writeFileSync test_bwd/db.json
+POST /api/fruits (invalid: 400) → 400
+  readFileSync test_bwd/db.json
+POST /api/fruits (no body: 500) → 500
+  readFileSync test_bwd/db.json
+PATCH /api/fruits/2 → 200
+  readFileSync test_bwd/db.json
+  writeFileSync test_bwd/db.json
+PATCH /api/fruits/999 → 404
+  readFileSync test_bwd/db.json
+DELETE /api/fruits/1 → 200
+  readFileSync test_bwd/db.json
+  writeFileSync test_bwd/db.json
+DELETE /api/fruits/999 → 404
+  readFileSync test_bwd/db.json
+GET /test/db.json (static mount) → 200
+  stat test_bwd/db.json
+  createReadStream test_bwd/db.json
+  open test_bwd/db.json
+
+`;
+
+exports[`guardrail: fs calls per request > legacy tasks (tasks.json seeded on first read) 1`] = `
+
+GET /api/tasks → 200
+  mkdirSync .
+  existsSync tasks.json
+  mkdirSync .
+  writeFileSync tasks.json
+GET /api/tasks (again) → 200
+  mkdirSync .
+  existsSync tasks.json
+  readFileSync tasks.json
+POST /api/tasks → 201
+  mkdirSync .
+  existsSync tasks.json
+  readFileSync tasks.json
+  mkdirSync .
+  writeFileSync tasks.json
+POST /api/tasks (no title) → 400
+  (no fs calls in DATA_DIR)
+PATCH /api/tasks/1 → 200
+  mkdirSync .
+  existsSync tasks.json
+  readFileSync tasks.json
+  mkdirSync .
+  writeFileSync tasks.json
+PATCH /api/tasks/999 → 404
+  mkdirSync .
+  existsSync tasks.json
+  readFileSync tasks.json
+DELETE /api/tasks/1 → 200
+  mkdirSync .
+  existsSync tasks.json
+  readFileSync tasks.json
+  mkdirSync .
+  writeFileSync tasks.json
+
+`;
+
+exports[`guardrail: fs calls per request > roster record without an id is repaired on read 1`] = `
+
+GET /api/onboarding-resources → 200
+  mkdirSync .
+  existsSync custom-onboarding.json
+  readFileSync custom-onboarding.json
+  mkdirSync .
+  writeFileSync custom-onboarding.json
+GET /api/onboarding-resources (again) → 200
+  mkdirSync .
+  existsSync custom-onboarding.json
+  readFileSync custom-onboarding.json
+
+`;
+
+exports[`guardrail: fs calls per request > roster seeded from custom.csv on the first read 1`] = `
+
+GET /api/onboarding-resources → 200
+  mkdirSync .
+  existsSync custom-onboarding.json
+  readFileSync custom.csv
+  mkdirSync .
+  writeFileSync custom-onboarding.json
+  readFileSync custom-onboarding.json
+  mkdirSync .
+  writeFileSync custom-onboarding.json
+GET /api/onboarding-resources (again) → 200
+  mkdirSync .
+  existsSync custom-onboarding.json
+  readFileSync custom-onboarding.json
+
+`;
+
+exports[`guardrail: fs calls per request > roster, skill options and competency (roster read before or after db.json) 1`] = `
+
+GET /api/onboarding-resources → 200
+  mkdirSync .
+  existsSync custom-onboarding.json
+  readFileSync custom-onboarding.json
+GET /api/onboarding-resources (again) → 200
+  mkdirSync .
+  existsSync custom-onboarding.json
+  readFileSync custom-onboarding.json
+GET /api/skill-options → 200
+  mkdirSync .
+  existsSync custom-onboarding.json
+  readFileSync custom-onboarding.json
+POST /api/onboarding-resources → 201
+  mkdirSync .
+  existsSync custom-onboarding.json
+  readFileSync custom-onboarding.json
+  mkdirSync .
+  existsSync custom-onboarding.json
+  readFileSync custom-onboarding.json
+  mkdirSync .
+  writeFileSync custom-onboarding.json
+POST /api/onboarding-resources (invalid date) → 400
+  (no fs calls in DATA_DIR)
+PATCH /api/onboarding-resources/5 → 200
+  mkdirSync .
+  existsSync custom-onboarding.json
+  readFileSync custom-onboarding.json
+  mkdirSync .
+  existsSync custom-onboarding.json
+  readFileSync custom-onboarding.json
+  mkdirSync .
+  existsSync custom-onboarding.json
+  readFileSync custom-onboarding.json
+  mkdirSync .
+  writeFileSync custom-onboarding.json
+PATCH /api/onboarding-resources/5 (eid changed: appends) → 201
+  mkdirSync .
+  existsSync custom-onboarding.json
+  readFileSync custom-onboarding.json
+  mkdirSync .
+  existsSync custom-onboarding.json
+  readFileSync custom-onboarding.json
+  mkdirSync .
+  existsSync custom-onboarding.json
+  readFileSync custom-onboarding.json
+  mkdirSync .
+  writeFileSync custom-onboarding.json
+PATCH /api/onboarding-resources/5 (partial body: 400) → 400
+  mkdirSync .
+  existsSync custom-onboarding.json
+  readFileSync custom-onboarding.json
+PATCH /api/onboarding-resources/999 → 404
+  mkdirSync .
+  existsSync custom-onboarding.json
+  readFileSync custom-onboarding.json
+DELETE /api/onboarding-resources/5 → 200
+  mkdirSync .
+  existsSync custom-onboarding.json
+  readFileSync custom-onboarding.json
+  mkdirSync .
+  writeFileSync custom-onboarding.json
+GET /api/competency-records?group=5 → 200
+  readFileSync db.json
+  mkdirSync .
+  existsSync custom-onboarding.json
+  readFileSync custom-onboarding.json
+GET /api/competency-records → 200
+  readFileSync db.json
+  mkdirSync .
+  existsSync custom-onboarding.json
+  readFileSync custom-onboarding.json
+PATCH /api/competency-records/liza.m.navarro → 200
+  readFileSync db.json
+  writeFileSync db.json
+
+`;
+
+exports[`guardrail: fs calls per request > routes that touch no data file 1`] = `
+
+GET /api/health → 200
+  (no fs calls in DATA_DIR)
+GET /api/dashboard → 200
+  (no fs calls in DATA_DIR)
+
+`;

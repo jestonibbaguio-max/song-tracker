@@ -1,0 +1,1191 @@
+exports[`data shapes › db.json collection is an object, not an array > DELETE /api/attendance/6: \"attendance\" is {\"a\":1} 1`] = `
+
+DELETE /api/attendance/6
+credentials: group 5 POC (rafael.t.mendoza, role poc)
+
+status: 500
+content-type: text/html; charset=utf-8
+access-control-allow-origin: *
+x-powered-by: Express
+response body:
+  <!DOCTYPE html>
+  <html lang="en">
+  <head>
+  <meta charset="utf-8">
+  <title>Error</title>
+  </head>
+  <body>
+  <pre>TypeError: records.findIndex is not a function<br> &nbsp; &nbsp;at <stack trace removed></pre>
+  </body>
+  </html>
+  
+
+data files: unchanged
+
+outbound calls: none
+
+`;
+
+exports[`data shapes › db.json collection is an object, not an array > DELETE /api/planner-tasks/5: \"planner-tasks\" is {\"a\":1} 1`] = `
+
+DELETE /api/planner-tasks/5
+credentials: group 5 POC (rafael.t.mendoza, role poc)
+
+status: 500
+content-type: text/html; charset=utf-8
+access-control-allow-origin: *
+x-powered-by: Express
+response body:
+  <!DOCTYPE html>
+  <html lang="en">
+  <head>
+  <meta charset="utf-8">
+  <title>Error</title>
+  </head>
+  <body>
+  <pre>TypeError: tasks.findIndex is not a function<br> &nbsp; &nbsp;at <stack trace removed></pre>
+  </body>
+  </html>
+  
+
+data files: unchanged
+
+outbound calls: none
+
+`;
+
+exports[`data shapes › db.json collection is an object, not an array > DELETE /api/project-reachouts/4: \"project-reachouts\" is {\"a\":1} 1`] = `
+
+DELETE /api/project-reachouts/4
+credentials: group 5 POC (rafael.t.mendoza, role poc)
+
+status: 500
+content-type: text/html; charset=utf-8
+access-control-allow-origin: *
+x-powered-by: Express
+response body:
+  <!DOCTYPE html>
+  <html lang="en">
+  <head>
+  <meta charset="utf-8">
+  <title>Error</title>
+  </head>
+  <body>
+  <pre>TypeError: rows.findIndex is not a function<br> &nbsp; &nbsp;at <stack trace removed></pre>
+  </body>
+  </html>
+  
+
+data files: unchanged
+
+outbound calls: none
+
+`;
+
+exports[`data shapes › db.json collection is an object, not an array > DELETE /api/sprint-retros/1: \"sprint-retros\" is {\"a\":1} 1`] = `
+
+DELETE /api/sprint-retros/1
+credentials: group 5 POC (rafael.t.mendoza, role poc)
+
+status: 500
+content-type: text/html; charset=utf-8
+access-control-allow-origin: *
+x-powered-by: Express
+response body:
+  <!DOCTYPE html>
+  <html lang="en">
+  <head>
+  <meta charset="utf-8">
+  <title>Error</title>
+  </head>
+  <body>
+  <pre>TypeError: items.findIndex is not a function<br> &nbsp; &nbsp;at <stack trace removed></pre>
+  </body>
+  </html>
+  
+
+data files: unchanged
+
+outbound calls: none
+
+`;
+
+exports[`data shapes › db.json collection is an object, not an array > DELETE /api/sprints/3: \"sprints\" is {\"a\":1} 1`] = `
+
+DELETE /api/sprints/3
+credentials: group 5 POC (rafael.t.mendoza, role poc)
+
+status: 500
+content-type: text/html; charset=utf-8
+access-control-allow-origin: *
+x-powered-by: Express
+response body:
+  <!DOCTYPE html>
+  <html lang="en">
+  <head>
+  <meta charset="utf-8">
+  <title>Error</title>
+  </head>
+  <body>
+  <pre>TypeError: sprints.findIndex is not a function<br> &nbsp; &nbsp;at <stack trace removed></pre>
+  </body>
+  </html>
+  
+
+data files: unchanged
+
+outbound calls: none
+
+`;
+
+exports[`data shapes › db.json collection is an object, not an array > GET /api/attendance-options: \"attendance-options\" is {\"a\":1} 1`] = `
+
+GET /api/attendance-options
+credentials: group 5 POC (rafael.t.mendoza, role poc)
+
+status: 200
+content-type: application/json; charset=utf-8
+access-control-allow-origin: *
+x-powered-by: Express
+response body:
+  {
+    "a": 1
+  }
+
+data files: unchanged
+
+outbound calls: none
+
+`;
+
+exports[`data shapes › db.json collection is an object, not an array > GET /api/attendance: \"attendance\" is {\"a\":1} 1`] = `
+
+GET /api/attendance
+credentials: group 5 POC (rafael.t.mendoza, role poc)
+
+status: 200
+content-type: application/json; charset=utf-8
+access-control-allow-origin: *
+x-powered-by: Express
+response body:
+  {
+    "a": 1
+  }
+
+data files: unchanged
+
+outbound calls: none
+
+`;
+
+exports[`data shapes › db.json collection is an object, not an array > GET /api/capacity-entries: \"capacity-entries\" is {\"a\":1} 1`] = `
+
+GET /api/capacity-entries
+credentials: group 5 POC (rafael.t.mendoza, role poc)
+
+status: 200
+content-type: application/json; charset=utf-8
+access-control-allow-origin: *
+x-powered-by: Express
+response body:
+  {
+    "a": 1
+  }
+
+data files: unchanged
+
+outbound calls: none
+
+`;
+
+exports[`data shapes › db.json collection is an object, not an array > GET /api/competency-records?group=5: \"competency-records\" is {\"a\":1} 1`] = `
+
+GET /api/competency-records?group=5
+credentials: group 5 POC (rafael.t.mendoza, role poc)
+
+status: 500
+content-type: text/html; charset=utf-8
+access-control-allow-origin: *
+x-powered-by: Express
+response body:
+  <!DOCTYPE html>
+  <html lang="en">
+  <head>
+  <meta charset="utf-8">
+  <title>Error</title>
+  </head>
+  <body>
+  <pre>TypeError: records.find is not a function<br> &nbsp; &nbsp;at <stack trace removed></pre>
+  </body>
+  </html>
+  
+
+data files: unchanged
+
+outbound calls: none
+
+`;
+
+exports[`data shapes › db.json collection is an object, not an array > GET /api/deletion-logs: \"deletion-logs\" is {\"a\":1} 1`] = `
+
+GET /api/deletion-logs
+credentials: group 5 POC (rafael.t.mendoza, role poc)
+
+status: 200
+content-type: application/json; charset=utf-8
+access-control-allow-origin: *
+x-powered-by: Express
+response body:
+  {
+    "a": 1
+  }
+
+data files: unchanged
+
+outbound calls: none
+
+`;
+
+exports[`data shapes › db.json collection is an object, not an array > GET /api/office-locations: \"office-locations\" is {\"a\":1} 1`] = `
+
+GET /api/office-locations
+credentials: group 5 POC (rafael.t.mendoza, role poc)
+
+status: 200
+content-type: application/json; charset=utf-8
+access-control-allow-origin: *
+x-powered-by: Express
+response body:
+  {
+    "a": 1
+  }
+
+data files: unchanged
+
+outbound calls: none
+
+`;
+
+exports[`data shapes › db.json collection is an object, not an array > GET /api/planner-boards: \"planner-boards\" is {\"a\":1} 1`] = `
+
+GET /api/planner-boards
+credentials: group 5 POC (rafael.t.mendoza, role poc)
+
+status: 500
+content-type: text/html; charset=utf-8
+access-control-allow-origin: *
+x-powered-by: Express
+response body:
+  <!DOCTYPE html>
+  <html lang="en">
+  <head>
+  <meta charset="utf-8">
+  <title>Error</title>
+  </head>
+  <body>
+  <pre>TypeError: (db.planner-boards || []).map is not a function<br> &nbsp; &nbsp;at <stack trace removed></pre>
+  </body>
+  </html>
+  
+
+data files: unchanged
+
+outbound calls: none
+
+`;
+
+exports[`data shapes › db.json collection is an object, not an array > GET /api/planner-buckets: \"planner-buckets\" is {\"a\":1} 1`] = `
+
+GET /api/planner-buckets
+credentials: group 5 POC (rafael.t.mendoza, role poc)
+
+status: 500
+content-type: text/html; charset=utf-8
+access-control-allow-origin: *
+x-powered-by: Express
+response body:
+  <!DOCTYPE html>
+  <html lang="en">
+  <head>
+  <meta charset="utf-8">
+  <title>Error</title>
+  </head>
+  <body>
+  <pre>TypeError: (db.planner-buckets || []).map is not a function<br> &nbsp; &nbsp;at <stack trace removed></pre>
+  </body>
+  </html>
+  
+
+data files: unchanged
+
+outbound calls: none
+
+`;
+
+exports[`data shapes › db.json collection is an object, not an array > GET /api/planner-labels: \"planner-labels\" is {\"a\":1} 1`] = `
+
+GET /api/planner-labels
+credentials: group 5 POC (rafael.t.mendoza, role poc)
+
+status: 200
+content-type: application/json; charset=utf-8
+access-control-allow-origin: *
+x-powered-by: Express
+response body:
+  {
+    "a": 1
+  }
+
+data files: unchanged
+
+outbound calls: none
+
+`;
+
+exports[`data shapes › db.json collection is an object, not an array > GET /api/planner-tasks: \"planner-tasks\" is {\"a\":1} 1`] = `
+
+GET /api/planner-tasks
+credentials: group 5 POC (rafael.t.mendoza, role poc)
+
+status: 500
+content-type: text/html; charset=utf-8
+access-control-allow-origin: *
+x-powered-by: Express
+response body:
+  <!DOCTYPE html>
+  <html lang="en">
+  <head>
+  <meta charset="utf-8">
+  <title>Error</title>
+  </head>
+  <body>
+  <pre>TypeError: (db.planner-tasks || []).map is not a function<br> &nbsp; &nbsp;at <stack trace removed></pre>
+  </body>
+  </html>
+  
+
+data files: unchanged
+
+outbound calls: none
+
+`;
+
+exports[`data shapes › db.json collection is an object, not an array > GET /api/project-reachouts: \"project-reachouts\" is {\"a\":1} 1`] = `
+
+GET /api/project-reachouts
+credentials: group 5 POC (rafael.t.mendoza, role poc)
+
+status: 500
+content-type: text/html; charset=utf-8
+access-control-allow-origin: *
+x-powered-by: Express
+response body:
+  <!DOCTYPE html>
+  <html lang="en">
+  <head>
+  <meta charset="utf-8">
+  <title>Error</title>
+  </head>
+  <body>
+  <pre>TypeError: rows.map is not a function<br> &nbsp; &nbsp;at <stack trace removed></pre>
+  </body>
+  </html>
+  
+
+data files: unchanged
+
+outbound calls: none
+
+`;
+
+exports[`data shapes › db.json collection is an object, not an array > GET /api/sprint-retros: \"sprint-retros\" is {\"a\":1} 1`] = `
+
+GET /api/sprint-retros
+credentials: group 5 POC (rafael.t.mendoza, role poc)
+
+status: 500
+content-type: text/html; charset=utf-8
+access-control-allow-origin: *
+x-powered-by: Express
+response body:
+  <!DOCTYPE html>
+  <html lang="en">
+  <head>
+  <meta charset="utf-8">
+  <title>Error</title>
+  </head>
+  <body>
+  <pre>TypeError: (db.sprint-retros || []).map is not a function<br> &nbsp; &nbsp;at <stack trace removed></pre>
+  </body>
+  </html>
+  
+
+data files: unchanged
+
+outbound calls: none
+
+`;
+
+exports[`data shapes › db.json collection is an object, not an array > GET /api/sprints: \"sprints\" is {\"a\":1} 1`] = `
+
+GET /api/sprints
+credentials: group 5 POC (rafael.t.mendoza, role poc)
+
+status: 500
+content-type: text/html; charset=utf-8
+access-control-allow-origin: *
+x-powered-by: Express
+response body:
+  <!DOCTYPE html>
+  <html lang="en">
+  <head>
+  <meta charset="utf-8">
+  <title>Error</title>
+  </head>
+  <body>
+  <pre>TypeError: (db.sprints || []).map is not a function<br> &nbsp; &nbsp;at <stack trace removed></pre>
+  </body>
+  </html>
+  
+
+data files: unchanged
+
+outbound calls: none
+
+`;
+
+exports[`data shapes › db.json collection is an object, not an array > PATCH /api/attendance/6: \"attendance\" is {\"a\":1} 1`] = `
+
+PATCH /api/attendance/6
+credentials: group 5 POC (rafael.t.mendoza, role poc)
+request body:
+  {
+    "status": "Absent"
+  }
+
+status: 500
+content-type: text/html; charset=utf-8
+access-control-allow-origin: *
+x-powered-by: Express
+response body:
+  <!DOCTYPE html>
+  <html lang="en">
+  <head>
+  <meta charset="utf-8">
+  <title>Error</title>
+  </head>
+  <body>
+  <pre>TypeError: records.findIndex is not a function<br> &nbsp; &nbsp;at <stack trace removed></pre>
+  </body>
+  </html>
+  
+
+data files: unchanged
+
+outbound calls: none
+
+`;
+
+exports[`data shapes › db.json collection is an object, not an array > PATCH /api/competency-records/liza.m.navarro: \"competency-records\" is {\"a\":1} 1`] = `
+
+PATCH /api/competency-records/liza.m.navarro
+credentials: group 5 POC (rafael.t.mendoza, role poc)
+request body:
+  {
+    "primaryProficiency": "P3"
+  }
+
+status: 500
+content-type: text/html; charset=utf-8
+access-control-allow-origin: *
+x-powered-by: Express
+response body:
+  <!DOCTYPE html>
+  <html lang="en">
+  <head>
+  <meta charset="utf-8">
+  <title>Error</title>
+  </head>
+  <body>
+  <pre>TypeError: records.findIndex is not a function<br> &nbsp; &nbsp;at <stack trace removed></pre>
+  </body>
+  </html>
+  
+
+data files: unchanged
+
+outbound calls: none
+
+`;
+
+exports[`data shapes › db.json collection is an object, not an array > PATCH /api/planner-tasks/2: \"planner-tasks\" is {\"a\":1} 1`] = `
+
+PATCH /api/planner-tasks/2
+credentials: group 5 POC (rafael.t.mendoza, role poc)
+request body:
+  {
+    "status": "Completed",
+    "completed": true
+  }
+
+status: 500
+content-type: text/html; charset=utf-8
+access-control-allow-origin: *
+x-powered-by: Express
+response body:
+  <!DOCTYPE html>
+  <html lang="en">
+  <head>
+  <meta charset="utf-8">
+  <title>Error</title>
+  </head>
+  <body>
+  <pre>TypeError: tasks.findIndex is not a function<br> &nbsp; &nbsp;at <stack trace removed></pre>
+  </body>
+  </html>
+  
+
+data files: unchanged
+
+outbound calls: none
+
+`;
+
+exports[`data shapes › db.json collection is an object, not an array > PATCH /api/project-reachouts/2: \"project-reachouts\" is {\"a\":1} 1`] = `
+
+PATCH /api/project-reachouts/2
+credentials: group 5 POC (rafael.t.mendoza, role poc)
+request body:
+  {
+    "status": "Interview Scheduled"
+  }
+
+status: 500
+content-type: text/html; charset=utf-8
+access-control-allow-origin: *
+x-powered-by: Express
+response body:
+  <!DOCTYPE html>
+  <html lang="en">
+  <head>
+  <meta charset="utf-8">
+  <title>Error</title>
+  </head>
+  <body>
+  <pre>TypeError: rows.findIndex is not a function<br> &nbsp; &nbsp;at <stack trace removed></pre>
+  </body>
+  </html>
+  
+
+data files: unchanged
+
+outbound calls: none
+
+`;
+
+exports[`data shapes › db.json collection is an object, not an array > PATCH /api/sprint-retros/2: \"sprint-retros\" is {\"a\":1} 1`] = `
+
+PATCH /api/sprint-retros/2
+credentials: group 5 POC (rafael.t.mendoza, role poc)
+request body:
+  {
+    "text": "Author instance setup took three days"
+  }
+
+status: 500
+content-type: text/html; charset=utf-8
+access-control-allow-origin: *
+x-powered-by: Express
+response body:
+  <!DOCTYPE html>
+  <html lang="en">
+  <head>
+  <meta charset="utf-8">
+  <title>Error</title>
+  </head>
+  <body>
+  <pre>TypeError: items.findIndex is not a function<br> &nbsp; &nbsp;at <stack trace removed></pre>
+  </body>
+  </html>
+  
+
+data files: unchanged
+
+outbound calls: none
+
+`;
+
+exports[`data shapes › db.json collection is an object, not an array > PATCH /api/sprints/1: \"sprints\" is {\"a\":1} 1`] = `
+
+PATCH /api/sprints/1
+credentials: group 5 POC (rafael.t.mendoza, role poc)
+request body:
+  {
+    "name": "Sprint 1 (renamed)"
+  }
+
+status: 500
+content-type: text/html; charset=utf-8
+access-control-allow-origin: *
+x-powered-by: Express
+response body:
+  <!DOCTYPE html>
+  <html lang="en">
+  <head>
+  <meta charset="utf-8">
+  <title>Error</title>
+  </head>
+  <body>
+  <pre>TypeError: sprints.findIndex is not a function<br> &nbsp; &nbsp;at <stack trace removed></pre>
+  </body>
+  </html>
+  
+
+data files: unchanged
+
+outbound calls: none
+
+`;
+
+exports[`data shapes › db.json collection is an object, not an array > POST /api/attendance: \"attendance\" is {\"a\":1} 1`] = `
+
+POST /api/attendance
+credentials: group 5 POC (rafael.t.mendoza, role poc)
+request body:
+  {
+    "eid": "liza.m.navarro",
+    "year": 2026,
+    "month": 11,
+    "day": 5,
+    "status": "Present"
+  }
+
+status: 500
+content-type: text/html; charset=utf-8
+access-control-allow-origin: *
+x-powered-by: Express
+response body:
+  <!DOCTYPE html>
+  <html lang="en">
+  <head>
+  <meta charset="utf-8">
+  <title>Error</title>
+  </head>
+  <body>
+  <pre>TypeError: arr.reduce is not a function<br> &nbsp; &nbsp;at <stack trace removed></pre>
+  </body>
+  </html>
+  
+
+data files: unchanged
+
+outbound calls: none
+
+`;
+
+exports[`data shapes › db.json collection is an object, not an array > POST /api/capacity-entries: \"capacity-entries\" is {\"a\":1} 1`] = `
+
+POST /api/capacity-entries
+credentials: group 5 POC (rafael.t.mendoza, role poc)
+request body:
+  {
+    "sprintName": "Sprint 3",
+    "eid": "rafael.t.mendoza",
+    "cadence": 4,
+    "admin": 1,
+    "holiday": 0
+  }
+
+status: 500
+content-type: text/html; charset=utf-8
+access-control-allow-origin: *
+x-powered-by: Express
+response body:
+  <!DOCTYPE html>
+  <html lang="en">
+  <head>
+  <meta charset="utf-8">
+  <title>Error</title>
+  </head>
+  <body>
+  <pre>TypeError: entries.find is not a function<br> &nbsp; &nbsp;at <stack trace removed></pre>
+  </body>
+  </html>
+  
+
+data files: unchanged
+
+outbound calls: none
+
+`;
+
+exports[`data shapes › db.json collection is an object, not an array > POST /api/deletion-logs: \"deletion-logs\" is {\"a\":1} 1`] = `
+
+POST /api/deletion-logs
+credentials: group 5 POC (rafael.t.mendoza, role poc)
+request body:
+  {
+    "type": "task-deletion",
+    "taskId": 5,
+    "taskTitle": "Accessibility audit of the onboarding form",
+    "deletedBy": "Rafael Mendoza",
+    "deletedByEid": "rafael.t.mendoza"
+  }
+
+status: 500
+content-type: text/html; charset=utf-8
+access-control-allow-origin: *
+x-powered-by: Express
+response body:
+  <!DOCTYPE html>
+  <html lang="en">
+  <head>
+  <meta charset="utf-8">
+  <title>Error</title>
+  </head>
+  <body>
+  <pre>TypeError: arr.reduce is not a function<br> &nbsp; &nbsp;at <stack trace removed></pre>
+  </body>
+  </html>
+  
+
+data files: unchanged
+
+outbound calls: none
+
+`;
+
+exports[`data shapes › db.json collection is an object, not an array > POST /api/planner-buckets: \"planner-buckets\" is {\"a\":1} 1`] = `
+
+POST /api/planner-buckets
+credentials: group 5 POC (rafael.t.mendoza, role poc)
+request body:
+  {
+    "boardId": 1,
+    "name": "Sprint 1",
+    "order": 0
+  }
+
+status: 500
+content-type: text/html; charset=utf-8
+access-control-allow-origin: *
+x-powered-by: Express
+response body:
+  <!DOCTYPE html>
+  <html lang="en">
+  <head>
+  <meta charset="utf-8">
+  <title>Error</title>
+  </head>
+  <body>
+  <pre>TypeError: arr.reduce is not a function<br> &nbsp; &nbsp;at <stack trace removed></pre>
+  </body>
+  </html>
+  
+
+data files: unchanged
+
+outbound calls: none
+
+`;
+
+exports[`data shapes › db.json collection is an object, not an array > POST /api/planner-tasks: \"planner-tasks\" is {\"a\":1} 1`] = `
+
+POST /api/planner-tasks
+credentials: group 5 POC (rafael.t.mendoza, role poc)
+request body:
+  {
+    "boardId": 1,
+    "bucketId": 4,
+    "title": "Build a React form with validation",
+    "status": "Not started",
+    "priority": "Medium",
+    "startDate": "2026-10-28",
+    "dueDate": "2026-11-06",
+    "labels": [
+      2,
+      4
+    ],
+    "assignee": "miguel.a.torres",
+    "checklist": [
+      {
+        "id": 1,
+        "text": "Pick a form library",
+        "done": false
+      }
+    ],
+    "description": "<p>Practice controlled inputs</p>",
+    "acceptanceCriteria": "<ul><li>All fields validated</li></ul>",
+    "comments": [],
+    "completed": false,
+    "createdAt": "2026-10-28T01:00:00.000Z",
+    "updatedAt": "2026-10-28T01:00:00.000Z"
+  }
+
+status: 500
+content-type: text/html; charset=utf-8
+access-control-allow-origin: *
+x-powered-by: Express
+response body:
+  <!DOCTYPE html>
+  <html lang="en">
+  <head>
+  <meta charset="utf-8">
+  <title>Error</title>
+  </head>
+  <body>
+  <pre>TypeError: arr.reduce is not a function<br> &nbsp; &nbsp;at <stack trace removed></pre>
+  </body>
+  </html>
+  
+
+data files: unchanged
+
+outbound calls: none
+
+`;
+
+exports[`data shapes › db.json collection is an object, not an array > POST /api/project-reachouts: \"project-reachouts\" is {\"a\":1} 1`] = `
+
+POST /api/project-reachouts
+credentials: group 5 POC (rafael.t.mendoza, role poc)
+request body:
+  {
+    "eid": "jomar.c.pascual",
+    "projectName": "Harborline Insurance Portal",
+    "techRole": "AEM Developer",
+    "pocEid": "rafael.t.mendoza",
+    "status": "CV Requested",
+    "details": "Junior slot, AEM components",
+    "groupNumber": 5
+  }
+
+status: 500
+content-type: text/html; charset=utf-8
+access-control-allow-origin: *
+x-powered-by: Express
+response body:
+  <!DOCTYPE html>
+  <html lang="en">
+  <head>
+  <meta charset="utf-8">
+  <title>Error</title>
+  </head>
+  <body>
+  <pre>TypeError: arr.reduce is not a function<br> &nbsp; &nbsp;at <stack trace removed></pre>
+  </body>
+  </html>
+  
+
+data files: unchanged
+
+outbound calls: none
+
+`;
+
+exports[`data shapes › db.json collection is an object, not an array > POST /api/sprint-retros: \"sprint-retros\" is {\"a\":1} (sprints valid, retros not an array) 1`] = `
+
+POST /api/sprint-retros
+credentials: group 5 POC (rafael.t.mendoza, role poc)
+request body:
+  {
+    "sprintId": 2,
+    "groupNumber": 5,
+    "category": "went-well",
+    "text": "Daily pairing on AEM components kept everyone unblocked"
+  }
+
+status: 500
+content-type: text/html; charset=utf-8
+access-control-allow-origin: *
+x-powered-by: Express
+response body:
+  <!DOCTYPE html>
+  <html lang="en">
+  <head>
+  <meta charset="utf-8">
+  <title>Error</title>
+  </head>
+  <body>
+  <pre>TypeError: arr.reduce is not a function<br> &nbsp; &nbsp;at <stack trace removed></pre>
+  </body>
+  </html>
+  
+
+data files: unchanged
+
+outbound calls: none
+
+`;
+
+exports[`data shapes › db.json collection is an object, not an array > POST /api/sprint-retros: \"sprints\" is {\"a\":1} 1`] = `
+
+POST /api/sprint-retros
+credentials: group 5 POC (rafael.t.mendoza, role poc)
+request body:
+  {
+    "sprintId": 2,
+    "groupNumber": 5,
+    "category": "went-well",
+    "text": "Daily pairing on AEM components kept everyone unblocked"
+  }
+
+status: 500
+content-type: text/html; charset=utf-8
+access-control-allow-origin: *
+x-powered-by: Express
+response body:
+  <!DOCTYPE html>
+  <html lang="en">
+  <head>
+  <meta charset="utf-8">
+  <title>Error</title>
+  </head>
+  <body>
+  <pre>TypeError: (db.sprints || []).some is not a function<br> &nbsp; &nbsp;at <stack trace removed></pre>
+  </body>
+  </html>
+  
+
+data files: unchanged
+
+outbound calls: none
+
+`;
+
+exports[`data shapes › db.json collection is an object, not an array > POST /api/sprints: \"sprints\" is {\"a\":1} 1`] = `
+
+POST /api/sprints
+credentials: group 5 POC (rafael.t.mendoza, role poc)
+request body:
+  {
+    "name": "Sprint 4",
+    "start": "2026-11-24",
+    "end": "2026-12-05"
+  }
+
+status: 500
+content-type: text/html; charset=utf-8
+access-control-allow-origin: *
+x-powered-by: Express
+response body:
+  <!DOCTYPE html>
+  <html lang="en">
+  <head>
+  <meta charset="utf-8">
+  <title>Error</title>
+  </head>
+  <body>
+  <pre>TypeError: arr.reduce is not a function<br> &nbsp; &nbsp;at <stack trace removed></pre>
+  </body>
+  </html>
+  
+
+data files: unchanged
+
+outbound calls: none
+
+`;
+
+exports[`data shapes › fruits file > GET /api/fruits/1: fruits is {\"a\":1} 1`] = `
+
+GET /api/fruits/1
+credentials: group 5 POC (rafael.t.mendoza, role poc)
+
+status: 500
+content-type: text/html; charset=utf-8
+access-control-allow-origin: *
+x-powered-by: Express
+response body:
+  <!DOCTYPE html>
+  <html lang="en">
+  <head>
+  <meta charset="utf-8">
+  <title>Error</title>
+  </head>
+  <body>
+  <pre>TypeError: (db.fruits || []).find is not a function<br> &nbsp; &nbsp;at <stack trace removed></pre>
+  </body>
+  </html>
+  
+
+data files: unchanged
+
+outbound calls: none
+
+`;
+
+exports[`data shapes › fruits file > GET /api/fruits: fruits is {\"a\":1} 1`] = `
+
+GET /api/fruits
+credentials: group 5 POC (rafael.t.mendoza, role poc)
+
+status: 200
+content-type: application/json; charset=utf-8
+access-control-allow-origin: *
+x-powered-by: Express
+response body:
+  {
+    "a": 1
+  }
+
+data files: unchanged
+
+outbound calls: none
+
+`;
+
+exports[`data shapes › fruits file > GET /api/fruits?category=x: fruits is {\"a\":1} 1`] = `
+
+GET /api/fruits?category=Tropical
+credentials: group 5 POC (rafael.t.mendoza, role poc)
+
+status: 500
+content-type: text/html; charset=utf-8
+access-control-allow-origin: *
+x-powered-by: Express
+response body:
+  <!DOCTYPE html>
+  <html lang="en">
+  <head>
+  <meta charset="utf-8">
+  <title>Error</title>
+  </head>
+  <body>
+  <pre>TypeError: list.filter is not a function<br> &nbsp; &nbsp;at <stack trace removed></pre>
+  </body>
+  </html>
+  
+
+data files: unchanged
+
+outbound calls: none
+
+`;
+
+exports[`data shapes › fruits file > POST /api/fruits: a non-numeric id makes the next id NaN (written as null) 1`] = `
+
+POST /api/fruits
+credentials: group 5 POC (rafael.t.mendoza, role poc)
+request body:
+  {
+    "name": "Lanzones",
+    "category": "Tropical"
+  }
+
+status: 201
+content-type: application/json; charset=utf-8
+access-control-allow-origin: *
+x-powered-by: Express
+response body:
+  {
+    "id": null,
+    "name": "Lanzones",
+    "emoji": "🍎",
+    "category": "Tropical",
+    "price": 0,
+    "stock": 0
+  }
+
+data files:
+  test_bwd/db.json: modified
+    raw text diff:
+      @@ -24,4 +24,12 @@
+             "price": 1.1,
+             "stock": 40
+      +    },
+      +    {
+      +      "id": null,
+      +      "name": "Lanzones",
+      +      "emoji": "🍎",
+      +      "category": "Tropical",
+      +      "price": 0,
+      +      "stock": 0
+           }
+         ]
+    parsed JSON diff:
+      + /fruits[id=null] (at index 3): {"id":null,"name":"Lanzones","emoji":"🍎","category":"Tropical","price":0,"stock":0}
+
+outbound calls: none
+
+`;
+
+exports[`data shapes › fruits file > POST /api/fruits: fruits is {\"a\":1} 1`] = `
+
+POST /api/fruits
+credentials: group 5 POC (rafael.t.mendoza, role poc)
+request body:
+  {
+    "name": "Lanzones",
+    "category": "Tropical"
+  }
+
+status: 500
+content-type: text/html; charset=utf-8
+access-control-allow-origin: *
+x-powered-by: Express
+response body:
+  <!DOCTYPE html>
+  <html lang="en">
+  <head>
+  <meta charset="utf-8">
+  <title>Error</title>
+  </head>
+  <body>
+  <pre>TypeError: fruits.push is not a function<br> &nbsp; &nbsp;at <stack trace removed></pre>
+  </body>
+  </html>
+  
+
+data files: unchanged
+
+outbound calls: none
+
+`;
+
+exports[`data shapes › fruits file > POST /api/fruits: numeric-string ids count towards the next id 1`] = `
+
+POST /api/fruits
+credentials: group 5 POC (rafael.t.mendoza, role poc)
+request body:
+  {
+    "name": "Lanzones",
+    "category": "Tropical"
+  }
+
+status: 201
+content-type: application/json; charset=utf-8
+access-control-allow-origin: *
+x-powered-by: Express
+response body:
+  {
+    "id": 8,
+    "name": "Lanzones",
+    "emoji": "🍎",
+    "category": "Tropical",
+    "price": 0,
+    "stock": 0
+  }
+
+data files:
+  test_bwd/db.json: modified
+    raw text diff:
+      @@ -24,4 +24,12 @@
+             "price": 1.1,
+             "stock": 40
+      +    },
+      +    {
+      +      "id": 8,
+      +      "name": "Lanzones",
+      +      "emoji": "🍎",
+      +      "category": "Tropical",
+      +      "price": 0,
+      +      "stock": 0
+           }
+         ]
+    parsed JSON diff:
+      + /fruits[id=8] (at index 3): {"id":8,"name":"Lanzones","emoji":"🍎","category":"Tropical","price":0,"stock":0}
+
+outbound calls: none
+
+`;
