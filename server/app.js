@@ -2,7 +2,6 @@ const express = require('express');
 const cors = require('cors');
 const {
   dbPath,
-  fruitsDbPath,
   testBenchDir,
   browserDir,
   browserIndexPath
@@ -22,6 +21,11 @@ const {
 } = require('./onboarding-store');
 const healthRoutes = require('./features/health/health.routes');
 const dashboardRoutes = require('./features/dashboard/dashboard.routes');
+const {
+  loadFruitsDb,
+  saveFruitsDb,
+  fruitsNextId
+} = require('./persistence/fruits-file.repository');
 
 const app = express();
 
@@ -805,17 +809,6 @@ app.delete('/api/project-reachouts/:id', (req, res) => {
 // ─────────────────────────────────────────────────────────────────────────────
 
 // ── Test Bench: Fruits CRUD ───────────────────────────────────────────────────
-function loadFruitsDb() {
-  try { return JSON.parse(fs.readFileSync(fruitsDbPath, 'utf8')); }
-  catch { return { fruits: [] }; }
-}
-function saveFruitsDb(db) {
-  fs.writeFileSync(fruitsDbPath, JSON.stringify(db, null, 2), 'utf8');
-}
-function fruitsNextId(arr) {
-  return arr.length ? Math.max(...arr.map(f => Number(f.id))) + 1 : 1;
-}
-
 app.get('/api/fruits', (req, res) => {
   const db = loadFruitsDb();
   let list = db.fruits || [];
