@@ -41,7 +41,7 @@ npm run codegen      # Playwright codegen against :4200
   3. add a branch to the template,
   4. import the component.
 
-  Sidebar nav items come from the `/api/dashboard` response, which is hard-coded in `server/json-store.js`.
+  Sidebar nav items come from the `/api/dashboard` response, which is hard-coded in `server/features/dashboard/dashboard.service.js`.
 - `AppComponent` uses `ViewEncapsulation.None`, so `app.component.css` is effectively global.
 - **`SharedDataService`** (`services/shared-data.service.ts`) holds cross-view state:
   - the cached `onboardingResources` list (the roster most views filter by group),

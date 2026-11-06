@@ -93,7 +93,7 @@ atcpsongdashboard/
 │   └── styles.css                # Global styles (Bootstrap, CSS variables)
 ├── server/                       # Node.js/Express API backend
 │   ├── server.js                 # Main Express server with all API routes
-│   ├── json-store.js             # JSON file store for tasks and dashboard data
+│   ├── json-store.js             # JSON file store for legacy tasks
 │   ├── onboarding-store.js       # JSON/CSV store for onboarding records
 │   ├── schema.sql                # Reference SQLite schema (not yet active)
 │   └── data/
@@ -236,7 +236,7 @@ All state is held as plain TypeScript properties on `AppComponent`, populated by
 
 The Express server (`server/server.js`) exposes a REST API with the following responsibilities:
 
-- Returns static dashboard content (currently hardcoded in `json-store.js`)
+- Returns static dashboard content (currently hardcoded in `server/features/dashboard/dashboard.service.js`)
 - Manages onboarding resource records via CRUD endpoints
 - Seeds initial data from `server/data/custom.csv` on first run
 - Persists onboarding records to `server/data/custom-onboarding.json`
@@ -351,7 +351,7 @@ Dates are stored and returned in **MM/DD/YYYY** format. The server normalizes an
 - On first run (JSON file absent): bootstraps from `server/data/custom.csv` using a hand-written CSV parser that handles quoted fields and doubled-quote escaping
 - Subsequent reads/writes go directly to the JSON file; the CSV is not re-read after initialization
 
-### Dashboard store (`server/json-store.js`)
+### Dashboard store (`server/features/dashboard/dashboard.service.js`)
 
 - Dashboard payload is currently **hardcoded** as a JavaScript object
 - `server/schema.sql` defines the full intended SQLite relational schema for dynamic dashboard content (nav groups, stats, checklist items, initiatives, announcements, POC, quick tools) — this is the planned future data source
@@ -438,7 +438,7 @@ Configured in `angular.json`:
 ### Current limitations
 
 - **No Angular Router** — The URL does not reflect the current view; deep-linking and browser back/forward are not supported.
-- **Dashboard data is hardcoded** — The `/api/dashboard` response is a static JavaScript object; it does not read from a database. Changes require editing `server/json-store.js` directly.
+- **Dashboard data is hardcoded** — The `/api/dashboard` response is a static JavaScript object; it does not read from a database. Changes require editing `server/features/dashboard/dashboard.service.js` directly.
 - **No authentication or authorization** — All endpoints are publicly accessible. The app is intended for internal network use only.
 - **No containerization** — There is no Dockerfile or CI/CD configuration.
 - **Single-component frontend** — All UI logic is in one file. As the feature set grows, splitting into multiple components and services will become necessary.

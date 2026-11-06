@@ -115,7 +115,7 @@ All data is plain JSON in **`server/data/`**. The server reads and rewrites thes
 | `server/data/test_bwd/db.json` | ✅ | `/api/fruits` test bench | Unrelated to the dashboard |
 | `attendance.json`, `attendance-options.json`, `routes.json`, `*.xlsx`, `groupings name` | ✅ | Nothing in the Express server | Leftovers / reference material |
 
-Dashboard content (`/api/dashboard`, which includes the sidebar nav) isn't stored in a file. It's hard-coded in `server/json-store.js`.
+Dashboard content (`/api/dashboard`, which includes the sidebar nav) isn't stored in a file. It's hard-coded in `server/features/dashboard/dashboard.service.js`.
 
 ### Things that will bite you
 

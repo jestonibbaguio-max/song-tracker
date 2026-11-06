@@ -220,8 +220,8 @@ group will always appear — regardless of whether a competency record exists fo
 
 ## 9. Navigation Structure
 
-Nav groups are hardcoded in `server/json-store.js` inside `getDashboardPayload()`.
-Editing `db.json` nav entries has no effect — only `json-store.js` is read.
+Nav groups are hardcoded in `server/features/dashboard/dashboard.service.js` inside `getDashboardPayload()`.
+Editing `db.json` nav entries has no effect — only `dashboard.service.js` is read.
 
 ### MAIN
 

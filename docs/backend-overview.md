@@ -57,12 +57,12 @@ There's **no error-handling middleware** and no request logging, rate limiting, 
 
 All routes take and return JSON. "Store" is the file the route reads and writes (see §5).
 
-### Health, dashboard, legacy tasks — `json-store.js`
+### Health, dashboard, legacy tasks
 
 | Method | Path | Store | Behaviour |
 |---|---|---|---|
 | GET | `/api/health` | – | `{ ok: true }` |
-| GET | `/api/dashboard` | hard-coded | Returns a static object built in `getDashboardPayload()` ([json-store.js:34](../server/json-store.js#L34)). The `dashboard` key in `db.json` is **not** read |
+| GET | `/api/dashboard` | hard-coded | Returns a static object built in `getDashboardPayload()` ([dashboard.service.js](../server/features/dashboard/dashboard.service.js)). The `dashboard` key in `db.json` is **not** read |
 | GET | `/api/tasks` | `data/tasks.json` | Creates the file with one seed task if it's missing |
 | POST | `/api/tasks` | `data/tasks.json` | `{ title, status? }` → 201. `title` is required |
 | PATCH | `/api/tasks/:id` | `data/tasks.json` | `{ title?, status? }`. 400 if either is an empty string, 404 if the id doesn't exist |

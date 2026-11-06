@@ -8,7 +8,6 @@ const {
   browserIndexPath
 } = require('./config');
 const {
-  getDashboardPayload,
   getTasks,
   addTask,
   updateTask,
@@ -22,6 +21,7 @@ const {
   updateOnboardingRecord
 } = require('./onboarding-store');
 const healthRoutes = require('./features/health/health.routes');
+const { getDashboardPayload } = require('./features/dashboard/dashboard.service');
 
 const app = express();
 
