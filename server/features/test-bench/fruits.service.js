@@ -2,11 +2,16 @@
 // save per call. Bugs M1 and M14 in docs/found-bugs.md are kept on purpose.
 const repository = require('./fruits.repository');
 
-/** q is already lower-cased by the controller, or undefined when there is no search. */
-function listFruits({ category, q }) {
+/**
+ * readQuery returns the lower-cased search text, or undefined when there is
+ * none. It is called after the load and the category filter, where the
+ * original handler read req.query.q (bug M14 throws from inside it).
+ */
+function listFruits({ category, readQuery }) {
   const db = repository.load();
   let list = db.fruits || [];
   if (category) list = list.filter(f => f.category === category);
+  const q = readQuery();
   if (q !== undefined) {
     list = list.filter(f => f.name.toLowerCase().includes(q) || f.category.toLowerCase().includes(q));
   }
@@ -19,10 +24,16 @@ function getFruit(id) {
   return (db.fruits || []).find(f => Number(f.id) === Number(id));
 }
 
-/** { error } when invalid (nothing saved), otherwise { fruit }. */
-function createFruit({ name, emoji, category, price, stock }) {
+/**
+ * readFields returns { name, emoji, category, price, stock } from the request.
+ * It is called after the load, where the original handler destructured
+ * req.body (bug M1 throws from inside it).
+ * { error } when invalid (nothing saved), otherwise { fruit }.
+ */
+function createFruit(readFields) {
   const db = repository.load();
   const fruits = db.fruits || [];
+  const { name, emoji, category, price, stock } = readFields();
   if (!name || !category) return { error: 'name and category are required' };
   const fruit = { id: repository.nextId(fruits), name, emoji: emoji || '🍎', category, price: Number(price) || 0, stock: Number(stock) || 0 };
   fruits.push(fruit);

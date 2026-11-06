@@ -9,7 +9,9 @@ const { nextId } = require('../../utils/ids');
 /** groupNumber is the raw query value (undefined when absent). */
 function listBoards(groupNumber) {
   const db = repository.load();
-  let boards = repository.boardsOf(db).map(b => ({ ...b, id: Number(b.id), groupNumber: Number(b.groupNumber) }));
+  // Inline, not repository.boardsOf(db): when the collection is not an array the TypeError
+  // names this exact expression (pinned in data-shape-edges.test.js).
+  let boards = (db['planner-boards'] || []).map(b => ({ ...b, id: Number(b.id), groupNumber: Number(b.groupNumber) }));
   if (groupNumber !== undefined) {
     const gn = Number(groupNumber);
     boards = boards.filter(b => b.groupNumber === gn);
@@ -22,7 +24,9 @@ function listBoards(groupNumber) {
 /** boardId is the raw query value (undefined when absent). */
 function listBuckets(boardId) {
   const db = repository.load();
-  let buckets = repository.bucketsOf(db).map(b => ({ ...b, id: Number(b.id), boardId: Number(b.boardId) }));
+  // Inline, not repository.bucketsOf(db): when the collection is not an array the TypeError
+  // names this exact expression (pinned in data-shape-edges.test.js).
+  let buckets = (db['planner-buckets'] || []).map(b => ({ ...b, id: Number(b.id), boardId: Number(b.boardId) }));
   if (boardId !== undefined) {
     const bid = Number(boardId);
     buckets = buckets.filter(b => b.boardId === bid);
@@ -48,7 +52,9 @@ function createBucket({ boardId, name, order }) {
 /** boardId is the raw query value (undefined when absent). */
 function listTasks(boardId) {
   const db = repository.load();
-  let tasks = repository.tasksOf(db).map(t => ({
+  // Inline, not repository.tasksOf(db): when the collection is not an array the TypeError
+  // names this exact expression (pinned in data-shape-edges.test.js).
+  let tasks = (db['planner-tasks'] || []).map(t => ({
     ...t,
     id: Number(t.id),
     boardId: Number(t.boardId),

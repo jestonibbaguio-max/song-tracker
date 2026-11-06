@@ -10,7 +10,9 @@ const sprintRetroCategories = new Set(['improve', 'didnt-go-well', 'went-well'])
 
 function listSprints() {
   const db = repository.load();
-  return repository.sprintsOf(db).map(s => ({ ...s, id: Number(s.id) }));
+  // Inline, not repository.sprintsOf(db): when the collection is not an array the TypeError
+  // names this exact expression (pinned in data-shape-edges.test.js).
+  return (db['sprints'] || []).map(s => ({ ...s, id: Number(s.id) }));
 }
 
 /** { error } when a field is missing (nothing read or written), otherwise { sprint }. */
@@ -61,7 +63,9 @@ function deleteSprint(id) {
 /** sprintId and groupNumber are the raw query values (undefined when absent). */
 function listRetros({ sprintId, groupNumber }) {
   const db = repository.load();
-  let items = repository.retrosOf(db).map(item => ({
+  // Inline, not repository.retrosOf(db): when the collection is not an array the TypeError
+  // names this exact expression (pinned in data-shape-edges.test.js).
+  let items = (db['sprint-retros'] || []).map(item => ({
     ...item,
     id: Number(item.id),
     sprintId: Number(item.sprintId),
@@ -83,7 +87,9 @@ function createRetro(body) {
   const category = String(body?.category || '');
   const text = String(body?.text || '').trim();
   const db = repository.load();
-  const sprintExists = repository.sprintsOf(db).some(sprint => Number(sprint.id) === sprintId);
+  // Inline, not repository.sprintsOf(db): when the collection is not an array the TypeError
+  // names this exact expression (pinned in data-shape-edges.test.js).
+  const sprintExists = (db['sprints'] || []).some(sprint => Number(sprint.id) === sprintId);
 
   if (!Number.isInteger(sprintId) || !sprintExists) {
     return { error: 'a valid sprint number is required' };

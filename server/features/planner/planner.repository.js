@@ -1,4 +1,5 @@
 // The planner collections in db.json: boards, buckets, tasks and deletion logs.
+// (Boards are only listed, and the service reads them inline; see planner.service.js.)
 // load()/save() go through the db.json file repository; the rest are pure
 // functions on the loaded db object. The *Of() getters return the stored array
 // itself (or a new [] when the collection is missing) and set*() assigns it back.
@@ -10,10 +11,6 @@ function load() {
 
 function save(db) {
   dbFile.saveDb(db);
-}
-
-function boardsOf(db) {
-  return db['planner-boards'] || [];
 }
 
 function bucketsOf(db) {
@@ -43,7 +40,6 @@ function setDeletionLogs(db, logs) {
 module.exports = {
   load,
   save,
-  boardsOf,
   bucketsOf,
   setBuckets,
   tasksOf,
