@@ -16,7 +16,6 @@ const path = require('node:path');
 const { SERVER_DIR } = require('../../helpers/test-server');
 
 const LEGACY_ALLOWLIST = [
-  'server/app.js',             // loadDb/saveDb and the fruits file: moves out in steps 3–4
   'server/json-store.js',      // tasks.json: deleted in step 13
   'server/onboarding-store.js', // moves unchanged into persistence/ in step 11
 ];

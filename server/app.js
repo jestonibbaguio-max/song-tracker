@@ -1,7 +1,6 @@
 const express = require('express');
 const cors = require('cors');
 const {
-  dbPath,
   testBenchDir,
   browserDir,
   browserIndexPath
@@ -22,6 +21,8 @@ const {
 const healthRoutes = require('./features/health/health.routes');
 const dashboardRoutes = require('./features/dashboard/dashboard.routes');
 const fruitsRoutes = require('./features/test-bench/fruits.routes');
+const { loadDb, saveDb } = require('./persistence/db-file.repository');
+const { nextId } = require('./utils/ids');
 
 const app = express();
 
@@ -364,22 +365,6 @@ app.delete('/api/tasks/:id', (req, res) => {
   const deleted = deleteTask(Number(req.params.id));
   res.json({ deleted });
 });
-
-// ── db.json helpers ───────────────────────────────────────────────────────────
-const fs = require('fs');
-
-function loadDb() {
-  try { return JSON.parse(fs.readFileSync(dbPath, 'utf8')); }
-  catch { return {}; }
-}
-
-function saveDb(db) {
-  fs.writeFileSync(dbPath, JSON.stringify(db, null, 2), 'utf8');
-}
-
-function nextId(arr) {
-  return (arr.reduce((m, r) => Math.max(m, Number(r.id) || 0), 0)) + 1;
-}
 
 // ── Sprints ───────────────────────────────────────────────────────────────────
 app.get('/api/sprints', (req, res) => {
