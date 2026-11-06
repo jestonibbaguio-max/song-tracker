@@ -1,10 +1,5 @@
 const express = require('express');
 const cors = require('cors');
-const {
-  testBenchDir,
-  browserDir,
-  browserIndexPath
-} = require('./config');
 const healthRoutes = require('./features/health/health.routes');
 const dashboardRoutes = require('./features/dashboard/dashboard.routes');
 const fruitsRoutes = require('./features/test-bench/fruits.routes');
@@ -17,6 +12,7 @@ const plannerRoutes = require('./features/planner/planner.routes');
 const reachoutsRoutes = require('./features/reachouts/reachouts.routes');
 const onboardingRoutes = require('./features/onboarding/onboarding.routes');
 const competencyRoutes = require('./features/competency/competency.routes');
+const registerStaticFiles = require('./middleware/static');
 
 const app = express();
 
@@ -61,14 +57,6 @@ app.use(fruitsRoutes);
 // ── Competency records ────────────────────────────────────────────────────────
 app.use(competencyRoutes);
 
-// Serve test_bwd static files at /test/
-app.use('/test', express.static(testBenchDir));
-// ─────────────────────────────────────────────────────────────────────────────
-
-app.use(express.static(browserDir));
-
-app.get(/.*/, (req, res) => {
-  res.sendFile(browserIndexPath);
-});
+registerStaticFiles(app);
 
 module.exports = app;
