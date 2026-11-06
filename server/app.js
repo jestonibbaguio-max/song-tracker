@@ -1,7 +1,12 @@
-const path = require('path');
 const express = require('express');
 const cors = require('cors');
-const { DATA_DIR } = require('./data-dir');
+const {
+  dbPath,
+  fruitsDbPath,
+  testBenchDir,
+  browserDir,
+  browserIndexPath
+} = require('./data-dir');
 const {
   getDashboardPayload,
   getTasks,
@@ -365,7 +370,6 @@ app.delete('/api/tasks/:id', (req, res) => {
 
 // ── db.json helpers ───────────────────────────────────────────────────────────
 const fs = require('fs');
-const dbPath = path.join(DATA_DIR, 'db.json');
 
 function loadDb() {
   try { return JSON.parse(fs.readFileSync(dbPath, 'utf8')); }
@@ -804,8 +808,6 @@ app.delete('/api/project-reachouts/:id', (req, res) => {
 // ─────────────────────────────────────────────────────────────────────────────
 
 // ── Test Bench: Fruits CRUD ───────────────────────────────────────────────────
-const fruitsDbPath = path.join(DATA_DIR, 'test_bwd', 'db.json');
-
 function loadFruitsDb() {
   try { return JSON.parse(fs.readFileSync(fruitsDbPath, 'utf8')); }
   catch { return { fruits: [] }; }
@@ -907,14 +909,13 @@ app.patch('/api/competency-records/:eid', (req, res) => {
 });
 
 // Serve test_bwd static files at /test/
-app.use('/test', express.static(path.join(DATA_DIR, 'test_bwd')));
+app.use('/test', express.static(testBenchDir));
 // ─────────────────────────────────────────────────────────────────────────────
 
-const browserDir = path.join(__dirname, '..', 'dist', 'atcp-song-dashboard', 'browser');
 app.use(express.static(browserDir));
 
 app.get(/.*/, (req, res) => {
-  res.sendFile(path.join(browserDir, 'index.html'));
+  res.sendFile(browserIndexPath);
 });
 
 module.exports = app;
