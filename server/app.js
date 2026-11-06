@@ -25,11 +25,6 @@ app.use(legacyTasksRoutes);
 
 app.use(onboardingRoutes);
 
-function learnSkillOptions(payload) {
-  // Skill option persistence is now handled in json-store.js via onboarding records.
-  return;
-}
-
 app.use(dashboardRoutes);
 
 // ── Sprints and sprint retrospectives ──────────────────────────────────────────
