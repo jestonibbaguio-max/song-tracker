@@ -2,7 +2,7 @@
 // Its rules: a missing or unreadable file is overwritten with the default (bug H3),
 // and writes end with a trailing newline.
 const fs = require('fs');
-const { DATA_DIR } = require('../config');
+const { DATA_DIR, tasksPath } = require('../config');
 
 const dataDir = DATA_DIR;
 
@@ -32,4 +32,15 @@ function writeJson(filePath, data) {
   fs.writeFileSync(filePath, JSON.stringify(data, null, 2) + '\n', 'utf8');
 }
 
-module.exports = { readJson, writeJson };
+// The generic helpers above stay private: only tasks.json goes through them.
+
+/** The stored tasks, or defaultValue (written to disk) when the file is missing or unreadable. */
+function readTasks(defaultValue) {
+  return readJson(tasksPath, defaultValue);
+}
+
+function writeTasks(tasks) {
+  writeJson(tasksPath, tasks);
+}
+
+module.exports = { readTasks, writeTasks };

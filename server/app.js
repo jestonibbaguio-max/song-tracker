@@ -18,12 +18,7 @@ const healthRoutes = require('./features/health/health.routes');
 const dashboardRoutes = require('./features/dashboard/dashboard.routes');
 const fruitsRoutes = require('./features/test-bench/fruits.routes');
 const lookupsRoutes = require('./features/lookups/lookups.routes');
-const {
-  getTasks,
-  addTask,
-  updateTask,
-  deleteTask
-} = require('./features/legacy-tasks/legacy-tasks.service');
+const legacyTasksRoutes = require('./features/legacy-tasks/legacy-tasks.routes');
 const { loadDb, saveDb } = require('./persistence/db-file.repository');
 const { nextId } = require('./utils/ids');
 
@@ -34,9 +29,7 @@ app.use(express.json());
 
 app.use(healthRoutes);
 
-app.get('/api/tasks', (req, res) => {
-  res.json(getTasks());
-});
+app.use(legacyTasksRoutes);
 
 app.get('/api/onboarding-resources', (req, res) => {
   const resources = loadOnboardingRecords()
@@ -333,41 +326,6 @@ app.delete('/api/onboarding-resources/:id', (req, res) => {
 });
 
 app.use(dashboardRoutes);
-
-app.post('/api/tasks', (req, res) => {
-  const title = String(req.body?.title || '').trim();
-  const status = String(req.body?.status || 'open').trim() || 'open';
-
-  if (!title) {
-    return res.status(400).json({ error: 'title is required' });
-  }
-
-  const task = addTask({ title, status });
-  return res.status(201).json(task);
-});
-
-app.patch('/api/tasks/:id', (req, res) => {
-  const id = Number(req.params.id);
-  const title = req.body?.title === undefined ? null : String(req.body.title).trim();
-  const status = req.body?.status === undefined ? null : String(req.body.status).trim();
-
-  if (title === '' || status === '') {
-    return res.status(400).json({ error: 'title and status cannot be empty' });
-  }
-
-  const task = updateTask(id, { title, status });
-
-  if (!task) {
-    return res.status(404).json({ error: 'task not found' });
-  }
-
-  return res.json(task);
-});
-
-app.delete('/api/tasks/:id', (req, res) => {
-  const deleted = deleteTask(Number(req.params.id));
-  res.json({ deleted });
-});
 
 // ── Sprints ───────────────────────────────────────────────────────────────────
 app.get('/api/sprints', (req, res) => {
