@@ -74,6 +74,20 @@ npm run codegen      # Playwright codegen against :4200
 - If the code caches file contents in memory, keep that behavior identical.
 - Do not start any SQLite work.
 
+## Backend refactor rules
+- Behavior must not change: routes, request/response shapes, status codes, error messages.
+- Snapshots must never be updated during the refactor.
+- No new or upgraded dependencies without asking.
+- Run the full test suite after every step; never proceed with failures.
+- Log bugs in docs/found-bugs.md; do NOT fix them.
+- Keep file moves/renames in separate commits from logic changes.
+
+## Persistence rules (JSON files)
+- Tests never touch the real data directory; always use DATA_DIR.
+- Keep file paths, names, JSON formatting, and ID generation exactly as they are.
+- Keep sync vs async file operations and in-memory caching behavior identical.
+- Do not start any SQLite work.
+
 ## Gotchas
 
 - **Never write the JSON data files with PowerShell** (`ConvertTo-Json`, `Set-Content`, `Out-File`). They add a UTF-8 BOM, `JSON.parse` fails, `loadDb()` silently returns `{}`, and every endpoint then returns empty data. Use Node (`fs.writeFileSync(p, JSON.stringify(db, null, 2), 'utf8')`) or the Edit tool.
