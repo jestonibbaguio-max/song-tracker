@@ -93,7 +93,6 @@ atcpsongdashboard/
 │   └── styles.css                # Global styles (Bootstrap, CSS variables)
 ├── server/                       # Node.js/Express API backend
 │   ├── server.js                 # Main Express server with all API routes
-│   ├── json-store.js             # skill options read from the roster
 │   ├── persistence/roster-file.repository.js  # JSON/CSV store for onboarding records
 │   ├── schema.sql                # Reference SQLite schema (not yet active)
 │   └── data/

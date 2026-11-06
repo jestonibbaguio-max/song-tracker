@@ -25,7 +25,7 @@ This is a snapshot of `server/` and of how the Angular app talks to it, taken fr
 
 [server/server.js](../server/server.js) does everything at module load:
 
-1. Requires `express`, `cors`, and the two local store modules ([json-store.js](../server/json-store.js) and [onboarding-store.js](../server/onboarding-store.js)).
+1. Requires `express`, `cors`, and the local modules under `server/` (feature routers, [persistence](../server/persistence/) and [config](../server/config/index.js); see [server-restructure-plan.md](server-restructure-plan.md)).
 2. Creates `app` and reads `PORT` ([server.js:20](../server/server.js#L20)).
 3. Registers middleware and routes in source order (see §3 and §4).
 4. Calls `app.listen(port)` and logs `API running on http://127.0.0.1:<port>` ([server.js:920-922](../server/server.js#L920-L922)). The README quotes a different startup message ("Server listening on port 3000"), which is wrong.
@@ -249,7 +249,7 @@ These services return `of(...)` with fake delays and say in comments which endpo
 These are things I saw while reading. None of them have been changed.
 
 1. **No auth, open CORS, and no validation on several write routes.** `POST/PATCH /api/attendance`, `POST/PATCH /api/planner-tasks`, `POST /api/deletion-logs`, and `PATCH /api/competency-records/:eid` spread `req.body` straight into stored records, so a client can write any fields, including overwriting `createdAt`.
-2. **`getSkillOptions()` reads only snake_case keys** (`primary_skill`, `another_skills`, [json-store.js](../server/json-store.js)), so skills from records created through the API (stored in camelCase) never appear. The frontend doesn't call this endpoint, which hides the bug.
+2. **`getSkillOptions()` reads only snake_case keys** (`primary_skill`, `another_skills`, [onboarding.service.js](../server/features/onboarding/onboarding.service.js)), so skills from records created through the API (stored in camelCase) never appear. The frontend doesn't call this endpoint, which hides the bug.
 3. **Changing an EID through PATCH duplicates the resource.** The old record stays, which [server.js:303-306](../server/server.js#L303-L306) does on purpose and the README documents. It's still surprising.
 4. **The attendance location sticks around.** When a cell changes from `RTO` to another status, the client sends `{ status }` without `location` (`undefined` is dropped from JSON), and the server merges, so the old `location` stays on the stored record.
 5. **Unknown `/api` GETs return `index.html` with 200** because of the SPA catch-all (§3).
