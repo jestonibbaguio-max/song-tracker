@@ -21,7 +21,7 @@ const {
   updateOnboardingRecord
 } = require('./onboarding-store');
 const healthRoutes = require('./features/health/health.routes');
-const { getDashboardPayload } = require('./features/dashboard/dashboard.service');
+const dashboardRoutes = require('./features/dashboard/dashboard.routes');
 
 const app = express();
 
@@ -328,9 +328,7 @@ app.delete('/api/onboarding-resources/:id', (req, res) => {
   return res.status(200).json({ deleted: id });
 });
 
-app.get('/api/dashboard', (req, res) => {
-  res.json(getDashboardPayload());
-});
+app.use(dashboardRoutes);
 
 app.post('/api/tasks', (req, res) => {
   const title = String(req.body?.title || '').trim();
