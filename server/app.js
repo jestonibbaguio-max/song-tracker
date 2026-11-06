@@ -21,15 +21,14 @@ const {
   appendOnboardingRecord,
   updateOnboardingRecord
 } = require('./onboarding-store');
+const healthRoutes = require('./features/health/health.routes');
 
 const app = express();
 
 app.use(cors());
 app.use(express.json());
 
-app.get('/api/health', (req, res) => {
-  res.json({ ok: true });
-});
+app.use(healthRoutes);
 
 app.get('/api/tasks', (req, res) => {
   res.json(getTasks());
