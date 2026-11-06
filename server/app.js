@@ -22,6 +22,7 @@ const legacyTasksRoutes = require('./features/legacy-tasks/legacy-tasks.routes')
 const sprintsRoutes = require('./features/sprints/sprints.routes');
 const capacityRoutes = require('./features/capacity/capacity.routes');
 const attendanceRoutes = require('./features/attendance/attendance.routes');
+const plannerRoutes = require('./features/planner/planner.routes');
 const { loadDb, saveDb } = require('./persistence/db-file.repository');
 const { nextId } = require('./utils/ids');
 
@@ -342,114 +343,8 @@ app.use(lookupsRoutes);
 // ── Attendance ────────────────────────────────────────────────────────────────
 app.use(attendanceRoutes);
 
-// ── Planner boards ────────────────────────────────────────────────────────────
-app.get('/api/planner-boards', (req, res) => {
-  const db = loadDb();
-  let boards = (db['planner-boards'] || []).map(b => ({ ...b, id: Number(b.id), groupNumber: Number(b.groupNumber) }));
-  if (req.query.groupNumber !== undefined) {
-    const gn = Number(req.query.groupNumber);
-    boards = boards.filter(b => b.groupNumber === gn);
-  }
-  res.json(boards);
-});
-
-// ── Planner buckets ───────────────────────────────────────────────────────────
-app.get('/api/planner-buckets', (req, res) => {
-  const db = loadDb();
-  let buckets = (db['planner-buckets'] || []).map(b => ({ ...b, id: Number(b.id), boardId: Number(b.boardId) }));
-  if (req.query.boardId !== undefined) {
-    const bid = Number(req.query.boardId);
-    buckets = buckets.filter(b => b.boardId === bid);
-  }
-  res.json(buckets);
-});
-
-app.post('/api/planner-buckets', (req, res) => {
-  const { boardId, name, order } = req.body;
-  if (!boardId || !name) return res.status(400).json({ error: 'boardId and name are required' });
-  const db = loadDb();
-  const buckets = db['planner-buckets'] || [];
-  const id = nextId(buckets);
-  const bucket = { id, boardId: Number(boardId), name: String(name).trim(), order: Number(order) || 0 };
-  buckets.push(bucket);
-  db['planner-buckets'] = buckets;
-  saveDb(db);
-  res.status(201).json(bucket);
-});
-
-// ── Planner tasks ─────────────────────────────────────────────────────────────
-app.get('/api/planner-tasks', (req, res) => {
-  const db = loadDb();
-  let tasks = (db['planner-tasks'] || []).map(t => ({
-    ...t,
-    id: Number(t.id),
-    boardId: Number(t.boardId),
-    bucketId: Number(t.bucketId),
-  }));
-  if (req.query.boardId !== undefined) {
-    const bid = Number(req.query.boardId);
-    tasks = tasks.filter(t => t.boardId === bid);
-  }
-  res.json(tasks);
-});
-
-app.post('/api/planner-tasks', (req, res) => {
-  const db = loadDb();
-  const tasks = db['planner-tasks'] || [];
-  const now = new Date().toISOString();
-  const id = nextId(tasks);
-  const task = { ...req.body, id, boardId: Number(req.body.boardId), bucketId: Number(req.body.bucketId), createdAt: now, updatedAt: now };
-  tasks.push(task);
-  db['planner-tasks'] = tasks;
-  saveDb(db);
-  res.status(201).json(task);
-});
-
-app.patch('/api/planner-tasks/:id', (req, res) => {
-  const db = loadDb();
-  const tasks = db['planner-tasks'] || [];
-  const id = Number(req.params.id);
-  const idx = tasks.findIndex(t => Number(t.id) === id);
-  if (idx === -1) return res.status(404).json({ error: 'task not found' });
-  const body = { ...req.body };
-  if (body.boardId !== undefined) body.boardId = Number(body.boardId);
-  if (body.bucketId !== undefined) body.bucketId = Number(body.bucketId);
-  tasks[idx] = { ...tasks[idx], ...body, id, updatedAt: new Date().toISOString() };
-  db['planner-tasks'] = tasks;
-  saveDb(db);
-  res.json(tasks[idx]);
-});
-
-app.delete('/api/planner-tasks/:id', (req, res) => {
-  const db = loadDb();
-  const tasks = db['planner-tasks'] || [];
-  const id = Number(req.params.id);
-  const idx = tasks.findIndex(t => Number(t.id) === id);
-  if (idx === -1) return res.status(404).json({ error: 'task not found' });
-  tasks.splice(idx, 1);
-  db['planner-tasks'] = tasks;
-  saveDb(db);
-  res.json({ deleted: true });
-});
-// ── Deletion logs ─────────────────────────────────────────────────────────────
-app.get('/api/deletion-logs', (req, res) => {
-  const db = loadDb();
-  let logs = db['deletion-logs'] || [];
-  if (req.query.eid) logs = logs.filter(l => l.deletedByEid === req.query.eid);
-  res.json(logs);
-});
-
-app.post('/api/deletion-logs', (req, res) => {
-  const db = loadDb();
-  const logs = db['deletion-logs'] || [];
-  const id = nextId(logs);
-  const log = { ...req.body, id, deletedAt: new Date().toISOString() };
-  logs.push(log);
-  db['deletion-logs'] = logs;
-  saveDb(db);
-  res.status(201).json(log);
-});
-// ─────────────────────────────────────────────────────────────────────────────
+// ── Planner: boards, buckets, tasks, deletion logs ─────────────────────────────
+app.use(plannerRoutes);
 
 // ── Project reachouts ─────────────────────────────────────────────────────────
 const REACHOUT_DEFAULT_STATUS = 'CV Requested';
