@@ -3,6 +3,7 @@
 // exactly as before, and so are the try/catch boundaries. Bugs H4, L5, L9, L10,
 // M3, M5, M10 and M15 in docs/found-bugs.md are kept.
 const repository = require('./onboarding.repository');
+const { normalizeEid } = require('../../utils/eid');
 const {
   normalizeDateToUs,
   normalizeYesNo,
@@ -18,7 +19,7 @@ function normalizeOnboardingPayload(body) {
 
   return {
     name: String(body?.name || '').trim(),
-    eid: String(body?.eid || '').trim().split('@')[0].toLowerCase(),
+    eid: normalizeEid(body?.eid),
     hireDate: normalizeDateToUs(body?.hireDate || body?.hire_date || ''),
     rollInDate: normalizeDateToUs(body?.rollInDate || body?.roll_in_date || ''),
     projectDeployed,
