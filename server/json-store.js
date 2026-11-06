@@ -1,6 +1,6 @@
 const fs = require('fs');
 const onboardingStore = require('./onboarding-store');
-const { DATA_DIR, tasksPath } = require('./data-dir');
+const { DATA_DIR, tasksPath } = require('./config');
 
 const dataDir = DATA_DIR;
 

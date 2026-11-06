@@ -6,7 +6,7 @@ const {
   testBenchDir,
   browserDir,
   browserIndexPath
-} = require('./data-dir');
+} = require('./config');
 const {
   getDashboardPayload,
   getTasks,

@@ -7,13 +7,13 @@ const path = require('path');
 // (relative paths resolve against the current working directory).
 const DATA_DIR = process.env.DATA_DIR
   ? path.resolve(process.env.DATA_DIR)
-  : path.join(__dirname, 'data');
+  : path.join(__dirname, '..', 'data');
 
 // Port the API listens on (used by server.js).
 const PORT = Number(process.env.PORT || 3000);
 
 // The built Angular app, served as static files with an index.html fallback.
-const browserDir = path.join(__dirname, '..', 'dist', 'atcp-song-dashboard', 'browser');
+const browserDir = path.join(__dirname, '..', '..', 'dist', 'atcp-song-dashboard', 'browser');
 const browserIndexPath = path.join(browserDir, 'index.html');
 
 // Data files. Each one has its own owner and its own read/write rules
