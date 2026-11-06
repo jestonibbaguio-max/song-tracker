@@ -13,7 +13,7 @@ const {
   saveOnboardingRecords,
   appendOnboardingRecord,
   updateOnboardingRecord
-} = require('./onboarding-store');
+} = require('./persistence/roster-file.repository');
 const healthRoutes = require('./features/health/health.routes');
 const dashboardRoutes = require('./features/dashboard/dashboard.routes');
 const fruitsRoutes = require('./features/test-bench/fruits.routes');

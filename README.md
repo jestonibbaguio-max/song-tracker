@@ -94,7 +94,7 @@ atcpsongdashboard/
 ├── server/                       # Node.js/Express API backend
 │   ├── server.js                 # Main Express server with all API routes
 │   ├── json-store.js             # skill options read from the roster
-│   ├── onboarding-store.js       # JSON/CSV store for onboarding records
+│   ├── persistence/roster-file.repository.js  # JSON/CSV store for onboarding records
 │   ├── schema.sql                # Reference SQLite schema (not yet active)
 │   └── data/
 │       ├── custom.csv            # Seed data — initial resource roster
@@ -248,7 +248,7 @@ The Express server (`server/server.js`) exposes a REST API with the following re
 Browser (Angular)  <-->  HTTP (JSON)  <-->  Express API  <-->  JSON files on disk
 ```
 
-On first startup, if `custom-onboarding.json` does not exist, `onboarding-store.js` parses `custom.csv` and writes the JSON file. Subsequent reads and writes go directly to the JSON file.
+On first startup, if `custom-onboarding.json` does not exist, `server/persistence/roster-file.repository.js` parses `custom.csv` and writes the JSON file. Subsequent reads and writes go directly to the JSON file.
 
 ---
 
@@ -345,7 +345,7 @@ Dates are stored and returned in **MM/DD/YYYY** format. The server normalizes an
 
 ## Data Layer
 
-### Onboarding store (`server/onboarding-store.js`)
+### Onboarding store (`server/persistence/roster-file.repository.js`)
 
 - Persists records to `server/data/custom-onboarding.json`
 - On first run (JSON file absent): bootstraps from `server/data/custom.csv` using a hand-written CSV parser that handles quoted fields and doubled-quote escaping

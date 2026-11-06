@@ -10,7 +10,7 @@ The harness (`test/helpers/test-server.js`) copies `data/` to a fresh temp direc
 |---|---|---|
 | `data/custom-onboarding.json` | roster | 9 people, newest first, as the server writes it |
 | `data/db.json` | everything else | Every collection the server reads or writes, including `project-reachouts` and `deletion-logs`, which the real file doesn't have yet. It leaves out the stale `dashboard`/`onboarding-resources`/`$schema` keys that the server ignores |
-| `data/custom.csv` | seed for the roster | Uses the `EID,GROUP,Primary Skill` layout that `onboarding-store.js` expects. The real `server/data/custom.csv` has drifted to a different layout, so seeding from it is broken |
+| `data/custom.csv` | seed for the roster | Uses the `EID,GROUP,Primary Skill` layout that `server/persistence/roster-file.repository.js` expects. The real `server/data/custom.csv` has drifted to a different layout, so seeding from it is broken |
 | `data/test_bwd/db.json` | fruits test bench | 3 fruits. There's no `index.html`, so `/test/` returns 404 under the harness |
 
 `tasks.json` is left out on purpose. The server creates it on the first `GET /api/tasks`, the same as it does with the real data.

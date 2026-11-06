@@ -1,4 +1,4 @@
-const onboardingStore = require('./onboarding-store');
+const onboardingStore = require('./persistence/roster-file.repository');
 
 function getSkillOptions() {
   const records = onboardingStore.loadOnboardingRecords();

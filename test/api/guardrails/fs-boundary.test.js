@@ -16,7 +16,6 @@ const path = require('node:path');
 const { SERVER_DIR } = require('../../helpers/test-server');
 
 const LEGACY_ALLOWLIST = [
-  'server/onboarding-store.js', // moves unchanged into persistence/ in step 11
 ];
 const DOCUMENTED_EXCEPTIONS = ['server/middleware/static.js'];
 const ALLOWED_DIRS = ['server/persistence/'];

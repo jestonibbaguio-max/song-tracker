@@ -59,7 +59,7 @@ npm run codegen      # Playwright codegen against :4200
 
 - `server.js` registers all routes inline on a single `app`. There are no routers. Middleware runs in this order: `cors()`, `express.json()`, the `/api/*` routes, the `/test` static mount, the static `dist/` mount, then a `GET /.*/` catch-all that returns `index.html`. Because of that catch-all, **a GET to an `/api` path that doesn't exist returns HTML with status 200**, not a 404.
 - **Persistence means synchronous whole-file JSON reads and writes on every request.** There's no database or ORM:
-  - `server/data/custom-onboarding.json` is the source of truth for onboarding resources, via `onboarding-store.js`. If it's missing, it's seeded from `custom.csv`. Records mix camelCase and snake_case keys, so read with fallbacks (`r.groupNumber ?? r.group_number`), as the existing code does.
+  - `server/data/custom-onboarding.json` is the source of truth for onboarding resources, via `server/persistence/roster-file.repository.js`. If it's missing, it's seeded from `custom.csv`. Records mix camelCase and snake_case keys, so read with fallbacks (`r.groupNumber ?? r.group_number`), as the existing code does.
   - `server/data/db.json` holds everything else (sprints, sprint-retros, capacity-entries, attendance, planner-*, deletion-logs, project-reachouts, competency-records) through `loadDb()`/`saveDb()`. Its own `onboarding-resources` and `dashboard` keys are stale and unused.
   - IDs are generated as `max(id)+1` (`nextId()`). Never assign string or GUID IDs.
   - `/api/competency-records` gets group membership from `custom-onboarding.json` and joins it with the `db.json` rows.

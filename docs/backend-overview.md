@@ -69,7 +69,7 @@ All routes take and return JSON. "Store" is the file the route reads and writes 
 | DELETE | `/api/tasks/:id` | `data/tasks.json` | `{ deleted: boolean }` (always 200) |
 | GET | `/api/skill-options` | `custom-onboarding.json` | Sorted, de-duplicated list of skills (see the snake_case bug in §8) |
 
-### Onboarding resources — `onboarding-store.js`
+### Onboarding resources — `persistence/roster-file.repository.js`
 
 | Method | Path | Behaviour |
 |---|---|---|
@@ -112,7 +112,7 @@ There's no ORM and no database. "Persistence" means synchronous `fs.readFileSync
 
 | File | Owner | Contents |
 |---|---|---|
-| `server/data/custom-onboarding.json` | `onboarding-store.js` | Onboarding resources (98 records). If the file is missing it's **seeded from `custom.csv`** on first read. Record IDs get back-filled and the file is rewritten on read |
+| `server/data/custom-onboarding.json` | `persistence/roster-file.repository.js` | Onboarding resources (98 records). If the file is missing it's **seeded from `custom.csv`** on first read. Record IDs get back-filled and the file is rewritten on read |
 | `server/data/db.json` | `server.js` (`loadDb`/`saveDb`) | Every other collection listed in §4 |
 | `server/data/tasks.json` | `persistence/tasks-file.repository.js` | Legacy tasks. It doesn't exist yet and is created on the first GET `/api/tasks` |
 | `server/data/test_bwd/db.json` | `server.js` | Fruits test data |

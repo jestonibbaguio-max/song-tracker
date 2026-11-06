@@ -198,7 +198,7 @@ prevents future confusion when debugging missing records.
 
 | File | Used for | Accessed via |
 |------|----------|-------------|
-| `server/data/custom-onboarding.json` | All onboarding resource profiles (the live source of truth) | `onboarding-store.js` → `loadOnboardingRecords()` |
+| `server/data/custom-onboarding.json` | All onboarding resource profiles (the live source of truth) | `persistence/roster-file.repository.js` → `loadOnboardingRecords()` |
 | `server/data/db.json` | Competency records, tasks, attendance, planner data | `loadDb()` / `saveDb()` |
 
 **Important:** The myCompetency endpoint (`GET /api/competency-records`) reads group
