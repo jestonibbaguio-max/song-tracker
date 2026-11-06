@@ -1,4 +1,8 @@
-const onboardingStore = require('../../persistence/roster-file.repository');
+// Onboarding resources and skill options (custom-onboarding.json via the roster
+// repository). The number and order of roster reads and writes per request are
+// exactly as before, and so are the try/catch boundaries. Bugs H4, L5, L9, L10,
+// M3, M5, M10 and M15 in docs/found-bugs.md are kept.
+const repository = require('./onboarding.repository');
 const {
   normalizeDateToUs,
   normalizeYesNo,
@@ -148,7 +152,7 @@ function parseSkillTags(value) {
 }
 
 function getSkillOptions() {
-  const records = onboardingStore.loadOnboardingRecords();
+  const records = repository.load();
   const skills = new Set();
 
   records.forEach((record) => {
@@ -170,6 +174,110 @@ function getSkillOptions() {
   return [...skills].sort((a, b) => a.localeCompare(b));
 }
 
+// ── Request-level operations ─────────────────────────────────────────────────
+// body is req.body exactly as Express parsed it (possibly undefined).
+// Results: { invalid } → 400, { notFound } → 404, { conflict } → 409,
+// { failed } → 500, otherwise { resource, created } → 201 or 200.
+
+/** Every resource, newest created_at first, then highest id, formatted for the client. One roster read. */
+function listResources() {
+  return repository.load()
+    .slice()
+    .sort((a, b) => {
+      const aTime = new Date(a.created_at).getTime();
+      const bTime = new Date(b.created_at).getTime();
+
+      if (aTime !== bTime) {
+        return bTime - aTime;
+      }
+
+      return (b.id || 0) - (a.id || 0);
+    })
+    .map(formatOnboardingResource);
+}
+
+/**
+ * Creates a resource, or upserts the one with the same eid. Validation runs
+ * first, with no roster read. The try/catch covers exactly what it did before:
+ * the read, the mapping, the update or append (each reads again and saves) and
+ * the formatting, so any failure there is the JSON 500.
+ */
+function createResource(body) {
+  const payload = normalizeOnboardingPayload(body);
+  const validationError = validateOnboardingPayload(payload);
+
+  if (validationError) {
+    return { invalid: validationError };
+  }
+
+  try {
+    const records = repository.load();
+    const storagePayload = mapPayloadToStorage(payload);
+    const existing = records.find((record) => record.eid === payload.eid);
+
+    if (existing) {
+      const resource = repository.update(existing.id, storagePayload);
+      return { resource: formatOnboardingResource(resource), created: false };
+    }
+
+    const resource = repository.append(storagePayload);
+    return { resource: formatOnboardingResource(resource), created: true };
+  } catch (error) {
+    return { failed: 'failed to save onboarding resource' };
+  }
+}
+
+/**
+ * Full replace of a resource (bug H4). The first roster read is OUTSIDE the
+ * try/catch, as before, so an unreadable roster is an uncaught 500 here, and it
+ * matches ids strictly (record.id === id). Dates are optional. A changed eid
+ * appends a new record (201) and leaves the old one.
+ */
+function updateResource(id, body) {
+  const existing = repository.load().find((record) => record.id === id);
+
+  if (!existing) {
+    return { notFound: true };
+  }
+
+  const payload = normalizeOnboardingPayload(body);
+  const validationError = validateOnboardingPayload(payload, false);
+
+  if (validationError) {
+    return { invalid: validationError };
+  }
+
+  try {
+    const records = repository.load();
+    if (records.some((record) => Number(record.id) !== id && record.eid === payload.eid)) {
+      return { conflict: 'eid already exists' };
+    }
+    const storagePayload = mapPayloadToStorage(payload);
+
+    if (payload.eid !== existing.eid) {
+      const resource = repository.append(storagePayload);
+      return { resource: formatOnboardingResource(resource), created: true };
+    }
+
+    const resource = repository.update(id, storagePayload);
+    return { resource: formatOnboardingResource(resource), created: false };
+  } catch (error) {
+    return { failed: 'failed to update onboarding resource' };
+  }
+}
+
+/** false when the id is unknown (nothing written). No try/catch, as before. Related rows stay (bug M13). */
+function deleteResource(id) {
+  const records = repository.load();
+  const existing = records.find((record) => Number(record.id) === id);
+  if (!existing) {
+    return false;
+  }
+  const remaining = records.filter((record) => Number(record.id) !== id);
+  repository.save(remaining);
+  return true;
+}
+
 module.exports = {
   normalizeOnboardingPayload,
   normalizeGroupNumber,
@@ -177,5 +285,9 @@ module.exports = {
   validateOnboardingPayload,
   formatOnboardingResource,
   parseSkillTags,
-  getSkillOptions
+  getSkillOptions,
+  listResources,
+  createResource,
+  updateResource,
+  deleteResource
 };
