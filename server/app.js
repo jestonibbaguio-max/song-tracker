@@ -20,6 +20,7 @@ const fruitsRoutes = require('./features/test-bench/fruits.routes');
 const lookupsRoutes = require('./features/lookups/lookups.routes');
 const legacyTasksRoutes = require('./features/legacy-tasks/legacy-tasks.routes');
 const sprintsRoutes = require('./features/sprints/sprints.routes');
+const capacityRoutes = require('./features/capacity/capacity.routes');
 const { loadDb, saveDb } = require('./persistence/db-file.repository');
 const { nextId } = require('./utils/ids');
 
@@ -332,34 +333,7 @@ app.use(dashboardRoutes);
 app.use(sprintsRoutes);
 
 // ── Capacity entries ──────────────────────────────────────────────────────────
-app.get('/api/capacity-entries', (req, res) => {
-  const db = loadDb();
-  let entries = db['capacity-entries'] || [];
-  if (req.query.sprintName) entries = entries.filter(e => e.sprintName === req.query.sprintName);
-  res.json(entries);
-});
-
-app.post('/api/capacity-entries', (req, res) => {
-  const { sprintName, eid, cadence, admin, holiday } = req.body;
-  if (!sprintName || !eid) return res.status(400).json({ error: 'sprintName and eid are required' });
-  const db = loadDb();
-  const entries = db['capacity-entries'] || [];
-  const existing = entries.find(e => e.sprintName === sprintName && e.eid === eid);
-  if (existing) {
-    if (cadence !== undefined) existing.cadence = Number(cadence);
-    if (admin !== undefined) existing.admin = Number(admin);
-    if (holiday !== undefined) existing.holiday = Number(holiday);
-    db['capacity-entries'] = entries;
-    saveDb(db);
-    return res.json(existing);
-  }
-  const id = nextId(entries);
-  const entry = { id, sprintName, eid, cadence: Number(cadence) || 0, admin: Number(admin) || 0, holiday: Number(holiday) || 0 };
-  entries.push(entry);
-  db['capacity-entries'] = entries;
-  saveDb(db);
-  res.status(201).json(entry);
-});
+app.use(capacityRoutes);
 
 // ── Lookups: attendance options, office locations, planner labels ─────────────
 app.use(lookupsRoutes);
