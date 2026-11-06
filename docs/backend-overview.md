@@ -114,9 +114,9 @@ There's no ORM and no database. "Persistence" means synchronous `fs.readFileSync
 | File | Owner | Contents |
 |---|---|---|
 | `server/data/custom-onboarding.json` | `persistence/roster-file.repository.js` | Onboarding resources (98 records). If the file is missing it's **seeded from `custom.csv`** on first read. Record IDs get back-filled and the file is rewritten on read |
-| `server/data/db.json` | `server.js` (`loadDb`/`saveDb`) | Every other collection listed in §4 |
+| `server/data/db.json` | `persistence/db-file.repository.js` (`loadDb`/`saveDb`) | Every other collection listed in §4 |
 | `server/data/tasks.json` | `persistence/tasks-file.repository.js` | Legacy tasks. It doesn't exist yet and is created on the first GET `/api/tasks` |
-| `server/data/test_bwd/db.json` | `server.js` | Fruits test data |
+| `server/data/test_bwd/db.json` | `persistence/fruits-file.repository.js` (also served as-is by the `/test` static mount) | Fruits test data |
 | `server/data/custom.csv` | seed only | Columns `EID`, `GROUP`, `Primary Skill` |
 | `attendance.json`, `attendance-options.json`, `routes.json`, `custom.xlsx`, `groupings name` | – | Not read by the Express server. `routes.json` looks like a json-server rewrite map, but the `json-api` script doesn't pass it |
 
@@ -136,7 +136,7 @@ Things to know about this layer:
 | `PORT` | [config/index.js](../server/config/index.js) | `3000` | API listen port |
 | `CI` | [playwright.config.ts](../playwright.config.ts) | – | Turns off `reuseExistingServer` for Playwright's webServers |
 
-The server has no `.env` loading, no config module, and no secrets. File paths are hard-coded relative to `__dirname`.
+The server has no `.env` loading and no secrets. [server/config/index.js](../server/config/index.js) resolves `PORT`, `DATA_DIR` (default `server/data`; a relative value resolves against the working directory) and every data-file path once, when it loads.
 
 Frontend side: [src/envinronments/environment.development.ts](../src/envinronments/environment.development.ts) (note the misspelt folder name) defines `apiUrl: 'http://localhost:3000'`. `SharedDataService.apiUrl()` ([shared-data.service.ts:22-26](../src/app/services/shared-data.service.ts#L22-L26)) uses that absolute URL only when the page is served from port 4200 or 4201 (`ng serve`). On any other port it uses relative `/api/...` paths, which is what you want when Express serves the built app from `dist/`. There's no `proxy.conf.json`, and `angular.json` has no `fileReplacements`, so the "development" environment file is the only one.
 

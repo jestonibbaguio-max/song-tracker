@@ -61,7 +61,8 @@ describeEndpoint('GET /api/skill-options', {
 // ── Legacy tasks (data/tasks.json) ───────────────────────────────────────────
 
 // tasks.json isn't in the fixtures; the server creates it on first use. These
-// cases start from an existing file written the way json-store.js writes it.
+// cases start from an existing file written the way the server writes it
+// (server/persistence/tasks-file.repository.js).
 const LEGACY_TASKS = [
   { id: 3, title: 'Review sprint 2 capacity sheet', status: 'open', created_at: '2026-10-28T02:00:00.000Z', updated_at: '2026-10-28T02:00:00.000Z' },
   { id: 2, title: 'Collect group 5 retro notes', status: 'done', created_at: '2026-10-24T06:30:00.000Z', updated_at: '2026-10-25T01:15:00.000Z' },

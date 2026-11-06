@@ -92,8 +92,13 @@ atcpsongdashboard/
 │   ├── index.html                # Host HTML page
 │   └── styles.css                # Global styles (Bootstrap, CSS variables)
 ├── server/                       # Node.js/Express API backend
-│   ├── server.js                 # Main Express server with all API routes
-│   ├── persistence/roster-file.repository.js  # JSON/CSV store for onboarding records
+│   ├── server.js                 # Starts the API: app.listen(PORT)
+│   ├── app.js                    # Composes middleware, feature routers and static serving
+│   ├── config/index.js           # PORT, DATA_DIR and every data-file path
+│   ├── features/<name>/          # routes → controller → service → repository, one folder per feature
+│   ├── persistence/              # The only code that reads/writes data files (one repository per file)
+│   ├── middleware/static.js      # /test mount, dist/ static files, index.html fallback
+│   ├── utils/                    # nextId, normalizeEid, date and field normalisers
 │   ├── schema.sql                # Reference SQLite schema (not yet active)
 │   └── data/
 │       ├── custom.csv            # Seed data — initial resource roster
