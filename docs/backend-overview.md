@@ -1,6 +1,6 @@
 # Backend Overview
 
-This is a snapshot of `server/` and of how the Angular app talks to it, taken from the `feature/backend-refactor` branch on 2026-11-06. Everything here comes from reading the code. Where the code and the README disagree, the code wins.
+This is a snapshot of `server/` and of how the Angular app talks to it, taken from the `feature/backend-refactor` branch on 2026-11-06 and updated after the restructure in [server-restructure-plan.md](server-restructure-plan.md) (steps 0–13). Everything here comes from reading the code. Where the code and the README disagree, the code wins.
 
 ---
 
@@ -11,8 +11,8 @@ This is a snapshot of `server/` and of how the Angular app talks to it, taken fr
 | Framework | **Express 5** (`express@^5.2.1`), plain CommonJS JavaScript, no TypeScript, no build step |
 | Entry point | [server/server.js](../server/server.js), started by `npm run api` (`node server/server.js`) or `npm run dev` (API + `ng serve` via `concurrently`) |
 | Dependencies | `express` and `cors` only. The server has no `package.json` of its own; both packages come from the root one |
-| Route organisation | All ~50 routes are defined inline on one `app` object in `server.js`. There are no routers, controllers, or route modules |
-| Persistence | Flat JSON files read and written synchronously with `fs` on every request. No ORM, no database driver |
+| Route organisation | One Express router per feature in [server/features/](../server/features/) (routes → controller → service → repository), mounted in [server/app.js](../server/app.js), which only composes the app |
+| Persistence | Flat JSON files read and written synchronously with `fs` on every request, only from [server/persistence/](../server/persistence/) (one repository per file). No ORM, no database driver |
 | Database | **None in use.** [server/schema.sql](../server/schema.sql) is a SQLite schema that nothing loads, and `song-tracker.sqlite-wal`/`-shm` are leftovers with no main `.sqlite` file |
 | Auth | None. Every endpoint is public |
 | External services | None: no email, payments, object storage, queues, or third-party APIs |
@@ -23,12 +23,13 @@ This is a snapshot of `server/` and of how the Angular app talks to it, taken fr
 
 ## 2. Entry point and boot sequence
 
-[server/server.js](../server/server.js) does everything at module load:
+[server/server.js](../server/server.js) requires [server/app.js](../server/app.js), reads `PORT` from [server/config/index.js](../server/config/index.js) and calls `app.listen(port)`, logging `API running on http://127.0.0.1:<port>`. Loading `app.js`:
 
-1. Requires `express`, `cors`, and the local modules under `server/` (feature routers, [persistence](../server/persistence/) and [config](../server/config/index.js); see [server-restructure-plan.md](server-restructure-plan.md)).
-2. Creates `app` and reads `PORT` ([server.js:20](../server/server.js#L20)).
-3. Registers middleware and routes in source order (see §3 and §4).
-4. Calls `app.listen(port)` and logs `API running on http://127.0.0.1:<port>` ([server.js:920-922](../server/server.js#L920-L922)). The README quotes a different startup message ("Server listening on port 3000"), which is wrong.
+1. Loads [config](../server/config/index.js), which resolves `DATA_DIR` (default `server/data`), `PORT` and every file path once. No module reads or writes files when it loads.
+2. Creates the single `app`. Express reads `NODE_ENV` at this point.
+3. Registers middleware, the feature routers and static serving in a fixed order (see §3).
+
+The API tests require `app.js` and start their own server, so `listen()` lives only in `server.js`. The README quotes a different startup message ("Server listening on port 3000"), which is wrong.
 
 There's no graceful shutdown and no startup check that the data files exist. Missing files get created lazily the first time something reads them (see §5).
 
@@ -38,14 +39,14 @@ There's no graceful shutdown and no startup check that the data files exist. Mis
 
 Express runs these in registration order:
 
-| # | Middleware | Line | Notes |
+| # | Middleware | Where | Notes |
 |---|---|---|---|
-| 1 | `cors()` | [22](../server/server.js#L22) | Default config: `Access-Control-Allow-Origin: *`, so any origin can call the API |
-| 2 | `express.json()` | [23](../server/server.js#L23) | Default 100 kb body limit. A malformed JSON body gets Express's default 400 HTML response |
-| 3 | All `/api/*` route handlers | 25–907 | Registered inline, matched in declaration order |
-| 4 | `express.static('/test' → server/data/test_bwd)` | [910](../server/server.js#L910) | Serves the "Fruits" test-bench page `test_bwd/index.html` |
-| 5 | `express.static(dist/atcp-song-dashboard/browser)` | [913-914](../server/server.js#L913-L914) | Serves the built Angular app, but only if `ng build` has been run |
-| 6 | `app.get(/.*/)` SPA fallback | [916-918](../server/server.js#L916-L918) | Any GET that nothing above matched gets `index.html` (regex form because Express 5 dropped `*`) |
+| 1 | `cors()` | [app.js](../server/app.js) | Default config: `Access-Control-Allow-Origin: *`, so any origin can call the API |
+| 2 | `express.json()` | [app.js](../server/app.js) | Default 100 kb body limit. A malformed JSON body gets Express's default 400 HTML response |
+| 3 | The feature routers | [app.js](../server/app.js), [features/](../server/features/) | Full paths, no prefix, mounted in a fixed order. No two routers share a path |
+| 4 | `express.static('/test' → server/data/test_bwd)` | [middleware/static.js](../server/middleware/static.js) | Serves the "Fruits" test-bench page `test_bwd/index.html` |
+| 5 | `express.static(dist/atcp-song-dashboard/browser)` | [middleware/static.js](../server/middleware/static.js) | Serves the built Angular app, but only if `ng build` has been run |
+| 6 | `app.get(/.*/)` SPA fallback | [middleware/static.js](../server/middleware/static.js) | Any GET that nothing above matched gets `index.html` (regex form because Express 5 dropped `*`) |
 
 There's **no error-handling middleware** and no request logging, rate limiting, compression, or security headers. Express 5's built-in handler turns sync throws (for example, corrupt JSON in `custom-onboarding.json`) into a generic 500.
 
@@ -78,11 +79,11 @@ All routes take and return JSON. "Store" is the file the route reads and writes 
 | PATCH | `/api/onboarding-resources/:id` | Same validation, but dates are optional. 404 for an unknown id, 409 if the eid belongs to a *different* record. **If the eid changes, a new record is appended and the old one is left in place** |
 | DELETE | `/api/onboarding-resources/:id` | Removes the record, returns `{ deleted: id }`, or 404 |
 
-The server normalises incoming bodies heavily ([server.js:55-82](../server/server.js#L55-L82)). It accepts camelCase or snake_case keys, strips everything from `@` onwards in the eid and lower-cases it, converts `YYYY-MM-DD` dates to `MM/DD/YYYY`, and when `projectDeployed` is `No` it forces `projectName = "Song Bench"` and defaults `poc` to `hannahdel.l.orellosa`.
+The server normalises incoming bodies heavily (`normalizeOnboardingPayload` in [onboarding.service.js](../server/features/onboarding/onboarding.service.js)). It accepts camelCase or snake_case keys, strips everything from `@` onwards in the eid and lower-cases it, converts `YYYY-MM-DD` dates to `MM/DD/YYYY`, and when `projectDeployed` is `No` it forces `projectName = "Song Bench"` and defaults `poc` to `hannahdel.l.orellosa`.
 
 ### Everything backed by `data/db.json`
 
-Each of these routes loads all of `db.json` (~185 KB), changes one collection, and writes the whole file back ([server.js:366-381](../server/server.js#L366-L381)). IDs come from `max(id) + 1`.
+Each of these routes loads all of `db.json` (~185 KB), changes one collection, and writes the whole file back ([db-file.repository.js](../server/persistence/db-file.repository.js)). IDs come from `max(id) + 1`.
 
 | Collection | Routes | Validation |
 |---|---|---|
@@ -132,7 +133,7 @@ Things to know about this layer:
 
 | Name | Where | Default | Purpose |
 |---|---|---|---|
-| `PORT` | [server.js:20](../server/server.js#L20) | `3000` | API listen port |
+| `PORT` | [config/index.js](../server/config/index.js) | `3000` | API listen port |
 | `CI` | [playwright.config.ts](../playwright.config.ts) | – | Turns off `reuseExistingServer` for Playwright's webServers |
 
 The server has no `.env` loading, no config module, and no secrets. File paths are hard-coded relative to `__dirname`.
@@ -250,7 +251,7 @@ These are things I saw while reading. None of them have been changed.
 
 1. **No auth, open CORS, and no validation on several write routes.** `POST/PATCH /api/attendance`, `POST/PATCH /api/planner-tasks`, `POST /api/deletion-logs`, and `PATCH /api/competency-records/:eid` spread `req.body` straight into stored records, so a client can write any fields, including overwriting `createdAt`.
 2. **`getSkillOptions()` reads only snake_case keys** (`primary_skill`, `another_skills`, [onboarding.service.js](../server/features/onboarding/onboarding.service.js)), so skills from records created through the API (stored in camelCase) never appear. The frontend doesn't call this endpoint, which hides the bug.
-3. **Changing an EID through PATCH duplicates the resource.** The old record stays, which [server.js:303-306](../server/server.js#L303-L306) does on purpose and the README documents. It's still surprising.
+3. **Changing an EID through PATCH duplicates the resource.** The old record stays, which `updateResource` in [onboarding.service.js](../server/features/onboarding/onboarding.service.js) does on purpose and the README documents. It's still surprising.
 4. **The attendance location sticks around.** When a cell changes from `RTO` to another status, the client sends `{ status }` without `location` (`undefined` is dropped from JSON), and the server merges, so the old `location` stays on the stored record.
 5. **Unknown `/api` GETs return `index.html` with 200** because of the SPA catch-all (§3).
 6. **There are three persistence stories.** JSON files are what's live, `schema.sql`/SQLite is half-planned, and json-server on `db.json` is still in `package.json`. The README both recommends `npm run json-api` (Option A) and says "Do NOT use json-server".

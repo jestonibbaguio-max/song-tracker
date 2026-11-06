@@ -1,6 +1,6 @@
 # `/server` restructure plan
 
-**Status:** proposal, not started. The baseline is commit `c54e754` ("Add characterization test baseline") on `feature/backend-refactor`.
+**Status:** done. Steps 0–13 landed on `feature/backend-refactor` on top of the baseline commit `c54e754` ("Add characterization test baseline"). Each step has one or more commits, with moves kept separate from logic changes. No snapshot was updated, and every step left `npm run test:api` green. Where the work differs from this plan, see "Deviations" at the end.
 
 **Goal:** split `server/` into feature modules (routes → controller → service → repository), plus shared `config/`, `middleware/` and `utils/`. Only repository code may touch `fs`. Behaviour must not change at all. The rules in [CLAUDE.md](../CLAUDE.md) ("Backend refactor rules" and "Persistence rules") apply to every step.
 
@@ -139,3 +139,14 @@ There are none today, and CLAUDE.md says to keep it that way.
 - **Don't merge the fruits next-id rule into `utils/ids.js`.** Fruits uses a different rule (see the table at the top), and a shared id generator would change it.
 - **Stay synchronous, and keep each file's own error and formatting rules** from the table at the top. A generic `jsonFile` helper is the most likely way to lose the trailing-newline and error-handling differences.
 - **`server.js` has no tests.** Step 1 changes where `PORT` comes from, so check by hand that `npm run api` prints the same `API running on http://127.0.0.1:3000` line and serves on port 3000.
+
+## Deviations
+
+- **Step 1 ran in reverse order.** The logic commit (config values added to `data-dir.js`) came before the pure move to `config/index.js`. Moving first would have made the step-0 `config` guardrail run before `config.browserDir` existed.
+- **`nextId` went to `utils/ids.js` in step 4**, not into `db-file.repository.js`, so it moved only once.
+- **`normalizeEid` moved to `utils/eid.js` in step 10.** Onboarding switched to it in a separate commit in step 11.
+- **`json-store.js` was deleted in step 11**, when moving `getSkillOptions` left it empty, rather than in step 13.
+- **Static serving is a function, `registerStaticFiles(app)`.** It registers the three pieces on `app` itself rather than on a router, as "Register the fallback on `app`" asks.
+- **Pinned error text constrained where some expressions live.** Where a pinned 500 message contains source text (`req.body`, `req.query.q.toLowerCase`), the controller keeps that exact expression. For `PATCH /api/sprints/:id`, it passes the service a reader that destructures `req.body` after the 404 check. In the two fruits crash paths (bugs M1, M14), the data file is no longer read before the throw. That read had no side effects and its result was discarded.
+- **Stack traces changed.** The development error pages (bug M2) now name the new files and lines. The snapshots strip stacks, so this shows only in the raw pages.
+- **Bugs found along the way:** M15 and L14 (step 0) and M16 (step 6). See [found-bugs.md](found-bugs.md). None was fixed.
