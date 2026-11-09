@@ -72,9 +72,9 @@ describe('guardrail: store selection', () => {
   test('PERSISTENCE=sqlite loads the app, and a request to a store without a sqlite implementation fails clearly', async (t) => {
     withEnv(t, { PERSISTENCE: 'sqlite' });
     const api = await startTestServer(t);
-    const res = await api.request('GET', '/api/sprints');
+    const res = await api.request('GET', '/api/capacity-entries');
     assert.equal(res.status, 500);
-    assert.match(res.body, /The sprints store has no &quot;sqlite&quot; implementation yet/);
+    assert.match(res.body, /The capacity store has no &quot;sqlite&quot; implementation yet/);
   });
 
   for (const backend of ['json', 'sqlite']) {
