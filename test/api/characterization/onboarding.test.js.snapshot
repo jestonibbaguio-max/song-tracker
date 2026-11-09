@@ -1560,6 +1560,126 @@ outbound calls: none
 
 `;
 
+exports[`PATCH /api/onboarding-resources/:id > happy path › editing a legacy snake_case record adds camelCase keys alongside (raw custom-onboarding.json) 1`] = `
+
+PATCH /api/onboarding-resources/2
+credentials: group 5 POC (rafael.t.mendoza, role poc)
+request body:
+  {
+    "name": "Nina Castro",
+    "eid": "nina.g.castro",
+    "hireDate": "05/18/2026",
+    "rollInDate": "06/01/2026",
+    "projectDeployed": "No",
+    "deploymentDate": "",
+    "projectName": "",
+    "poc": "andrea.s.bautista",
+    "dn": "No",
+    "rollOffDate": "",
+    "fromProject": "",
+    "clLevel": "11",
+    "groupNumber": "1",
+    "primarySkill": "React Native",
+    "primaryYears": "1",
+    "secondarySkill": "",
+    "secondaryYears": "",
+    "anotherSkills": [
+      "TypeScript"
+    ],
+    "officeLocation": "Cebu"
+  }
+
+status: 200
+content-type: application/json; charset=utf-8
+access-control-allow-origin: *
+x-powered-by: Express
+response body:
+  {
+    "id": 2,
+    "name": "Nina Castro",
+    "eid": "nina.g.castro",
+    "hireDate": "05/18/2026",
+    "rollInDate": "06/01/2026",
+    "projectDeployed": "No",
+    "deploymentDate": "",
+    "projectName": "Song Bench",
+    "poc": "andrea.s.bautista",
+    "dn": "No",
+    "rollOffDate": "",
+    "fromProject": "",
+    "clLevel": "11",
+    "groupNumber": 1,
+    "primarySkill": "React Native",
+    "primaryYears": "1",
+    "secondarySkill": "",
+    "secondaryYears": "",
+    "anotherSkills": [
+      "TypeScript"
+    ],
+    "officeLocation": "Cebu",
+    "createdAt": "2026-08-03T02:15:10.413Z",
+    "updatedAt": "<generated-timestamp>"
+  }
+
+data files:
+  custom-onboarding.json: modified
+    raw text diff:
+      @@ -180,5 +180,5 @@
+         },
+         {
+      -    "name": "nina.g.castro",
+      +    "name": "Nina Castro",
+           "eid": "nina.g.castro",
+           "hire_date": "05/18/2026",
+      @@ -198,6 +198,23 @@
+           "another_skills": [],
+           "created_at": "2026-08-03T02:15:10.413Z",
+      -    "updated_at": "2026-08-03T02:15:10.413Z",
+      -    "id": 2
+      +    "updated_at": "<generated-timestamp>",
+      +    "id": 2,
+      +    "hireDate": "05/18/2026",
+      +    "rollInDate": "06/01/2026",
+      +    "projectDeployed": "No",
+      +    "deploymentDate": "",
+      +    "projectName": "Song Bench",
+      +    "rollOffDate": "",
+      +    "fromProject": "",
+      +    "clLevel": "11",
+      +    "groupNumber": 1,
+      +    "primarySkill": "React Native",
+      +    "primaryYears": "1",
+      +    "secondarySkill": "",
+      +    "secondaryYears": "",
+      +    "anotherSkills": [
+      +      "TypeScript"
+      +    ],
+      +    "officeLocation": "Cebu"
+         },
+         {
+    parsed JSON diff:
+      ~ [id=2]/name: "nina.g.castro" → "Nina Castro"
+      ~ [id=2]/updated_at: "2026-08-03T02:15:10.413Z" → "<generated-timestamp>"
+      + [id=2]/hireDate: "05/18/2026"
+      + [id=2]/rollInDate: "06/01/2026"
+      + [id=2]/projectDeployed: "No"
+      + [id=2]/deploymentDate: ""
+      + [id=2]/projectName: "Song Bench"
+      + [id=2]/rollOffDate: ""
+      + [id=2]/fromProject: ""
+      + [id=2]/clLevel: "11"
+      + [id=2]/groupNumber: 1
+      + [id=2]/primarySkill: "React Native"
+      + [id=2]/primaryYears: "1"
+      + [id=2]/secondarySkill: ""
+      + [id=2]/secondaryYears: ""
+      + [id=2]/anotherSkills: ["TypeScript"]
+      + [id=2]/officeLocation: "Cebu"
+
+outbound calls: none
+
+`;
+
 exports[`PATCH /api/onboarding-resources/:id > happy path › editing a legacy snake_case record adds camelCase keys alongside 1`] = `
 
 PATCH /api/onboarding-resources/2
@@ -2714,6 +2834,134 @@ outbound calls: none
 `;
 
 exports[`POST /api/onboarding-resources > happy path › existing legacy snake_case record is upserted (keys end up mixed) 1`] = `
+
+POST /api/onboarding-resources
+credentials: group 5 POC (rafael.t.mendoza, role poc)
+request body:
+  {
+    "name": "Kevin Lim",
+    "eid": "kevin.r.lim",
+    "hireDate": "11/02/2026",
+    "rollInDate": "11/09/2026",
+    "projectDeployed": "No",
+    "deploymentDate": "",
+    "projectName": "",
+    "poc": "rafael.t.mendoza",
+    "dn": "No",
+    "rollOffDate": "",
+    "fromProject": "",
+    "clLevel": "11",
+    "groupNumber": "5",
+    "primarySkill": "AEM",
+    "primaryYears": "1",
+    "secondarySkill": "",
+    "secondaryYears": "",
+    "anotherSkills": [
+      "TypeScript"
+    ],
+    "officeLocation": "Cebu"
+  }
+
+status: 200
+content-type: application/json; charset=utf-8
+access-control-allow-origin: *
+x-powered-by: Express
+response body:
+  {
+    "id": 1,
+    "name": "Kevin Lim",
+    "eid": "kevin.r.lim",
+    "hireDate": "11/02/2026",
+    "rollInDate": "11/09/2026",
+    "projectDeployed": "No",
+    "deploymentDate": "",
+    "projectName": "Song Bench",
+    "poc": "rafael.t.mendoza",
+    "dn": "No",
+    "rollOffDate": "",
+    "fromProject": "",
+    "clLevel": "11",
+    "groupNumber": 5,
+    "primarySkill": "AEM",
+    "primaryYears": "1",
+    "secondarySkill": "",
+    "secondaryYears": "",
+    "anotherSkills": [
+      "TypeScript"
+    ],
+    "officeLocation": "Cebu",
+    "createdAt": "2026-08-03T02:15:10.412Z",
+    "updatedAt": "<generated-timestamp>"
+  }
+
+data files:
+  custom-onboarding.json: modified
+    raw text diff:
+      @@ -202,5 +202,5 @@
+         },
+         {
+      -    "name": "kevin.r.lim",
+      +    "name": "Kevin Lim",
+           "eid": "kevin.r.lim",
+           "hire_date": "",
+      @@ -209,5 +209,5 @@
+           "deployment_date": "",
+           "project_name": "Song Bench",
+      -    "poc": "",
+      +    "poc": "rafael.t.mendoza",
+           "dn": "No",
+           "roll_off_date": "",
+      @@ -220,6 +220,23 @@
+           "another_skills": [],
+           "created_at": "2026-08-03T02:15:10.412Z",
+      -    "updated_at": "2026-08-03T02:15:10.412Z",
+      -    "id": 1
+      +    "updated_at": "<generated-timestamp>",
+      +    "id": 1,
+      +    "hireDate": "11/02/2026",
+      +    "rollInDate": "11/09/2026",
+      +    "projectDeployed": "No",
+      +    "deploymentDate": "",
+      +    "projectName": "Song Bench",
+      +    "rollOffDate": "",
+      +    "fromProject": "",
+      +    "clLevel": "11",
+      +    "groupNumber": 5,
+      +    "primarySkill": "AEM",
+      +    "primaryYears": "1",
+      +    "secondarySkill": "",
+      +    "secondaryYears": "",
+      +    "anotherSkills": [
+      +      "TypeScript"
+      +    ],
+      +    "officeLocation": "Cebu"
+         }
+       ]
+    parsed JSON diff:
+      ~ [id=1]/name: "kevin.r.lim" → "Kevin Lim"
+      ~ [id=1]/poc: "" → "rafael.t.mendoza"
+      ~ [id=1]/updated_at: "2026-08-03T02:15:10.412Z" → "<generated-timestamp>"
+      + [id=1]/hireDate: "11/02/2026"
+      + [id=1]/rollInDate: "11/09/2026"
+      + [id=1]/projectDeployed: "No"
+      + [id=1]/deploymentDate: ""
+      + [id=1]/projectName: "Song Bench"
+      + [id=1]/rollOffDate: ""
+      + [id=1]/fromProject: ""
+      + [id=1]/clLevel: "11"
+      + [id=1]/groupNumber: 5
+      + [id=1]/primarySkill: "AEM"
+      + [id=1]/primaryYears: "1"
+      + [id=1]/secondarySkill: ""
+      + [id=1]/secondaryYears: ""
+      + [id=1]/anotherSkills: ["TypeScript"]
+      + [id=1]/officeLocation: "Cebu"
+
+outbound calls: none
+
+`;
+
+exports[`POST /api/onboarding-resources > happy path › existing legacy snake_case record is upserted (raw custom-onboarding.json) 1`] = `
 
 POST /api/onboarding-resources
 credentials: group 5 POC (rafael.t.mendoza, role poc)

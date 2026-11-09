@@ -121,6 +121,13 @@ describeEndpoint('POST /api/onboarding-resources', {
     'existing legacy snake_case record is upserted (keys end up mixed)': {
       body: { ...newJoiner, name: 'Kevin Lim', eid: 'kevin.r.lim', groupNumber: '5', primarySkill: 'AEM', poc: 'rafael.t.mendoza' },
     },
+    // The same request, pinning custom-onboarding.json itself: the record keeps
+    // its snake_case keys and gains camelCase ones (bug L9), which the logical
+    // diff of the stores (one key per field) can't show.
+    'existing legacy snake_case record is upserted (raw custom-onboarding.json)': {
+      body: { ...newJoiner, name: 'Kevin Lim', eid: 'kevin.r.lim', groupNumber: '5', primarySkill: 'AEM', poc: 'rafael.t.mendoza' },
+      jsonOnly: 'the roster record ends up with both key styles (L9)',
+    },
     'normalises eid, ISO and D/M dates, yes/no, years and a comma-separated skill string': {
       body: {
         ...newJoiner,
@@ -174,6 +181,12 @@ describeEndpoint('PATCH /api/onboarding-resources/:id', {
     'editing a legacy snake_case record adds camelCase keys alongside': {
       path: '/api/onboarding-resources/2',
       body: { ...newJoiner, name: 'Nina Castro', eid: 'nina.g.castro', hireDate: '05/18/2026', rollInDate: '06/01/2026', primarySkill: 'React Native' },
+    },
+    // The same request, pinning custom-onboarding.json itself (bug L9; see the POST case above).
+    'editing a legacy snake_case record adds camelCase keys alongside (raw custom-onboarding.json)': {
+      path: '/api/onboarding-resources/2',
+      body: { ...newJoiner, name: 'Nina Castro', eid: 'nina.g.castro', hireDate: '05/18/2026', rollInDate: '06/01/2026', primarySkill: 'React Native' },
+      jsonOnly: 'the roster record ends up with both key styles (L9)',
     },
   },
   invalid: {
