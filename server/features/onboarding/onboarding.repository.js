@@ -5,4 +5,5 @@ const { selectStore } = require('../../persistence/select-store');
 
 module.exports = selectStore('onboarding', ['list', 'append', 'update', 'remove'], {
   json: () => require('../../persistence/json/onboarding.store'),
+  sqlite: () => require('../../persistence/sqlite/onboarding.store'),
 });

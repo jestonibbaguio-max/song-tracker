@@ -18,23 +18,16 @@
 // legacy tasks, the fruits test bench, the harness helpers) run on every
 // backend without a tag.
 //
-// The SQLite stores arrive in Phase 4, one feature per commit. Until the last
-// one lands, a sqlite run skips every test that needs the stores:
-// backendSkip() returns a skip reason for all of them (see BACKENDS_WITH_STORES).
+// Every backend has its stores since Phase 4, so a sqlite run skips only the
+// json-only tests.
 const BACKENDS = ['json', 'sqlite'];
 const BACKEND = process.env.PERSISTENCE || 'json';
 if (!BACKENDS.includes(BACKEND)) {
   throw new Error(`PERSISTENCE must be one of ${BACKENDS.join(', ')}; got "${BACKEND}"`);
 }
 
-/**
- * Backends that have stores the tests can run against. Phase 4 adds 'sqlite'
- * once every feature has its SQLite store. Until then SQLITE_STORES_PREVIEW=1
- * runs the store tests on sqlite anyway, to check one feature's store at a
- * time (PERSISTENCE=sqlite SQLITE_STORES_PREVIEW=1 node --test <its files>).
- * Temporary: removed when the last store lands.
- */
-const BACKENDS_WITH_STORES = ['json', ...(process.env.SQLITE_STORES_PREVIEW === '1' ? ['sqlite'] : [])];
+/** Backends that have stores the tests can run against: every backend since Phase 4. */
+const BACKENDS_WITH_STORES = ['json', 'sqlite'];
 
 /**
  * Data files that hold a backend's stores. The characterization snapshots show

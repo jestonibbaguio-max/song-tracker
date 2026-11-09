@@ -67,14 +67,30 @@ async function sprintsDbStore(t) {
 }
 
 describe('guardrail: store selection', () => {
-  // Phase 4 adds the SQLite stores one feature at a time. Until the last one
-  // lands, a feature without one must still fail clearly, at request time.
-  test('PERSISTENCE=sqlite loads the app, and a request to a store without a sqlite implementation fails clearly', async (t) => {
-    withEnv(t, { PERSISTENCE: 'sqlite' });
-    const api = await startTestServer(t);
-    const res = await api.request('GET', '/api/onboarding-resources');
-    assert.equal(res.status, 500);
-    assert.match(res.body, /The onboarding store has no &quot;sqlite&quot; implementation yet/);
+  // Phase 4 replaced "a request to a store without a sqlite implementation
+  // fails clearly": every store has one now. selectStore still fails clearly
+  // for a backend a store doesn't implement, at request time, not on load.
+  test('every feature store has a json and a sqlite implementation', () => {
+    const { selectStore } = require(path.join(SERVER_DIR, 'persistence', 'select-store.js'));
+    const config = require(path.join(SERVER_DIR, 'config', 'index.js'));
+    const features = ['lookups', 'sprints', 'capacity', 'attendance', 'planner', 'reachouts', 'competency', 'onboarding'];
+    for (const feature of features) {
+      for (const backend of ['json', 'sqlite']) {
+        const file = path.join(SERVER_DIR, 'persistence', backend, `${feature}.store.js`);
+        assert.ok(fs.existsSync(file), `missing ${path.relative(SERVER_DIR, file)}`);
+      }
+      const source = fs.readFileSync(path.join(SERVER_DIR, 'features', feature, `${feature}.repository.js`), 'utf8');
+      assert.match(source, /sqlite: \(\) => require\('\.\.\/\.\.\/persistence\/sqlite\//, `${feature}.repository.js doesn't pick the sqlite store`);
+    }
+
+    const store = selectStore('example', ['read'], { json: () => ({ read: () => 'json' }) });
+    const previous = config.PERSISTENCE;
+    config.PERSISTENCE = 'sqlite';
+    try {
+      assert.throws(() => store.read(), { message: 'The example store has no "sqlite" implementation yet (docs/sqlite-migration-plan.md)' });
+    } finally {
+      config.PERSISTENCE = previous;
+    }
   });
 
   for (const backend of ['json', 'sqlite']) {
