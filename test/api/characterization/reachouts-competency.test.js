@@ -47,6 +47,7 @@ describeEndpoint('POST /api/project-reachouts', {
     'eid that is only a domain': { body: { ...newReachout, eid: '@accenture.com' } },
     'unknown status is accepted': { body: { ...newReachout, status: 'Teleported' } },
     'client id and timestamps are ignored': { body: { ...newReachout, id: 1, createdAt: '2020-01-01T00:00:00.000Z', updatedAt: 'x' } },
+    'numeric eid and pocEid become text': { body: { ...newReachout, eid: 1234, pocEid: 5678 } },
     'no body': {},
     'malformed JSON body': MALFORMED_JSON,
   },
@@ -138,6 +139,10 @@ describeEndpoint('PATCH /api/competency-records/:eid', {
       body: { name: 'Hidden Name', clLevel: '1' },
     },
     'eid in a different case creates a second row': { path: '/api/competency-records/Liza.M.Navarro', body: { primaryProficiency: 'P1' } },
+    'numeric eid in the path is text; numeric values are stored as numbers': {
+      path: '/api/competency-records/1234',
+      body: { primaryProficiency: 3, retakeDate: 20261201 },
+    },
     'no body: the row is rewritten unchanged': { path: '/api/competency-records/liza.m.navarro' },
     'no body for a new eid: a row with only eid is created': { path: '/api/competency-records/kevin.r.lim' },
     'malformed JSON body': { path: '/api/competency-records/liza.m.navarro', ...MALFORMED_JSON },

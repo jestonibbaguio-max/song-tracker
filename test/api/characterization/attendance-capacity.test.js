@@ -55,6 +55,9 @@ describeEndpoint('POST /api/attendance', {
     },
     'client id is overwritten by the server id': { body: { ...rtoCell, id: 1 } },
     'non-object JSON (array) stores no fields': { body: ['a', 'b'] },
+    'numbers and text are stored as sent: numeric status, text year, month and day': {
+      body: { eid: 'liza.m.navarro', year: '2026', month: '11', day: '5', status: 1 },
+    },
     'no body': {},
     'malformed JSON body': MALFORMED_JSON,
   },
@@ -86,6 +89,7 @@ describeEndpoint('PATCH /api/attendance/:id', {
   invalid: {
     'any status and eid are merged, unknown fields dropped; id cannot be changed': { path: '/api/attendance/6', body: { status: 'Nope', eid: 'nobody.here', id: 99, extra: true } },
     'empty body still rewrites the record': { path: '/api/attendance/2', body: {} },
+    'numeric status and eid are stored as numbers': { path: '/api/attendance/6', body: { status: 3, eid: 12 } },
     // The same request, pinning db.json itself: the stored id "2" is rewritten
     // as the number 2 (bug M6), which the logical diff of the stores can't show.
     'empty body still rewrites the record (raw db.json)': {
@@ -145,6 +149,22 @@ describeEndpoint('POST /api/capacity-entries', {
     'negative and fractional values are accepted': { body: { sprintName: 'Sprint 3', eid: 'liza.m.navarro', cadence: -2, admin: 0.5 } },
     'eid is not normalised, so a differently-cased eid creates a second entry': {
       body: { sprintName: 'Sprint 2', eid: 'Rafael.T.Mendoza', cadence: 1 },
+    },
+    // Keys sent as numbers are kept as numbers, and matched by value and type
+    // (===): 1 and "1" are different entries (docs/sqlite-migration-plan.md,
+    // Risks, "Numbers in TEXT columns").
+    'numeric sprintName and eid are stored as numbers': { body: { sprintName: 1, eid: 7, cadence: 2 } },
+    'numeric sprintName matches an entry stored with the same number': {
+      before: [{ method: 'POST', path: '/api/capacity-entries', body: { sprintName: 1, eid: 'rafael.t.mendoza', cadence: 1 } }],
+      body: { sprintName: 1, eid: 'rafael.t.mendoza', cadence: 5 },
+    },
+    'numeric sprintName does not match the same digits stored as text': {
+      before: [{ method: 'POST', path: '/api/capacity-entries', body: { sprintName: '1', eid: 'rafael.t.mendoza', cadence: 1 } }],
+      body: { sprintName: 1, eid: 'rafael.t.mendoza', cadence: 5 },
+    },
+    'text sprintName does not match the same number stored as a number': {
+      before: [{ method: 'POST', path: '/api/capacity-entries', body: { sprintName: 1, eid: 'rafael.t.mendoza', cadence: 1 } }],
+      body: { sprintName: '1', eid: 'rafael.t.mendoza', cadence: 5 },
     },
     'no body': {},
     'malformed JSON body': MALFORMED_JSON,

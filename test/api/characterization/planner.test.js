@@ -157,6 +157,10 @@ describeEndpoint('PATCH /api/planner-tasks/:id', {
       body: { id: 99, createdAt: '2020-01-01T00:00:00.000Z', isAdmin: true },
     },
     'empty body still bumps updatedAt': { path: '/api/planner-tasks/2', body: {} },
+    'numbers and text are stored as sent: numeric title, text labels, fractional boardId': {
+      path: '/api/planner-tasks/2',
+      body: { title: 42, priority: 1, labels: ['2', 'x'], boardId: 1.5 },
+    },
     'no body': { path: '/api/planner-tasks/2' },
     'malformed JSON body': { path: '/api/planner-tasks/2', ...MALFORMED_JSON },
   },
@@ -226,6 +230,7 @@ describeEndpoint('POST /api/deletion-logs', {
     'empty object is stored with an id and deletedAt': { body: {} },
     'unknown type is accepted; unknown fields dropped': { body: { ...taskDeletionLog, type: 'anything', extra: 1 } },
     'client id and deletedAt are overwritten': { body: { ...taskDeletionLog, id: 1, deletedAt: '2020-01-01T00:00:00.000Z' } },
+    'text taskId and numeric deletedByEid are stored as sent': { body: { ...taskDeletionLog, taskId: '5', deletedByEid: 77 } },
     'no body': {},
     'malformed JSON body': MALFORMED_JSON,
   },

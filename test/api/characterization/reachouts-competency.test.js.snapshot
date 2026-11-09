@@ -1267,6 +1267,35 @@ outbound calls: none
 
 `;
 
+exports[`PATCH /api/competency-records/:eid > invalid input › numeric eid in the path is text; numeric values are stored as numbers 1`] = `
+
+PATCH /api/competency-records/1234
+credentials: group 5 POC (rafael.t.mendoza, role poc)
+request body:
+  {
+    "primaryProficiency": 3,
+    "retakeDate": 20261201
+  }
+
+status: 200
+content-type: application/json; charset=utf-8
+access-control-allow-origin: *
+x-powered-by: Express
+response body:
+  {
+    "eid": "1234",
+    "primaryProficiency": 3,
+    "retakeDate": 20261201
+  }
+
+stored data:
+  + /competency-records[eid="1234"] (at index 5): {"eid":"1234","primaryProficiency":3,"retakeDate":20261201}
+data files: unchanged
+
+outbound calls: none
+
+`;
+
 exports[`PATCH /api/competency-records/:eid > no auth 1`] = `
 
 PATCH /api/competency-records/liza.m.navarro
@@ -1958,6 +1987,46 @@ response body:
   }
 
 stored data: unchanged
+data files: unchanged
+
+outbound calls: none
+
+`;
+
+exports[`POST /api/project-reachouts > invalid input › numeric eid and pocEid become text 1`] = `
+
+POST /api/project-reachouts
+credentials: group 5 POC (rafael.t.mendoza, role poc)
+request body:
+  {
+    "eid": 1234,
+    "projectName": "Harborline Insurance Portal",
+    "techRole": "AEM Developer",
+    "pocEid": 5678,
+    "status": "CV Requested",
+    "details": "Junior slot, AEM components",
+    "groupNumber": 5
+  }
+
+status: 201
+content-type: application/json; charset=utf-8
+access-control-allow-origin: *
+x-powered-by: Express
+response body:
+  {
+    "id": 6,
+    "eid": "1234",
+    "projectName": "Harborline Insurance Portal",
+    "techRole": "AEM Developer",
+    "pocEid": "5678",
+    "status": "CV Requested",
+    "details": "Junior slot, AEM components",
+    "groupNumber": 5,
+    "createdAt": "<generated-timestamp>"
+  }
+
+stored data:
+  + /project-reachouts[id=6] (at index 5): {"id":6,"eid":"1234","projectName":"Harborline Insurance Portal","techRole":"AEM Developer","pocEid":"5678","status":"CV Requested","details":"Junior slot, AEM components","groupNumber":5,"createdAt":"<generated-timestamp>"}
 data files: unchanged
 
 outbound calls: none

@@ -1632,6 +1632,71 @@ outbound calls: none
 
 `;
 
+exports[`PATCH /api/planner-tasks/:id > invalid input › numbers and text are stored as sent: numeric title, text labels, fractional boardId 1`] = `
+
+PATCH /api/planner-tasks/2
+credentials: group 5 POC (rafael.t.mendoza, role poc)
+request body:
+  {
+    "title": 42,
+    "priority": 1,
+    "labels": [
+      "2",
+      "x"
+    ],
+    "boardId": 1.5
+  }
+
+status: 200
+content-type: application/json; charset=utf-8
+access-control-allow-origin: *
+x-powered-by: Express
+response body:
+  {
+    "id": 2,
+    "boardId": 1.5,
+    "bucketId": 2,
+    "title": 42,
+    "status": "In progress",
+    "priority": 1,
+    "startDate": "2026-10-27",
+    "dueDate": "2026-11-04",
+    "assignee": "jomar.c.pascual",
+    "labels": [
+      2,
+      "x"
+    ],
+    "checklist": [
+      {
+        "id": 1,
+        "text": "Finish signals module",
+        "done": true
+      },
+      {
+        "id": 2,
+        "text": "Convert a sample component",
+        "done": false
+      }
+    ],
+    "completed": false,
+    "completedDate": "",
+    "notes": "",
+    "createdAt": "2026-10-27T02:11:08.940Z",
+    "updatedAt": "<generated-timestamp>"
+  }
+
+stored data:
+  ~ /planner-tasks[id=2]/boardId: 2 → 1.5
+  ~ /planner-tasks[id=2]/title: "Angular signals refresher" → 42
+  ~ /planner-tasks[id=2]/priority: "Medium" → 1
+  ~ /planner-tasks[id=2]/labels[1]: 4 → "x"
+  ~ /planner-tasks[id=2]/updatedAt: "2026-11-02T03:45:51.006Z" → "<generated-timestamp>"
+data files: unchanged
+
+outbound calls: none
+
+`;
+
 exports[`PATCH /api/planner-tasks/:id > no auth 1`] = `
 
 PATCH /api/planner-tasks/2
@@ -1927,6 +1992,42 @@ response body:
 
 stored data:
   + /deletion-logs[id=3] (at index 2): {"id":3,"deletedAt":"<generated-timestamp>"}
+data files: unchanged
+
+outbound calls: none
+
+`;
+
+exports[`POST /api/deletion-logs > invalid input › text taskId and numeric deletedByEid are stored as sent 1`] = `
+
+POST /api/deletion-logs
+credentials: group 5 POC (rafael.t.mendoza, role poc)
+request body:
+  {
+    "type": "task-deletion",
+    "taskId": "5",
+    "taskTitle": "Accessibility audit of the onboarding form",
+    "deletedBy": "Rafael Mendoza",
+    "deletedByEid": 77
+  }
+
+status: 201
+content-type: application/json; charset=utf-8
+access-control-allow-origin: *
+x-powered-by: Express
+response body:
+  {
+    "id": 3,
+    "type": "task-deletion",
+    "taskId": "5",
+    "taskTitle": "Accessibility audit of the onboarding form",
+    "deletedBy": "Rafael Mendoza",
+    "deletedByEid": 77,
+    "deletedAt": "<generated-timestamp>"
+  }
+
+stored data:
+  + /deletion-logs[id=3] (at index 2): {"id":3,"type":"task-deletion","taskId":"5","taskTitle":"Accessibility audit of the onboarding form","deletedBy":"Rafael Mendoza","deletedByEid":77,"deletedAt":"<generated-timestamp>"}
 data files: unchanged
 
 outbound calls: none
