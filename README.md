@@ -251,7 +251,7 @@ The Express server (`server/server.js`) exposes a REST API with the following re
 Browser (Angular)  <-->  HTTP (JSON)  <-->  Express API  <-->  JSON files on disk
 ```
 
-On first startup, if `custom-onboarding.json` does not exist, `server/persistence/roster-file.repository.js` parses `custom.csv` and writes the JSON file. Subsequent reads and writes go directly to the JSON file.
+On first startup, if `custom-onboarding.json` does not exist, `server/persistence/json/roster-file.repository.js` parses `custom.csv` and writes the JSON file. Subsequent reads and writes go directly to the JSON file.
 
 ---
 
@@ -348,7 +348,7 @@ Dates are stored and returned in **MM/DD/YYYY** format. The server normalizes an
 
 ## Data Layer
 
-### Onboarding store (`server/persistence/roster-file.repository.js`)
+### Onboarding store (`server/persistence/json/roster-file.repository.js`)
 
 - Persists records to `server/data/custom-onboarding.json`
 - On first run (JSON file absent): bootstraps from `server/data/custom.csv` using a hand-written CSV parser that handles quoted fields and doubled-quote escaping

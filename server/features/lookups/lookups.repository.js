@@ -1,21 +1,8 @@
-// Read-only lookup collections in db.json. load() goes through the db.json file
-// repository; the other functions are pure reads of the loaded db object.
-const dbFile = require('../../persistence/db-file.repository');
+// The lookups store for the configured backend (docs/sqlite-migration-plan.md).
+// read(fn) hands fn a session with attendanceOptions(), officeLocations() and
+// plannerLabels().
+const { selectStore } = require('../../persistence/select-store');
 
-function load() {
-  return dbFile.loadDb();
-}
-
-function attendanceOptions(db) {
-  return db['attendance-options'] || [];
-}
-
-function officeLocations(db) {
-  return db['office-locations'] || [];
-}
-
-function plannerLabels(db) {
-  return db['planner-labels'] || [];
-}
-
-module.exports = { load, attendanceOptions, officeLocations, plannerLabels };
+module.exports = selectStore('lookups', ['read'], {
+  json: () => require('../../persistence/json/lookups.store'),
+});

@@ -1,6 +1,6 @@
 # SQLite migration plan
 
-**Status:** Phase 0 done on `feature/sqlite-phase-0`, apart from the first CI run on Ubuntu. Phases 1–8 haven't started. This plan builds on the restructured backend from [server-restructure-plan.md](server-restructure-plan.md), which was merged into `develop` in `07f41a8`. Every phase branches off `develop`, and its PRs target `develop`.
+**Status:** Phase 0 is done on `feature/sqlite-phase-0`, with review fixes on `feature/sqlite-phase-0-fixes`; the Linux CI check waits for Phase 4 step 6. Phase 1 is done on `feature/sqlite-phase-1`, rebuilt on top of the fixes, with step 0 first (see "Deviations"). Phases 2–8 haven't started. This plan builds on the restructured backend from [server-restructure-plan.md](server-restructure-plan.md), which was merged into `develop` in `07f41a8`. Every phase branches off `develop`, and its PRs target `develop`.
 
 **Goal:** move the dashboard data (`db.json` and `custom-onboarding.json`) from whole-file JSON reads and writes to SQLite, using `better-sqlite3`. The HTTP contract stays the same, apart from storage-related bugs fixed on purpose (see "Bug scope"). The JSON backend stays for a while as a fallback that a setting can switch back to. It is then removed completely (Phase 8).
 
@@ -297,3 +297,16 @@ Never edit the exported files with PowerShell (`Set-Content`, `Out-File`). After
 - **Windows file locks.** An open database blocks deleting the temp directory, and `db:migrate --force` while the server is running. The harness's `close()` hook covers the first; `db:migrate` should fail with a clear message for the second.
 - **Uncommitted local data.** The migration reads the committed JSON. Anyone with UI edits they want to keep must commit them to `develop` before the cutover, or lose them on their next `db:migrate --force`.
 - **Keep the planner's arrays as JSON for now.** Child tables for checklist items and comments only pay off once the API saves them one at a time. The UI saves the whole task each time, so every save would delete and re-insert every child row. Treat that as a later feature, not part of this migration.
+
+## Deviations
+
+### Phase 1
+
+- **Step 0 covers five no-op writes, not one.** The new fs-trace case runs five requests that leave `db.json`'s content unchanged but still save it: an empty sprint PATCH, a retro PATCH with the same text, a capacity upsert with no values, an empty attendance PATCH on a numeric id, and an empty competency PATCH.
+  - Planner-task and reachout PATCHes always set `updatedAt`, and an attendance PATCH on a string id renumbers it (M6), so they're never no-ops and aren't included.
+  - The case was recorded before the Phase 1 code (the snapshot diff only adds it). A `db-store` that skips saving when the content is unchanged fails this case and none of the older ones.
+- **The stores are read/write sessions with feature-specific operations** (e.g. `findSprint`, `insertTask(body, serverFields)`), not a generic `list/findById/insert/update/remove`. Each operation keeps the key order its route produced before, e.g. `{ ...body, id }` for attendance and `{ id, ...fields }` for sprints, so the responses and stored rows stay identical.
+- **Some list operations return rows as stored** (capacity, attendance, deletion logs, reachouts, competency, and the lookups). A non-array collection then still reaches the service's `filter`/`map`, with the variable names the pinned TypeError texts use. Sprints, retros, boards, buckets and tasks already made their ids numeric inside the pinned `(db['…'] || []).map(…)` expression, so that mapping now lives in the store.
+- **Onboarding keeps its repeated roster reads.** Its store is `list/append/update/remove` rather than `read/write`, and `remove` is today's load → filter → save. fs-trace pins this.
+- **The store is picked on each call** (`persistence/select-store.js`), not when the module loads. `PERSISTENCE=sqlite` loads the app and fails only on a request. `store-interface.test.js` pins this, along with the `read`/`write` contract.
+- **Two faults in one request may report the other error.** A create now converts its body fields (e.g. `String(name).trim()`, `Number(body.boardId)`) before calling the store's insert, which computes `nextId`. Before, `nextId` ran first. A request that has both a non-array collection and an unconvertible body value (bug L15, or M1 on task POST) now fails on the body instead of with `arr.reduce is not a function`. Either fault on its own gives exactly the same result as before. No test pins the double fault.

@@ -1,7 +1,8 @@
-// Onboarding resources and skill options (custom-onboarding.json via the roster
-// repository). The number and order of roster reads and writes per request are
-// exactly as before, and so are the try/catch boundaries. Bugs H4, L5, L9, L10,
-// M3, M5, M10 and M15 in docs/found-bugs.md are kept.
+// Onboarding resources and skill options, through the onboarding store
+// (list/append/update/remove; each call reads the roster again). The number and
+// order of roster reads and writes per request are exactly as before, and so
+// are the try/catch boundaries. Bugs H4, L5, L9, L10, M3, M5, M10 and M15 in
+// docs/found-bugs.md are kept.
 const repository = require('./onboarding.repository');
 const { normalizeEid } = require('../../utils/eid');
 const {
@@ -153,7 +154,7 @@ function parseSkillTags(value) {
 }
 
 function getSkillOptions() {
-  const records = repository.load();
+  const records = repository.list();
   const skills = new Set();
 
   records.forEach((record) => {
@@ -182,7 +183,7 @@ function getSkillOptions() {
 
 /** Every resource, newest created_at first, then highest id, formatted for the client. One roster read. */
 function listResources() {
-  return repository.load()
+  return repository.list()
     .slice()
     .sort((a, b) => {
       const aTime = new Date(a.created_at).getTime();
@@ -212,7 +213,7 @@ function createResource(body) {
   }
 
   try {
-    const records = repository.load();
+    const records = repository.list();
     const storagePayload = mapPayloadToStorage(payload);
     const existing = records.find((record) => record.eid === payload.eid);
 
@@ -235,7 +236,7 @@ function createResource(body) {
  * appends a new record (201) and leaves the old one.
  */
 function updateResource(id, body) {
-  const existing = repository.load().find((record) => record.id === id);
+  const existing = repository.list().find((record) => record.id === id);
 
   if (!existing) {
     return { notFound: true };
@@ -249,7 +250,7 @@ function updateResource(id, body) {
   }
 
   try {
-    const records = repository.load();
+    const records = repository.list();
     if (records.some((record) => Number(record.id) !== id && record.eid === payload.eid)) {
       return { conflict: 'eid already exists' };
     }
@@ -269,14 +270,7 @@ function updateResource(id, body) {
 
 /** false when the id is unknown (nothing written). No try/catch, as before. Related rows stay (bug M13). */
 function deleteResource(id) {
-  const records = repository.load();
-  const existing = records.find((record) => Number(record.id) === id);
-  if (!existing) {
-    return false;
-  }
-  const remaining = records.filter((record) => Number(record.id) !== id);
-  repository.save(remaining);
-  return true;
+  return repository.remove(id);
 }
 
 module.exports = {

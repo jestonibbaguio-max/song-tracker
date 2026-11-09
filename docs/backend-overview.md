@@ -11,8 +11,8 @@ This is a snapshot of `server/` and of how the Angular app talks to it, taken fr
 | Framework | **Express 5** (`express@^5.2.1`), plain CommonJS JavaScript, no TypeScript, no build step |
 | Entry point | [server/server.js](../server/server.js), started by `npm run api` (`node server/server.js`) or `npm run dev` (API + `ng serve` via `concurrently`) |
 | Dependencies | `express`, `cors` and `better-sqlite3` (pinned at `13.0.3`; installed for the [SQLite migration](sqlite-migration-plan.md), but no server code uses it yet). The server has no `package.json` of its own; all three come from the root one |
-| Route organisation | One Express router per feature in [server/features/](../server/features/) (routes → controller → service → repository), mounted in [server/app.js](../server/app.js), which only composes the app |
-| Persistence | Flat JSON files read and written synchronously with `fs` on every request, only from [server/persistence/](../server/persistence/) (one repository per file). No ORM, and no code uses a database driver yet |
+| Route organisation | One Express router per feature in [server/features/](../server/features/) (routes → controller → service → repository), mounted in [server/app.js](../server/app.js), which only composes the app. Each dashboard feature's repository picks a store for `PERSISTENCE` ([select-store.js](../server/persistence/select-store.js)), and services use it through `read(fn)`/`write(fn)` ([json/db-store.js](../server/persistence/json/db-store.js)) |
+| Persistence | Flat JSON files read and written synchronously with `fs` on every request, only from [server/persistence/](../server/persistence/): one file repository per data file in `persistence/json/` (plus tasks and fruits), and one store per feature on top. No ORM, and no code uses a database driver yet |
 | Database | **None in use yet.** The move to SQLite (`better-sqlite3`, installed but not used) is planned in [sqlite-migration-plan.md](sqlite-migration-plan.md) |
 | Auth | None. Every endpoint is public |
 | External services | None: no email, payments, object storage, queues, or third-party APIs |
@@ -70,7 +70,7 @@ All routes take and return JSON. "Store" is the file the route reads and writes 
 | DELETE | `/api/tasks/:id` | `data/tasks.json` | `{ deleted: boolean }` (always 200) |
 | GET | `/api/skill-options` | `custom-onboarding.json` | Sorted, de-duplicated list of skills (see the snake_case bug in §8) |
 
-### Onboarding resources — `persistence/roster-file.repository.js`
+### Onboarding resources — `persistence/json/roster-file.repository.js`
 
 | Method | Path | Behaviour |
 |---|---|---|
@@ -83,7 +83,7 @@ The server normalises incoming bodies heavily (`normalizeOnboardingPayload` in [
 
 ### Everything backed by `data/db.json`
 
-Each of these routes loads all of `db.json` (~185 KB), changes one collection, and writes the whole file back ([db-file.repository.js](../server/persistence/db-file.repository.js)). IDs come from `max(id) + 1`.
+Each of these routes loads all of `db.json` (~185 KB), changes one collection, and writes the whole file back ([db-file.repository.js](../server/persistence/json/db-file.repository.js)). IDs come from `max(id) + 1`.
 
 | Collection | Routes | Validation |
 |---|---|---|
@@ -113,8 +113,8 @@ There's no ORM and no database. "Persistence" means synchronous `fs.readFileSync
 
 | File | Owner | Contents |
 |---|---|---|
-| `server/data/custom-onboarding.json` | `persistence/roster-file.repository.js` | Onboarding resources (98 records). If the file is missing it's **seeded from `custom.csv`** on first read. Record IDs get back-filled and the file is rewritten on read |
-| `server/data/db.json` | `persistence/db-file.repository.js` (`loadDb`/`saveDb`) | Every other collection listed in §4 |
+| `server/data/custom-onboarding.json` | `persistence/json/roster-file.repository.js` | Onboarding resources (98 records). If the file is missing it's **seeded from `custom.csv`** on first read. Record IDs get back-filled and the file is rewritten on read |
+| `server/data/db.json` | `persistence/json/db-file.repository.js` (`loadDb`/`saveDb`) | Every other collection listed in §4 |
 | `server/data/tasks.json` | `persistence/tasks-file.repository.js` | Legacy tasks. It doesn't exist yet and is created on the first GET `/api/tasks` |
 | `server/data/test_bwd/db.json` | `persistence/fruits-file.repository.js` (also served as-is by the `/test` static mount) | Fruits test data |
 | `server/data/custom.csv` | seed only | Columns `EID`, `GROUP`, `Primary Skill` |
@@ -135,7 +135,7 @@ Things to know about this layer:
 |---|---|---|---|
 | `PORT` | [config/index.js](../server/config/index.js) | `3000` | API listen port |
 | `DATA_DIR` | [config/index.js](../server/config/index.js) | `server/data` | Folder that holds the data files; the API tests point it at a temp copy |
-| `PERSISTENCE` | [config/index.js](../server/config/index.js) | `json` | Storage backend, `json` or `sqlite` (nothing uses `sqlite` yet; see [sqlite-migration-plan.md](sqlite-migration-plan.md)). Any other value throws when config loads |
+| `PERSISTENCE` | [config/index.js](../server/config/index.js) | `json` | Storage backend, `json` or `sqlite`. Read on every request by [select-store.js](../server/persistence/select-store.js); with `sqlite`, every route that uses a store returns 500 until the SQLite stores exist ([sqlite-migration-plan.md](sqlite-migration-plan.md), Phase 4). Health, dashboard, legacy tasks and fruits don't use a store. Any other value throws when config loads |
 | `CI` | [playwright.config.ts](../playwright.config.ts) | – | Turns off `reuseExistingServer` for Playwright's webServers |
 
 The server has no `.env` loading and no secrets. [server/config/index.js](../server/config/index.js) resolves `PORT`, `DATA_DIR` (default `server/data`; a relative value resolves against the working directory) and every data-file path once, when it loads.

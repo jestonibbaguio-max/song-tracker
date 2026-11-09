@@ -2,15 +2,15 @@
 const repository = require('./lookups.repository');
 
 function listAttendanceOptions() {
-  return repository.attendanceOptions(repository.load());
+  return repository.read((store) => store.attendanceOptions());
 }
 
 function listOfficeLocations() {
-  return repository.officeLocations(repository.load());
+  return repository.read((store) => store.officeLocations());
 }
 
 function listPlannerLabels() {
-  return repository.plannerLabels(repository.load());
+  return repository.read((store) => store.plannerLabels());
 }
 
 module.exports = { listAttendanceOptions, listOfficeLocations, listPlannerLabels };
