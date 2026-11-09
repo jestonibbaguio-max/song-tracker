@@ -85,14 +85,14 @@ Columns are snake_case, and the stores map them to the camelCase API fields. "Op
 | `planner_labels` | `id`, `name`, `color` | read-only |
 | `planner_boards` | `id`, `group_number`, `name`, `description?` | read-only |
 | `planner_buckets` | `id`, `board_id`, `name`, `sort_order` (API: `order`) | index `(board_id)` |
-| `planner_tasks` | `id`, `board_id?`, `bucket_id?` (a non-numeric value is stored as NULL, as today), `title`, `status`, `priority`, `start_date`, `due_date`, `assignee`, `labels` (JSON, numbers), `checklist` (JSON), `comments?` (JSON), `description?`, `acceptance_criteria?`, `completed` (0/1 → boolean), `completed_date?`, `created_at`, `updated_at` | index `(board_id)`; `json_valid` checks |
+| `planner_tasks` | `id`, `board_id?`, `bucket_id?` (a non-numeric value is stored as NULL, as today), `title`, `status`, `priority`, `start_date`, `due_date`, `assignee`, `labels` (JSON, numbers), `checklist` (JSON), `comments?` (JSON), `description?`, `acceptance_criteria?`, `completed` (0/1 → boolean), `completed_date?`, `notes?`, `created_at`, `updated_at` | index `(board_id)`; `json_valid` checks |
 | `deletion_logs` | `id`, `type`, `task_id?`, `task_title`, `deleted_by`, `deleted_by_eid`, `comment_author?`, `comment_text?`, `comment_created_at?`, `deleted_at` | index `(deleted_by_eid)` |
 | `project_reachouts` | `id`, `eid`, `project_name`, `tech_role`, `poc_eid`, `status`, `details`, `group_number?`, `created_at`, `updated_at?` (POST doesn't set it today) | – |
 | `competency_records` | `eid` (PK), `primary_skill`, `primary_proficiency`, `recent_retake_date`, `next_retake_date`, `secondary_skill`, `secondary_proficiency`, `retake_date` | defaults `''` / `'N/A'`, the same as the GET's default row |
 
 Pragmas: `journal_mode = WAL`, `busy_timeout = 5000`, `foreign_keys = OFF` (decision 9). The schema version is kept in `PRAGMA user_version`.
 
-`planner_tasks.notes` doesn't exist; the column is dropped (always `""`). `completed_date` is kept, and it's on the write allowlist, so it survives a round trip.
+`planner_tasks.completed_date` and `planner_tasks.notes` are kept as optional columns, and both are on the write allowlist, so they survive a round trip. `notes` is `""` wherever it exists, but `GET /api/planner-tasks` returns every stored key, and the planner snapshots pin `"notes": ""`. Dropping it would change responses in Phase 4, which no snapshot update is allowed to cover.
 
 ## Phases
 
@@ -181,7 +181,7 @@ Update [found-bugs.md](found-bugs.md) in each commit, marking the bug as fixed w
    - drop the attendance rows whose `Number(id)` isn't an integer (decision 6);
    - convert every id to a number, and task `labels` to numbers;
    - merge the roster's two key styles with the camelCase-first rule;
-   - keep `completedDate`, drop `notes`;
+   - keep `completedDate` and `notes`;
    - refuse rows that would break a `UNIQUE` constraint, with a clear error naming the row;
    - print a report: rows per table, dropped rows with their ids, and skipped keys.
 3. **The harness builds the database from the fixtures.** It copies the fixtures, runs the test's `setup(dataDir)` on the JSON (so existing setups keep working), then imports. Setups that break the JSON on purpose belong to json-only tests (Phase 2).
