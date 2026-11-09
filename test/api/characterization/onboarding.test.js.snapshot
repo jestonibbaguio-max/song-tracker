@@ -12,38 +12,9 @@ response body:
     "deleted": 1
   }
 
-data files:
-  custom-onboarding.json: modified
-    raw text diff:
-      @@ -200,26 +200,4 @@
-           "updated_at": "2026-08-03T02:15:10.413Z",
-           "id": 2
-      -  },
-      -  {
-      -    "name": "kevin.r.lim",
-      -    "eid": "kevin.r.lim",
-      -    "hire_date": "",
-      -    "roll_in_date": "",
-      -    "project_deployed": "No",
-      -    "deployment_date": "",
-      -    "project_name": "Song Bench",
-      -    "poc": "",
-      -    "dn": "No",
-      -    "roll_off_date": "",
-      -    "from_project": "",
-      -    "group_number": 5,
-      -    "primary_skill": "AEM",
-      -    "primary_years": "",
-      -    "secondary_skill": "",
-      -    "secondary_years": "",
-      -    "another_skills": [],
-      -    "created_at": "2026-08-03T02:15:10.412Z",
-      -    "updated_at": "2026-08-03T02:15:10.412Z",
-      -    "id": 1
-         }
-       ]
-    parsed JSON diff:
-      - [id=1]: {"name":"kevin.r.lim","eid":"kevin.r.lim","hire_date":"","roll_in_date":"","project_deployed":"No","deployment_date":"","project_name":"Song Bench","poc":"","dn":"No","roll_off_date":"","from_project":"","group_number":5,"primary_skill":"AEM","primary_years":"","secondary_skill":"","secondary_years":"","another_skills":[],"created_at":"2026-08-03T02:15:10.412Z","updated_at":"2026-08-03T02:15:10.412Z","id":1}
+stored data:
+  - /onboarding-resources[id=1]: {"id":1,"eid":"kevin.r.lim","name":"kevin.r.lim","hireDate":"","rollInDate":"","projectDeployed":"No","deploymentDate":"","projectName":"Song Bench","poc":"","dn":"No","rollOffDate":"","fromProject":"","clLevel":"","groupNumber":5,"primarySkill":"AEM","primaryYears":"","secondarySkill":"","secondaryYears":"","anotherSkills":[],"officeLocation":"","createdAt":"2026-08-03T02:15:10.412Z","updatedAt":"2026-08-03T02:15:10.412Z"}
+data files: unchanged
 
 outbound calls: none
 
@@ -63,40 +34,9 @@ response body:
     "deleted": 7
   }
 
-data files:
-  custom-onboarding.json: modified
-    raw text diff:
-      @@ -52,28 +52,4 @@
-         },
-         {
-      -    "name": "Jomar Pascual",
-      -    "eid": "jomar.c.pascual",
-      -    "hireDate": "09/29/2026",
-      -    "rollInDate": "10/05/2026",
-      -    "projectDeployed": "No",
-      -    "deploymentDate": "",
-      -    "projectName": "Song Bench",
-      -    "poc": "rafael.t.mendoza",
-      -    "dn": "No",
-      -    "rollOffDate": "",
-      -    "fromProject": "",
-      -    "clLevel": "11",
-      -    "groupNumber": 5,
-      -    "primarySkill": "AEM",
-      -    "primaryYears": "1",
-      -    "secondarySkill": "",
-      -    "secondaryYears": "",
-      -    "anotherSkills": [],
-      -    "officeLocation": "Manila",
-      -    "id": 7,
-      -    "created_at": "2026-10-05T02:30:19.671Z",
-      -    "updated_at": "2026-10-05T02:30:19.671Z"
-      -  },
-      -  {
-           "name": "Miguel Torres",
-           "eid": "miguel.a.torres",
-    parsed JSON diff:
-      - [id=7]: {"name":"Jomar Pascual","eid":"jomar.c.pascual","hireDate":"09/29/2026","rollInDate":"10/05/2026","projectDeployed":"No","deploymentDate":"","projectName":"Song Bench","poc":"rafael.t.mendoza","dn":"No","rollOffDate":"","fromProject":"","clLevel":"11","groupNumber":5,"primarySkill":"AEM","primaryYears":"1","secondarySkill":"","secondaryYears":"","anotherSkills":[],"officeLocation":"Manila","id":7,"created_at":"2026-10-05T02:30:19.671Z","updated_at":"2026-10-05T02:30:19.671Z"}
+stored data:
+  - /onboarding-resources[id=7]: {"id":7,"eid":"jomar.c.pascual","name":"Jomar Pascual","hireDate":"09/29/2026","rollInDate":"10/05/2026","projectDeployed":"No","deploymentDate":"","projectName":"Song Bench","poc":"rafael.t.mendoza","dn":"No","rollOffDate":"","fromProject":"","clLevel":"11","groupNumber":5,"primarySkill":"AEM","primaryYears":"1","secondarySkill":"","secondaryYears":"","anotherSkills":[],"officeLocation":"Manila","createdAt":"2026-10-05T02:30:19.671Z","updatedAt":"2026-10-05T02:30:19.671Z"}
+data files: unchanged
 
 outbound calls: none
 
@@ -126,6 +66,7 @@ response body:
   </html>
   
 
+stored data: unchanged
 data files: unchanged
 
 outbound calls: none
@@ -146,6 +87,7 @@ response body:
     "error": "resource not found"
   }
 
+stored data: unchanged
 data files: unchanged
 
 outbound calls: none
@@ -175,6 +117,7 @@ response body:
     "error": "resource not found"
   }
 
+stored data: unchanged
 data files: unchanged
 
 outbound calls: none
@@ -430,6 +373,7 @@ response body:
     }
   ]
 
+stored data: unchanged
 data files: unchanged
 
 outbound calls: none
@@ -488,6 +432,7 @@ response body:
   </html>
   
 
+stored data: unchanged
 data files: unchanged
 
 outbound calls: none
@@ -1517,44 +1462,9 @@ response body:
     "updatedAt": "<generated-timestamp>"
   }
 
-data files:
-  custom-onboarding.json: modified
-    raw text diff:
-      @@ -1,4 +1,32 @@
-       [
-         {
-      +    "name": "Teresa Villanueva",
-      +    "eid": "teresa.m.villanueva",
-      +    "hireDate": "05/09/2022",
-      +    "rollInDate": "09/14/2026",
-      +    "projectDeployed": "No",
-      +    "deploymentDate": "",
-      +    "projectName": "Song Bench",
-      +    "poc": "rafael.t.mendoza",
-      +    "dn": "Yes",
-      +    "rollOffDate": "09/11/2026",
-      +    "fromProject": "Retail Loyalty Platform",
-      +    "clLevel": "9",
-      +    "groupNumber": 5,
-      +    "primarySkill": "AEM",
-      +    "primaryYears": "5",
-      +    "secondarySkill": "Java",
-      +    "secondaryYears": "3",
-      +    "anotherSkills": [
-      +      "Sling",
-      +      "HTL",
-      +      "Dispatcher"
-      +    ],
-      +    "officeLocation": "Cebu",
-      +    "id": 10,
-      +    "created_at": "<generated-timestamp>",
-      +    "updated_at": "<generated-timestamp>"
-      +  },
-      +  {
-           "name": "Paolo Ramos",
-           "eid": "paolo.d.ramos",
-    parsed JSON diff:
-      + [id=10] (at index 0): {"name":"Teresa Villanueva","eid":"teresa.m.villanueva","hireDate":"05/09/2022","rollInDate":"09/14/2026","projectDeployed":"No","deploymentDate":"","projectName":"Song Bench","poc":"rafael.t.mendoza","dn":"Yes","rollOffDate":"09/11/2026","fromProject":"Retail Loyalty Platform","clLevel":"9","groupNumber":5,"primarySkill":"AEM","primaryYears":"5","secondarySkill":"Java","secondaryYears":"3","anotherSkills":["Sling","HTL","Dispatcher"],"officeLocation":"Cebu","id":10,"created_at":"<generated-timestamp>","updated_at":"<generated-timestamp>"}
+stored data:
+  + /onboarding-resources[id=10] (at index 0): {"id":10,"eid":"teresa.m.villanueva","name":"Teresa Villanueva","hireDate":"05/09/2022","rollInDate":"09/14/2026","projectDeployed":"No","deploymentDate":"","projectName":"Song Bench","poc":"rafael.t.mendoza","dn":"Yes","rollOffDate":"09/11/2026","fromProject":"Retail Loyalty Platform","clLevel":"9","groupNumber":5,"primarySkill":"AEM","primaryYears":"5","secondarySkill":"Java","secondaryYears":"3","anotherSkills":["Sling","HTL","Dispatcher"],"officeLocation":"Cebu","createdAt":"<generated-timestamp>","updatedAt":"<generated-timestamp>"}
+data files: unchanged
 
 outbound calls: none
 
@@ -1741,60 +1651,14 @@ response body:
     "updatedAt": "<generated-timestamp>"
   }
 
-data files:
-  custom-onboarding.json: modified
-    raw text diff:
-      @@ -180,5 +180,5 @@
-         },
-         {
-      -    "name": "nina.g.castro",
-      +    "name": "Nina Castro",
-           "eid": "nina.g.castro",
-           "hire_date": "05/18/2026",
-      @@ -198,6 +198,23 @@
-           "another_skills": [],
-           "created_at": "2026-08-03T02:15:10.413Z",
-      -    "updated_at": "2026-08-03T02:15:10.413Z",
-      -    "id": 2
-      +    "updated_at": "<generated-timestamp>",
-      +    "id": 2,
-      +    "hireDate": "05/18/2026",
-      +    "rollInDate": "06/01/2026",
-      +    "projectDeployed": "No",
-      +    "deploymentDate": "",
-      +    "projectName": "Song Bench",
-      +    "rollOffDate": "",
-      +    "fromProject": "",
-      +    "clLevel": "11",
-      +    "groupNumber": 1,
-      +    "primarySkill": "React Native",
-      +    "primaryYears": "1",
-      +    "secondarySkill": "",
-      +    "secondaryYears": "",
-      +    "anotherSkills": [
-      +      "TypeScript"
-      +    ],
-      +    "officeLocation": "Cebu"
-         },
-         {
-    parsed JSON diff:
-      ~ [id=2]/name: "nina.g.castro" → "Nina Castro"
-      ~ [id=2]/updated_at: "2026-08-03T02:15:10.413Z" → "<generated-timestamp>"
-      + [id=2]/hireDate: "05/18/2026"
-      + [id=2]/rollInDate: "06/01/2026"
-      + [id=2]/projectDeployed: "No"
-      + [id=2]/deploymentDate: ""
-      + [id=2]/projectName: "Song Bench"
-      + [id=2]/rollOffDate: ""
-      + [id=2]/fromProject: ""
-      + [id=2]/clLevel: "11"
-      + [id=2]/groupNumber: 1
-      + [id=2]/primarySkill: "React Native"
-      + [id=2]/primaryYears: "1"
-      + [id=2]/secondarySkill: ""
-      + [id=2]/secondaryYears: ""
-      + [id=2]/anotherSkills: ["TypeScript"]
-      + [id=2]/officeLocation: "Cebu"
+stored data:
+  ~ /onboarding-resources[id=2]/name: "nina.g.castro" → "Nina Castro"
+  ~ /onboarding-resources[id=2]/clLevel: "" → "11"
+  ~ /onboarding-resources[id=2]/primaryYears: "" → "1"
+  + /onboarding-resources[id=2]/anotherSkills[0]: "TypeScript"
+  ~ /onboarding-resources[id=2]/officeLocation: "" → "Cebu"
+  ~ /onboarding-resources[id=2]/updatedAt: "2026-08-03T02:15:10.413Z" → "<generated-timestamp>"
+data files: unchanged
 
 outbound calls: none
 
@@ -1865,35 +1729,12 @@ response body:
     "updatedAt": "<generated-timestamp>"
   }
 
-data files:
-  custom-onboarding.json: modified
-    raw text diff:
-      @@ -114,15 +114,16 @@
-           "groupNumber": 5,
-           "primarySkill": "AEM",
-      -    "primaryYears": "4",
-      +    "primaryYears": "5",
-           "secondarySkill": "Java",
-           "secondaryYears": "3",
-           "anotherSkills": [
-             "Sling",
-      -      "HTL"
-      +      "HTL",
-      +      "Dispatcher"
-           ],
-      -    "officeLocation": "Manila",
-      +    "officeLocation": "Cebu",
-           "id": 5,
-           "created_at": "2026-09-14T01:58:33.460Z",
-      -    "updated_at": "2026-09-14T02:04:10.115Z"
-      +    "updated_at": "<generated-timestamp>"
-         },
-         {
-    parsed JSON diff:
-      ~ [id=5]/primaryYears: "4" → "5"
-      + [id=5]/anotherSkills[2]: "Dispatcher"
-      ~ [id=5]/officeLocation: "Manila" → "Cebu"
-      ~ [id=5]/updated_at: "2026-09-14T02:04:10.115Z" → "<generated-timestamp>"
+stored data:
+  ~ /onboarding-resources[id=5]/primaryYears: "4" → "5"
+  + /onboarding-resources[id=5]/anotherSkills[2]: "Dispatcher"
+  ~ /onboarding-resources[id=5]/officeLocation: "Manila" → "Cebu"
+  ~ /onboarding-resources[id=5]/updatedAt: "2026-09-14T02:04:10.115Z" → "<generated-timestamp>"
+data files: unchanged
 
 outbound calls: none
 
@@ -1939,6 +1780,7 @@ response body:
     "error": "optional dates must use MM/DD/YYYY format"
   }
 
+stored data: unchanged
 data files: unchanged
 
 outbound calls: none
@@ -2002,29 +1844,11 @@ response body:
     "updatedAt": "<generated-timestamp>"
   }
 
-data files:
-  custom-onboarding.json: modified
-    raw text diff:
-      @@ -78,6 +78,6 @@
-           "name": "Miguel Torres",
-           "eid": "miguel.a.torres",
-      -    "hireDate": "01/10/2023",
-      -    "rollInDate": "09/15/2026",
-      +    "hireDate": "",
-      +    "rollInDate": "",
-           "projectDeployed": "Yes",
-           "deploymentDate": "10/19/2026",
-      @@ -97,5 +97,5 @@
-           "id": 6,
-           "created_at": "2026-09-15T03:05:51.227Z",
-      -    "updated_at": "2026-10-19T08:44:12.093Z"
-      +    "updated_at": "<generated-timestamp>"
-         },
-         {
-    parsed JSON diff:
-      ~ [id=6]/hireDate: "01/10/2023" → ""
-      ~ [id=6]/rollInDate: "09/15/2026" → ""
-      ~ [id=6]/updated_at: "2026-10-19T08:44:12.093Z" → "<generated-timestamp>"
+stored data:
+  ~ /onboarding-resources[id=6]/hireDate: "01/10/2023" → ""
+  ~ /onboarding-resources[id=6]/rollInDate: "09/15/2026" → ""
+  ~ /onboarding-resources[id=6]/updatedAt: "2026-10-19T08:44:12.093Z" → "<generated-timestamp>"
+data files: unchanged
 
 outbound calls: none
 
@@ -2070,6 +1894,7 @@ response body:
     "error": "eid already exists"
   }
 
+stored data: unchanged
 data files: unchanged
 
 outbound calls: none
@@ -2100,6 +1925,7 @@ response body:
   </html>
   
 
+stored data: unchanged
 data files: unchanged
 
 outbound calls: none
@@ -2120,6 +1946,7 @@ response body:
     "error": "name and eid are required"
   }
 
+stored data: unchanged
 data files: unchanged
 
 outbound calls: none
@@ -2191,39 +2018,13 @@ response body:
     "updatedAt": "<generated-timestamp>"
   }
 
-data files:
-  custom-onboarding.json: modified
-    raw text diff:
-      @@ -112,17 +112,18 @@
-           "fromProject": "Retail Loyalty Platform",
-           "clLevel": "9",
-      -    "groupNumber": 5,
-      +    "groupNumber": null,
-           "primarySkill": "AEM",
-      -    "primaryYears": "4",
-      +    "primaryYears": "5",
-           "secondarySkill": "Java",
-           "secondaryYears": "3",
-           "anotherSkills": [
-             "Sling",
-      -      "HTL"
-      +      "HTL",
-      +      "Dispatcher"
-           ],
-      -    "officeLocation": "Manila",
-      +    "officeLocation": "Cebu",
-           "id": 5,
-           "created_at": "2026-09-14T01:58:33.460Z",
-      -    "updated_at": "2026-09-14T02:04:10.115Z"
-      +    "updated_at": "<generated-timestamp>"
-         },
-         {
-    parsed JSON diff:
-      ~ [id=5]/groupNumber: 5 → null
-      ~ [id=5]/primaryYears: "4" → "5"
-      + [id=5]/anotherSkills[2]: "Dispatcher"
-      ~ [id=5]/officeLocation: "Manila" → "Cebu"
-      ~ [id=5]/updated_at: "2026-09-14T02:04:10.115Z" → "<generated-timestamp>"
+stored data:
+  ~ /onboarding-resources[id=5]/groupNumber: 5 → null
+  ~ /onboarding-resources[id=5]/primaryYears: "4" → "5"
+  + /onboarding-resources[id=5]/anotherSkills[2]: "Dispatcher"
+  ~ /onboarding-resources[id=5]/officeLocation: "Manila" → "Cebu"
+  ~ /onboarding-resources[id=5]/updatedAt: "2026-09-14T02:04:10.115Z" → "<generated-timestamp>"
+data files: unchanged
 
 outbound calls: none
 
@@ -2270,63 +2071,22 @@ response body:
     "updatedAt": "<generated-timestamp>"
   }
 
-data files:
-  custom-onboarding.json: modified
-    raw text diff:
-      @@ -78,24 +78,24 @@
-           "name": "Miguel Torres",
-           "eid": "miguel.a.torres",
-      -    "hireDate": "01/10/2023",
-      -    "rollInDate": "09/15/2026",
-      -    "projectDeployed": "Yes",
-      -    "deploymentDate": "10/19/2026",
-      -    "projectName": "Northwind Commerce",
-      -    "poc": "andrea.s.bautista",
-      +    "hireDate": "",
-      +    "rollInDate": "",
-      +    "projectDeployed": "No",
-      +    "deploymentDate": "",
-      +    "projectName": "Song Bench",
-      +    "poc": "hannahdel.l.orellosa",
-           "dn": "No",
-           "rollOffDate": "",
-           "fromProject": "",
-      -    "clLevel": "10",
-      -    "groupNumber": 1,
-      -    "primarySkill": "React",
-      -    "primaryYears": "4",
-      -    "secondarySkill": "Node.js",
-      -    "secondaryYears": "2",
-      +    "clLevel": "9",
-      +    "groupNumber": null,
-      +    "primarySkill": "",
-      +    "primaryYears": "",
-      +    "secondarySkill": "",
-      +    "secondaryYears": "",
-           "anotherSkills": [],
-      -    "officeLocation": "Cebu",
-      +    "officeLocation": "",
-           "id": 6,
-           "created_at": "2026-09-15T03:05:51.227Z",
-      -    "updated_at": "2026-10-19T08:44:12.093Z"
-      +    "updated_at": "<generated-timestamp>"
-         },
-         {
-    parsed JSON diff:
-      ~ [id=6]/hireDate: "01/10/2023" → ""
-      ~ [id=6]/rollInDate: "09/15/2026" → ""
-      ~ [id=6]/projectDeployed: "Yes" → "No"
-      ~ [id=6]/deploymentDate: "10/19/2026" → ""
-      ~ [id=6]/projectName: "Northwind Commerce" → "Song Bench"
-      ~ [id=6]/poc: "andrea.s.bautista" → "hannahdel.l.orellosa"
-      ~ [id=6]/clLevel: "10" → "9"
-      ~ [id=6]/groupNumber: 1 → null
-      ~ [id=6]/primarySkill: "React" → ""
-      ~ [id=6]/primaryYears: "4" → ""
-      ~ [id=6]/secondarySkill: "Node.js" → ""
-      ~ [id=6]/secondaryYears: "2" → ""
-      ~ [id=6]/officeLocation: "Cebu" → ""
-      ~ [id=6]/updated_at: "2026-10-19T08:44:12.093Z" → "<generated-timestamp>"
+stored data:
+  ~ /onboarding-resources[id=6]/hireDate: "01/10/2023" → ""
+  ~ /onboarding-resources[id=6]/rollInDate: "09/15/2026" → ""
+  ~ /onboarding-resources[id=6]/projectDeployed: "Yes" → "No"
+  ~ /onboarding-resources[id=6]/deploymentDate: "10/19/2026" → ""
+  ~ /onboarding-resources[id=6]/projectName: "Northwind Commerce" → "Song Bench"
+  ~ /onboarding-resources[id=6]/poc: "andrea.s.bautista" → "hannahdel.l.orellosa"
+  ~ /onboarding-resources[id=6]/clLevel: "10" → "9"
+  ~ /onboarding-resources[id=6]/groupNumber: 1 → null
+  ~ /onboarding-resources[id=6]/primarySkill: "React" → ""
+  ~ /onboarding-resources[id=6]/primaryYears: "4" → ""
+  ~ /onboarding-resources[id=6]/secondarySkill: "Node.js" → ""
+  ~ /onboarding-resources[id=6]/secondaryYears: "2" → ""
+  ~ /onboarding-resources[id=6]/officeLocation: "Cebu" → ""
+  ~ /onboarding-resources[id=6]/updatedAt: "2026-10-19T08:44:12.093Z" → "<generated-timestamp>"
+data files: unchanged
 
 outbound calls: none
 
@@ -2350,6 +2110,7 @@ response body:
     "error": "name and eid are required"
   }
 
+stored data: unchanged
 data files: unchanged
 
 outbound calls: none
@@ -2431,6 +2192,7 @@ response body:
     "error": "resource not found"
   }
 
+stored data: unchanged
 data files: unchanged
 
 outbound calls: none
@@ -2477,6 +2239,7 @@ response body:
     "error": "resource not found"
   }
 
+stored data: unchanged
 data files: unchanged
 
 outbound calls: none
@@ -2499,6 +2262,7 @@ response body:
     "error": "resource not found"
   }
 
+stored data: unchanged
 data files: unchanged
 
 outbound calls: none
@@ -2591,42 +2355,9 @@ response body:
     "updatedAt": "<generated-timestamp>"
   }
 
-data files:
-  custom-onboarding.json: modified
-    raw text diff:
-      @@ -1,4 +1,30 @@
-       [
-         {
-      +    "name": "Bea Santos",
-      +    "eid": "bea.l.santos",
-      +    "hireDate": "11/02/2026",
-      +    "rollInDate": "11/09/2026",
-      +    "projectDeployed": "No",
-      +    "deploymentDate": "",
-      +    "projectName": "Song Bench",
-      +    "poc": "hannahdel.l.orellosa",
-      +    "dn": "No",
-      +    "rollOffDate": "",
-      +    "fromProject": "",
-      +    "clLevel": "11",
-      +    "groupNumber": 1,
-      +    "primarySkill": "React",
-      +    "primaryYears": "",
-      +    "secondarySkill": "",
-      +    "secondaryYears": "",
-      +    "anotherSkills": [
-      +      "TypeScript"
-      +    ],
-      +    "officeLocation": "Cebu",
-      +    "id": 10,
-      +    "created_at": "<generated-timestamp>",
-      +    "updated_at": "<generated-timestamp>"
-      +  },
-      +  {
-           "name": "Paolo Ramos",
-           "eid": "paolo.d.ramos",
-    parsed JSON diff:
-      + [id=10] (at index 0): {"name":"Bea Santos","eid":"bea.l.santos","hireDate":"11/02/2026","rollInDate":"11/09/2026","projectDeployed":"No","deploymentDate":"","projectName":"Song Bench","poc":"hannahdel.l.orellosa","dn":"No","rollOffDate":"","fromProject":"","clLevel":"11","groupNumber":1,"primarySkill":"React","primaryYears":"","secondarySkill":"","secondaryYears":"","anotherSkills":["TypeScript"],"officeLocation":"Cebu","id":10,"created_at":"<generated-timestamp>","updated_at":"<generated-timestamp>"}
+stored data:
+  + /onboarding-resources[id=10] (at index 0): {"id":10,"eid":"bea.l.santos","name":"Bea Santos","hireDate":"11/02/2026","rollInDate":"11/09/2026","projectDeployed":"No","deploymentDate":"","projectName":"Song Bench","poc":"hannahdel.l.orellosa","dn":"No","rollOffDate":"","fromProject":"","clLevel":"11","groupNumber":1,"primarySkill":"React","primaryYears":"","secondarySkill":"","secondaryYears":"","anotherSkills":["TypeScript"],"officeLocation":"Cebu","createdAt":"<generated-timestamp>","updatedAt":"<generated-timestamp>"}
+data files: unchanged
 
 outbound calls: none
 
@@ -2693,42 +2424,9 @@ response body:
     "updatedAt": "<generated-timestamp>"
   }
 
-data files:
-  custom-onboarding.json: modified
-    raw text diff:
-      @@ -1,4 +1,30 @@
-       [
-         {
-      +    "name": "Bea Santos",
-      +    "eid": "bea.l.santos",
-      +    "hireDate": "11/02/2026",
-      +    "rollInDate": "11/09/2026",
-      +    "projectDeployed": "No",
-      +    "deploymentDate": "",
-      +    "projectName": "Song Bench",
-      +    "poc": "andrea.s.bautista",
-      +    "dn": "No",
-      +    "rollOffDate": "",
-      +    "fromProject": "",
-      +    "clLevel": "11",
-      +    "groupNumber": 1,
-      +    "primarySkill": "React",
-      +    "primaryYears": "1",
-      +    "secondarySkill": "",
-      +    "secondaryYears": "",
-      +    "anotherSkills": [
-      +      "TypeScript"
-      +    ],
-      +    "officeLocation": "Cebu",
-      +    "id": 10,
-      +    "created_at": "<generated-timestamp>",
-      +    "updated_at": "<generated-timestamp>"
-      +  },
-      +  {
-           "name": "Paolo Ramos",
-           "eid": "paolo.d.ramos",
-    parsed JSON diff:
-      + [id=10] (at index 0): {"name":"Bea Santos","eid":"bea.l.santos","hireDate":"11/02/2026","rollInDate":"11/09/2026","projectDeployed":"No","deploymentDate":"","projectName":"Song Bench","poc":"andrea.s.bautista","dn":"No","rollOffDate":"","fromProject":"","clLevel":"11","groupNumber":1,"primarySkill":"React","primaryYears":"1","secondarySkill":"","secondaryYears":"","anotherSkills":["TypeScript"],"officeLocation":"Cebu","id":10,"created_at":"<generated-timestamp>","updated_at":"<generated-timestamp>"}
+stored data:
+  + /onboarding-resources[id=10] (at index 0): {"id":10,"eid":"bea.l.santos","name":"Bea Santos","hireDate":"11/02/2026","rollInDate":"11/09/2026","projectDeployed":"No","deploymentDate":"","projectName":"Song Bench","poc":"andrea.s.bautista","dn":"No","rollOffDate":"","fromProject":"","clLevel":"11","groupNumber":1,"primarySkill":"React","primaryYears":"1","secondarySkill":"","secondaryYears":"","anotherSkills":["TypeScript"],"officeLocation":"Cebu","createdAt":"<generated-timestamp>","updatedAt":"<generated-timestamp>"}
+data files: unchanged
 
 outbound calls: none
 
@@ -2799,35 +2497,12 @@ response body:
     "updatedAt": "<generated-timestamp>"
   }
 
-data files:
-  custom-onboarding.json: modified
-    raw text diff:
-      @@ -114,15 +114,16 @@
-           "groupNumber": 5,
-           "primarySkill": "AEM",
-      -    "primaryYears": "4",
-      +    "primaryYears": "5",
-           "secondarySkill": "Java",
-           "secondaryYears": "3",
-           "anotherSkills": [
-             "Sling",
-      -      "HTL"
-      +      "HTL",
-      +      "Dispatcher"
-           ],
-      -    "officeLocation": "Manila",
-      +    "officeLocation": "Cebu",
-           "id": 5,
-           "created_at": "2026-09-14T01:58:33.460Z",
-      -    "updated_at": "2026-09-14T02:04:10.115Z"
-      +    "updated_at": "<generated-timestamp>"
-         },
-         {
-    parsed JSON diff:
-      ~ [id=5]/primaryYears: "4" → "5"
-      + [id=5]/anotherSkills[2]: "Dispatcher"
-      ~ [id=5]/officeLocation: "Manila" → "Cebu"
-      ~ [id=5]/updated_at: "2026-09-14T02:04:10.115Z" → "<generated-timestamp>"
+stored data:
+  ~ /onboarding-resources[id=5]/primaryYears: "4" → "5"
+  + /onboarding-resources[id=5]/anotherSkills[2]: "Dispatcher"
+  ~ /onboarding-resources[id=5]/officeLocation: "Manila" → "Cebu"
+  ~ /onboarding-resources[id=5]/updatedAt: "2026-09-14T02:04:10.115Z" → "<generated-timestamp>"
+data files: unchanged
 
 outbound calls: none
 
@@ -2894,68 +2569,17 @@ response body:
     "updatedAt": "<generated-timestamp>"
   }
 
-data files:
-  custom-onboarding.json: modified
-    raw text diff:
-      @@ -202,5 +202,5 @@
-         },
-         {
-      -    "name": "kevin.r.lim",
-      +    "name": "Kevin Lim",
-           "eid": "kevin.r.lim",
-           "hire_date": "",
-      @@ -209,5 +209,5 @@
-           "deployment_date": "",
-           "project_name": "Song Bench",
-      -    "poc": "",
-      +    "poc": "rafael.t.mendoza",
-           "dn": "No",
-           "roll_off_date": "",
-      @@ -220,6 +220,23 @@
-           "another_skills": [],
-           "created_at": "2026-08-03T02:15:10.412Z",
-      -    "updated_at": "2026-08-03T02:15:10.412Z",
-      -    "id": 1
-      +    "updated_at": "<generated-timestamp>",
-      +    "id": 1,
-      +    "hireDate": "11/02/2026",
-      +    "rollInDate": "11/09/2026",
-      +    "projectDeployed": "No",
-      +    "deploymentDate": "",
-      +    "projectName": "Song Bench",
-      +    "rollOffDate": "",
-      +    "fromProject": "",
-      +    "clLevel": "11",
-      +    "groupNumber": 5,
-      +    "primarySkill": "AEM",
-      +    "primaryYears": "1",
-      +    "secondarySkill": "",
-      +    "secondaryYears": "",
-      +    "anotherSkills": [
-      +      "TypeScript"
-      +    ],
-      +    "officeLocation": "Cebu"
-         }
-       ]
-    parsed JSON diff:
-      ~ [id=1]/name: "kevin.r.lim" → "Kevin Lim"
-      ~ [id=1]/poc: "" → "rafael.t.mendoza"
-      ~ [id=1]/updated_at: "2026-08-03T02:15:10.412Z" → "<generated-timestamp>"
-      + [id=1]/hireDate: "11/02/2026"
-      + [id=1]/rollInDate: "11/09/2026"
-      + [id=1]/projectDeployed: "No"
-      + [id=1]/deploymentDate: ""
-      + [id=1]/projectName: "Song Bench"
-      + [id=1]/rollOffDate: ""
-      + [id=1]/fromProject: ""
-      + [id=1]/clLevel: "11"
-      + [id=1]/groupNumber: 5
-      + [id=1]/primarySkill: "AEM"
-      + [id=1]/primaryYears: "1"
-      + [id=1]/secondarySkill: ""
-      + [id=1]/secondaryYears: ""
-      + [id=1]/anotherSkills: ["TypeScript"]
-      + [id=1]/officeLocation: "Cebu"
+stored data:
+  ~ /onboarding-resources[id=1]/name: "kevin.r.lim" → "Kevin Lim"
+  ~ /onboarding-resources[id=1]/hireDate: "" → "11/02/2026"
+  ~ /onboarding-resources[id=1]/rollInDate: "" → "11/09/2026"
+  ~ /onboarding-resources[id=1]/poc: "" → "rafael.t.mendoza"
+  ~ /onboarding-resources[id=1]/clLevel: "" → "11"
+  ~ /onboarding-resources[id=1]/primaryYears: "" → "1"
+  + /onboarding-resources[id=1]/anotherSkills[0]: "TypeScript"
+  ~ /onboarding-resources[id=1]/officeLocation: "" → "Cebu"
+  ~ /onboarding-resources[id=1]/updatedAt: "2026-08-03T02:15:10.412Z" → "<generated-timestamp>"
+data files: unchanged
 
 outbound calls: none
 
@@ -3149,43 +2773,9 @@ response body:
     "updatedAt": "<generated-timestamp>"
   }
 
-data files:
-  custom-onboarding.json: modified
-    raw text diff:
-      @@ -1,4 +1,31 @@
-       [
-         {
-      +    "name": "Bea Santos",
-      +    "eid": "bea.l.santos",
-      +    "hireDate": "11/02/2026",
-      +    "rollInDate": "11/13/2026",
-      +    "projectDeployed": "No",
-      +    "deploymentDate": "",
-      +    "projectName": "Song Bench",
-      +    "poc": "andrea.s.bautista",
-      +    "dn": "Yes",
-      +    "rollOffDate": "",
-      +    "fromProject": "",
-      +    "clLevel": "11",
-      +    "groupNumber": 1,
-      +    "primarySkill": "React",
-      +    "primaryYears": "1.5",
-      +    "secondarySkill": "",
-      +    "secondaryYears": "",
-      +    "anotherSkills": [
-      +      "TypeScript",
-      +      "RxJS"
-      +    ],
-      +    "officeLocation": "Cebu",
-      +    "id": 10,
-      +    "created_at": "<generated-timestamp>",
-      +    "updated_at": "<generated-timestamp>"
-      +  },
-      +  {
-           "name": "Paolo Ramos",
-           "eid": "paolo.d.ramos",
-    parsed JSON diff:
-      + [id=10] (at index 0): {"name":"Bea Santos","eid":"bea.l.santos","hireDate":"11/02/2026","rollInDate":"11/13/2026","projectDeployed":"No","deploymentDate":"","projectName":"Song Bench","poc":"andrea.s.bautista","dn":"Yes","rollOffDate":"","fromProject":"","clLevel":"11","groupNumber":1,"primarySkill":"React","primaryYears":"1.5","secondarySkill":"","secondaryYears":"","anotherSkills":["TypeScript","RxJS"],"officeLocation":"Cebu","id":10,"created_at":"<generated-timestamp>","updated_at":"<generated-timestamp>"}
+stored data:
+  + /onboarding-resources[id=10] (at index 0): {"id":10,"eid":"bea.l.santos","name":"Bea Santos","hireDate":"11/02/2026","rollInDate":"11/13/2026","projectDeployed":"No","deploymentDate":"","projectName":"Song Bench","poc":"andrea.s.bautista","dn":"Yes","rollOffDate":"","fromProject":"","clLevel":"11","groupNumber":1,"primarySkill":"React","primaryYears":"1.5","secondarySkill":"","secondaryYears":"","anotherSkills":["TypeScript","RxJS"],"officeLocation":"Cebu","createdAt":"<generated-timestamp>","updatedAt":"<generated-timestamp>"}
+data files: unchanged
 
 outbound calls: none
 
@@ -3252,42 +2842,9 @@ response body:
     "updatedAt": "<generated-timestamp>"
   }
 
-data files:
-  custom-onboarding.json: modified
-    raw text diff:
-      @@ -1,4 +1,30 @@
-       [
-         {
-      +    "name": "Bea Santos",
-      +    "eid": "bea.l.santos",
-      +    "hireDate": "11/02/2026",
-      +    "rollInDate": "11/09/2026",
-      +    "projectDeployed": "No",
-      +    "deploymentDate": "",
-      +    "projectName": "Song Bench",
-      +    "poc": "hannahdel.l.orellosa",
-      +    "dn": "No",
-      +    "rollOffDate": "",
-      +    "fromProject": "",
-      +    "clLevel": "11",
-      +    "groupNumber": 1,
-      +    "primarySkill": "React",
-      +    "primaryYears": "1",
-      +    "secondarySkill": "",
-      +    "secondaryYears": "",
-      +    "anotherSkills": [
-      +      "TypeScript"
-      +    ],
-      +    "officeLocation": "Cebu",
-      +    "id": 10,
-      +    "created_at": "<generated-timestamp>",
-      +    "updated_at": "<generated-timestamp>"
-      +  },
-      +  {
-           "name": "Paolo Ramos",
-           "eid": "paolo.d.ramos",
-    parsed JSON diff:
-      + [id=10] (at index 0): {"name":"Bea Santos","eid":"bea.l.santos","hireDate":"11/02/2026","rollInDate":"11/09/2026","projectDeployed":"No","deploymentDate":"","projectName":"Song Bench","poc":"hannahdel.l.orellosa","dn":"No","rollOffDate":"","fromProject":"","clLevel":"11","groupNumber":1,"primarySkill":"React","primaryYears":"1","secondarySkill":"","secondaryYears":"","anotherSkills":["TypeScript"],"officeLocation":"Cebu","id":10,"created_at":"<generated-timestamp>","updated_at":"<generated-timestamp>"}
+stored data:
+  + /onboarding-resources[id=10] (at index 0): {"id":10,"eid":"bea.l.santos","name":"Bea Santos","hireDate":"11/02/2026","rollInDate":"11/09/2026","projectDeployed":"No","deploymentDate":"","projectName":"Song Bench","poc":"hannahdel.l.orellosa","dn":"No","rollOffDate":"","fromProject":"","clLevel":"11","groupNumber":1,"primarySkill":"React","primaryYears":"1","secondarySkill":"","secondaryYears":"","anotherSkills":["TypeScript"],"officeLocation":"Cebu","createdAt":"<generated-timestamp>","updatedAt":"<generated-timestamp>"}
+data files: unchanged
 
 outbound calls: none
 
@@ -3331,6 +2888,7 @@ response body:
     "error": "eid can only contain letters, numbers, dot, underscore, or dash"
   }
 
+stored data: unchanged
 data files: unchanged
 
 outbound calls: none
@@ -3398,42 +2956,9 @@ response body:
     "updatedAt": "<generated-timestamp>"
   }
 
-data files:
-  custom-onboarding.json: modified
-    raw text diff:
-      @@ -1,4 +1,30 @@
-       [
-         {
-      +    "name": "Bea Santos",
-      +    "eid": "bea.l.santos",
-      +    "hireDate": "11/02/2026",
-      +    "rollInDate": "11/09/2026",
-      +    "projectDeployed": "No",
-      +    "deploymentDate": "",
-      +    "projectName": "Song Bench",
-      +    "poc": "andrea.s.bautista",
-      +    "dn": "No",
-      +    "rollOffDate": "",
-      +    "fromProject": "",
-      +    "clLevel": "11",
-      +    "groupNumber": null,
-      +    "primarySkill": "React",
-      +    "primaryYears": "1",
-      +    "secondarySkill": "",
-      +    "secondaryYears": "",
-      +    "anotherSkills": [
-      +      "TypeScript"
-      +    ],
-      +    "officeLocation": "Cebu",
-      +    "id": 10,
-      +    "created_at": "<generated-timestamp>",
-      +    "updated_at": "<generated-timestamp>"
-      +  },
-      +  {
-           "name": "Paolo Ramos",
-           "eid": "paolo.d.ramos",
-    parsed JSON diff:
-      + [id=10] (at index 0): {"name":"Bea Santos","eid":"bea.l.santos","hireDate":"11/02/2026","rollInDate":"11/09/2026","projectDeployed":"No","deploymentDate":"","projectName":"Song Bench","poc":"andrea.s.bautista","dn":"No","rollOffDate":"","fromProject":"","clLevel":"11","groupNumber":null,"primarySkill":"React","primaryYears":"1","secondarySkill":"","secondaryYears":"","anotherSkills":["TypeScript"],"officeLocation":"Cebu","id":10,"created_at":"<generated-timestamp>","updated_at":"<generated-timestamp>"}
+stored data:
+  + /onboarding-resources[id=10] (at index 0): {"id":10,"eid":"bea.l.santos","name":"Bea Santos","hireDate":"11/02/2026","rollInDate":"11/09/2026","projectDeployed":"No","deploymentDate":"","projectName":"Song Bench","poc":"andrea.s.bautista","dn":"No","rollOffDate":"","fromProject":"","clLevel":"11","groupNumber":null,"primarySkill":"React","primaryYears":"1","secondarySkill":"","secondaryYears":"","anotherSkills":["TypeScript"],"officeLocation":"Cebu","createdAt":"<generated-timestamp>","updatedAt":"<generated-timestamp>"}
+data files: unchanged
 
 outbound calls: none
 
@@ -3477,6 +3002,7 @@ response body:
     "error": "hireDate must use MM/DD/YYYY format"
   }
 
+stored data: unchanged
 data files: unchanged
 
 outbound calls: none
@@ -3544,42 +3070,9 @@ response body:
     "updatedAt": "<generated-timestamp>"
   }
 
-data files:
-  custom-onboarding.json: modified
-    raw text diff:
-      @@ -1,4 +1,30 @@
-       [
-         {
-      +    "name": "Bea Santos",
-      +    "eid": "bea.l.santos",
-      +    "hireDate": "02/31/2026",
-      +    "rollInDate": "11/09/2026",
-      +    "projectDeployed": "No",
-      +    "deploymentDate": "",
-      +    "projectName": "Song Bench",
-      +    "poc": "andrea.s.bautista",
-      +    "dn": "No",
-      +    "rollOffDate": "",
-      +    "fromProject": "",
-      +    "clLevel": "11",
-      +    "groupNumber": 1,
-      +    "primarySkill": "React",
-      +    "primaryYears": "1",
-      +    "secondarySkill": "",
-      +    "secondaryYears": "",
-      +    "anotherSkills": [
-      +      "TypeScript"
-      +    ],
-      +    "officeLocation": "Cebu",
-      +    "id": 10,
-      +    "created_at": "<generated-timestamp>",
-      +    "updated_at": "<generated-timestamp>"
-      +  },
-      +  {
-           "name": "Paolo Ramos",
-           "eid": "paolo.d.ramos",
-    parsed JSON diff:
-      + [id=10] (at index 0): {"name":"Bea Santos","eid":"bea.l.santos","hireDate":"02/31/2026","rollInDate":"11/09/2026","projectDeployed":"No","deploymentDate":"","projectName":"Song Bench","poc":"andrea.s.bautista","dn":"No","rollOffDate":"","fromProject":"","clLevel":"11","groupNumber":1,"primarySkill":"React","primaryYears":"1","secondarySkill":"","secondaryYears":"","anotherSkills":["TypeScript"],"officeLocation":"Cebu","id":10,"created_at":"<generated-timestamp>","updated_at":"<generated-timestamp>"}
+stored data:
+  + /onboarding-resources[id=10] (at index 0): {"id":10,"eid":"bea.l.santos","name":"Bea Santos","hireDate":"02/31/2026","rollInDate":"11/09/2026","projectDeployed":"No","deploymentDate":"","projectName":"Song Bench","poc":"andrea.s.bautista","dn":"No","rollOffDate":"","fromProject":"","clLevel":"11","groupNumber":1,"primarySkill":"React","primaryYears":"1","secondarySkill":"","secondaryYears":"","anotherSkills":["TypeScript"],"officeLocation":"Cebu","createdAt":"<generated-timestamp>","updatedAt":"<generated-timestamp>"}
+data files: unchanged
 
 outbound calls: none
 
@@ -3609,6 +3102,7 @@ response body:
   </html>
   
 
+stored data: unchanged
 data files: unchanged
 
 outbound calls: none
@@ -3653,6 +3147,7 @@ response body:
     "error": "name and eid are required"
   }
 
+stored data: unchanged
 data files: unchanged
 
 outbound calls: none
@@ -3697,6 +3192,7 @@ response body:
     "error": "hireDate and rollInDate are required"
   }
 
+stored data: unchanged
 data files: unchanged
 
 outbound calls: none
@@ -3741,6 +3237,7 @@ response body:
     "error": "name and eid are required"
   }
 
+stored data: unchanged
 data files: unchanged
 
 outbound calls: none
@@ -3761,6 +3258,7 @@ response body:
     "error": "name and eid are required"
   }
 
+stored data: unchanged
 data files: unchanged
 
 outbound calls: none
@@ -3805,6 +3303,7 @@ response body:
     "error": "optional dates must use MM/DD/YYYY format"
   }
 
+stored data: unchanged
 data files: unchanged
 
 outbound calls: none
@@ -3872,42 +3371,9 @@ response body:
     "updatedAt": "<generated-timestamp>"
   }
 
-data files:
-  custom-onboarding.json: modified
-    raw text diff:
-      @@ -1,4 +1,30 @@
-       [
-         {
-      +    "name": "Bea Santos",
-      +    "eid": "bea.l.santos",
-      +    "hireDate": "11/02/2026",
-      +    "rollInDate": "11/09/2026",
-      +    "projectDeployed": "No",
-      +    "deploymentDate": "",
-      +    "projectName": "Song Bench",
-      +    "poc": "andrea.s.bautista",
-      +    "dn": "No",
-      +    "rollOffDate": "",
-      +    "fromProject": "",
-      +    "clLevel": "11",
-      +    "groupNumber": null,
-      +    "primarySkill": "React",
-      +    "primaryYears": "1",
-      +    "secondarySkill": "",
-      +    "secondaryYears": "",
-      +    "anotherSkills": [
-      +      "TypeScript"
-      +    ],
-      +    "officeLocation": "Cebu",
-      +    "id": 10,
-      +    "created_at": "<generated-timestamp>",
-      +    "updated_at": "<generated-timestamp>"
-      +  },
-      +  {
-           "name": "Paolo Ramos",
-           "eid": "paolo.d.ramos",
-    parsed JSON diff:
-      + [id=10] (at index 0): {"name":"Bea Santos","eid":"bea.l.santos","hireDate":"11/02/2026","rollInDate":"11/09/2026","projectDeployed":"No","deploymentDate":"","projectName":"Song Bench","poc":"andrea.s.bautista","dn":"No","rollOffDate":"","fromProject":"","clLevel":"11","groupNumber":null,"primarySkill":"React","primaryYears":"1","secondarySkill":"","secondaryYears":"","anotherSkills":["TypeScript"],"officeLocation":"Cebu","id":10,"created_at":"<generated-timestamp>","updated_at":"<generated-timestamp>"}
+stored data:
+  + /onboarding-resources[id=10] (at index 0): {"id":10,"eid":"bea.l.santos","name":"Bea Santos","hireDate":"11/02/2026","rollInDate":"11/09/2026","projectDeployed":"No","deploymentDate":"","projectName":"Song Bench","poc":"andrea.s.bautista","dn":"No","rollOffDate":"","fromProject":"","clLevel":"11","groupNumber":null,"primarySkill":"React","primaryYears":"1","secondarySkill":"","secondaryYears":"","anotherSkills":["TypeScript"],"officeLocation":"Cebu","createdAt":"<generated-timestamp>","updatedAt":"<generated-timestamp>"}
+data files: unchanged
 
 outbound calls: none
 
@@ -3977,42 +3443,9 @@ response body:
     "updatedAt": "<generated-timestamp>"
   }
 
-data files:
-  custom-onboarding.json: modified
-    raw text diff:
-      @@ -1,4 +1,30 @@
-       [
-         {
-      +    "name": "Bea Santos",
-      +    "eid": "bea.l.santos",
-      +    "hireDate": "11/02/2026",
-      +    "rollInDate": "11/09/2026",
-      +    "projectDeployed": "No",
-      +    "deploymentDate": "",
-      +    "projectName": "Song Bench",
-      +    "poc": "andrea.s.bautista",
-      +    "dn": "No",
-      +    "rollOffDate": "",
-      +    "fromProject": "",
-      +    "clLevel": "11",
-      +    "groupNumber": 1,
-      +    "primarySkill": "React",
-      +    "primaryYears": "1",
-      +    "secondarySkill": "",
-      +    "secondaryYears": "",
-      +    "anotherSkills": [
-      +      "TypeScript"
-      +    ],
-      +    "officeLocation": "Cebu",
-      +    "id": 10,
-      +    "created_at": "<generated-timestamp>",
-      +    "updated_at": "<generated-timestamp>"
-      +  },
-      +  {
-           "name": "Paolo Ramos",
-           "eid": "paolo.d.ramos",
-    parsed JSON diff:
-      + [id=10] (at index 0): {"name":"Bea Santos","eid":"bea.l.santos","hireDate":"11/02/2026","rollInDate":"11/09/2026","projectDeployed":"No","deploymentDate":"","projectName":"Song Bench","poc":"andrea.s.bautista","dn":"No","rollOffDate":"","fromProject":"","clLevel":"11","groupNumber":1,"primarySkill":"React","primaryYears":"1","secondarySkill":"","secondaryYears":"","anotherSkills":["TypeScript"],"officeLocation":"Cebu","id":10,"created_at":"<generated-timestamp>","updated_at":"<generated-timestamp>"}
+stored data:
+  + /onboarding-resources[id=10] (at index 0): {"id":10,"eid":"bea.l.santos","name":"Bea Santos","hireDate":"11/02/2026","rollInDate":"11/09/2026","projectDeployed":"No","deploymentDate":"","projectName":"Song Bench","poc":"andrea.s.bautista","dn":"No","rollOffDate":"","fromProject":"","clLevel":"11","groupNumber":1,"primarySkill":"React","primaryYears":"1","secondarySkill":"","secondaryYears":"","anotherSkills":["TypeScript"],"officeLocation":"Cebu","createdAt":"<generated-timestamp>","updatedAt":"<generated-timestamp>"}
+data files: unchanged
 
 outbound calls: none
 

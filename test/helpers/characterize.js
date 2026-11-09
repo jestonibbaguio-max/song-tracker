@@ -4,13 +4,20 @@
 // What a snapshot holds, per request:
 //   - the request (method, path, credentials sent, body)
 //   - the response status, a few headers, and the body
-//   - every file in DATA_DIR that changed: an exact line diff of the raw text
-//     and a structural diff of the parsed JSON
+//   - "stored data": a logical diff of the stores (rows added, changed and
+//     removed per collection), from a dump before and after the request
+//     (store-dump.js). It reads through the stores, so it comes out the same
+//     on every backend (docs/sqlite-migration-plan.md, Phase 2).
+//   - "data files": every other file in DATA_DIR that changed (tasks.json and
+//     the fruits test bench, which stay on JSON): an exact line diff of the
+//     raw text and a structural diff of the parsed JSON
 //   - every outbound network call the process attempted (see outbound-recorder)
 //
-// Cases are tagged by the backend they make sense on (see backend.js). A case
-// is json-only when it sets `jsonOnly: 'reason'`, or when its setup edits a
-// JSON store file directly (removeFile, addBom and writeFile on db.json,
+// A json-only case (see backend.js) has no "stored data" section: its "data
+// files" section covers every file, db.json and custom-onboarding.json
+// included, because what it pins is how those files look on disk. A case is
+// json-only when it sets `jsonOnly: 'reason'`, or when its setup edits a JSON
+// store file directly (removeFile, addBom and writeFile on db.json,
 // custom-onboarding.json or custom.csv, or a setup wrapped in jsonOnlySetup()).
 //
 // Normalised so snapshots are stable across runs and machines:
@@ -37,7 +44,8 @@ const path = require('node:path');
 const { isDeepStrictEqual } = require('node:util');
 const { startTestServer } = require('./test-server');
 const outbound = require('./outbound-recorder');
-const { backendSkip } = require('./backend');
+const { backendSkip, isStoreFile } = require('./backend');
+const { dumpStore } = require('./store-dump');
 
 // Express reads NODE_ENV when the app is created. Pin it so snapshots don't
 // depend on the shell: anything but "production" puts the error message in the
@@ -137,11 +145,14 @@ async function runCase(method, defaultPath, kase, credentials) {
     const requestPath = kase.path ?? defaultPath;
     for (const s of JSON.stringify(kase.body ?? kase.rawBody ?? '').match(ISO_TIMESTAMP) || []) knownTimestamps.add(s);
 
+    const jsonOnly = Boolean(jsonOnlyReason(kase));
     const filesBefore = readTree(api.dataDir);
+    const storeBefore = jsonOnly ? null : dumpUnchanged(api.dataDir, filesBefore);
     outbound.reset();
     const res = await send(api.baseUrl, method, requestPath, kase, credentials.headers);
     runWindow.end = Date.now();
     const filesAfter = readTree(api.dataDir);
+    const storeAfter = jsonOnly ? null : dumpUnchanged(api.dataDir, filesAfter);
 
     const outcome = {
       request: {
@@ -152,13 +163,57 @@ async function runCase(method, defaultPath, kase, credentials) {
         ...('rawBody' in kase ? { rawBody: kase.rawBody } : {}),
       },
       response: normaliseCatchAll(res),
-      dataFiles: diffTrees(filesBefore, filesAfter),
+      ...(jsonOnly
+        ? { dataFiles: diffTrees(filesBefore, filesAfter) }
+        : {
+          storedData: jsonDiff(storeBefore, storeAfter),
+          dataFiles: diffTrees(filesBefore, filesAfter, (file) => !isStoreFile(file)),
+        }),
       outboundCalls: outbound.recordedCalls(),
     };
-    return normalise(outcome, { knownTimestamps, dataDir: api.dataDir, runWindow });
+    const ctx = { knownTimestamps, dataDir: api.dataDir, runWindow };
+    const normalised = normalise(outcome, ctx);
+    if (STORAGE_REPORT && !jsonOnly) reports.set(normalised, storageReport(filesBefore, filesAfter, ctx));
+    return normalised;
   } finally {
     await api.close();
   }
+}
+
+/** dumpStore(), checking that reading the stores changed no file in DATA_DIR. */
+function dumpUnchanged(dataDir, tree) {
+  const dump = dumpStore();
+  const changed = diffTrees(tree, readTree(dataDir)).map((f) => f.file);
+  assert.deepEqual(changed, [], 'dumping the stores changed data files; a case that needs this state is json-only');
+  return dump;
+}
+
+// ── Storage report (for test/tools/verify-storage-snapshots.js) ──────────────
+//
+// With CHARACTERIZE_STORAGE_REPORT=<file>, every case that runs on every
+// backend also appends one JSON line to <file>: the test's name, its
+// normalised "stored data" ops, the store files' parsed JSON before and after,
+// and the storage section as the snapshots rendered it before Phase 2 (raw
+// diffs of every file). The verification script compares that with the old
+// snapshots and the new ones. Reports never affect a snapshot.
+
+const STORAGE_REPORT = process.env.CHARACTERIZE_STORAGE_REPORT || '';
+const reports = new WeakMap();
+
+function storageReport(filesBefore, filesAfter, ctx) {
+  const parsed = (tree) => Object.fromEntries([...tree].filter(([file]) => isStoreFile(file))
+    .map(([file, buf]) => [file, parseOrError(buf.toString('utf8'))]));
+  return normalise({
+    storeFiles: { before: parsed(filesBefore), after: parsed(filesAfter) },
+    legacyStorageText: renderDataFiles(diffTrees(filesBefore, filesAfter)).join('\n'),
+  }, ctx);
+}
+
+function writeReport(t, outcome) {
+  const report = reports.get(outcome);
+  if (!report) return;
+  const line = JSON.stringify({ name: t.fullName, storedData: outcome.storedData, ...report });
+  fs.appendFileSync(STORAGE_REPORT, line + '\n', 'utf8');
 }
 
 // node:http rather than fetch, because fetch refuses to send a body with GET
@@ -225,8 +280,9 @@ function collectTimestamps(tree) {
   return found;
 }
 
-function diffTrees(before, after) {
-  const names = [...new Set([...before.keys(), ...after.keys()])].sort();
+/** Every file that differs between two trees; `include` picks which files to compare. */
+function diffTrees(before, after, include = () => true) {
+  const names = [...new Set([...before.keys(), ...after.keys()])].filter(include).sort();
   const changes = [];
   for (const file of names) {
     const a = before.get(file);
@@ -429,9 +485,28 @@ function render(outcome) {
   if ('body' in response) { push('response body:'); push(block(response.body), 1); }
 
   push('');
-  if (!outcome.dataFiles.length) push('data files: unchanged');
+  if (outcome.storedData) {
+    if (!outcome.storedData.length) push('stored data: unchanged');
+    else push('stored data:');
+    for (const d of outcome.storedData) push(renderJsonOp(d), 1);
+  }
+  for (const l of renderDataFiles(outcome.dataFiles)) lines.push(l);
+
+  push('');
+  if (!outcome.outboundCalls.length) push('outbound calls: none');
+  else { push('outbound calls:'); for (const c of outcome.outboundCalls) push(JSON.stringify(c), 1); }
+  return '\n' + lines.join('\n') + '\n';
+}
+
+/** The "data files" section: one block per changed file, with its raw text diff and parsed JSON diff. */
+function renderDataFiles(dataFiles) {
+  const lines = [];
+  const push = (text, depth = 0) => {
+    for (const l of String(text).split('\n')) lines.push('  '.repeat(depth) + l);
+  };
+  if (!dataFiles.length) push('data files: unchanged');
   else push('data files:');
-  for (const f of outcome.dataFiles) {
+  for (const f of dataFiles) {
     push(`${f.file}: ${f.change}`, 1);
     if (f.raw) { push('raw text:', 2); push(f.raw.join('\n'), 3); }
     if (f.json) { push('parsed JSON:', 2); push(f.json.error || JSON.stringify(f.json.value, null, 2), 3); }
@@ -447,11 +522,7 @@ function render(outcome) {
       }
     }
   }
-
-  push('');
-  if (!outcome.outboundCalls.length) push('outbound calls: none');
-  else { push('outbound calls:'); for (const c of outcome.outboundCalls) push(JSON.stringify(c), 1); }
-  return '\n' + lines.join('\n') + '\n';
+  return lines;
 }
 
 function renderJsonOp(d) {
@@ -465,6 +536,7 @@ function renderJsonOp(d) {
 }
 
 function snapshot(t, outcome) {
+  if (STORAGE_REPORT) writeReport(t, outcome);
   t.assert.snapshot(outcome, { serializers: [render] });
 }
 
@@ -581,6 +653,7 @@ module.exports = {
   // exported for the helper's own tests
   unifiedDiff,
   jsonDiff,
+  renderJsonOp,
   toLines,
   normalise,
 };

@@ -12,24 +12,9 @@ response body:
     "deleted": true
   }
 
-data files:
-  db.json: modified
-    raw text diff:
-      @@ -44,12 +44,4 @@
-         "sprint-retros": [
-           {
-      -      "id": 1,
-      -      "sprintId": 1,
-      -      "groupNumber": 5,
-      -      "category": "improve",
-      -      "text": "Pair on AEM environment setup earlier so blockers surface on day one",
-      -      "createdAt": "2026-10-23T07:02:11.408Z"
-      -    },
-      -    {
-             "id": 2,
-             "sprintId": 1,
-    parsed JSON diff:
-      - /sprint-retros[id=1]: {"id":1,"sprintId":1,"groupNumber":5,"category":"improve","text":"Pair on AEM environment setup earlier so blockers surface on day one","createdAt":"2026-10-23T07:02:11.408Z"}
+stored data:
+  - /sprint-retros[id=1]: {"id":1,"sprintId":1,"groupNumber":5,"category":"improve","text":"Pair on AEM environment setup earlier so blockers surface on day one","createdAt":"2026-10-23T07:02:11.408Z"}
+data files: unchanged
 
 outbound calls: none
 
@@ -49,6 +34,7 @@ response body:
     "error": "retrospective item not found"
   }
 
+stored data: unchanged
 data files: unchanged
 
 outbound calls: none
@@ -78,6 +64,7 @@ response body:
     "error": "retrospective item not found"
   }
 
+stored data: unchanged
 data files: unchanged
 
 outbound calls: none
@@ -98,6 +85,7 @@ response body:
     "error": "retrospective item not found"
   }
 
+stored data: unchanged
 data files: unchanged
 
 outbound calls: none
@@ -127,22 +115,9 @@ response body:
     "deleted": true
   }
 
-data files:
-  db.json: modified
-    raw text diff:
-      @@ -78,10 +78,4 @@
-         "sprints": [
-           {
-      -      "id": 1,
-      -      "name": "Sprint 1",
-      -      "start": "2026-10-13",
-      -      "end": "2026-10-24"
-      -    },
-      -    {
-             "id": 2,
-             "name": "Sprint 2",
-    parsed JSON diff:
-      - /sprints[id=1]: {"id":1,"name":"Sprint 1","start":"2026-10-13","end":"2026-10-24"}
+stored data:
+  - /sprints[id=1]: {"id":1,"name":"Sprint 1","start":"2026-10-13","end":"2026-10-24"}
+data files: unchanged
 
 outbound calls: none
 
@@ -162,22 +137,9 @@ response body:
     "deleted": true
   }
 
-data files:
-  db.json: modified
-    raw text diff:
-      @@ -88,10 +88,4 @@
-             "start": "2026-10-27",
-             "end": "2026-11-07"
-      -    },
-      -    {
-      -      "id": 3,
-      -      "name": "Sprint 3",
-      -      "start": "2026-11-10",
-      -      "end": "2026-11-21"
-           }
-         ],
-    parsed JSON diff:
-      - /sprints[id=3]: {"id":3,"name":"Sprint 3","start":"2026-11-10","end":"2026-11-21"}
+stored data:
+  - /sprints[id=3]: {"id":3,"name":"Sprint 3","start":"2026-11-10","end":"2026-11-21"}
+data files: unchanged
 
 outbound calls: none
 
@@ -207,6 +169,7 @@ response body:
   </html>
   
 
+stored data: unchanged
 data files: unchanged
 
 outbound calls: none
@@ -227,6 +190,7 @@ response body:
     "error": "sprint not found"
   }
 
+stored data: unchanged
 data files: unchanged
 
 outbound calls: none
@@ -256,6 +220,7 @@ response body:
     "error": "sprint not found"
   }
 
+stored data: unchanged
 data files: unchanged
 
 outbound calls: none
@@ -308,6 +273,7 @@ response body:
     }
   ]
 
+stored data: unchanged
 data files: unchanged
 
 outbound calls: none
@@ -335,6 +301,7 @@ response body:
     }
   ]
 
+stored data: unchanged
 data files: unchanged
 
 outbound calls: none
@@ -386,6 +353,7 @@ response body:
     }
   ]
 
+stored data: unchanged
 data files: unchanged
 
 outbound calls: none
@@ -404,6 +372,7 @@ x-powered-by: Express
 response body:
   []
 
+stored data: unchanged
 data files: unchanged
 
 outbound calls: none
@@ -434,6 +403,7 @@ response body:
   </html>
   
 
+stored data: unchanged
 data files: unchanged
 
 outbound calls: none
@@ -452,6 +422,7 @@ x-powered-by: Express
 response body:
   []
 
+stored data: unchanged
 data files: unchanged
 
 outbound calls: none
@@ -479,6 +450,7 @@ x-powered-by: Express
 response body:
   []
 
+stored data: unchanged
 data files: unchanged
 
 outbound calls: none
@@ -497,6 +469,7 @@ x-powered-by: Express
 response body:
   []
 
+stored data: unchanged
 data files: unchanged
 
 outbound calls: none
@@ -515,6 +488,7 @@ x-powered-by: Express
 response body:
   []
 
+stored data: unchanged
 data files: unchanged
 
 outbound calls: none
@@ -561,6 +535,7 @@ response body:
     }
   ]
 
+stored data: unchanged
 data files: unchanged
 
 outbound calls: none
@@ -591,6 +566,7 @@ response body:
   </html>
   
 
+stored data: unchanged
 data files: unchanged
 
 outbound calls: none
@@ -654,6 +630,7 @@ x-powered-by: Express
 response body:
   []
 
+stored data: unchanged
 data files: unchanged
 
 outbound calls: none
@@ -692,18 +669,9 @@ response body:
     "createdAt": "2026-10-23T07:03:40.917Z"
   }
 
-data files:
-  db.json: modified
-    raw text diff:
-      @@ -56,5 +56,5 @@
-             "groupNumber": 5,
-             "category": "didnt-go-well",
-      -      "text": "Local author instance setup took most of the first week",
-      +      "text": "Author instance setup took three days",
-             "createdAt": "2026-10-23T07:03:40.917Z"
-           },
-    parsed JSON diff:
-      ~ /sprint-retros[id=2]/text: "Local author instance setup took most of the first week" → "Author instance setup took three days"
+stored data:
+  ~ /sprint-retros[id=2]/text: "Local author instance setup took most of the first week" → "Author instance setup took three days"
+data files: unchanged
 
 outbound calls: none
 
@@ -736,18 +704,9 @@ response body:
     "createdAt": "2026-10-23T07:03:40.917Z"
   }
 
-data files:
-  db.json: modified
-    raw text diff:
-      @@ -56,5 +56,5 @@
-             "groupNumber": 5,
-             "category": "didnt-go-well",
-      -      "text": "Local author instance setup took most of the first week",
-      +      "text": "Edited",
-             "createdAt": "2026-10-23T07:03:40.917Z"
-           },
-    parsed JSON diff:
-      ~ /sprint-retros[id=2]/text: "Local author instance setup took most of the first week" → "Edited"
+stored data:
+  ~ /sprint-retros[id=2]/text: "Local author instance setup took most of the first week" → "Edited"
+data files: unchanged
 
 outbound calls: none
 
@@ -771,6 +730,7 @@ response body:
     "error": "text is required and must not exceed 500 characters"
   }
 
+stored data: unchanged
 data files: unchanged
 
 outbound calls: none
@@ -801,6 +761,7 @@ response body:
   </html>
   
 
+stored data: unchanged
 data files: unchanged
 
 outbound calls: none
@@ -821,6 +782,7 @@ response body:
     "error": "text is required and must not exceed 500 characters"
   }
 
+stored data: unchanged
 data files: unchanged
 
 outbound calls: none
@@ -850,18 +812,9 @@ response body:
     "createdAt": "2026-10-23T07:03:40.917Z"
   }
 
-data files:
-  db.json: modified
-    raw text diff:
-      @@ -56,5 +56,5 @@
-             "groupNumber": 5,
-             "category": "didnt-go-well",
-      -      "text": "Local author instance setup took most of the first week",
-      +      "text": "12345",
-             "createdAt": "2026-10-23T07:03:40.917Z"
-           },
-    parsed JSON diff:
-      ~ /sprint-retros[id=2]/text: "Local author instance setup took most of the first week" → "12345"
+stored data:
+  ~ /sprint-retros[id=2]/text: "Local author instance setup took most of the first week" → "12345"
+data files: unchanged
 
 outbound calls: none
 
@@ -885,6 +838,7 @@ response body:
     "error": "text is required and must not exceed 500 characters"
   }
 
+stored data: unchanged
 data files: unchanged
 
 outbound calls: none
@@ -922,6 +876,7 @@ response body:
     "error": "retrospective item not found"
   }
 
+stored data: unchanged
 data files: unchanged
 
 outbound calls: none
@@ -946,6 +901,7 @@ response body:
     "error": "retrospective item not found"
   }
 
+stored data: unchanged
 data files: unchanged
 
 outbound calls: none
@@ -970,6 +926,7 @@ response body:
     "error": "retrospective item not found"
   }
 
+stored data: unchanged
 data files: unchanged
 
 outbound calls: none
@@ -1011,6 +968,7 @@ response body:
     "end": "2026-11-21"
   }
 
+stored data: unchanged
 data files: unchanged
 
 outbound calls: none
@@ -1038,18 +996,9 @@ response body:
     "end": "2026-11-28"
   }
 
-data files:
-  db.json: modified
-    raw text diff:
-      @@ -93,5 +93,5 @@
-             "name": "Sprint 3",
-             "start": "2026-11-10",
-      -      "end": "2026-11-21"
-      +      "end": "2026-11-28"
-           }
-         ],
-    parsed JSON diff:
-      ~ /sprints[id=3]/end: "2026-11-21" → "2026-11-28"
+stored data:
+  ~ /sprints[id=3]/end: "2026-11-21" → "2026-11-28"
+data files: unchanged
 
 outbound calls: none
 
@@ -1078,22 +1027,10 @@ response body:
     "end": "2026-11-28"
   }
 
-data files:
-  db.json: modified
-    raw text diff:
-      @@ -91,7 +91,7 @@
-           {
-             "id": 3,
-      -      "name": "Sprint 3",
-      +      "name": "Sprint 3 (extended)",
-             "start": "2026-11-10",
-      -      "end": "2026-11-21"
-      +      "end": "2026-11-28"
-           }
-         ],
-    parsed JSON diff:
-      ~ /sprints[id=3]/name: "Sprint 3" → "Sprint 3 (extended)"
-      ~ /sprints[id=3]/end: "2026-11-21" → "2026-11-28"
+stored data:
+  ~ /sprints[id=3]/name: "Sprint 3" → "Sprint 3 (extended)"
+  ~ /sprints[id=3]/end: "2026-11-21" → "2026-11-28"
+data files: unchanged
 
 outbound calls: none
 
@@ -1120,18 +1057,9 @@ response body:
     "end": "2026-11-21"
   }
 
-data files:
-  db.json: modified
-    raw text diff:
-      @@ -91,5 +91,5 @@
-           {
-             "id": 3,
-      -      "name": "Sprint 3",
-      +      "name": "",
-             "start": "2026-11-10",
-             "end": "2026-11-21"
-    parsed JSON diff:
-      ~ /sprints[id=3]/name: "Sprint 3" → ""
+stored data:
+  ~ /sprints[id=3]/name: "Sprint 3" → ""
+data files: unchanged
 
 outbound calls: none
 
@@ -1161,6 +1089,7 @@ response body:
   </html>
   
 
+stored data: unchanged
 data files: unchanged
 
 outbound calls: none
@@ -1189,6 +1118,7 @@ response body:
   </html>
   
 
+stored data: unchanged
 data files: unchanged
 
 outbound calls: none
@@ -1216,18 +1146,9 @@ response body:
     "end": "2026-11-21"
   }
 
-data files:
-  db.json: modified
-    raw text diff:
-      @@ -92,5 +92,5 @@
-             "id": 3,
-             "name": "Sprint 3",
-      -      "start": "2026-11-10",
-      +      "start": "null",
-             "end": "2026-11-21"
-           }
-    parsed JSON diff:
-      ~ /sprints[id=3]/start: "2026-11-10" → "null"
+stored data:
+  ~ /sprints[id=3]/start: "2026-11-10" → "null"
+data files: unchanged
 
 outbound calls: none
 
@@ -1266,6 +1187,7 @@ response body:
     "error": "sprint not found"
   }
 
+stored data: unchanged
 data files: unchanged
 
 outbound calls: none
@@ -1290,6 +1212,7 @@ response body:
     "error": "sprint not found"
   }
 
+stored data: unchanged
 data files: unchanged
 
 outbound calls: none
@@ -1310,6 +1233,7 @@ response body:
     "error": "sprint not found"
   }
 
+stored data: unchanged
 data files: unchanged
 
 outbound calls: none
@@ -1357,24 +1281,9 @@ response body:
     "createdAt": "<generated-timestamp>"
   }
 
-data files:
-  db.json: modified
-    raw text diff:
-      @@ -74,4 +74,12 @@
-             "text": "Testing Library session was well attended and recorded for later",
-             "createdAt": "2026-11-05T09:14:56.780Z"
-      +    },
-      +    {
-      +      "id": 6,
-      +      "sprintId": 2,
-      +      "groupNumber": 5,
-      +      "category": "went-well",
-      +      "text": "Daily pairing on AEM components kept everyone unblocked",
-      +      "createdAt": "<generated-timestamp>"
-           }
-         ],
-    parsed JSON diff:
-      + /sprint-retros[id=6] (at index 4): {"id":6,"sprintId":2,"groupNumber":5,"category":"went-well","text":"Daily pairing on AEM components kept everyone unblocked","createdAt":"<generated-timestamp>"}
+stored data:
+  + /sprint-retros[id=6] (at index 4): {"id":6,"sprintId":2,"groupNumber":5,"category":"went-well","text":"Daily pairing on AEM components kept everyone unblocked","createdAt":"<generated-timestamp>"}
+data files: unchanged
 
 outbound calls: none
 
@@ -1406,24 +1315,9 @@ response body:
     "createdAt": "<generated-timestamp>"
   }
 
-data files:
-  db.json: modified
-    raw text diff:
-      @@ -74,4 +74,12 @@
-             "text": "Testing Library session was well attended and recorded for later",
-             "createdAt": "2026-11-05T09:14:56.780Z"
-      +    },
-      +    {
-      +      "id": 6,
-      +      "sprintId": 2,
-      +      "groupNumber": 1,
-      +      "category": "went-well",
-      +      "text": "padded",
-      +      "createdAt": "<generated-timestamp>"
-           }
-         ],
-    parsed JSON diff:
-      + /sprint-retros[id=6] (at index 4): {"id":6,"sprintId":2,"groupNumber":1,"category":"went-well","text":"padded","createdAt":"<generated-timestamp>"}
+stored data:
+  + /sprint-retros[id=6] (at index 4): {"id":6,"sprintId":2,"groupNumber":1,"category":"went-well","text":"padded","createdAt":"<generated-timestamp>"}
+data files: unchanged
 
 outbound calls: none
 
@@ -1455,24 +1349,9 @@ response body:
     "createdAt": "<generated-timestamp>"
   }
 
-data files:
-  db.json: modified
-    raw text diff:
-      @@ -74,4 +74,12 @@
-             "text": "Testing Library session was well attended and recorded for later",
-             "createdAt": "2026-11-05T09:14:56.780Z"
-      +    },
-      +    {
-      +      "id": 6,
-      +      "sprintId": 2,
-      +      "groupNumber": 5,
-      +      "category": "went-well",
-      +      "text": "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",
-      +      "createdAt": "<generated-timestamp>"
-           }
-         ],
-    parsed JSON diff:
-      + /sprint-retros[id=6] (at index 4): {"id":6,"sprintId":2,"groupNumber":5,"category":"went-well","text":"xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx","createdAt":"<generated-timestamp>"}
+stored data:
+  + /sprint-retros[id=6] (at index 4): {"id":6,"sprintId":2,"groupNumber":5,"category":"went-well","text":"xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx","createdAt":"<generated-timestamp>"}
+data files: unchanged
 
 outbound calls: none
 
@@ -1507,24 +1386,9 @@ response body:
     "createdAt": "<generated-timestamp>"
   }
 
-data files:
-  db.json: modified
-    raw text diff:
-      @@ -74,4 +74,12 @@
-             "text": "Testing Library session was well attended and recorded for later",
-             "createdAt": "2026-11-05T09:14:56.780Z"
-      +    },
-      +    {
-      +      "id": 6,
-      +      "sprintId": 2,
-      +      "groupNumber": 5,
-      +      "category": "went-well",
-      +      "text": "Daily pairing on AEM components kept everyone unblocked",
-      +      "createdAt": "<generated-timestamp>"
-           }
-         ],
-    parsed JSON diff:
-      + /sprint-retros[id=6] (at index 4): {"id":6,"sprintId":2,"groupNumber":5,"category":"went-well","text":"Daily pairing on AEM components kept everyone unblocked","createdAt":"<generated-timestamp>"}
+stored data:
+  + /sprint-retros[id=6] (at index 4): {"id":6,"sprintId":2,"groupNumber":5,"category":"went-well","text":"Daily pairing on AEM components kept everyone unblocked","createdAt":"<generated-timestamp>"}
+data files: unchanged
 
 outbound calls: none
 
@@ -1551,6 +1415,7 @@ response body:
     "error": "a valid sprint number is required"
   }
 
+stored data: unchanged
 data files: unchanged
 
 outbound calls: none
@@ -1578,6 +1443,7 @@ response body:
     "error": "a valid group number is required"
   }
 
+stored data: unchanged
 data files: unchanged
 
 outbound calls: none
@@ -1610,24 +1476,9 @@ response body:
     "createdAt": "<generated-timestamp>"
   }
 
-data files:
-  db.json: modified
-    raw text diff:
-      @@ -74,4 +74,12 @@
-             "text": "Testing Library session was well attended and recorded for later",
-             "createdAt": "2026-11-05T09:14:56.780Z"
-      +    },
-      +    {
-      +      "id": 6,
-      +      "sprintId": 2,
-      +      "groupNumber": 99,
-      +      "category": "went-well",
-      +      "text": "Daily pairing on AEM components kept everyone unblocked",
-      +      "createdAt": "<generated-timestamp>"
-           }
-         ],
-    parsed JSON diff:
-      + /sprint-retros[id=6] (at index 4): {"id":6,"sprintId":2,"groupNumber":99,"category":"went-well","text":"Daily pairing on AEM components kept everyone unblocked","createdAt":"<generated-timestamp>"}
+stored data:
+  + /sprint-retros[id=6] (at index 4): {"id":6,"sprintId":2,"groupNumber":99,"category":"went-well","text":"Daily pairing on AEM components kept everyone unblocked","createdAt":"<generated-timestamp>"}
+data files: unchanged
 
 outbound calls: none
 
@@ -1657,6 +1508,7 @@ response body:
   </html>
   
 
+stored data: unchanged
 data files: unchanged
 
 outbound calls: none
@@ -1677,6 +1529,7 @@ response body:
     "error": "a valid sprint number is required"
   }
 
+stored data: unchanged
 data files: unchanged
 
 outbound calls: none
@@ -1704,6 +1557,7 @@ response body:
     "error": "text is required and must not exceed 500 characters"
   }
 
+stored data: unchanged
 data files: unchanged
 
 outbound calls: none
@@ -1731,6 +1585,7 @@ response body:
     "error": "a valid category is required"
   }
 
+stored data: unchanged
 data files: unchanged
 
 outbound calls: none
@@ -1758,6 +1613,7 @@ response body:
     "error": "text is required and must not exceed 500 characters"
   }
 
+stored data: unchanged
 data files: unchanged
 
 outbound calls: none
@@ -1801,6 +1657,7 @@ response body:
     "error": "a valid sprint number is required"
   }
 
+stored data: unchanged
 data files: unchanged
 
 outbound calls: none
@@ -1828,6 +1685,7 @@ response body:
     "error": "a valid sprint number is required"
   }
 
+stored data: unchanged
 data files: unchanged
 
 outbound calls: none
@@ -1873,22 +1731,9 @@ response body:
     "end": "2026-12-05"
   }
 
-data files:
-  db.json: modified
-    raw text diff:
-      @@ -94,4 +94,10 @@
-             "start": "2026-11-10",
-             "end": "2026-11-21"
-      +    },
-      +    {
-      +      "id": 4,
-      +      "name": "Sprint 4",
-      +      "start": "2026-11-24",
-      +      "end": "2026-12-05"
-           }
-         ],
-    parsed JSON diff:
-      + /sprints[id=4] (at index 3): {"id":4,"name":"Sprint 4","start":"2026-11-24","end":"2026-12-05"}
+stored data:
+  + /sprints[id=4] (at index 3): {"id":4,"name":"Sprint 4","start":"2026-11-24","end":"2026-12-05"}
+data files: unchanged
 
 outbound calls: none
 
@@ -1917,22 +1762,9 @@ response body:
     "end": "20261205"
   }
 
-data files:
-  db.json: modified
-    raw text diff:
-      @@ -94,4 +94,10 @@
-             "start": "2026-11-10",
-             "end": "2026-11-21"
-      +    },
-      +    {
-      +      "id": 4,
-      +      "name": "Sprint 4",
-      +      "start": "20261124",
-      +      "end": "20261205"
-           }
-         ],
-    parsed JSON diff:
-      + /sprints[id=4] (at index 3): {"id":4,"name":"Sprint 4","start":"20261124","end":"20261205"}
+stored data:
+  + /sprints[id=4] (at index 3): {"id":4,"name":"Sprint 4","start":"20261124","end":"20261205"}
+data files: unchanged
 
 outbound calls: none
 
@@ -1961,22 +1793,9 @@ response body:
     "end": "yesterday"
   }
 
-data files:
-  db.json: modified
-    raw text diff:
-      @@ -94,4 +94,10 @@
-             "start": "2026-11-10",
-             "end": "2026-11-21"
-      +    },
-      +    {
-      +      "id": 4,
-      +      "name": "Sprint 4",
-      +      "start": "not-a-date",
-      +      "end": "yesterday"
-           }
-         ],
-    parsed JSON diff:
-      + /sprints[id=4] (at index 3): {"id":4,"name":"Sprint 4","start":"not-a-date","end":"yesterday"}
+stored data:
+  + /sprints[id=4] (at index 3): {"id":4,"name":"Sprint 4","start":"not-a-date","end":"yesterday"}
+data files: unchanged
 
 outbound calls: none
 
@@ -2002,6 +1821,7 @@ response body:
     "error": "name, start and end are required"
   }
 
+stored data: unchanged
 data files: unchanged
 
 outbound calls: none
@@ -2031,22 +1851,9 @@ response body:
     "end": "2026-11-24"
   }
 
-data files:
-  db.json: modified
-    raw text diff:
-      @@ -94,4 +94,10 @@
-             "start": "2026-11-10",
-             "end": "2026-11-21"
-      +    },
-      +    {
-      +      "id": 4,
-      +      "name": "Sprint 4",
-      +      "start": "2026-12-05",
-      +      "end": "2026-11-24"
-           }
-         ],
-    parsed JSON diff:
-      + /sprints[id=4] (at index 3): {"id":4,"name":"Sprint 4","start":"2026-12-05","end":"2026-11-24"}
+stored data:
+  + /sprints[id=4] (at index 3): {"id":4,"name":"Sprint 4","start":"2026-12-05","end":"2026-11-24"}
+data files: unchanged
 
 outbound calls: none
 
@@ -2076,6 +1883,7 @@ response body:
   </html>
   
 
+stored data: unchanged
 data files: unchanged
 
 outbound calls: none
@@ -2101,6 +1909,7 @@ response body:
     "error": "name, start and end are required"
   }
 
+stored data: unchanged
 data files: unchanged
 
 outbound calls: none
@@ -2129,6 +1938,7 @@ response body:
   </html>
   
 
+stored data: unchanged
 data files: unchanged
 
 outbound calls: none
@@ -2158,22 +1968,9 @@ response body:
     "end": "2026-12-05"
   }
 
-data files:
-  db.json: modified
-    raw text diff:
-      @@ -94,4 +94,10 @@
-             "start": "2026-11-10",
-             "end": "2026-11-21"
-      +    },
-      +    {
-      +      "id": 4,
-      +      "name": "",
-      +      "start": "2026-11-24",
-      +      "end": "2026-12-05"
-           }
-         ],
-    parsed JSON diff:
-      + /sprints[id=4] (at index 3): {"id":4,"name":"","start":"2026-11-24","end":"2026-12-05"}
+stored data:
+  + /sprints[id=4] (at index 3): {"id":4,"name":"","start":"2026-11-24","end":"2026-12-05"}
+data files: unchanged
 
 outbound calls: none
 
@@ -2883,24 +2680,9 @@ response body:
     "end": "2026-10-24"
   }
 
-data files:
-  db.json: modified
-    raw text diff:
-      @@ -604,4 +604,12 @@
-             "deletedAt": "2026-11-03T02:05:40.017Z"
-           }
-      +  ],
-      +  "sprints": [
-      +    {
-      +      "id": 1,
-      +      "name": "Sprint 1",
-      +      "start": "2026-10-13",
-      +      "end": "2026-10-24"
-      +    }
-         ]
-       }
-    parsed JSON diff:
-      + /sprints: [{"id":1,"name":"Sprint 1","start":"2026-10-13","end":"2026-10-24"}]
+stored data:
+  + /sprints[id=1] (at index 0): {"id":1,"name":"Sprint 1","start":"2026-10-13","end":"2026-10-24"}
+data files: unchanged
 
 outbound calls: none
 

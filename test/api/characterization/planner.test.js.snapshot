@@ -12,35 +12,9 @@ response body:
     "deleted": true
   }
 
-data files:
-  db.json: modified
-    raw text diff:
-      @@ -423,23 +423,4 @@
-           },
-           {
-      -      "id": 5,
-      -      "boardId": 2,
-      -      "bucketId": 3,
-      -      "title": "Plan component library audit",
-      -      "status": "Not started",
-      -      "priority": "Medium",
-      -      "startDate": "",
-      -      "dueDate": "",
-      -      "labels": [],
-      -      "assignee": "rafael.t.mendoza",
-      -      "checklist": [],
-      -      "description": "",
-      -      "acceptanceCriteria": "",
-      -      "comments": [],
-      -      "completed": false,
-      -      "createdAt": "2026-11-05T10:02:37.155Z",
-      -      "updatedAt": "2026-11-05T10:02:37.155Z"
-      -    },
-      -    {
-             "id": 6,
-             "boardId": 1,
-    parsed JSON diff:
-      - /planner-tasks[id=5]: {"id":5,"boardId":2,"bucketId":3,"title":"Plan component library audit","status":"Not started","priority":"Medium","startDate":"","dueDate":"","labels":[],"assignee":"rafael.t.mendoza","checklist":[],"description":"","acceptanceCriteria":"","comments":[],"completed":false,"createdAt":"2026-11-05T10:02:37.155Z","updatedAt":"2026-11-05T10:02:37.155Z"}
+stored data:
+  - /planner-tasks[id=5]: {"id":5,"boardId":2,"bucketId":3,"title":"Plan component library audit","status":"Not started","priority":"Medium","startDate":"","dueDate":"","assignee":"rafael.t.mendoza","labels":[],"checklist":[],"comments":[],"description":"","acceptanceCriteria":"","completed":false,"createdAt":"2026-11-05T10:02:37.155Z","updatedAt":"2026-11-05T10:02:37.155Z"}
+data files: unchanged
 
 outbound calls: none
 
@@ -70,6 +44,7 @@ response body:
   </html>
   
 
+stored data: unchanged
 data files: unchanged
 
 outbound calls: none
@@ -90,6 +65,7 @@ response body:
     "error": "task not found"
   }
 
+stored data: unchanged
 data files: unchanged
 
 outbound calls: none
@@ -119,6 +95,7 @@ response body:
     "error": "task not found"
   }
 
+stored data: unchanged
 data files: unchanged
 
 outbound calls: none
@@ -139,6 +116,7 @@ response body:
     "error": "task not found"
   }
 
+stored data: unchanged
 data files: unchanged
 
 outbound calls: none
@@ -188,6 +166,7 @@ response body:
     }
   ]
 
+stored data: unchanged
 data files: unchanged
 
 outbound calls: none
@@ -228,6 +207,7 @@ response body:
     }
   ]
 
+stored data: unchanged
 data files: unchanged
 
 outbound calls: none
@@ -246,6 +226,7 @@ x-powered-by: Express
 response body:
   []
 
+stored data: unchanged
 data files: unchanged
 
 outbound calls: none
@@ -276,6 +257,7 @@ response body:
   </html>
   
 
+stored data: unchanged
 data files: unchanged
 
 outbound calls: none
@@ -303,6 +285,7 @@ x-powered-by: Express
 response body:
   []
 
+stored data: unchanged
 data files: unchanged
 
 outbound calls: none
@@ -321,6 +304,7 @@ x-powered-by: Express
 response body:
   []
 
+stored data: unchanged
 data files: unchanged
 
 outbound calls: none
@@ -355,6 +339,7 @@ response body:
     }
   ]
 
+stored data: unchanged
 data files: unchanged
 
 outbound calls: none
@@ -386,6 +371,7 @@ response body:
     }
   ]
 
+stored data: unchanged
 data files: unchanged
 
 outbound calls: none
@@ -404,6 +390,7 @@ x-powered-by: Express
 response body:
   []
 
+stored data: unchanged
 data files: unchanged
 
 outbound calls: none
@@ -434,6 +421,7 @@ response body:
   </html>
   
 
+stored data: unchanged
 data files: unchanged
 
 outbound calls: none
@@ -452,6 +440,7 @@ x-powered-by: Express
 response body:
   []
 
+stored data: unchanged
 data files: unchanged
 
 outbound calls: none
@@ -479,6 +468,7 @@ x-powered-by: Express
 response body:
   []
 
+stored data: unchanged
 data files: unchanged
 
 outbound calls: none
@@ -497,6 +487,7 @@ x-powered-by: Express
 response body:
   []
 
+stored data: unchanged
 data files: unchanged
 
 outbound calls: none
@@ -543,6 +534,7 @@ response body:
     }
   ]
 
+stored data: unchanged
 data files: unchanged
 
 outbound calls: none
@@ -592,6 +584,7 @@ response body:
     }
   ]
 
+stored data: unchanged
 data files: unchanged
 
 outbound calls: none
@@ -622,6 +615,7 @@ response body:
   </html>
   
 
+stored data: unchanged
 data files: unchanged
 
 outbound calls: none
@@ -640,6 +634,7 @@ x-powered-by: Express
 response body:
   []
 
+stored data: unchanged
 data files: unchanged
 
 outbound calls: none
@@ -667,6 +662,7 @@ x-powered-by: Express
 response body:
   []
 
+stored data: unchanged
 data files: unchanged
 
 outbound calls: none
@@ -685,6 +681,7 @@ x-powered-by: Express
 response body:
   []
 
+stored data: unchanged
 data files: unchanged
 
 outbound calls: none
@@ -743,6 +740,7 @@ response body:
     }
   ]
 
+stored data: unchanged
 data files: unchanged
 
 outbound calls: none
@@ -773,6 +771,7 @@ response body:
   </html>
   
 
+stored data: unchanged
 data files: unchanged
 
 outbound calls: none
@@ -800,6 +799,7 @@ x-powered-by: Express
 response body:
   []
 
+stored data: unchanged
 data files: unchanged
 
 outbound calls: none
@@ -941,6 +941,7 @@ response body:
     }
   ]
 
+stored data: unchanged
 data files: unchanged
 
 outbound calls: none
@@ -1122,6 +1123,7 @@ response body:
     }
   ]
 
+stored data: unchanged
 data files: unchanged
 
 outbound calls: none
@@ -1152,6 +1154,7 @@ response body:
   </html>
   
 
+stored data: unchanged
 data files: unchanged
 
 outbound calls: none
@@ -1170,6 +1173,7 @@ x-powered-by: Express
 response body:
   []
 
+stored data: unchanged
 data files: unchanged
 
 outbound calls: none
@@ -1197,6 +1201,7 @@ x-powered-by: Express
 response body:
   []
 
+stored data: unchanged
 data files: unchanged
 
 outbound calls: none
@@ -1215,6 +1220,7 @@ x-powered-by: Express
 response body:
   []
 
+stored data: unchanged
 data files: unchanged
 
 outbound calls: none
@@ -1278,30 +1284,11 @@ response body:
     "notes": ""
   }
 
-data files:
-  db.json: modified
-    raw text diff:
-      @@ -365,5 +365,5 @@
-             "bucketId": 2,
-             "title": "Angular signals refresher",
-      -      "status": "In progress",
-      +      "status": "Completed",
-             "priority": "Medium",
-             "startDate": "2026-10-27",
-      @@ -386,7 +386,7 @@
-               }
-             ],
-      -      "completed": false,
-      +      "completed": true,
-             "createdAt": "2026-10-27T02:11:08.940Z",
-      -      "updatedAt": "2026-11-02T03:45:51.006Z",
-      +      "updatedAt": "<generated-timestamp>",
-             "completedDate": "",
-             "notes": ""
-    parsed JSON diff:
-      ~ /planner-tasks[id=2]/status: "In progress" → "Completed"
-      ~ /planner-tasks[id=2]/completed: false → true
-      ~ /planner-tasks[id=2]/updatedAt: "2026-11-02T03:45:51.006Z" → "<generated-timestamp>"
+stored data:
+  ~ /planner-tasks[id=2]/status: "In progress" → "Completed"
+  ~ /planner-tasks[id=2]/completed: false → true
+  ~ /planner-tasks[id=2]/updatedAt: "2026-11-02T03:45:51.006Z" → "<generated-timestamp>"
+data files: unchanged
 
 outbound calls: none
 
@@ -1377,71 +1364,22 @@ response body:
     ]
   }
 
-data files:
-  db.json: modified
-    raw text diff:
-      @@ -445,26 +445,29 @@
-             "boardId": 1,
-             "bucketId": 4,
-      -      "title": "React Testing Library deep dive",
-      -      "status": "Completed",
-      -      "priority": "Medium",
-      -      "startDate": "2026-10-27",
-      -      "dueDate": "2026-10-30",
-      +      "title": "Next.js routing walkthrough",
-      +      "status": "In progress",
-      +      "priority": "Low",
-      +      "startDate": "2026-10-29",
-      +      "dueDate": "2026-11-05",
-             "labels": [
-      -        2,
-      -        3
-      +        2
-             ],
-      -      "assignee": "nina.g.castro",
-      -      "checklist": [
-      +      "assignee": "andrea.s.bautista",
-      +      "checklist": [],
-      +      "completed": false,
-      +      "createdAt": "2026-10-29T02:00:00.000Z",
-      +      "updatedAt": "<generated-timestamp>",
-      +      "completedDate": "2026-10-30",
-      +      "notes": "",
-      +      "description": "<p>Walk through the app router</p>",
-      +      "acceptanceCriteria": "",
-      +      "comments": [
-               {
-                 "id": 1,
-      -          "text": "Write tests for a form component",
-      -          "done": true
-      +          "author": "Miguel Torres",
-      +          "text": "Can we cover layouts too?",
-      +          "createdAt": "2026-11-04T05:00:00.000Z"
-               }
-      -      ],
-      -      "completed": true,
-      -      "createdAt": "2026-10-27T01:58:20.733Z",
-      -      "updatedAt": "2026-10-30T07:26:44.019Z",
-      -      "completedDate": "2026-10-30",
-      -      "notes": ""
-      +      ]
-           },
-           {
-    parsed JSON diff:
-      ~ /planner-tasks[id=6]/title: "React Testing Library deep dive" → "Next.js routing walkthrough"
-      ~ /planner-tasks[id=6]/status: "Completed" → "In progress"
-      ~ /planner-tasks[id=6]/priority: "Medium" → "Low"
-      ~ /planner-tasks[id=6]/startDate: "2026-10-27" → "2026-10-29"
-      ~ /planner-tasks[id=6]/dueDate: "2026-10-30" → "2026-11-05"
-      - /planner-tasks[id=6]/labels[1]: 3
-      ~ /planner-tasks[id=6]/assignee: "nina.g.castro" → "andrea.s.bautista"
-      - /planner-tasks[id=6]/checklist[id=1]: {"id":1,"text":"Write tests for a form component","done":true}
-      ~ /planner-tasks[id=6]/completed: true → false
-      ~ /planner-tasks[id=6]/createdAt: "2026-10-27T01:58:20.733Z" → "2026-10-29T02:00:00.000Z"
-      ~ /planner-tasks[id=6]/updatedAt: "2026-10-30T07:26:44.019Z" → "<generated-timestamp>"
-      + /planner-tasks[id=6]/description: "<p>Walk through the app router</p>"
-      + /planner-tasks[id=6]/acceptanceCriteria: ""
-      + /planner-tasks[id=6]/comments: [{"id":1,"author":"Miguel Torres","text":"Can we cover layouts too?","createdAt":"2026-11-04T05:00:00.000Z"}]
+stored data:
+  ~ /planner-tasks[id=6]/title: "React Testing Library deep dive" → "Next.js routing walkthrough"
+  ~ /planner-tasks[id=6]/status: "Completed" → "In progress"
+  ~ /planner-tasks[id=6]/priority: "Medium" → "Low"
+  ~ /planner-tasks[id=6]/startDate: "2026-10-27" → "2026-10-29"
+  ~ /planner-tasks[id=6]/dueDate: "2026-10-30" → "2026-11-05"
+  ~ /planner-tasks[id=6]/assignee: "nina.g.castro" → "andrea.s.bautista"
+  - /planner-tasks[id=6]/labels[1]: 3
+  - /planner-tasks[id=6]/checklist[id=1]: {"id":1,"text":"Write tests for a form component","done":true}
+  ~ /planner-tasks[id=6]/completed: true → false
+  ~ /planner-tasks[id=6]/createdAt: "2026-10-27T01:58:20.733Z" → "2026-10-29T02:00:00.000Z"
+  ~ /planner-tasks[id=6]/updatedAt: "2026-10-30T07:26:44.019Z" → "<generated-timestamp>"
+  + /planner-tasks[id=6]/comments: [{"id":1,"author":"Miguel Torres","text":"Can we cover layouts too?","createdAt":"2026-11-04T05:00:00.000Z"}]
+  + /planner-tasks[id=6]/description: "<p>Walk through the app router</p>"
+  + /planner-tasks[id=6]/acceptanceCriteria: ""
+data files: unchanged
 
 outbound calls: none
 
@@ -1497,26 +1435,11 @@ response body:
     "isAdmin": true
   }
 
-data files:
-  db.json: modified
-    raw text diff:
-      @@ -387,8 +387,9 @@
-             ],
-             "completed": false,
-      -      "createdAt": "2026-10-27T02:11:08.940Z",
-      -      "updatedAt": "2026-11-02T03:45:51.006Z",
-      +      "createdAt": "2020-01-01T00:00:00.000Z",
-      +      "updatedAt": "<generated-timestamp>",
-             "completedDate": "",
-      -      "notes": ""
-      +      "notes": "",
-      +      "isAdmin": true
-           },
-           {
-    parsed JSON diff:
-      ~ /planner-tasks[id=2]/createdAt: "2026-10-27T02:11:08.940Z" → "2020-01-01T00:00:00.000Z"
-      ~ /planner-tasks[id=2]/updatedAt: "2026-11-02T03:45:51.006Z" → "<generated-timestamp>"
-      + /planner-tasks[id=2]/isAdmin: true
+stored data:
+  ~ /planner-tasks[id=2]/createdAt: "2026-10-27T02:11:08.940Z" → "2020-01-01T00:00:00.000Z"
+  ~ /planner-tasks[id=2]/updatedAt: "2026-11-02T03:45:51.006Z" → "<generated-timestamp>"
+  + /planner-tasks[id=2]/isAdmin: true
+data files: unchanged
 
 outbound calls: none
 
@@ -1567,18 +1490,9 @@ response body:
     "notes": ""
   }
 
-data files:
-  db.json: modified
-    raw text diff:
-      @@ -388,5 +388,5 @@
-             "completed": false,
-             "createdAt": "2026-10-27T02:11:08.940Z",
-      -      "updatedAt": "2026-11-02T03:45:51.006Z",
-      +      "updatedAt": "<generated-timestamp>",
-             "completedDate": "",
-             "notes": ""
-    parsed JSON diff:
-      ~ /planner-tasks[id=2]/updatedAt: "2026-11-02T03:45:51.006Z" → "<generated-timestamp>"
+stored data:
+  ~ /planner-tasks[id=2]/updatedAt: "2026-11-02T03:45:51.006Z" → "<generated-timestamp>"
+data files: unchanged
 
 outbound calls: none
 
@@ -1608,6 +1522,7 @@ response body:
   </html>
   
 
+stored data: unchanged
 data files: unchanged
 
 outbound calls: none
@@ -1657,18 +1572,9 @@ response body:
     "notes": ""
   }
 
-data files:
-  db.json: modified
-    raw text diff:
-      @@ -388,5 +388,5 @@
-             "completed": false,
-             "createdAt": "2026-10-27T02:11:08.940Z",
-      -      "updatedAt": "2026-11-02T03:45:51.006Z",
-      +      "updatedAt": "<generated-timestamp>",
-             "completedDate": "",
-             "notes": ""
-    parsed JSON diff:
-      ~ /planner-tasks[id=2]/updatedAt: "2026-11-02T03:45:51.006Z" → "<generated-timestamp>"
+stored data:
+  ~ /planner-tasks[id=2]/updatedAt: "2026-11-02T03:45:51.006Z" → "<generated-timestamp>"
+data files: unchanged
 
 outbound calls: none
 
@@ -1721,26 +1627,10 @@ response body:
     "notes": ""
   }
 
-data files:
-  db.json: modified
-    raw text diff:
-      @@ -362,5 +362,5 @@
-           {
-             "id": 2,
-      -      "boardId": 2,
-      +      "boardId": null,
-             "bucketId": 2,
-             "title": "Angular signals refresher",
-      @@ -388,5 +388,5 @@
-             "completed": false,
-             "createdAt": "2026-10-27T02:11:08.940Z",
-      -      "updatedAt": "2026-11-02T03:45:51.006Z",
-      +      "updatedAt": "<generated-timestamp>",
-             "completedDate": "",
-             "notes": ""
-    parsed JSON diff:
-      ~ /planner-tasks[id=2]/boardId: 2 → null
-      ~ /planner-tasks[id=2]/updatedAt: "2026-11-02T03:45:51.006Z" → "<generated-timestamp>"
+stored data:
+  ~ /planner-tasks[id=2]/boardId: 2 → 0
+  ~ /planner-tasks[id=2]/updatedAt: "2026-11-02T03:45:51.006Z" → "<generated-timestamp>"
+data files: unchanged
 
 outbound calls: none
 
@@ -1779,6 +1669,7 @@ response body:
     "error": "task not found"
   }
 
+stored data: unchanged
 data files: unchanged
 
 outbound calls: none
@@ -1804,6 +1695,7 @@ response body:
     "error": "task not found"
   }
 
+stored data: unchanged
 data files: unchanged
 
 outbound calls: none
@@ -1829,6 +1721,7 @@ response body:
     "error": "task not found"
   }
 
+stored data: unchanged
 data files: unchanged
 
 outbound calls: none
@@ -1883,28 +1776,9 @@ response body:
     "deletedAt": "<generated-timestamp>"
   }
 
-data files:
-  db.json: modified
-    raw text diff:
-      @@ -623,4 +623,16 @@
-             "id": 2,
-             "deletedAt": "2026-11-03T02:05:40.017Z"
-      +    },
-      +    {
-      +      "type": "comment-deletion",
-      +      "taskId": 3,
-      +      "taskTitle": "PoC: Attendance export to CSV",
-      +      "deletedBy": "Rafael Mendoza",
-      +      "deletedByEid": "rafael.t.mendoza",
-      +      "commentAuthor": "Rafael Mendoza",
-      +      "commentText": "Use the shared date helper for the filename",
-      +      "commentCreatedAt": "2026-11-02T07:44:30.112Z",
-      +      "id": 3,
-      +      "deletedAt": "<generated-timestamp>"
-           }
-         ]
-    parsed JSON diff:
-      + /deletion-logs[id=3] (at index 2): {"type":"comment-deletion","taskId":3,"taskTitle":"PoC: Attendance export to CSV","deletedBy":"Rafael Mendoza","deletedByEid":"rafael.t.mendoza","commentAuthor":"Rafael Mendoza","commentText":"Use the shared date helper for the filename","commentCreatedAt":"2026-11-02T07:44:30.112Z","id":3,"deletedAt":"<generated-timestamp>"}
+stored data:
+  + /deletion-logs[id=3] (at index 2): {"id":3,"type":"comment-deletion","taskId":3,"taskTitle":"PoC: Attendance export to CSV","deletedBy":"Rafael Mendoza","deletedByEid":"rafael.t.mendoza","commentAuthor":"Rafael Mendoza","commentText":"Use the shared date helper for the filename","commentCreatedAt":"2026-11-02T07:44:30.112Z","deletedAt":"<generated-timestamp>"}
+data files: unchanged
 
 outbound calls: none
 
@@ -1938,25 +1812,9 @@ response body:
     "deletedAt": "<generated-timestamp>"
   }
 
-data files:
-  db.json: modified
-    raw text diff:
-      @@ -623,4 +623,13 @@
-             "id": 2,
-             "deletedAt": "2026-11-03T02:05:40.017Z"
-      +    },
-      +    {
-      +      "type": "task-deletion",
-      +      "taskId": 5,
-      +      "taskTitle": "Accessibility audit of the onboarding form",
-      +      "deletedBy": "Rafael Mendoza",
-      +      "deletedByEid": "rafael.t.mendoza",
-      +      "id": 3,
-      +      "deletedAt": "<generated-timestamp>"
-           }
-         ]
-    parsed JSON diff:
-      + /deletion-logs[id=3] (at index 2): {"type":"task-deletion","taskId":5,"taskTitle":"Accessibility audit of the onboarding form","deletedBy":"Rafael Mendoza","deletedByEid":"rafael.t.mendoza","id":3,"deletedAt":"<generated-timestamp>"}
+stored data:
+  + /deletion-logs[id=3] (at index 2): {"id":3,"type":"task-deletion","taskId":5,"taskTitle":"Accessibility audit of the onboarding form","deletedBy":"Rafael Mendoza","deletedByEid":"rafael.t.mendoza","deletedAt":"<generated-timestamp>"}
+data files: unchanged
 
 outbound calls: none
 
@@ -1992,25 +1850,9 @@ response body:
     "deletedAt": "<generated-timestamp>"
   }
 
-data files:
-  db.json: modified
-    raw text diff:
-      @@ -623,4 +623,13 @@
-             "id": 2,
-             "deletedAt": "2026-11-03T02:05:40.017Z"
-      +    },
-      +    {
-      +      "type": "task-deletion",
-      +      "taskId": 5,
-      +      "taskTitle": "Accessibility audit of the onboarding form",
-      +      "deletedBy": "Rafael Mendoza",
-      +      "deletedByEid": "rafael.t.mendoza",
-      +      "id": 3,
-      +      "deletedAt": "<generated-timestamp>"
-           }
-         ]
-    parsed JSON diff:
-      + /deletion-logs[id=3] (at index 2): {"type":"task-deletion","taskId":5,"taskTitle":"Accessibility audit of the onboarding form","deletedBy":"Rafael Mendoza","deletedByEid":"rafael.t.mendoza","id":3,"deletedAt":"<generated-timestamp>"}
+stored data:
+  + /deletion-logs[id=3] (at index 2): {"id":3,"type":"task-deletion","taskId":5,"taskTitle":"Accessibility audit of the onboarding form","deletedBy":"Rafael Mendoza","deletedByEid":"rafael.t.mendoza","deletedAt":"<generated-timestamp>"}
+data files: unchanged
 
 outbound calls: none
 
@@ -2033,20 +1875,9 @@ response body:
     "deletedAt": "<generated-timestamp>"
   }
 
-data files:
-  db.json: modified
-    raw text diff:
-      @@ -623,4 +623,8 @@
-             "id": 2,
-             "deletedAt": "2026-11-03T02:05:40.017Z"
-      +    },
-      +    {
-      +      "id": 3,
-      +      "deletedAt": "<generated-timestamp>"
-           }
-         ]
-    parsed JSON diff:
-      + /deletion-logs[id=3] (at index 2): {"id":3,"deletedAt":"<generated-timestamp>"}
+stored data:
+  + /deletion-logs[id=3] (at index 2): {"id":3,"deletedAt":"<generated-timestamp>"}
+data files: unchanged
 
 outbound calls: none
 
@@ -2076,6 +1907,7 @@ response body:
   </html>
   
 
+stored data: unchanged
 data files: unchanged
 
 outbound calls: none
@@ -2097,20 +1929,9 @@ response body:
     "deletedAt": "<generated-timestamp>"
   }
 
-data files:
-  db.json: modified
-    raw text diff:
-      @@ -623,4 +623,8 @@
-             "id": 2,
-             "deletedAt": "2026-11-03T02:05:40.017Z"
-      +    },
-      +    {
-      +      "id": 3,
-      +      "deletedAt": "<generated-timestamp>"
-           }
-         ]
-    parsed JSON diff:
-      + /deletion-logs[id=3] (at index 2): {"id":3,"deletedAt":"<generated-timestamp>"}
+stored data:
+  + /deletion-logs[id=3] (at index 2): {"id":3,"deletedAt":"<generated-timestamp>"}
+data files: unchanged
 
 outbound calls: none
 
@@ -2146,26 +1967,9 @@ response body:
     "deletedAt": "<generated-timestamp>"
   }
 
-data files:
-  db.json: modified
-    raw text diff:
-      @@ -623,4 +623,14 @@
-             "id": 2,
-             "deletedAt": "2026-11-03T02:05:40.017Z"
-      +    },
-      +    {
-      +      "type": "anything",
-      +      "taskId": 5,
-      +      "taskTitle": "Accessibility audit of the onboarding form",
-      +      "deletedBy": "Rafael Mendoza",
-      +      "deletedByEid": "rafael.t.mendoza",
-      +      "extra": 1,
-      +      "id": 3,
-      +      "deletedAt": "<generated-timestamp>"
-           }
-         ]
-    parsed JSON diff:
-      + /deletion-logs[id=3] (at index 2): {"type":"anything","taskId":5,"taskTitle":"Accessibility audit of the onboarding form","deletedBy":"Rafael Mendoza","deletedByEid":"rafael.t.mendoza","extra":1,"id":3,"deletedAt":"<generated-timestamp>"}
+stored data:
+  + /deletion-logs[id=3] (at index 2): {"id":3,"type":"anything","taskId":5,"taskTitle":"Accessibility audit of the onboarding form","deletedBy":"Rafael Mendoza","deletedByEid":"rafael.t.mendoza","deletedAt":"<generated-timestamp>","extra":1}
+data files: unchanged
 
 outbound calls: none
 
@@ -2216,27 +2020,9 @@ response body:
     "deletedAt": "<generated-timestamp>"
   }
 
-data files:
-  db.json: modified
-    raw text diff:
-      @@ -601,4 +601,15 @@
-             "createdAt": "2026-11-05T01:40:15.330Z"
-           }
-      +  ],
-      +  "deletion-logs": [
-      +    {
-      +      "type": "task-deletion",
-      +      "taskId": 5,
-      +      "taskTitle": "Accessibility audit of the onboarding form",
-      +      "deletedBy": "Rafael Mendoza",
-      +      "deletedByEid": "rafael.t.mendoza",
-      +      "id": 1,
-      +      "deletedAt": "<generated-timestamp>"
-      +    }
-         ]
-       }
-    parsed JSON diff:
-      + /deletion-logs: [{"type":"task-deletion","taskId":5,"taskTitle":"Accessibility audit of the onboarding form","deletedBy":"Rafael Mendoza","deletedByEid":"rafael.t.mendoza","id":1,"deletedAt":"<generated-timestamp>"}]
+stored data:
+  + /deletion-logs[id=1] (at index 0): {"id":1,"type":"task-deletion","taskId":5,"taskTitle":"Accessibility audit of the onboarding form","deletedBy":"Rafael Mendoza","deletedByEid":"rafael.t.mendoza","deletedAt":"<generated-timestamp>"}
+data files: unchanged
 
 outbound calls: none
 
@@ -2270,25 +2056,9 @@ response body:
     "deletedAt": "<generated-timestamp>"
   }
 
-data files:
-  db.json: modified
-    raw text diff:
-      @@ -623,4 +623,13 @@
-             "id": 2,
-             "deletedAt": "2026-11-03T02:05:40.017Z"
-      +    },
-      +    {
-      +      "type": "task-deletion",
-      +      "taskId": 999,
-      +      "taskTitle": "Accessibility audit of the onboarding form",
-      +      "deletedBy": "Rafael Mendoza",
-      +      "deletedByEid": "rafael.t.mendoza",
-      +      "id": 3,
-      +      "deletedAt": "<generated-timestamp>"
-           }
-         ]
-    parsed JSON diff:
-      + /deletion-logs[id=3] (at index 2): {"type":"task-deletion","taskId":999,"taskTitle":"Accessibility audit of the onboarding form","deletedBy":"Rafael Mendoza","deletedByEid":"rafael.t.mendoza","id":3,"deletedAt":"<generated-timestamp>"}
+stored data:
+  + /deletion-logs[id=3] (at index 2): {"id":3,"type":"task-deletion","taskId":999,"taskTitle":"Accessibility audit of the onboarding form","deletedBy":"Rafael Mendoza","deletedByEid":"rafael.t.mendoza","deletedAt":"<generated-timestamp>"}
+data files: unchanged
 
 outbound calls: none
 
@@ -2334,22 +2104,9 @@ response body:
     "order": 0
   }
 
-data files:
-  db.json: modified
-    raw text diff:
-      @@ -325,4 +325,10 @@
-             "name": "Sprint 3",
-             "order": 1
-      +    },
-      +    {
-      +      "id": 6,
-      +      "boardId": 1,
-      +      "name": "Sprint 1",
-      +      "order": 0
-           }
-         ],
-    parsed JSON diff:
-      + /planner-buckets[id=6] (at index 5): {"id":6,"boardId":1,"name":"Sprint 1","order":0}
+stored data:
+  + /planner-buckets[id=6] (at index 5): {"id":6,"boardId":1,"name":"Sprint 1","order":0}
+data files: unchanged
 
 outbound calls: none
 
@@ -2378,22 +2135,9 @@ response body:
     "order": 2
   }
 
-data files:
-  db.json: modified
-    raw text diff:
-      @@ -325,4 +325,10 @@
-             "name": "Sprint 3",
-             "order": 1
-      +    },
-      +    {
-      +      "id": 6,
-      +      "boardId": 1,
-      +      "name": "Sprint 1",
-      +      "order": 2
-           }
-         ],
-    parsed JSON diff:
-      + /planner-buckets[id=6] (at index 5): {"id":6,"boardId":1,"name":"Sprint 1","order":2}
+stored data:
+  + /planner-buckets[id=6] (at index 5): {"id":6,"boardId":1,"name":"Sprint 1","order":2}
+data files: unchanged
 
 outbound calls: none
 
@@ -2418,6 +2162,7 @@ response body:
     "error": "boardId and name are required"
   }
 
+stored data: unchanged
 data files: unchanged
 
 outbound calls: none
@@ -2447,22 +2192,9 @@ response body:
     "order": 1
   }
 
-data files:
-  db.json: modified
-    raw text diff:
-      @@ -325,4 +325,10 @@
-             "name": "Sprint 3",
-             "order": 1
-      +    },
-      +    {
-      +      "id": 6,
-      +      "boardId": 2,
-      +      "name": "Sprint 2",
-      +      "order": 1
-           }
-         ],
-    parsed JSON diff:
-      + /planner-buckets[id=6] (at index 5): {"id":6,"boardId":2,"name":"Sprint 2","order":1}
+stored data:
+  + /planner-buckets[id=6] (at index 5): {"id":6,"boardId":2,"name":"Sprint 2","order":1}
+data files: unchanged
 
 outbound calls: none
 
@@ -2492,6 +2224,7 @@ response body:
   </html>
   
 
+stored data: unchanged
 data files: unchanged
 
 outbound calls: none
@@ -2516,6 +2249,7 @@ response body:
     "error": "boardId and name are required"
   }
 
+stored data: unchanged
 data files: unchanged
 
 outbound calls: none
@@ -2544,6 +2278,7 @@ response body:
   </html>
   
 
+stored data: unchanged
 data files: unchanged
 
 outbound calls: none
@@ -2572,22 +2307,9 @@ response body:
     "order": 0
   }
 
-data files:
-  db.json: modified
-    raw text diff:
-      @@ -325,4 +325,10 @@
-             "name": "Sprint 3",
-             "order": 1
-      +    },
-      +    {
-      +      "id": 6,
-      +      "boardId": null,
-      +      "name": "Sprint 1",
-      +      "order": 0
-           }
-         ],
-    parsed JSON diff:
-      + /planner-buckets[id=6] (at index 5): {"id":6,"boardId":null,"name":"Sprint 1","order":0}
+stored data:
+  + /planner-buckets[id=6] (at index 5): {"id":6,"boardId":0,"name":"Sprint 1","order":0}
+data files: unchanged
 
 outbound calls: none
 
@@ -2615,22 +2337,9 @@ response body:
     "order": 0
   }
 
-data files:
-  db.json: modified
-    raw text diff:
-      @@ -325,4 +325,10 @@
-             "name": "Sprint 3",
-             "order": 1
-      +    },
-      +    {
-      +      "id": 6,
-      +      "boardId": 1,
-      +      "name": "",
-      +      "order": 0
-           }
-         ],
-    parsed JSON diff:
-      + /planner-buckets[id=6] (at index 5): {"id":6,"boardId":1,"name":"","order":0}
+stored data:
+  + /planner-buckets[id=6] (at index 5): {"id":6,"boardId":1,"name":"","order":0}
+data files: unchanged
 
 outbound calls: none
 
@@ -2674,22 +2383,9 @@ response body:
     "order": 0
   }
 
-data files:
-  db.json: modified
-    raw text diff:
-      @@ -325,4 +325,10 @@
-             "name": "Sprint 3",
-             "order": 1
-      +    },
-      +    {
-      +      "id": 6,
-      +      "boardId": 99,
-      +      "name": "Sprint 1",
-      +      "order": 0
-           }
-         ],
-    parsed JSON diff:
-      + /planner-buckets[id=6] (at index 5): {"id":6,"boardId":99,"name":"Sprint 1","order":0}
+stored data:
+  + /planner-buckets[id=6] (at index 5): {"id":6,"boardId":99,"name":"Sprint 1","order":0}
+data files: unchanged
 
 outbound calls: none
 
@@ -2718,24 +2414,9 @@ response body:
     "order": 0
   }
 
-data files:
-  db.json: modified
-    raw text diff:
-      @@ -592,4 +592,12 @@
-             "deletedAt": "2026-11-03T02:05:40.017Z"
-           }
-      +  ],
-      +  "planner-buckets": [
-      +    {
-      +      "id": 1,
-      +      "boardId": 1,
-      +      "name": "Sprint 1",
-      +      "order": 0
-      +    }
-         ]
-       }
-    parsed JSON diff:
-      + /planner-buckets: [{"id":1,"boardId":1,"name":"Sprint 1","order":0}]
+stored data:
+  + /planner-buckets[id=1] (at index 0): {"id":1,"boardId":1,"name":"Sprint 1","order":0}
+data files: unchanged
 
 outbound calls: none
 
@@ -2823,44 +2504,9 @@ response body:
     "id": 8
   }
 
-data files:
-  db.json: modified
-    raw text diff:
-      @@ -489,4 +489,32 @@
-             "createdAt": "2026-11-06T02:15:49.601Z",
-             "updatedAt": "2026-11-06T02:15:49.601Z"
-      +    },
-      +    {
-      +      "boardId": 1,
-      +      "bucketId": 4,
-      +      "title": "Build a React form with validation",
-      +      "status": "Not started",
-      +      "priority": "Medium",
-      +      "startDate": "2026-10-28",
-      +      "dueDate": "2026-11-06",
-      +      "labels": [
-      +        2,
-      +        4
-      +      ],
-      +      "assignee": "miguel.a.torres",
-      +      "checklist": [
-      +        {
-      +          "id": 1,
-      +          "text": "Pick a form library",
-      +          "done": false
-      +        }
-      +      ],
-      +      "description": "<p>Practice controlled inputs</p>",
-      +      "acceptanceCriteria": "<ul><li>All fields validated</li></ul>",
-      +      "comments": [],
-      +      "completed": false,
-      +      "createdAt": "<generated-timestamp>",
-      +      "updatedAt": "<generated-timestamp>",
-      +      "id": 8
-           }
-         ],
-    parsed JSON diff:
-      + /planner-tasks[id=8] (at index 6): {"boardId":1,"bucketId":4,"title":"Build a React form with validation","status":"Not started","priority":"Medium","startDate":"2026-10-28","dueDate":"2026-11-06","labels":[2,4],"assignee":"miguel.a.torres","checklist":[{"id":1,"text":"Pick a form library","done":false}],"description":"<p>Practice controlled inputs</p>","acceptanceCriteria":"<ul><li>All fields validated</li></ul>","comments":[],"completed":false,"createdAt":"<generated-timestamp>","updatedAt":"<generated-timestamp>","id":8}
+stored data:
+  + /planner-tasks[id=8] (at index 6): {"id":8,"boardId":1,"bucketId":4,"title":"Build a React form with validation","status":"Not started","priority":"Medium","startDate":"2026-10-28","dueDate":"2026-11-06","assignee":"miguel.a.torres","labels":[2,4],"checklist":[{"id":1,"text":"Pick a form library","done":false}],"comments":[],"description":"<p>Practice controlled inputs</p>","acceptanceCriteria":"<ul><li>All fields validated</li></ul>","completed":false,"createdAt":"<generated-timestamp>","updatedAt":"<generated-timestamp>"}
+data files: unchanged
 
 outbound calls: none
 
@@ -2933,44 +2579,9 @@ response body:
     "id": 8
   }
 
-data files:
-  db.json: modified
-    raw text diff:
-      @@ -489,4 +489,32 @@
-             "createdAt": "2026-11-06T02:15:49.601Z",
-             "updatedAt": "2026-11-06T02:15:49.601Z"
-      +    },
-      +    {
-      +      "boardId": 1,
-      +      "bucketId": 4,
-      +      "title": "Build a React form with validation",
-      +      "status": "Not started",
-      +      "priority": "Medium",
-      +      "startDate": "2026-10-28",
-      +      "dueDate": "2026-11-06",
-      +      "labels": [
-      +        2,
-      +        4
-      +      ],
-      +      "assignee": "miguel.a.torres",
-      +      "checklist": [
-      +        {
-      +          "id": 1,
-      +          "text": "Pick a form library",
-      +          "done": false
-      +        }
-      +      ],
-      +      "description": "<p>Practice controlled inputs</p>",
-      +      "acceptanceCriteria": "<ul><li>All fields validated</li></ul>",
-      +      "comments": [],
-      +      "completed": false,
-      +      "createdAt": "<generated-timestamp>",
-      +      "updatedAt": "<generated-timestamp>",
-      +      "id": 8
-           }
-         ],
-    parsed JSON diff:
-      + /planner-tasks[id=8] (at index 6): {"boardId":1,"bucketId":4,"title":"Build a React form with validation","status":"Not started","priority":"Medium","startDate":"2026-10-28","dueDate":"2026-11-06","labels":[2,4],"assignee":"miguel.a.torres","checklist":[{"id":1,"text":"Pick a form library","done":false}],"description":"<p>Practice controlled inputs</p>","acceptanceCriteria":"<ul><li>All fields validated</li></ul>","comments":[],"completed":false,"createdAt":"<generated-timestamp>","updatedAt":"<generated-timestamp>","id":8}
+stored data:
+  + /planner-tasks[id=8] (at index 6): {"id":8,"boardId":1,"bucketId":4,"title":"Build a React form with validation","status":"Not started","priority":"Medium","startDate":"2026-10-28","dueDate":"2026-11-06","assignee":"miguel.a.torres","labels":[2,4],"checklist":[{"id":1,"text":"Pick a form library","done":false}],"comments":[],"description":"<p>Practice controlled inputs</p>","acceptanceCriteria":"<ul><li>All fields validated</li></ul>","completed":false,"createdAt":"<generated-timestamp>","updatedAt":"<generated-timestamp>"}
+data files: unchanged
 
 outbound calls: none
 
@@ -3046,45 +2657,9 @@ response body:
     "isAdmin": true
   }
 
-data files:
-  db.json: modified
-    raw text diff:
-      @@ -489,4 +489,33 @@
-             "createdAt": "2026-11-06T02:15:49.601Z",
-             "updatedAt": "2026-11-06T02:15:49.601Z"
-      +    },
-      +    {
-      +      "boardId": 1,
-      +      "bucketId": 4,
-      +      "title": "Build a React form with validation",
-      +      "status": "Not started",
-      +      "priority": "Medium",
-      +      "startDate": "2026-10-28",
-      +      "dueDate": "2026-11-06",
-      +      "labels": [
-      +        2,
-      +        4
-      +      ],
-      +      "assignee": "miguel.a.torres",
-      +      "checklist": [
-      +        {
-      +          "id": 1,
-      +          "text": "Pick a form library",
-      +          "done": false
-      +        }
-      +      ],
-      +      "description": "<p>Practice controlled inputs</p>",
-      +      "acceptanceCriteria": "<ul><li>All fields validated</li></ul>",
-      +      "comments": [],
-      +      "completed": false,
-      +      "createdAt": "<generated-timestamp>",
-      +      "updatedAt": "<generated-timestamp>",
-      +      "id": 8,
-      +      "isAdmin": true
-           }
-         ],
-    parsed JSON diff:
-      + /planner-tasks[id=8] (at index 6): {"boardId":1,"bucketId":4,"title":"Build a React form with validation","status":"Not started","priority":"Medium","startDate":"2026-10-28","dueDate":"2026-11-06","labels":[2,4],"assignee":"miguel.a.torres","checklist":[{"id":1,"text":"Pick a form library","done":false}],"description":"<p>Practice controlled inputs</p>","acceptanceCriteria":"<ul><li>All fields validated</li></ul>","comments":[],"completed":false,"createdAt":"<generated-timestamp>","updatedAt":"<generated-timestamp>","id":8,"isAdmin":true}
+stored data:
+  + /planner-tasks[id=8] (at index 6): {"id":8,"boardId":1,"bucketId":4,"title":"Build a React form with validation","status":"Not started","priority":"Medium","startDate":"2026-10-28","dueDate":"2026-11-06","assignee":"miguel.a.torres","labels":[2,4],"checklist":[{"id":1,"text":"Pick a form library","done":false}],"comments":[],"description":"<p>Practice controlled inputs</p>","acceptanceCriteria":"<ul><li>All fields validated</li></ul>","completed":false,"createdAt":"<generated-timestamp>","updatedAt":"<generated-timestamp>","isAdmin":true}
+data files: unchanged
 
 outbound calls: none
 
@@ -3157,44 +2732,9 @@ response body:
     "id": 8
   }
 
-data files:
-  db.json: modified
-    raw text diff:
-      @@ -489,4 +489,32 @@
-             "createdAt": "2026-11-06T02:15:49.601Z",
-             "updatedAt": "2026-11-06T02:15:49.601Z"
-      +    },
-      +    {
-      +      "boardId": 1,
-      +      "bucketId": 4,
-      +      "title": "Build a React form with validation",
-      +      "status": "Not started",
-      +      "priority": "Medium",
-      +      "startDate": "2026-10-28",
-      +      "dueDate": "2026-11-06",
-      +      "labels": [
-      +        2,
-      +        4
-      +      ],
-      +      "assignee": "miguel.a.torres",
-      +      "checklist": [
-      +        {
-      +          "id": 1,
-      +          "text": "Pick a form library",
-      +          "done": false
-      +        }
-      +      ],
-      +      "description": "<p>Practice controlled inputs</p>",
-      +      "acceptanceCriteria": "<ul><li>All fields validated</li></ul>",
-      +      "comments": [],
-      +      "completed": true,
-      +      "createdAt": "<generated-timestamp>",
-      +      "updatedAt": "<generated-timestamp>",
-      +      "id": 8
-           }
-         ],
-    parsed JSON diff:
-      + /planner-tasks[id=8] (at index 6): {"boardId":1,"bucketId":4,"title":"Build a React form with validation","status":"Not started","priority":"Medium","startDate":"2026-10-28","dueDate":"2026-11-06","labels":[2,4],"assignee":"miguel.a.torres","checklist":[{"id":1,"text":"Pick a form library","done":false}],"description":"<p>Practice controlled inputs</p>","acceptanceCriteria":"<ul><li>All fields validated</li></ul>","comments":[],"completed":true,"createdAt":"<generated-timestamp>","updatedAt":"<generated-timestamp>","id":8}
+stored data:
+  + /planner-tasks[id=8] (at index 6): {"id":8,"boardId":1,"bucketId":4,"title":"Build a React form with validation","status":"Not started","priority":"Medium","startDate":"2026-10-28","dueDate":"2026-11-06","assignee":"miguel.a.torres","labels":[2,4],"checklist":[{"id":1,"text":"Pick a form library","done":false}],"comments":[],"description":"<p>Practice controlled inputs</p>","acceptanceCriteria":"<ul><li>All fields validated</li></ul>","completed":true,"createdAt":"<generated-timestamp>","updatedAt":"<generated-timestamp>"}
+data files: unchanged
 
 outbound calls: none
 
@@ -3220,23 +2760,9 @@ response body:
     "updatedAt": "<generated-timestamp>"
   }
 
-data files:
-  db.json: modified
-    raw text diff:
-      @@ -489,4 +489,11 @@
-             "createdAt": "2026-11-06T02:15:49.601Z",
-             "updatedAt": "2026-11-06T02:15:49.601Z"
-      +    },
-      +    {
-      +      "id": 8,
-      +      "boardId": null,
-      +      "bucketId": null,
-      +      "createdAt": "<generated-timestamp>",
-      +      "updatedAt": "<generated-timestamp>"
-           }
-         ],
-    parsed JSON diff:
-      + /planner-tasks[id=8] (at index 6): {"id":8,"boardId":null,"bucketId":null,"createdAt":"<generated-timestamp>","updatedAt":"<generated-timestamp>"}
+stored data:
+  + /planner-tasks[id=8] (at index 6): {"id":8,"boardId":0,"bucketId":0,"createdAt":"<generated-timestamp>","updatedAt":"<generated-timestamp>"}
+data files: unchanged
 
 outbound calls: none
 
@@ -3266,6 +2792,7 @@ response body:
   </html>
   
 
+stored data: unchanged
 data files: unchanged
 
 outbound calls: none
@@ -3294,6 +2821,7 @@ response body:
   </html>
   
 
+stored data: unchanged
 data files: unchanged
 
 outbound calls: none
@@ -3323,23 +2851,9 @@ response body:
     "updatedAt": "<generated-timestamp>"
   }
 
-data files:
-  db.json: modified
-    raw text diff:
-      @@ -489,4 +489,11 @@
-             "createdAt": "2026-11-06T02:15:49.601Z",
-             "updatedAt": "2026-11-06T02:15:49.601Z"
-      +    },
-      +    {
-      +      "boardId": 1,
-      +      "bucketId": 4,
-      +      "id": 8,
-      +      "createdAt": "<generated-timestamp>",
-      +      "updatedAt": "<generated-timestamp>"
-           }
-         ],
-    parsed JSON diff:
-      + /planner-tasks[id=8] (at index 6): {"boardId":1,"bucketId":4,"id":8,"createdAt":"<generated-timestamp>","updatedAt":"<generated-timestamp>"}
+stored data:
+  + /planner-tasks[id=8] (at index 6): {"id":8,"boardId":1,"bucketId":4,"createdAt":"<generated-timestamp>","updatedAt":"<generated-timestamp>"}
+data files: unchanged
 
 outbound calls: none
 
@@ -3449,44 +2963,9 @@ response body:
     "id": 8
   }
 
-data files:
-  db.json: modified
-    raw text diff:
-      @@ -489,4 +489,32 @@
-             "createdAt": "2026-11-06T02:15:49.601Z",
-             "updatedAt": "2026-11-06T02:15:49.601Z"
-      +    },
-      +    {
-      +      "boardId": 99,
-      +      "bucketId": 99,
-      +      "title": "Build a React form with validation",
-      +      "status": "Not started",
-      +      "priority": "Medium",
-      +      "startDate": "2026-10-28",
-      +      "dueDate": "2026-11-06",
-      +      "labels": [
-      +        2,
-      +        4
-      +      ],
-      +      "assignee": "miguel.a.torres",
-      +      "checklist": [
-      +        {
-      +          "id": 1,
-      +          "text": "Pick a form library",
-      +          "done": false
-      +        }
-      +      ],
-      +      "description": "<p>Practice controlled inputs</p>",
-      +      "acceptanceCriteria": "<ul><li>All fields validated</li></ul>",
-      +      "comments": [],
-      +      "completed": false,
-      +      "createdAt": "<generated-timestamp>",
-      +      "updatedAt": "<generated-timestamp>",
-      +      "id": 8
-           }
-         ],
-    parsed JSON diff:
-      + /planner-tasks[id=8] (at index 6): {"boardId":99,"bucketId":99,"title":"Build a React form with validation","status":"Not started","priority":"Medium","startDate":"2026-10-28","dueDate":"2026-11-06","labels":[2,4],"assignee":"miguel.a.torres","checklist":[{"id":1,"text":"Pick a form library","done":false}],"description":"<p>Practice controlled inputs</p>","acceptanceCriteria":"<ul><li>All fields validated</li></ul>","comments":[],"completed":false,"createdAt":"<generated-timestamp>","updatedAt":"<generated-timestamp>","id":8}
+stored data:
+  + /planner-tasks[id=8] (at index 6): {"id":8,"boardId":99,"bucketId":99,"title":"Build a React form with validation","status":"Not started","priority":"Medium","startDate":"2026-10-28","dueDate":"2026-11-06","assignee":"miguel.a.torres","labels":[2,4],"checklist":[{"id":1,"text":"Pick a form library","done":false}],"comments":[],"description":"<p>Practice controlled inputs</p>","acceptanceCriteria":"<ul><li>All fields validated</li></ul>","completed":false,"createdAt":"<generated-timestamp>","updatedAt":"<generated-timestamp>"}
+data files: unchanged
 
 outbound calls: none
 
@@ -3559,44 +3038,9 @@ response body:
     "id": 8
   }
 
-data files:
-  db.json: modified
-    raw text diff:
-      @@ -489,4 +489,32 @@
-             "createdAt": "2026-11-06T02:15:49.601Z",
-             "updatedAt": "2026-11-06T02:15:49.601Z"
-      +    },
-      +    {
-      +      "boardId": 1,
-      +      "bucketId": 1,
-      +      "title": "Build a React form with validation",
-      +      "status": "Not started",
-      +      "priority": "Medium",
-      +      "startDate": "2026-10-28",
-      +      "dueDate": "2026-11-06",
-      +      "labels": [
-      +        2,
-      +        4
-      +      ],
-      +      "assignee": "miguel.a.torres",
-      +      "checklist": [
-      +        {
-      +          "id": 1,
-      +          "text": "Pick a form library",
-      +          "done": false
-      +        }
-      +      ],
-      +      "description": "<p>Practice controlled inputs</p>",
-      +      "acceptanceCriteria": "<ul><li>All fields validated</li></ul>",
-      +      "comments": [],
-      +      "completed": false,
-      +      "createdAt": "<generated-timestamp>",
-      +      "updatedAt": "<generated-timestamp>",
-      +      "id": 8
-           }
-         ],
-    parsed JSON diff:
-      + /planner-tasks[id=8] (at index 6): {"boardId":1,"bucketId":1,"title":"Build a React form with validation","status":"Not started","priority":"Medium","startDate":"2026-10-28","dueDate":"2026-11-06","labels":[2,4],"assignee":"miguel.a.torres","checklist":[{"id":1,"text":"Pick a form library","done":false}],"description":"<p>Practice controlled inputs</p>","acceptanceCriteria":"<ul><li>All fields validated</li></ul>","comments":[],"completed":false,"createdAt":"<generated-timestamp>","updatedAt":"<generated-timestamp>","id":8}
+stored data:
+  + /planner-tasks[id=8] (at index 6): {"id":8,"boardId":1,"bucketId":1,"title":"Build a React form with validation","status":"Not started","priority":"Medium","startDate":"2026-10-28","dueDate":"2026-11-06","assignee":"miguel.a.torres","labels":[2,4],"checklist":[{"id":1,"text":"Pick a form library","done":false}],"comments":[],"description":"<p>Practice controlled inputs</p>","acceptanceCriteria":"<ul><li>All fields validated</li></ul>","completed":false,"createdAt":"<generated-timestamp>","updatedAt":"<generated-timestamp>"}
+data files: unchanged
 
 outbound calls: none
 
@@ -3669,46 +3113,9 @@ response body:
     "id": 1
   }
 
-data files:
-  db.json: modified
-    raw text diff:
-      @@ -460,4 +460,34 @@
-             "deletedAt": "2026-11-03T02:05:40.017Z"
-           }
-      +  ],
-      +  "planner-tasks": [
-      +    {
-      +      "boardId": 1,
-      +      "bucketId": 4,
-      +      "title": "Build a React form with validation",
-      +      "status": "Not started",
-      +      "priority": "Medium",
-      +      "startDate": "2026-10-28",
-      +      "dueDate": "2026-11-06",
-      +      "labels": [
-      +        2,
-      +        4
-      +      ],
-      +      "assignee": "miguel.a.torres",
-      +      "checklist": [
-      +        {
-      +          "id": 1,
-      +          "text": "Pick a form library",
-      +          "done": false
-      +        }
-      +      ],
-      +      "description": "<p>Practice controlled inputs</p>",
-      +      "acceptanceCriteria": "<ul><li>All fields validated</li></ul>",
-      +      "comments": [],
-      +      "completed": false,
-      +      "createdAt": "<generated-timestamp>",
-      +      "updatedAt": "<generated-timestamp>",
-      +      "id": 1
-      +    }
-         ]
-       }
-    parsed JSON diff:
-      + /planner-tasks: [{"boardId":1,"bucketId":4,"title":"Build a React form with validation","status":"Not started","priority":"Medium","startDate":"2026-10-28","dueDate":"2026-11-06","labels":[2,4],"assignee":"miguel.a.torres","checklist":[{"id":1,"text":"Pick a form library","done":false}],"description":"<p>Practice controlled inputs</p>","acceptanceCriteria":"<ul><li>All fields validated</li></ul>","comments":[],"completed":false,"createdAt":"<generated-timestamp>","updatedAt":"<generated-timestamp>","id":1}]
+stored data:
+  + /planner-tasks[id=1] (at index 0): {"id":1,"boardId":1,"bucketId":4,"title":"Build a React form with validation","status":"Not started","priority":"Medium","startDate":"2026-10-28","dueDate":"2026-11-06","assignee":"miguel.a.torres","labels":[2,4],"checklist":[{"id":1,"text":"Pick a form library","done":false}],"comments":[],"description":"<p>Practice controlled inputs</p>","acceptanceCriteria":"<ul><li>All fields validated</li></ul>","completed":false,"createdAt":"<generated-timestamp>","updatedAt":"<generated-timestamp>"}
+data files: unchanged
 
 outbound calls: none
 
