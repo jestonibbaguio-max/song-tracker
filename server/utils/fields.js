@@ -9,8 +9,8 @@ const WRITABLE_FIELDS = {
     'checklist', 'comments', 'description', 'acceptanceCriteria', 'completed', 'completedDate', 'notes'],
   'deletion-logs': ['type', 'taskId', 'taskTitle', 'deletedBy', 'deletedByEid', 'commentAuthor', 'commentText',
     'commentCreatedAt'],
-  // eid, name and clLevel are still accepted here; bug M8 is fixed separately.
-  'competency-records': ['eid', 'name', 'clLevel', 'primarySkill', 'primaryProficiency', 'recentRetakeDate',
+  // Not eid (the URL names the row), nor name and clLevel (they come from the roster): bug M8.
+  'competency-records': ['primarySkill', 'primaryProficiency', 'recentRetakeDate',
     'nextRetakeDate', 'secondarySkill', 'secondaryProficiency', 'retakeDate'],
 };
 

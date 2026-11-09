@@ -5,7 +5,6 @@ function listRecords(req, res) {
 }
 
 function upsertRecord(req, res) {
-  // res.json(undefined) when the body renamed the row: an empty 200 (bug M8).
   res.json(service.upsertRecord(req.params.eid, req.body));
 }
 

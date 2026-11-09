@@ -1,7 +1,7 @@
 // myCompetency records: saved competency rows joined with group membership
 // from the roster. This is the only cross-feature call: competency ->
 // onboarding's repository, one direction only (onboarding must never require
-// competency). Bugs M4, M8, M9 and M11 in docs/found-bugs.md are kept.
+// competency). Bugs M4, M9 and M11 in docs/found-bugs.md are kept.
 const repository = require('./competency.repository');
 const onboardingRepository = require('../onboarding/onboarding.repository');
 const { pickWritable } = require('../../utils/fields');
@@ -38,8 +38,9 @@ function listRecords(group) {
 /**
  * Merges the body's competency fields into the row for eid (exactly as given,
  * not normalised: M9), or appends { eid, ...fields }; other fields are dropped
- * (M12, storage part). Returns the row found by eid after saving, which is
- * undefined when the body renamed it (M8: the response is then an empty 200).
+ * (M12, storage part). eid, name and clLevel aren't competency fields, so a
+ * body can't rename the row or hide the roster's values (M8). Returns the row
+ * for eid after saving.
  */
 function upsertRecord(eid, body) {
   return repository.write((store) => store.upsertRecord(eid, pickWritable('competency-records', body)));

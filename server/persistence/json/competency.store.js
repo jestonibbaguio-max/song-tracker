@@ -1,8 +1,8 @@
 // The competency-records collection in db.json, keyed by eid (rows have no id).
 // Same variable names and expressions as the code the competency service ran
 // before the store interface, so a non-array collection still fails with the
-// pinned TypeError text (e.g. "records.findIndex is not a function"). Rows keep
-// every client field (bug M8 is kept).
+// pinned TypeError text (e.g. "records.findIndex is not a function"). Rows are
+// stored with the fields the service hands over.
 const { createDbStore } = require('./db-store');
 
 module.exports = createDbStore((db, changed) => {
@@ -16,8 +16,8 @@ module.exports = createDbStore((db, changed) => {
 
     /**
      * Merges body into the row for eid (exactly as given), or appends
-     * { eid, ...body }. Returns the row found by eid afterwards, which is
-     * undefined when the body renamed it (bug M8).
+     * { eid, ...body }. Returns the row found by eid afterwards (undefined
+     * only if body renamed it, which the service never allows).
      */
     upsertRecord(eid, body) {
       const records = recordsOf();
