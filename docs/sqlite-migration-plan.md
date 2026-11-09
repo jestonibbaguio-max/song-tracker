@@ -203,6 +203,7 @@ Update [found-bugs.md](found-bugs.md) in each commit, marking the bug as fixed w
 ### Phase 4: SQLite stores, import and schema
 
 1. Add `persistence/sqlite/connection.js`, `schema.sql` and `migrations.js`. The harness gets a `close()` hook: it requires `persistence/sqlite/connection.js` from the same freshly loaded module cache as `app.js`, and closes it in `t.after()`, before the temp directory is deleted. Without that, Windows refuses to delete the open file.
+   - **Replace one Phase 0 guardrail.** `paths.test.js` has "loading the app with PERSISTENCE=sqlite creates no database file". It passes trivially until this phase, and it will fail once the harness builds `dashboard.sqlite` before the app loads (step 3). The replacement checks the real rule, that loading `connection.js` doesn't open the database, e.g. by spying on the `better-sqlite3` constructor while the app loads and asserting it isn't called until the first query.
 2. Add `persistence/sqlite/import.js`. It reads `db.json` and `custom-onboarding.json` from `DATA_DIR` and fills the database in one transaction:
    - skip the dead keys (decision 5);
    - drop the attendance rows whose `Number(id)` isn't an integer (decision 6);
