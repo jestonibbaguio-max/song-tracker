@@ -96,19 +96,27 @@ Pragmas: `journal_mode = WAL`, `busy_timeout = 5000`, `foreign_keys = OFF` (deci
 
 ## Phases
 
-Each phase is one or more PRs into `develop`, and each step within a phase is its own commit. Commits that only move files stay separate from commits that change logic. After every commit, `npm run test:api` passes. **Only Phase 2 (a format change) and Phase 3 (bug fixes) may update snapshots.** Every other phase must pass with no snapshot change at all.
+Each phase is one or more PRs into `develop`, and each step within a phase is its own commit. Commits that only move files stay separate from commits that change logic. After every commit, `npm run test:api` passes.
 
-| Phase | What | Snapshots | Risk |
+**The snapshot rule:**
+- **Existing snapshot entries** may change only in three phases, always as reviewed changes:
+  - Phase 2: the storage-section format change, verified by a script;
+  - Phase 3: one listed bug per commit;
+  - Phase 8: deleting the json-only tests and their snapshots, and the `sqlite-trace` changes caused by the Phase 8 clean-ups.
+- **New entries for new test cases** may be added in any phase. Examples are the Phase 1 no-op case (step 0) and `sqlite-trace` (Phase 4). Record each one against the code *before* the change it guards, and check that the snapshot diff only adds entries.
+- Everything else must pass with no snapshot change at all.
+
+| Phase | What | Existing snapshots | Risk |
 |---|---|---|---|
 | 0 | Prerequisites | none | Low |
-| 1 | Store interface on JSON | none | Medium |
+| 1 | Store interface on JSON | none (step 0 adds a case) | Medium |
 | 2 | Tests that work with any backend | format only, verified mechanically | Medium |
 | 3 | Fix the storage bugs, on JSON | reviewed, one bug per commit | Medium |
-| 4 | SQLite stores, import, schema | **none** | High |
+| 4 | SQLite stores, import, schema | **none** (adds `sqlite-trace`) | High |
 | 5 | Export (the fallback) and round-trip tests | none | Medium |
 | 6 | Cutover: SQLite becomes the default | none | Medium |
 | 7 | Soak period with the fallback available | – | Low |
-| 8 | Remove the JSON backend | delete the JSON-only tests | Low |
+| 8 | Remove the JSON backend | json-only snapshots deleted; `sqlite-trace` changes from the clean-ups, reviewed | Low |
 
 ### Phase 0: prerequisites
 
@@ -123,7 +131,7 @@ Each phase is one or more PRs into `develop`, and each step within a phase is it
    Still open: the first CI run on `ubuntu-latest`.
 3. Update [CLAUDE.md](../CLAUDE.md):
    - replace "Do not start any SQLite work" with a pointer to this plan;
-   - allow reviewed snapshot updates in Phases 2 and 3 only;
+   - state the snapshot rule (see "The snapshot rule" under Phases);
    - add `better-sqlite3` to the "only `persistence/`" rule;
    - drop the duplicate "Persistence rules" section.
 4. Delete the stale `server/schema.sql`, and the orphaned `song-tracker.sqlite-wal`/`-shm` files on each developer's machine (they're untracked). Add `server/data/*.sqlite` to `.gitignore` (`-wal`/`-shm` are already there).
@@ -230,7 +238,7 @@ Run on SQLite with the fallback available for **[N weeks: the team decides at cu
    - the competency join becomes one SQL `JOIN`;
    - list filters (`?boardId`, `?year`, `?month`…) move into `WHERE` clauses.
 
-   Each of these changes `sqlite-trace` only.
+   Each of these changes `sqlite-trace` snapshots only. Those are reviewed updates, which the snapshot rule allows in this phase. Responses and the shared snapshots must not change.
 5. **Decide what the seed becomes.** Either keep the committed JSON plus `import.js` as a seed loader, or replace them with a committed SQL seed. Also decide whether `export.js` stays as a backup tool. Neither choice affects the runtime.
 6. Still on JSON after Phase 8, by decision 10: `tasks-file.repository.js` and `fruits-file.repository.js`. Migrating or deleting them is separate work.
 

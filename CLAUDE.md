@@ -82,7 +82,7 @@ The backend is being moved from JSON files to SQLite (`better-sqlite3`), followi
 
 ## Backend change rules
 - Behavior must not change: routes, request/response shapes, status codes, error messages. The only exceptions are the storage-related bug fixes listed in the plan's Phase 3.
-- Snapshots may be updated only in the plan's Phase 2 (the storage-section format change, verified by script) and Phase 3 (one listed bug per commit, reviewed). Every other change must pass with no snapshot update.
+- Existing snapshot entries may change only as reviewed changes in the plan's Phase 2 (the storage-section format change, verified by script), Phase 3 (one listed bug per commit) and Phase 8 (deleting the json-only tests' snapshots, and `sqlite-trace` changes from the Phase 8 clean-ups). New entries for new test cases may be added in any phase, recorded against the code before the change they guard, with a snapshot diff that only adds entries. Every other change must pass with no snapshot update. See "The snapshot rule" in the plan.
 - No new or upgraded dependencies without asking.
 - Run the full test suite after every step; never proceed with failures.
 - Log bugs in docs/found-bugs.md; don't fix them unless the plan's Phase 3 lists them.
