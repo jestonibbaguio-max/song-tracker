@@ -102,6 +102,11 @@ Columns are snake_case, and the stores map them to the camelCase API fields. "Op
 
 Pragmas: `journal_mode = WAL`, `busy_timeout = 5000`, `foreign_keys = OFF` (decision 9). The schema version is kept in `PRAGMA user_version`.
 
+**Binding rules for `better-sqlite3`** (all verified on 13.0.3). The stores convert every value before binding it:
+- **Booleans throw.** Binding `true`/`false` fails with `TypeError: SQLite3 can only bind numbers, strings, bigints, buffers, and null`, so `planner_tasks.completed` needs an explicit `0`/`1` on write and `=== 1` on read.
+- **`NaN` binds as NULL**, so the M7 fix has to coerce it explicitly.
+- **Every JS number binds as a REAL**, so a TEXT column stores `1` as `"1.0"` (see the capacity risk under Risks). Numbers bound to TEXT columns have to go through `String()` first. INTEGER and REAL columns store them correctly.
+
 `planner_tasks.completed_date` and `planner_tasks.notes` are kept as optional columns, and both are on the write allowlist, so they survive a round trip. `notes` is `""` wherever it exists, but `GET /api/planner-tasks` returns every stored key, and the planner snapshots pin `"notes": ""`. Dropping it would change responses in Phase 4, which no snapshot update is allowed to cover.
 
 ## Phases
@@ -279,7 +284,12 @@ Never edit the exported files with PowerShell (`Set-Content`, `Out-File`). After
 
 ## Risks
 
-- **Native dependency.** `better-sqlite3` 13 bundles its binaries for Node-API, so normal Node upgrades don't need a rebuild. A platform without a bundled binary (e.g. Windows on 32-bit) would need a compiler. It requires Node ≥ 22, which matches the README.
+- **Native dependency.** `better-sqlite3` 13 bundles Node-API binaries for darwin, linux, linuxmusl and win32, each on x64 and arm64, so normal Node upgrades don't need a rebuild. It requires Node ≥ 22, which matches the README.
+  - **On any other platform (e.g. 32-bit Windows), nothing compiles automatically.** There's no install script, so `npm ci` succeeds. `lib/binding.js` then falls back to `build/Release/better_sqlite3.node`, so the **first `new Database()` fails** until someone runs `npm run build-release` inside `node_modules/better-sqlite3`, which needs node-gyp and a C++ toolchain.
+- **Numbers in TEXT columns (verify in Phase 4).** Capacity matches `(sprintName, eid)` with `===`, so on JSON a `sprintName` of `1` and one of `"1"` are two separate rows, and `1` comes back as a number.
+  - better-sqlite3 binds JS numbers as REAL, so a TEXT `sprint_name` stores `1` as `"1.0"` (verified). The two rows stay separate, but the response changes from `1` to `"1.0"`.
+  - Converting to `String()` before binding fixes that value, but then `1` and `"1"` would collide under `UNIQUE(sprint_name, eid)`.
+  - Decide in Phase 4, with a shared test for each case, how every TEXT key that a client can send as a number behaves. Check at least capacity `sprintName`/`eid`, reachout and competency eids, and attendance `status`.
 - **Roster order.** `GET /api/onboarding-resources` already sorts (newest `created_at` first, then highest id). But `GET /api/competency-records` lists group members **in roster file order**, which the real data doesn't keep consistently. The SQLite store gives the competency list the same order as the resources list. The fixtures are in strictly descending id order, so no snapshot changes. On the real data, the order of rows in the myCompetency table may change, which is harmless.
 - **Phase 3 reorders response keys.** The UI never relies on key order, but the snapshots do. The key-order-insensitive comparison is the safeguard; don't skip it.
 - **Two backends running against each other.** Never run the API on JSON and on SQLite against the same `DATA_DIR` at once, or `npm run json-api` alongside the API. The runbook always stops the server first.
