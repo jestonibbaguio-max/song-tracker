@@ -1,7 +1,7 @@
 // Sprints and sprint retrospectives. Each call runs in one read() or write()
 // of the sprints store, so db.json is loaded once and saved at most once; a
 // retro POST checks the sprint and appends the retro in the same write().
-// Bugs L2, L3, L4, L6, M1 and M13 in docs/found-bugs.md are kept.
+// Bugs L3, L4, L6, M1 and M13 in docs/found-bugs.md are kept.
 const repository = require('./sprints.repository');
 
 const sprintRetroCategories = new Set(['improve', 'didnt-go-well', 'went-well']);
@@ -23,15 +23,16 @@ function createSprint({ name, start, end }) {
 /**
  * null when the id is unknown. readChanges() is only called once the sprint is
  * found, so an unknown id answers 404 even when reading the changes would throw.
+ * A field sent as null is left unchanged, like one that isn't sent (L2).
  */
 function updateSprint(id, readChanges) {
   return repository.write((store) => {
     if (!store.findSprint(id)) return null;
     const { name, start, end } = readChanges();
     const changes = {};
-    if (name !== undefined) changes.name = String(name).trim();
-    if (start !== undefined) changes.start = String(start);
-    if (end !== undefined) changes.end = String(end);
+    if (name !== undefined && name !== null) changes.name = String(name).trim();
+    if (start !== undefined && start !== null) changes.start = String(start);
+    if (end !== undefined && end !== null) changes.end = String(end);
     return store.updateSprint(id, changes);
   });
 }

@@ -1142,12 +1142,11 @@ response body:
   {
     "id": 3,
     "name": "Sprint 3",
-    "start": "null",
+    "start": "2026-11-10",
     "end": "2026-11-21"
   }
 
-stored data:
-  ~ /sprints[id=3]/start: "2026-11-10" → "null"
+stored data: unchanged
 data files: unchanged
 
 outbound calls: none
