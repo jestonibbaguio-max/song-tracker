@@ -2120,13 +2120,13 @@ response body:
     "id": 4,
     "sprintName": "Sprint 2",
     "eid": "liza.m.navarro",
-    "cadence": null,
+    "cadence": 0,
     "admin": 0,
     "holiday": 0
   }
 
 stored data:
-  ~ /capacity-entries[id=4]/cadence: 4 → null
+  ~ /capacity-entries[id=4]/cadence: 4 → 0
 data files: unchanged
 
 outbound calls: none
