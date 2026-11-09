@@ -327,7 +327,70 @@ outbound calls: none
 
 `;
 
-exports[`GET /api/competency-records > invalid input › a saved row with name and clLevel replaces the roster values (bug M8) 1`] = `
+exports[`GET /api/competency-records > invalid input › group=0 lists members with no group (bug L17) 1`] = `
+
+GET /api/competency-records?group=0
+credentials: group 5 POC (rafael.t.mendoza, role poc)
+
+status: 200
+content-type: application/json; charset=utf-8
+access-control-allow-origin: *
+x-powered-by: Express
+response body:
+  [
+    {
+      "name": "Paolo Ramos",
+      "clLevel": "12",
+      "eid": "paolo.d.ramos",
+      "primarySkill": "",
+      "primaryProficiency": "N/A",
+      "recentRetakeDate": "",
+      "nextRetakeDate": "",
+      "secondarySkill": "",
+      "secondaryProficiency": "N/A",
+      "retakeDate": ""
+    }
+  ]
+
+stored data: unchanged
+data files: unchanged
+
+outbound calls: none
+
+`;
+
+exports[`GET /api/competency-records > invalid input › malformed JSON body 1`] = `
+
+GET /api/competency-records
+credentials: group 5 POC (rafael.t.mendoza, role poc)
+request body (raw):
+  {"broken": 
+
+status: 400
+content-type: text/html; charset=utf-8
+access-control-allow-origin: *
+x-powered-by: Express
+response body:
+  <!DOCTYPE html>
+  <html lang="en">
+  <head>
+  <meta charset="utf-8">
+  <title>Error</title>
+  </head>
+  <body>
+  <pre>SyntaxError: Unexpected end of JSON input<br> &nbsp; &nbsp;at <stack trace removed></pre>
+  </body>
+  </html>
+  
+
+stored data: unchanged
+data files: unchanged
+
+outbound calls: none
+
+`;
+
+exports[`GET /api/competency-records > invalid input › name and clLevel sent in a PATCH don't replace the roster values (bug M8) 1`] = `
 
 GET /api/competency-records?group=5
 credentials: group 5 POC (rafael.t.mendoza, role poc)
@@ -399,69 +462,6 @@ response body:
       "retakeDate": ""
     }
   ]
-
-stored data: unchanged
-data files: unchanged
-
-outbound calls: none
-
-`;
-
-exports[`GET /api/competency-records > invalid input › group=0 matches nothing 1`] = `
-
-GET /api/competency-records?group=0
-credentials: group 5 POC (rafael.t.mendoza, role poc)
-
-status: 200
-content-type: application/json; charset=utf-8
-access-control-allow-origin: *
-x-powered-by: Express
-response body:
-  [
-    {
-      "name": "Paolo Ramos",
-      "clLevel": "12",
-      "eid": "paolo.d.ramos",
-      "primarySkill": "",
-      "primaryProficiency": "N/A",
-      "recentRetakeDate": "",
-      "nextRetakeDate": "",
-      "secondarySkill": "",
-      "secondaryProficiency": "N/A",
-      "retakeDate": ""
-    }
-  ]
-
-stored data: unchanged
-data files: unchanged
-
-outbound calls: none
-
-`;
-
-exports[`GET /api/competency-records > invalid input › malformed JSON body 1`] = `
-
-GET /api/competency-records
-credentials: group 5 POC (rafael.t.mendoza, role poc)
-request body (raw):
-  {"broken": 
-
-status: 400
-content-type: text/html; charset=utf-8
-access-control-allow-origin: *
-x-powered-by: Express
-response body:
-  <!DOCTYPE html>
-  <html lang="en">
-  <head>
-  <meta charset="utf-8">
-  <title>Error</title>
-  </head>
-  <body>
-  <pre>SyntaxError: Unexpected end of JSON input<br> &nbsp; &nbsp;at <stack trace removed></pre>
-  </body>
-  </html>
-  
 
 stored data: unchanged
 data files: unchanged
@@ -1060,7 +1060,7 @@ outbound calls: none
 
 `;
 
-exports[`PATCH /api/competency-records/:eid > invalid input › any value and any field are accepted 1`] = `
+exports[`PATCH /api/competency-records/:eid > invalid input › any value is accepted; unknown fields dropped 1`] = `
 
 PATCH /api/competency-records/liza.m.navarro
 credentials: group 5 POC (rafael.t.mendoza, role poc)
@@ -1094,7 +1094,34 @@ outbound calls: none
 
 `;
 
-exports[`PATCH /api/competency-records/:eid > invalid input › body that changes eid: row is renamed and the response body is empty 1`] = `
+exports[`PATCH /api/competency-records/:eid > invalid input › eid in a different case creates a second row 1`] = `
+
+PATCH /api/competency-records/Liza.M.Navarro
+credentials: group 5 POC (rafael.t.mendoza, role poc)
+request body:
+  {
+    "primaryProficiency": "P1"
+  }
+
+status: 200
+content-type: application/json; charset=utf-8
+access-control-allow-origin: *
+x-powered-by: Express
+response body:
+  {
+    "eid": "Liza.M.Navarro",
+    "primaryProficiency": "P1"
+  }
+
+stored data:
+  + /competency-records[eid="Liza.M.Navarro"] (at index 5): {"eid":"Liza.M.Navarro","primaryProficiency":"P1"}
+data files: unchanged
+
+outbound calls: none
+
+`;
+
+exports[`PATCH /api/competency-records/:eid > invalid input › eid in the body is ignored (bug M8) 1`] = `
 
 PATCH /api/competency-records/liza.m.navarro
 credentials: group 5 POC (rafael.t.mendoza, role poc)
@@ -1120,33 +1147,6 @@ response body:
   }
 
 stored data: unchanged
-data files: unchanged
-
-outbound calls: none
-
-`;
-
-exports[`PATCH /api/competency-records/:eid > invalid input › eid in a different case creates a second row 1`] = `
-
-PATCH /api/competency-records/Liza.M.Navarro
-credentials: group 5 POC (rafael.t.mendoza, role poc)
-request body:
-  {
-    "primaryProficiency": "P1"
-  }
-
-status: 200
-content-type: application/json; charset=utf-8
-access-control-allow-origin: *
-x-powered-by: Express
-response body:
-  {
-    "eid": "Liza.M.Navarro",
-    "primaryProficiency": "P1"
-  }
-
-stored data:
-  + /competency-records[eid="Liza.M.Navarro"] (at index 5): {"eid":"Liza.M.Navarro","primaryProficiency":"P1"}
 data files: unchanged
 
 outbound calls: none
@@ -1184,7 +1184,7 @@ outbound calls: none
 
 `;
 
-exports[`PATCH /api/competency-records/:eid > invalid input › name and clLevel in the body are stored on the row (bug M8) 1`] = `
+exports[`PATCH /api/competency-records/:eid > invalid input › name and clLevel in the body are ignored (bug M8) 1`] = `
 
 PATCH /api/competency-records/liza.m.navarro
 credentials: group 5 POC (rafael.t.mendoza, role poc)

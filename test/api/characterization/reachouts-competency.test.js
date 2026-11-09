@@ -99,9 +99,9 @@ describeEndpoint('GET /api/competency-records', {
   },
   invalid: {
     'non-numeric group matches nothing': { path: '/api/competency-records?group=abc' },
-    'group=0 matches nothing': { path: '/api/competency-records?group=0' },
+    'group=0 lists members with no group (bug L17)': { path: '/api/competency-records?group=0' },
     'malformed JSON body': MALFORMED_JSON,
-    'a saved row with name and clLevel replaces the roster values (bug M8)': {
+    "name and clLevel sent in a PATCH don't replace the roster values (bug M8)": {
       path: '/api/competency-records?group=5',
       before: [{ method: 'PATCH', path: '/api/competency-records/liza.m.navarro', body: { name: 'Hidden Name', clLevel: '1' } }],
     },
@@ -128,12 +128,12 @@ describeEndpoint('PATCH /api/competency-records/:eid', {
     },
   },
   invalid: {
-    'any value and any field are accepted': { path: '/api/competency-records/liza.m.navarro', body: { primaryProficiency: 'P99', isAdmin: true } },
-    'body that changes eid: row is renamed and the response body is empty': {
+    'any value is accepted; unknown fields dropped': { path: '/api/competency-records/liza.m.navarro', body: { primaryProficiency: 'P99', isAdmin: true } },
+    'eid in the body is ignored (bug M8)': {
       path: '/api/competency-records/liza.m.navarro',
       body: { eid: 'someone.else' },
     },
-    'name and clLevel in the body are stored on the row (bug M8)': {
+    'name and clLevel in the body are ignored (bug M8)': {
       path: '/api/competency-records/liza.m.navarro',
       body: { name: 'Hidden Name', clLevel: '1' },
     },

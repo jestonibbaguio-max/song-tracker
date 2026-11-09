@@ -697,7 +697,7 @@ credentials: no-group new joiner (paolo.d.ramos, role viewer)
 
 `;
 
-exports[`GET /api/planner-labels > happy path › lists labels (mixed string and number ids, returned as stored) 1`] = `
+exports[`GET /api/planner-labels > happy path › lists labels (ids as numbers) 1`] = `
 
 GET /api/planner-labels
 credentials: group 5 POC (rafael.t.mendoza, role poc)
@@ -783,7 +783,7 @@ exports[`GET /api/planner-labels > no auth 1`] = `
 GET /api/planner-labels
 credentials: none
 
-=> identical to the happy path (lists labels (mixed string and number ids, returned as stored)): same status, body, data-file changes and outbound calls
+=> identical to the happy path (lists labels (ids as numbers)): same status, body, data-file changes and outbound calls
 
 `;
 
@@ -811,7 +811,7 @@ exports[`GET /api/planner-labels > wrong role 1`] = `
 GET /api/planner-labels
 credentials: no-group new joiner (paolo.d.ramos, role viewer)
 
-=> identical to the happy path (lists labels (mixed string and number ids, returned as stored)): same status, body, data-file changes and outbound calls
+=> identical to the happy path (lists labels (ids as numbers)): same status, body, data-file changes and outbound calls
 
 `;
 
@@ -1384,7 +1384,7 @@ outbound calls: none
 
 `;
 
-exports[`PATCH /api/planner-tasks/:id > invalid input › client can overwrite createdAt and add arbitrary fields; id is kept 1`] = `
+exports[`PATCH /api/planner-tasks/:id > invalid input › client createdAt and unknown fields are ignored; id is kept 1`] = `
 
 PATCH /api/planner-tasks/2
 credentials: group 5 POC (rafael.t.mendoza, role poc)
@@ -1933,7 +1933,7 @@ outbound calls: none
 
 `;
 
-exports[`POST /api/deletion-logs > invalid input › unknown type and arbitrary fields are accepted 1`] = `
+exports[`POST /api/deletion-logs > invalid input › unknown type is accepted; unknown fields dropped 1`] = `
 
 POST /api/deletion-logs
 credentials: group 5 POC (rafael.t.mendoza, role poc)
@@ -2582,7 +2582,7 @@ outbound calls: none
 
 `;
 
-exports[`POST /api/planner-tasks > invalid input › client id is overwritten; arbitrary fields kept 1`] = `
+exports[`POST /api/planner-tasks > invalid input › client id is overwritten; unknown fields dropped 1`] = `
 
 POST /api/planner-tasks
 credentials: group 5 POC (rafael.t.mendoza, role poc)

@@ -1135,7 +1135,7 @@ outbound calls: none
 
 `;
 
-exports[`PATCH /api/sprints/:id > invalid input › null start becomes the string \"null\" 1`] = `
+exports[`PATCH /api/sprints/:id > invalid input › null start leaves the field unchanged 1`] = `
 
 PATCH /api/sprints/3
 credentials: group 5 POC (rafael.t.mendoza, role poc)
