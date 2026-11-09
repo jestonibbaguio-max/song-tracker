@@ -137,7 +137,7 @@ Each phase is one or more PRs into `develop`, and each step within a phase is it
    - after `close()`, the temp directory can be deleted;
    - `NaN` is bound as `NULL`, so the M7 fix has to coerce explicitly.
 
-   Still open: the first CI run on `ubuntu-latest`.
+   **The Linux check waits for Phase 4 step 6.** It can't run before then: the only workflow, `.github/workflows/playwright.yml`, runs only on `main`/`master` and only runs `npx playwright test`, never `npm run test:api`.
 3. Update [CLAUDE.md](../CLAUDE.md):
    - replace "Do not start any SQLite work" with a pointer to this plan;
    - state the snapshot rule (see "The snapshot rule" under Phases);
