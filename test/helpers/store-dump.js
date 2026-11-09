@@ -177,8 +177,27 @@ function canonicalRows(collection, rows) {
 function dumpStore() {
   const repo = (feature) => require(path.join(SERVER_DIR, 'features', feature, `${feature}.repository.js`));
   const dump = {};
-  for (const c of COLLECTIONS) dump[c.name] = canonicalRows(c.name, c.list(repo));
+  for (const c of COLLECTIONS) {
+    let rows;
+    try {
+      rows = c.list(repo);
+    } catch (error) {
+      if (isPreviewWithoutStore(error)) continue;
+      throw error;
+    }
+    dump[c.name] = canonicalRows(c.name, rows);
+  }
   return dump;
+}
+
+/**
+ * Temporary, while Phase 4 adds the SQLite stores one feature at a time
+ * (backend.js, SQLITE_STORES_PREVIEW): a collection whose store doesn't exist
+ * yet is left out of both dumps, so the logical diff covers the stores that do.
+ * Removed with the preview switch when the last store lands.
+ */
+function isPreviewWithoutStore(error) {
+  return process.env.SQLITE_STORES_PREVIEW === '1' && /store has no "sqlite" implementation yet/.test(error.message);
 }
 
 module.exports = { dumpStore, canonicalRow, canonicalRows, COLLECTIONS };

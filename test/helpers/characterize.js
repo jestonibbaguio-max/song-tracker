@@ -44,7 +44,7 @@ const path = require('node:path');
 const { isDeepStrictEqual } = require('node:util');
 const { startTestServer } = require('./test-server');
 const outbound = require('./outbound-recorder');
-const { backendSkip, isStoreFile } = require('./backend');
+const { backendSkip, isStoreFile, isSqliteFile } = require('./backend');
 const { dumpStore } = require('./store-dump');
 
 // Express reads NODE_ENV when the app is created. Pin it so snapshots don't
@@ -262,13 +262,19 @@ function normaliseCatchAll(res) {
 
 // ── Data directory snapshots ─────────────────────────────────────────────────
 
+/**
+ * Every file in DATA_DIR, by relative path. SQLite database files are left out:
+ * the stores in them show up as "stored data", their bytes are never
+ * snapshotted, and a read can legitimately touch the -shm index.
+ */
 function readTree(root) {
   const files = new Map();
   (function walk(dir) {
     for (const entry of fs.readdirSync(dir, { withFileTypes: true })) {
       const full = path.join(dir, entry.name);
+      const relative = path.relative(root, full).split(path.sep).join('/');
       if (entry.isDirectory()) walk(full);
-      else files.set(path.relative(root, full).split(path.sep).join('/'), fs.readFileSync(full));
+      else if (!isSqliteFile(relative)) files.set(relative, fs.readFileSync(full));
     }
   })(root);
   return files;

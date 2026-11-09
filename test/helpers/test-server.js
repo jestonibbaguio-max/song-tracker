@@ -1,7 +1,8 @@
 // Test harness for the Express API.
 //
 // Every call to startTestServer() copies test/fixtures/data/ into a brand-new
-// temp directory, points DATA_DIR at it, loads a fresh instance of server/app.js
+// temp directory, points DATA_DIR at it (with PERSISTENCE=sqlite, also builds
+// dashboard.sqlite there from the JSON), loads a fresh instance of server/app.js
 // and listens on a random localhost port. Pass the node:test context (`t`) and
 // cleanup (close server, restore DATA_DIR, delete the temp dir) runs automatically
 // when the test finishes.
@@ -65,6 +66,7 @@ async function startTestServer(t, options = {}) {
   let server;
   try {
     if (options.beforeStart) options.beforeStart(dataDir);
+    if ((process.env.PERSISTENCE || 'json') === 'sqlite') buildDatabase(dataDir);
     const app = loadFreshApp();
     server = http.createServer(app);
     await new Promise((resolve, reject) => {
@@ -72,6 +74,7 @@ async function startTestServer(t, options = {}) {
       server.listen(0, '127.0.0.1', resolve);
     });
   } catch (error) {
+    closeDatabase();
     restoreDataDir(previousDataDir);
     fs.rmSync(dataDir, { recursive: true, force: true, maxRetries: 3 });
     throw error;
@@ -85,6 +88,7 @@ async function startTestServer(t, options = {}) {
     closed = true;
     server.closeAllConnections();
     await new Promise((resolve) => server.close(resolve));
+    closeDatabase();
     restoreDataDir(previousDataDir);
     fs.rmSync(dataDir, { recursive: true, force: true, maxRetries: 3 });
   }
@@ -109,6 +113,37 @@ async function startTestServer(t, options = {}) {
   if (t && typeof t.after === 'function') t.after(close);
 
   return { baseUrl, dataDir, request, readData, close };
+}
+
+/**
+ * PERSISTENCE=sqlite: build <dataDir>/dashboard.sqlite from the JSON files,
+ * after the test's setup has edited them (docs/sqlite-migration-plan.md,
+ * Phase 4 step 3). Setups keep working on the JSON; one that breaks the JSON
+ * on purpose belongs to a json-only test. The import is the server's own
+ * (persistence/sqlite/import.js); loadFreshApp() drops it from the module cache
+ * again, with the rest of server/.
+ */
+function buildDatabase(dataDir) {
+  const { importJson } = require(path.join(SERVER_DIR, 'persistence', 'sqlite', 'import.js'));
+  importJson({ dataDir, dbPath: path.join(dataDir, 'dashboard.sqlite') });
+}
+
+/**
+ * Close the SQLite connection the running app opened, if any, so its temp
+ * directory can be deleted (Windows refuses to delete an open file). The
+ * connection module is the one in the same module cache as the app; it's only
+ * closed if the app loaded it, so a JSON run never loads better-sqlite3.
+ */
+function closeDatabase() {
+  const connection = require.cache[SQLITE_CONNECTION] || require.cache[findCachedId(SQLITE_CONNECTION)];
+  if (connection) connection.exports.close();
+}
+
+const SQLITE_CONNECTION = path.join(SERVER_DIR, 'persistence', 'sqlite', 'connection.js');
+
+function findCachedId(file) {
+  const wanted = normalise(file);
+  return Object.keys(require.cache).find((id) => normalise(id) === wanted);
 }
 
 function restoreDataDir(previous) {

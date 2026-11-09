@@ -18,21 +18,36 @@
 // legacy tasks, the fruits test bench, the harness helpers) run on every
 // backend without a tag.
 //
-// The SQLite stores arrive in Phase 4. Until then a sqlite run skips every test
-// that needs the stores: backendSkip() returns a skip reason for all of them.
+// The SQLite stores arrive in Phase 4, one feature per commit. Until the last
+// one lands, a sqlite run skips every test that needs the stores:
+// backendSkip() returns a skip reason for all of them (see BACKENDS_WITH_STORES).
 const BACKENDS = ['json', 'sqlite'];
 const BACKEND = process.env.PERSISTENCE || 'json';
 if (!BACKENDS.includes(BACKEND)) {
   throw new Error(`PERSISTENCE must be one of ${BACKENDS.join(', ')}; got "${BACKEND}"`);
 }
 
-/** Backends that have stores the tests can run against. Phase 4 adds 'sqlite'. */
-const BACKENDS_WITH_STORES = ['json'];
+/**
+ * Backends that have stores the tests can run against. Phase 4 adds 'sqlite'
+ * once every feature has its SQLite store. Until then SQLITE_STORES_PREVIEW=1
+ * runs the store tests on sqlite anyway, to check one feature's store at a
+ * time (PERSISTENCE=sqlite SQLITE_STORES_PREVIEW=1 node --test <its files>).
+ * Temporary: removed when the last store lands.
+ */
+const BACKENDS_WITH_STORES = ['json', ...(process.env.SQLITE_STORES_PREVIEW === '1' ? ['sqlite'] : [])];
 
-/** Data files that hold a backend's stores. The characterization snapshots show changes to them as logical diffs. */
+/**
+ * Data files that hold a backend's stores. The characterization snapshots show
+ * changes to them as logical diffs. The SQLite files are left out of the data
+ * directory snapshots altogether (characterize.js readTree).
+ */
 const STORE_FILES = {
   json: ['db.json', 'custom-onboarding.json'],
+  sqlite: ['dashboard.sqlite', 'dashboard.sqlite-wal', 'dashboard.sqlite-shm'],
 };
+
+/** A SQLite database file (or its -wal/-shm/-journal file). */
+const isSqliteFile = (relativePath) => /\.sqlite(?:-wal|-shm|-journal)?$/.test(relativePath);
 
 /**
  * The node:test `skip` option for a test that starts the app.
@@ -53,4 +68,4 @@ function isStoreFile(relativePath) {
   return (STORE_FILES[BACKEND] || []).includes(relativePath);
 }
 
-module.exports = { BACKEND, BACKENDS, backendSkip, jsonOnly, isStoreFile, STORE_FILES };
+module.exports = { BACKEND, BACKENDS, backendSkip, jsonOnly, isStoreFile, isSqliteFile, STORE_FILES };
