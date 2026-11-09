@@ -25,11 +25,15 @@ That's all you need. There are no env vars to set, no database to provision, and
 | Node.js | **22 LTS recommended** (Express 5 needs ≥ 18) | The README standardises on 22, because `npm run dev` (concurrently 10) and Playwright need it |
 | npm | Whatever ships with Node 22 (10.x) | The lockfile is npm's |
 
-You **don't** need Visual Studio Build Tools, Python, or node-gyp. The `run-npm-install.cmd` / `run-npm-install2.cmd` scripts in the root date from when `better-sqlite3` (a native module) was a dependency. It's no longer in `package.json` or `package-lock.json`, so ignore those scripts. They also delete `node_modules` and `package-lock.json` and point at another developer's machine paths.
+You **don't** need Visual Studio Build Tools, Python, or node-gyp. The one native dependency, `better-sqlite3` 13, ships prebuilt binaries for Windows, macOS and Linux (x64 and arm64) inside its npm package, so `npm ci` compiles nothing. Ignore the `run-npm-install.cmd` / `run-npm-install2.cmd` scripts in the root:
+- they delete `node_modules` and `package-lock.json`;
+- they require Visual Studio Build Tools at a fixed path;
+- they point npm at another developer's `node-gyp` (`C:\Users\michael.bobis\…`);
+- they set up a native compile that isn't needed.
 
 ## 2. Install
 
-The server has **no `package.json` of its own**. Its only runtime dependencies, `express@^5.2.1` and `cors@^2.8.6`, are in the root `package.json` together with the Angular app, so install from the repo root:
+The server has **no `package.json` of its own**. Its runtime dependencies, `express@^5.2.1`, `cors@^2.8.6` and `better-sqlite3@13.0.3` (pinned exactly; installed for the [SQLite migration](sqlite-migration-plan.md), but no server code uses it yet), are in the root `package.json` together with the Angular app, so install from the repo root:
 
 ```bash
 cd song-tracker
@@ -87,8 +91,10 @@ Without a build, `/` returns a 404, but the API still works.
 | Variable | Required | Default | Effect |
 |---|---|---|---|
 | `PORT` | No | `3000` | Port the API listens on |
+| `DATA_DIR` | No | `server/data` | Folder that holds the data files. A relative path resolves against the working directory. The API tests point it at a temp copy |
+| `PERSISTENCE` | No | `json` | Storage backend, `json` or `sqlite`. Nothing uses `sqlite` yet (see the [migration plan](sqlite-migration-plan.md)). Any other value stops the server from starting |
 
-That's the only one. There's no `.env` loading, no config file, no secrets, and no API keys.
+All three are read once, in `server/config/index.js`. There's no `.env` loading, no config file, no secrets, and no API keys.
 
 To change the port:
 

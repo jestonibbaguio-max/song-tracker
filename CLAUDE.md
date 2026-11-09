@@ -65,7 +65,7 @@ npm run codegen      # Playwright codegen against :4200
   - IDs are generated as `max(id)+1` (`nextId()` in `server/utils/ids.js`; the fruits test bench has its own rule in its repository). Never assign string or GUID IDs.
   - `/api/competency-records` gets group membership from `custom-onboarding.json` and joins it with the `db.json` rows.
 - `better-sqlite3` is installed (pinned) for the SQLite migration, but no server code uses it yet.
-- `PORT` is the only env var. There's no auth, and CORS is open to all origins.
+- The server reads three env vars, all in `server/config/index.js`: `PORT` (default 3000), `DATA_DIR` (default `server/data`) and `PERSISTENCE` (`json` or `sqlite`, default `json`; any other value throws on load). Express also reads `NODE_ENV`. There's no auth, and CORS is open to all origins.
 - `/api/fruits` and `/test/` are a self-contained test bench (`data/test_bwd/`) that the Angular app doesn't use.
 
 ## SQLite migration
