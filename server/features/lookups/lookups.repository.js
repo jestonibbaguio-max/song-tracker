@@ -1,6 +1,6 @@
 // Read-only lookup collections in db.json. load() goes through the db.json file
 // repository; the other functions are pure reads of the loaded db object.
-const dbFile = require('../../persistence/db-file.repository');
+const dbFile = require('../../persistence/json/db-file.repository');
 
 function load() {
   return dbFile.loadDb();

@@ -3,7 +3,7 @@
 // object. The *Of() getters return the stored array itself (or a new [] when the
 // collection is missing), and set*() assigns it back, so a missing collection is
 // added at the end of db.json, as before.
-const dbFile = require('../../persistence/db-file.repository');
+const dbFile = require('../../persistence/json/db-file.repository');
 
 function load() {
   return dbFile.loadDb();

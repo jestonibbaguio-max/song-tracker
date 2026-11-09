@@ -70,7 +70,7 @@ All routes take and return JSON. "Store" is the file the route reads and writes 
 | DELETE | `/api/tasks/:id` | `data/tasks.json` | `{ deleted: boolean }` (always 200) |
 | GET | `/api/skill-options` | `custom-onboarding.json` | Sorted, de-duplicated list of skills (see the snake_case bug in §8) |
 
-### Onboarding resources — `persistence/roster-file.repository.js`
+### Onboarding resources — `persistence/json/roster-file.repository.js`
 
 | Method | Path | Behaviour |
 |---|---|---|
@@ -83,7 +83,7 @@ The server normalises incoming bodies heavily (`normalizeOnboardingPayload` in [
 
 ### Everything backed by `data/db.json`
 
-Each of these routes loads all of `db.json` (~185 KB), changes one collection, and writes the whole file back ([db-file.repository.js](../server/persistence/db-file.repository.js)). IDs come from `max(id) + 1`.
+Each of these routes loads all of `db.json` (~185 KB), changes one collection, and writes the whole file back ([db-file.repository.js](../server/persistence/json/db-file.repository.js)). IDs come from `max(id) + 1`.
 
 | Collection | Routes | Validation |
 |---|---|---|
@@ -113,8 +113,8 @@ There's no ORM and no database. "Persistence" means synchronous `fs.readFileSync
 
 | File | Owner | Contents |
 |---|---|---|
-| `server/data/custom-onboarding.json` | `persistence/roster-file.repository.js` | Onboarding resources (98 records). If the file is missing it's **seeded from `custom.csv`** on first read. Record IDs get back-filled and the file is rewritten on read |
-| `server/data/db.json` | `persistence/db-file.repository.js` (`loadDb`/`saveDb`) | Every other collection listed in §4 |
+| `server/data/custom-onboarding.json` | `persistence/json/roster-file.repository.js` | Onboarding resources (98 records). If the file is missing it's **seeded from `custom.csv`** on first read. Record IDs get back-filled and the file is rewritten on read |
+| `server/data/db.json` | `persistence/json/db-file.repository.js` (`loadDb`/`saveDb`) | Every other collection listed in §4 |
 | `server/data/tasks.json` | `persistence/tasks-file.repository.js` | Legacy tasks. It doesn't exist yet and is created on the first GET `/api/tasks` |
 | `server/data/test_bwd/db.json` | `persistence/fruits-file.repository.js` (also served as-is by the `/test` static mount) | Fruits test data |
 | `server/data/custom.csv` | seed only | Columns `EID`, `GROUP`, `Primary Skill` |

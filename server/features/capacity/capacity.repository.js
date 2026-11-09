@@ -1,7 +1,7 @@
 // The capacity-entries collection in db.json. load()/save() go through the
 // db.json file repository; entriesOf()/setEntries() are pure functions on the
 // loaded db object (the stored array itself, or a new [] when missing).
-const dbFile = require('../../persistence/db-file.repository');
+const dbFile = require('../../persistence/json/db-file.repository');
 
 function load() {
   return dbFile.loadDb();

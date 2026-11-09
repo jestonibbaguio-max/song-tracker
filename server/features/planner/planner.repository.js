@@ -3,7 +3,7 @@
 // load()/save() go through the db.json file repository; the rest are pure
 // functions on the loaded db object. The *Of() getters return the stored array
 // itself (or a new [] when the collection is missing) and set*() assigns it back.
-const dbFile = require('../../persistence/db-file.repository');
+const dbFile = require('../../persistence/json/db-file.repository');
 
 function load() {
   return dbFile.loadDb();

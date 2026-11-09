@@ -1,6 +1,6 @@
 // Guardrail 5 (docs/server-restructure-plan.md, step 0): characterization cases for
 // the onboarding branches onboarding.test.js doesn't reach, so step 11 (moving
-// onboarding-store.js, now server/persistence/roster-file.repository.js, and the
+// onboarding-store.js, now server/persistence/json/roster-file.repository.js, and the
 // normalize/validate/format code) is covered:
 //   - the rollInDate format check
 //   - the 500 catch paths in POST and PATCH (and where the try/catch ends)
