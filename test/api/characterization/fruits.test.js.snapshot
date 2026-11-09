@@ -12,6 +12,7 @@ response body:
     "deleted": true
   }
 
+stored data: unchanged
 data files:
   test_bwd/db.json: modified
     raw text diff:
@@ -59,6 +60,7 @@ response body:
   </html>
   
 
+stored data: unchanged
 data files: unchanged
 
 outbound calls: none
@@ -79,6 +81,7 @@ response body:
     "error": "not found"
   }
 
+stored data: unchanged
 data files: unchanged
 
 outbound calls: none
@@ -108,6 +111,7 @@ response body:
     "error": "not found"
   }
 
+stored data: unchanged
 data files: unchanged
 
 outbound calls: none
@@ -128,6 +132,7 @@ response body:
     "error": "not found"
   }
 
+stored data: unchanged
 data files: unchanged
 
 outbound calls: none
@@ -164,6 +169,7 @@ response body:
     }
   ]
 
+stored data: unchanged
 data files: unchanged
 
 outbound calls: none
@@ -207,6 +213,7 @@ response body:
     }
   ]
 
+stored data: unchanged
 data files: unchanged
 
 outbound calls: none
@@ -234,6 +241,7 @@ response body:
     }
   ]
 
+stored data: unchanged
 data files: unchanged
 
 outbound calls: none
@@ -264,6 +272,7 @@ response body:
   </html>
   
 
+stored data: unchanged
 data files: unchanged
 
 outbound calls: none
@@ -292,6 +301,7 @@ response body:
   </html>
   
 
+stored data: unchanged
 data files: unchanged
 
 outbound calls: none
@@ -320,6 +330,7 @@ response body:
   </html>
   
 
+stored data: unchanged
 data files: unchanged
 
 outbound calls: none
@@ -347,6 +358,7 @@ x-powered-by: Express
 response body:
   []
 
+stored data: unchanged
 data files: unchanged
 
 outbound calls: none
@@ -365,6 +377,7 @@ x-powered-by: Express
 response body:
   []
 
+stored data: unchanged
 data files: unchanged
 
 outbound calls: none
@@ -399,6 +412,7 @@ response body:
     "stock": 95
   }
 
+stored data: unchanged
 data files: unchanged
 
 outbound calls: none
@@ -429,6 +443,7 @@ response body:
   </html>
   
 
+stored data: unchanged
 data files: unchanged
 
 outbound calls: none
@@ -449,6 +464,7 @@ response body:
     "error": "not found"
   }
 
+stored data: unchanged
 data files: unchanged
 
 outbound calls: none
@@ -478,6 +494,7 @@ response body:
     "error": "not found"
   }
 
+stored data: unchanged
 data files: unchanged
 
 outbound calls: none
@@ -498,6 +515,7 @@ response body:
     "error": "not found"
   }
 
+stored data: unchanged
 data files: unchanged
 
 outbound calls: none
@@ -536,6 +554,7 @@ response body:
     "stock": 80
   }
 
+stored data: unchanged
 data files:
   test_bwd/db.json: modified
     raw text diff:
@@ -579,6 +598,7 @@ response body:
     "color": "yellow"
   }
 
+stored data: unchanged
 data files:
   test_bwd/db.json: modified
     raw text diff:
@@ -624,6 +644,7 @@ response body:
   </html>
   
 
+stored data: unchanged
 data files: unchanged
 
 outbound calls: none
@@ -649,6 +670,7 @@ response body:
     "stock": 95
   }
 
+stored data: unchanged
 data files: unchanged
 
 outbound calls: none
@@ -686,6 +708,7 @@ response body:
     "error": "not found"
   }
 
+stored data: unchanged
 data files: unchanged
 
 outbound calls: none
@@ -710,6 +733,7 @@ response body:
     "error": "not found"
   }
 
+stored data: unchanged
 data files: unchanged
 
 outbound calls: none
@@ -756,6 +780,7 @@ response body:
     "stock": 60
   }
 
+stored data: unchanged
 data files:
   test_bwd/db.json: modified
     raw text diff:
@@ -803,6 +828,7 @@ response body:
     "stock": 0
   }
 
+stored data: unchanged
 data files:
   test_bwd/db.json: modified
     raw text diff:
@@ -855,6 +881,7 @@ response body:
     "stock": 60
   }
 
+stored data: unchanged
 data files:
   test_bwd/db.json: modified
     raw text diff:
@@ -905,6 +932,7 @@ response body:
     "stock": 60
   }
 
+stored data: unchanged
 data files:
   test_bwd/db.json: modified
     raw text diff:
@@ -952,6 +980,7 @@ response body:
   </html>
   
 
+stored data: unchanged
 data files: unchanged
 
 outbound calls: none
@@ -976,6 +1005,7 @@ response body:
     "error": "name and category are required"
   }
 
+stored data: unchanged
 data files: unchanged
 
 outbound calls: none
@@ -1004,6 +1034,7 @@ response body:
   </html>
   
 
+stored data: unchanged
 data files: unchanged
 
 outbound calls: none
@@ -1037,6 +1068,7 @@ response body:
     "stock": 0
   }
 
+stored data: unchanged
 data files:
   test_bwd/db.json: modified
     raw text diff:
@@ -1104,6 +1136,7 @@ response body:
     "stock": 60
   }
 
+stored data: unchanged
 data files:
   test_bwd/db.json: created
     raw text:

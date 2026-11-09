@@ -20,6 +20,7 @@ const fs = require('node:fs');
 const path = require('node:path');
 const express = require('express');
 const { startTestServer, loadFreshApp, SERVER_DIR } = require('../../helpers/test-server');
+const { backendSkip } = require('../../helpers/backend');
 
 const REPO_ROOT = path.resolve(SERVER_DIR, '..');
 const REAL_DATA_DIR = path.join(REPO_ROOT, 'server', 'data');
@@ -100,7 +101,7 @@ describe('guardrail: real paths', () => {
     assertSamePath(spies.staticRoots[1], REAL_BROWSER_DIR, 'dist static root with DATA_DIR unset');
   });
 
-  test('a relative DATA_DIR resolves against the working directory', async (t) => {
+  test('a relative DATA_DIR resolves against the working directory', { skip: backendSkip() }, async (t) => {
     const spies = spyOnStaticServing(t);
     let relative;
     const api = await startTestServer(t, {

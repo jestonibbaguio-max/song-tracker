@@ -4,10 +4,11 @@ const fs = require('node:fs');
 const os = require('node:os');
 const path = require('node:path');
 const { startTestServer } = require('../helpers/test-server');
+const { backendSkip, jsonOnly } = require('../helpers/backend');
 
 const REPO_DATA_DIR = path.resolve(__dirname, '..', '..', 'server', 'data');
 
-test('serves the fixture dataset, not the real data', async (t) => {
+test('serves the fixture dataset, not the real data', { skip: backendSkip() }, async (t) => {
   const api = await startTestServer(t);
 
   const resources = await api.request('GET', '/api/onboarding-resources');
@@ -28,7 +29,7 @@ test('points DATA_DIR at a fresh temp copy of the fixtures', async (t) => {
   assert.ok(fs.existsSync(path.join(api.dataDir, 'db.json')));
 });
 
-test('writes land in the temp DATA_DIR and never touch server/data', async (t) => {
+test('writes land in the temp DATA_DIR and never touch server/data', { skip: jsonOnly('reads db.json') }, async (t) => {
   const api = await startTestServer(t);
   const repoDbBefore = fs.readFileSync(path.join(REPO_DATA_DIR, 'db.json'), 'utf8');
 
@@ -40,14 +41,14 @@ test('writes land in the temp DATA_DIR and never touch server/data', async (t) =
   assert.equal(fs.readFileSync(path.join(REPO_DATA_DIR, 'db.json'), 'utf8'), repoDbBefore);
 });
 
-test('a mutation in one test…', async (t) => {
+test('a mutation in one test…', { skip: backendSkip() }, async (t) => {
   const api = await startTestServer(t);
   const res = await api.request('DELETE', '/api/project-reachouts/1');
   assert.equal(res.status, 200);
   assert.equal((await api.request('GET', '/api/project-reachouts')).body.length, 4);
 });
 
-test('…is not visible in the next one', async (t) => {
+test('…is not visible in the next one', { skip: backendSkip() }, async (t) => {
   const api = await startTestServer(t);
   const reachouts = (await api.request('GET', '/api/project-reachouts')).body;
   assert.equal(reachouts.length, 5);
@@ -63,7 +64,7 @@ test('close() removes the temp dir and restores DATA_DIR', async () => {
   assert.equal(process.env.DATA_DIR, before);
 });
 
-test('beforeStart can reshape the copied data before the app loads', async (t) => {
+test('beforeStart can reshape the copied data before the app loads', { skip: jsonOnly('seeds the roster from custom.csv') }, async (t) => {
   const api = await startTestServer(t, {
     beforeStart: (dataDir) => fs.rmSync(path.join(dataDir, 'custom-onboarding.json')),
   });

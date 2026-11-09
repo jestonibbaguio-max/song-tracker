@@ -12,27 +12,9 @@ response body:
     "deleted": true
   }
 
-data files:
-  db.json: modified
-    raw text diff:
-      @@ -580,15 +580,4 @@
-           },
-           {
-      -      "id": 4,
-      -      "eid": "jomar.c.pascual",
-      -      "projectName": "Atlas Banking Revamp",
-      -      "techRole": "AEM Developer",
-      -      "pocEid": "rafael.t.mendoza",
-      -      "status": "On hold",
-      -      "details": "Uses a retired status value; the UI keeps it until someone changes it",
-      -      "groupNumber": 5,
-      -      "createdAt": "2026-10-08T04:22:10.006Z"
-      -    },
-      -    {
-             "id": 5,
-             "eid": "external.candidate",
-    parsed JSON diff:
-      - /project-reachouts[id=4]: {"id":4,"eid":"jomar.c.pascual","projectName":"Atlas Banking Revamp","techRole":"AEM Developer","pocEid":"rafael.t.mendoza","status":"On hold","details":"Uses a retired status value; the UI keeps it until someone changes it","groupNumber":5,"createdAt":"2026-10-08T04:22:10.006Z"}
+stored data:
+  - /project-reachouts[id=4]: {"id":4,"eid":"jomar.c.pascual","projectName":"Atlas Banking Revamp","techRole":"AEM Developer","pocEid":"rafael.t.mendoza","status":"On hold","details":"Uses a retired status value; the UI keeps it until someone changes it","groupNumber":5,"createdAt":"2026-10-08T04:22:10.006Z"}
+data files: unchanged
 
 outbound calls: none
 
@@ -62,6 +44,7 @@ response body:
   </html>
   
 
+stored data: unchanged
 data files: unchanged
 
 outbound calls: none
@@ -82,6 +65,7 @@ response body:
     "error": "reachout not found"
   }
 
+stored data: unchanged
 data files: unchanged
 
 outbound calls: none
@@ -111,6 +95,7 @@ response body:
     "error": "reachout not found"
   }
 
+stored data: unchanged
 data files: unchanged
 
 outbound calls: none
@@ -163,6 +148,7 @@ response body:
     }
   ]
 
+stored data: unchanged
 data files: unchanged
 
 outbound calls: none
@@ -230,6 +216,7 @@ response body:
     }
   ]
 
+stored data: unchanged
 data files: unchanged
 
 outbound calls: none
@@ -297,6 +284,7 @@ response body:
     }
   ]
 
+stored data: unchanged
 data files: unchanged
 
 outbound calls: none
@@ -328,6 +316,7 @@ response body:
     }
   ]
 
+stored data: unchanged
 data files: unchanged
 
 outbound calls: none
@@ -358,6 +347,7 @@ response body:
   </html>
   
 
+stored data: unchanged
 data files: unchanged
 
 outbound calls: none
@@ -376,6 +366,7 @@ x-powered-by: Express
 response body:
   []
 
+stored data: unchanged
 data files: unchanged
 
 outbound calls: none
@@ -452,6 +443,7 @@ response body:
     }
   ]
 
+stored data: unchanged
 data files: unchanged
 
 outbound calls: none
@@ -583,6 +575,7 @@ x-powered-by: Express
 response body:
   []
 
+stored data: unchanged
 data files: unchanged
 
 outbound calls: none
@@ -645,6 +638,7 @@ response body:
     }
   ]
 
+stored data: unchanged
 data files: unchanged
 
 outbound calls: none
@@ -721,6 +715,7 @@ response body:
     }
   ]
 
+stored data: unchanged
 data files: unchanged
 
 outbound calls: none
@@ -751,6 +746,7 @@ response body:
     }
   ]
 
+stored data: unchanged
 data files: unchanged
 
 outbound calls: none
@@ -781,6 +777,7 @@ response body:
   </html>
   
 
+stored data: unchanged
 data files: unchanged
 
 outbound calls: none
@@ -799,6 +796,7 @@ x-powered-by: Express
 response body:
   []
 
+stored data: unchanged
 data files: unchanged
 
 outbound calls: none
@@ -826,6 +824,7 @@ x-powered-by: Express
 response body:
   []
 
+stored data: unchanged
 data files: unchanged
 
 outbound calls: none
@@ -844,6 +843,7 @@ x-powered-by: Express
 response body:
   []
 
+stored data: unchanged
 data files: unchanged
 
 outbound calls: none
@@ -878,20 +878,9 @@ response body:
     "primarySkill": "React"
   }
 
-data files:
-  db.json: modified
-    raw text diff:
-      @@ -541,4 +541,8 @@
-             "secondaryProficiency": "P3",
-             "retakeDate": ""
-      +    },
-      +    {
-      +      "eid": "miguel.a.torres",
-      +      "primarySkill": "React"
-           }
-         ],
-    parsed JSON diff:
-      + /competency-records[eid="miguel.a.torres"] (at index 5): {"eid":"miguel.a.torres","primarySkill":"React"}
+stored data:
+  + /competency-records[eid="miguel.a.torres"] (at index 5): {"eid":"miguel.a.torres","primarySkill":"React"}
+data files: unchanged
 
 outbound calls: none
 
@@ -922,18 +911,9 @@ response body:
     "retakeDate": ""
   }
 
-data files:
-  db.json: modified
-    raw text diff:
-      @@ -525,5 +525,5 @@
-             "eid": "liza.m.navarro",
-             "primarySkill": "Angular",
-      -      "primaryProficiency": "P2",
-      +      "primaryProficiency": "P3",
-             "recentRetakeDate": "2026-10-22",
-             "nextRetakeDate": "",
-    parsed JSON diff:
-      ~ /competency-records[eid="liza.m.navarro"]/primaryProficiency: "P2" → "P3"
+stored data:
+  ~ /competency-records[eid="liza.m.navarro"]/primaryProficiency: "P2" → "P3"
+data files: unchanged
 
 outbound calls: none
 
@@ -966,26 +946,10 @@ response body:
     "isAdmin": true
   }
 
-data files:
-  db.json: modified
-    raw text diff:
-      @@ -525,10 +525,11 @@
-             "eid": "liza.m.navarro",
-             "primarySkill": "Angular",
-      -      "primaryProficiency": "P2",
-      +      "primaryProficiency": "P99",
-             "recentRetakeDate": "2026-10-22",
-             "nextRetakeDate": "",
-             "secondarySkill": "TBD",
-             "secondaryProficiency": "TBD",
-      -      "retakeDate": ""
-      +      "retakeDate": "",
-      +      "isAdmin": true
-           },
-           {
-    parsed JSON diff:
-      ~ /competency-records[eid="liza.m.navarro"]/primaryProficiency: "P2" → "P99"
-      + /competency-records[eid="liza.m.navarro"]/isAdmin: true
+stored data:
+  ~ /competency-records[eid="liza.m.navarro"]/primaryProficiency: "P2" → "P99"
+  + /competency-records[eid="liza.m.navarro"]/isAdmin: true
+data files: unchanged
 
 outbound calls: none
 
@@ -1007,19 +971,10 @@ x-powered-by: Express
 response body:
   (empty)
 
-data files:
-  db.json: modified
-    raw text diff:
-      @@ -523,5 +523,5 @@
-           },
-           {
-      -      "eid": "liza.m.navarro",
-      +      "eid": "someone.else",
-             "primarySkill": "Angular",
-             "primaryProficiency": "P2",
-    parsed JSON diff:
-      - /competency-records[eid="liza.m.navarro"]: {"eid":"liza.m.navarro","primarySkill":"Angular","primaryProficiency":"P2","recentRetakeDate":"2026-10-22","nextRetakeDate":"","secondarySkill":"TBD","secondaryProficiency":"TBD","retakeDate":""}
-      + /competency-records[eid="someone.else"] (at index 3): {"eid":"someone.else","primarySkill":"Angular","primaryProficiency":"P2","recentRetakeDate":"2026-10-22","nextRetakeDate":"","secondarySkill":"TBD","secondaryProficiency":"TBD","retakeDate":""}
+stored data:
+  - /competency-records[eid="liza.m.navarro"]: {"eid":"liza.m.navarro","primarySkill":"Angular","primaryProficiency":"P2","recentRetakeDate":"2026-10-22","nextRetakeDate":"","secondarySkill":"TBD","secondaryProficiency":"TBD","retakeDate":""}
+  + /competency-records[eid="someone.else"] (at index 3): {"eid":"someone.else","primarySkill":"Angular","primaryProficiency":"P2","recentRetakeDate":"2026-10-22","nextRetakeDate":"","secondarySkill":"TBD","secondaryProficiency":"TBD","retakeDate":""}
+data files: unchanged
 
 outbound calls: none
 
@@ -1044,20 +999,9 @@ response body:
     "primaryProficiency": "P1"
   }
 
-data files:
-  db.json: modified
-    raw text diff:
-      @@ -541,4 +541,8 @@
-             "secondaryProficiency": "P3",
-             "retakeDate": ""
-      +    },
-      +    {
-      +      "eid": "Liza.M.Navarro",
-      +      "primaryProficiency": "P1"
-           }
-         ],
-    parsed JSON diff:
-      + /competency-records[eid="Liza.M.Navarro"] (at index 5): {"eid":"Liza.M.Navarro","primaryProficiency":"P1"}
+stored data:
+  + /competency-records[eid="Liza.M.Navarro"] (at index 5): {"eid":"Liza.M.Navarro","primaryProficiency":"P1"}
+data files: unchanged
 
 outbound calls: none
 
@@ -1087,6 +1031,7 @@ response body:
   </html>
   
 
+stored data: unchanged
 data files: unchanged
 
 outbound calls: none
@@ -1107,19 +1052,9 @@ response body:
     "eid": "kevin.r.lim"
   }
 
-data files:
-  db.json: modified
-    raw text diff:
-      @@ -541,4 +541,7 @@
-             "secondaryProficiency": "P3",
-             "retakeDate": ""
-      +    },
-      +    {
-      +      "eid": "kevin.r.lim"
-           }
-         ],
-    parsed JSON diff:
-      + /competency-records[eid="kevin.r.lim"] (at index 5): {"eid":"kevin.r.lim"}
+stored data:
+  + /competency-records[eid="kevin.r.lim"] (at index 5): {"eid":"kevin.r.lim"}
+data files: unchanged
 
 outbound calls: none
 
@@ -1146,6 +1081,7 @@ response body:
     "retakeDate": ""
   }
 
+stored data: unchanged
 data files: unchanged
 
 outbound calls: none
@@ -1184,22 +1120,9 @@ response body:
     "primaryProficiency": "P3"
   }
 
-data files:
-  db.json: modified
-    raw text diff:
-      @@ -572,4 +572,10 @@
-             "deletedAt": "2026-11-03T02:05:40.017Z"
-           }
-      +  ],
-      +  "competency-records": [
-      +    {
-      +      "eid": "liza.m.navarro",
-      +      "primaryProficiency": "P3"
-      +    }
-         ]
-       }
-    parsed JSON diff:
-      + /competency-records: [{"eid":"liza.m.navarro","primaryProficiency":"P3"}]
+stored data:
+  + /competency-records[eid="liza.m.navarro"] (at index 0): {"eid":"liza.m.navarro","primaryProficiency":"P3"}
+data files: unchanged
 
 outbound calls: none
 
@@ -1224,20 +1147,9 @@ response body:
     "primaryProficiency": "P2"
   }
 
-data files:
-  db.json: modified
-    raw text diff:
-      @@ -541,4 +541,8 @@
-             "secondaryProficiency": "P3",
-             "retakeDate": ""
-      +    },
-      +    {
-      +      "eid": "nobody.here",
-      +      "primaryProficiency": "P2"
-           }
-         ],
-    parsed JSON diff:
-      + /competency-records[eid="nobody.here"] (at index 5): {"eid":"nobody.here","primaryProficiency":"P2"}
+stored data:
+  + /competency-records[eid="nobody.here"] (at index 5): {"eid":"nobody.here","primaryProficiency":"P2"}
+data files: unchanged
 
 outbound calls: none
 
@@ -1289,23 +1201,10 @@ response body:
     "updatedAt": "<generated-timestamp>"
   }
 
-data files:
-  db.json: modified
-    raw text diff:
-      @@ -563,7 +563,8 @@
-             "pocEid": "rafael.t.mendoza",
-             "status": "CV Requested",
-      -      "details": "",
-      +      "details": "Moved to the portal team",
-             "groupNumber": 5,
-      -      "createdAt": "2026-11-03T05:50:22.874Z"
-      +      "createdAt": "2026-11-03T05:50:22.874Z",
-      +      "updatedAt": "<generated-timestamp>"
-           },
-           {
-    parsed JSON diff:
-      ~ /project-reachouts[id=2]/details: "" → "Moved to the portal team"
-      + /project-reachouts[id=2]/updatedAt: "<generated-timestamp>"
+stored data:
+  ~ /project-reachouts[id=2]/details: "" → "Moved to the portal team"
+  + /project-reachouts[id=2]/updatedAt: "<generated-timestamp>"
+data files: unchanged
 
 outbound calls: none
 
@@ -1338,24 +1237,10 @@ response body:
     "updatedAt": "<generated-timestamp>"
   }
 
-data files:
-  db.json: modified
-    raw text diff:
-      @@ -562,8 +562,9 @@
-             "techRole": "Angular Developer",
-             "pocEid": "rafael.t.mendoza",
-      -      "status": "CV Requested",
-      +      "status": "Interview Scheduled",
-             "details": "",
-             "groupNumber": 5,
-      -      "createdAt": "2026-11-03T05:50:22.874Z"
-      +      "createdAt": "2026-11-03T05:50:22.874Z",
-      +      "updatedAt": "<generated-timestamp>"
-           },
-           {
-    parsed JSON diff:
-      ~ /project-reachouts[id=2]/status: "CV Requested" → "Interview Scheduled"
-      + /project-reachouts[id=2]/updatedAt: "<generated-timestamp>"
+stored data:
+  ~ /project-reachouts[id=2]/status: "CV Requested" → "Interview Scheduled"
+  + /project-reachouts[id=2]/updatedAt: "<generated-timestamp>"
+data files: unchanged
 
 outbound calls: none
 
@@ -1388,24 +1273,10 @@ response body:
     "updatedAt": "<generated-timestamp>"
   }
 
-data files:
-  db.json: modified
-    raw text diff:
-      @@ -550,9 +550,9 @@
-             "techRole": "AEM Developer",
-             "pocEid": "rafael.t.mendoza",
-      -      "status": "Interview Scheduled",
-      +      "status": "CV Requested",
-             "details": "Client interview on 11/10, 2pm",
-             "groupNumber": 5,
-             "createdAt": "2026-10-29T03:12:40.551Z",
-      -      "updatedAt": "2026-11-03T05:48:09.207Z"
-      +      "updatedAt": "<generated-timestamp>"
-           },
-           {
-    parsed JSON diff:
-      ~ /project-reachouts[id=1]/status: "Interview Scheduled" → "CV Requested"
-      ~ /project-reachouts[id=1]/updatedAt: "2026-11-03T05:48:09.207Z" → "<generated-timestamp>"
+stored data:
+  ~ /project-reachouts[id=1]/status: "Interview Scheduled" → "CV Requested"
+  ~ /project-reachouts[id=1]/updatedAt: "2026-11-03T05:48:09.207Z" → "<generated-timestamp>"
+data files: unchanged
 
 outbound calls: none
 
@@ -1429,6 +1300,7 @@ response body:
     "error": "techRole required"
   }
 
+stored data: unchanged
 data files: unchanged
 
 outbound calls: none
@@ -1462,27 +1334,10 @@ response body:
     "updatedAt": "<generated-timestamp>"
   }
 
-data files:
-  db.json: modified
-    raw text diff:
-      @@ -558,5 +558,5 @@
-           {
-             "id": 2,
-      -      "eid": "liza.m.navarro",
-      +      "eid": "andrea.s.bautista",
-             "projectName": "Harborline Insurance Portal",
-             "techRole": "Angular Developer",
-      @@ -565,5 +565,6 @@
-             "details": "",
-             "groupNumber": 5,
-      -      "createdAt": "2026-11-03T05:50:22.874Z"
-      +      "createdAt": "2026-11-03T05:50:22.874Z",
-      +      "updatedAt": "<generated-timestamp>"
-           },
-           {
-    parsed JSON diff:
-      ~ /project-reachouts[id=2]/eid: "liza.m.navarro" → "andrea.s.bautista"
-      + /project-reachouts[id=2]/updatedAt: "<generated-timestamp>"
+stored data:
+  ~ /project-reachouts[id=2]/eid: "liza.m.navarro" → "andrea.s.bautista"
+  + /project-reachouts[id=2]/updatedAt: "<generated-timestamp>"
+data files: unchanged
 
 outbound calls: none
 
@@ -1512,6 +1367,7 @@ response body:
   </html>
   
 
+stored data: unchanged
 data files: unchanged
 
 outbound calls: none
@@ -1541,19 +1397,9 @@ response body:
     "updatedAt": "<generated-timestamp>"
   }
 
-data files:
-  db.json: modified
-    raw text diff:
-      @@ -565,5 +565,6 @@
-             "details": "",
-             "groupNumber": 5,
-      -      "createdAt": "2026-11-03T05:50:22.874Z"
-      +      "createdAt": "2026-11-03T05:50:22.874Z",
-      +      "updatedAt": "<generated-timestamp>"
-           },
-           {
-    parsed JSON diff:
-      + /project-reachouts[id=2]/updatedAt: "<generated-timestamp>"
+stored data:
+  + /project-reachouts[id=2]/updatedAt: "<generated-timestamp>"
+data files: unchanged
 
 outbound calls: none
 
@@ -1586,24 +1432,10 @@ response body:
     "updatedAt": "<generated-timestamp>"
   }
 
-data files:
-  db.json: modified
-    raw text diff:
-      @@ -562,8 +562,9 @@
-             "techRole": "Angular Developer",
-             "pocEid": "rafael.t.mendoza",
-      -      "status": "CV Requested",
-      +      "status": "On hold",
-             "details": "",
-             "groupNumber": 5,
-      -      "createdAt": "2026-11-03T05:50:22.874Z"
-      +      "createdAt": "2026-11-03T05:50:22.874Z",
-      +      "updatedAt": "<generated-timestamp>"
-           },
-           {
-    parsed JSON diff:
-      ~ /project-reachouts[id=2]/status: "CV Requested" → "On hold"
-      + /project-reachouts[id=2]/updatedAt: "<generated-timestamp>"
+stored data:
+  ~ /project-reachouts[id=2]/status: "CV Requested" → "On hold"
+  + /project-reachouts[id=2]/updatedAt: "<generated-timestamp>"
+data files: unchanged
 
 outbound calls: none
 
@@ -1638,19 +1470,9 @@ response body:
     "updatedAt": "<generated-timestamp>"
   }
 
-data files:
-  db.json: modified
-    raw text diff:
-      @@ -565,5 +565,6 @@
-             "details": "",
-             "groupNumber": 5,
-      -      "createdAt": "2026-11-03T05:50:22.874Z"
-      +      "createdAt": "2026-11-03T05:50:22.874Z",
-      +      "updatedAt": "<generated-timestamp>"
-           },
-           {
-    parsed JSON diff:
-      + /project-reachouts[id=2]/updatedAt: "<generated-timestamp>"
+stored data:
+  + /project-reachouts[id=2]/updatedAt: "<generated-timestamp>"
+data files: unchanged
 
 outbound calls: none
 
@@ -1687,6 +1509,7 @@ response body:
     "error": "reachout not found"
   }
 
+stored data: unchanged
 data files: unchanged
 
 outbound calls: none
@@ -1711,6 +1534,7 @@ response body:
     "error": "reachout not found"
   }
 
+stored data: unchanged
 data files: unchanged
 
 outbound calls: none
@@ -1762,27 +1586,9 @@ response body:
     "createdAt": "<generated-timestamp>"
   }
 
-data files:
-  db.json: modified
-    raw text diff:
-      @@ -600,4 +600,15 @@
-             "groupNumber": null,
-             "createdAt": "2026-11-05T01:40:15.330Z"
-      +    },
-      +    {
-      +      "id": 6,
-      +      "eid": "jomar.c.pascual",
-      +      "projectName": "Harborline Insurance Portal",
-      +      "techRole": "AEM Developer",
-      +      "pocEid": "rafael.t.mendoza",
-      +      "status": "CV Requested",
-      +      "details": "Junior slot, AEM components",
-      +      "groupNumber": 5,
-      +      "createdAt": "<generated-timestamp>"
-           }
-         ],
-    parsed JSON diff:
-      + /project-reachouts[id=6] (at index 5): {"id":6,"eid":"jomar.c.pascual","projectName":"Harborline Insurance Portal","techRole":"AEM Developer","pocEid":"rafael.t.mendoza","status":"CV Requested","details":"Junior slot, AEM components","groupNumber":5,"createdAt":"<generated-timestamp>"}
+stored data:
+  + /project-reachouts[id=6] (at index 5): {"id":6,"eid":"jomar.c.pascual","projectName":"Harborline Insurance Portal","techRole":"AEM Developer","pocEid":"rafael.t.mendoza","status":"CV Requested","details":"Junior slot, AEM components","groupNumber":5,"createdAt":"<generated-timestamp>"}
+data files: unchanged
 
 outbound calls: none
 
@@ -1820,27 +1626,9 @@ response body:
     "createdAt": "<generated-timestamp>"
   }
 
-data files:
-  db.json: modified
-    raw text diff:
-      @@ -600,4 +600,15 @@
-             "groupNumber": null,
-             "createdAt": "2026-11-05T01:40:15.330Z"
-      +    },
-      +    {
-      +      "id": 6,
-      +      "eid": "jomar.c.pascual",
-      +      "projectName": "Harborline Insurance Portal",
-      +      "techRole": "AEM Developer",
-      +      "pocEid": "rafael.t.mendoza",
-      +      "status": "CV Requested",
-      +      "details": "Junior slot, AEM components",
-      +      "groupNumber": null,
-      +      "createdAt": "<generated-timestamp>"
-           }
-         ],
-    parsed JSON diff:
-      + /project-reachouts[id=6] (at index 5): {"id":6,"eid":"jomar.c.pascual","projectName":"Harborline Insurance Portal","techRole":"AEM Developer","pocEid":"rafael.t.mendoza","status":"CV Requested","details":"Junior slot, AEM components","groupNumber":null,"createdAt":"<generated-timestamp>"}
+stored data:
+  + /project-reachouts[id=6] (at index 5): {"id":6,"eid":"jomar.c.pascual","projectName":"Harborline Insurance Portal","techRole":"AEM Developer","pocEid":"rafael.t.mendoza","status":"CV Requested","details":"Junior slot, AEM components","groupNumber":null,"createdAt":"<generated-timestamp>"}
+data files: unchanged
 
 outbound calls: none
 
@@ -1881,27 +1669,9 @@ response body:
     "createdAt": "<generated-timestamp>"
   }
 
-data files:
-  db.json: modified
-    raw text diff:
-      @@ -600,4 +600,15 @@
-             "groupNumber": null,
-             "createdAt": "2026-11-05T01:40:15.330Z"
-      +    },
-      +    {
-      +      "id": 6,
-      +      "eid": "jomar.c.pascual",
-      +      "projectName": "Harborline Insurance Portal",
-      +      "techRole": "AEM Developer",
-      +      "pocEid": "rafael.t.mendoza",
-      +      "status": "CV Requested",
-      +      "details": "Junior slot, AEM components",
-      +      "groupNumber": 5,
-      +      "createdAt": "<generated-timestamp>"
-           }
-         ],
-    parsed JSON diff:
-      + /project-reachouts[id=6] (at index 5): {"id":6,"eid":"jomar.c.pascual","projectName":"Harborline Insurance Portal","techRole":"AEM Developer","pocEid":"rafael.t.mendoza","status":"CV Requested","details":"Junior slot, AEM components","groupNumber":5,"createdAt":"<generated-timestamp>"}
+stored data:
+  + /project-reachouts[id=6] (at index 5): {"id":6,"eid":"jomar.c.pascual","projectName":"Harborline Insurance Portal","techRole":"AEM Developer","pocEid":"rafael.t.mendoza","status":"CV Requested","details":"Junior slot, AEM components","groupNumber":5,"createdAt":"<generated-timestamp>"}
+data files: unchanged
 
 outbound calls: none
 
@@ -1931,6 +1701,7 @@ response body:
     "error": "eid required"
   }
 
+stored data: unchanged
 data files: unchanged
 
 outbound calls: none
@@ -1961,6 +1732,7 @@ response body:
   </html>
   
 
+stored data: unchanged
 data files: unchanged
 
 outbound calls: none
@@ -1985,6 +1757,7 @@ response body:
     "error": "projectName, techRole, pocEid required"
   }
 
+stored data: unchanged
 data files: unchanged
 
 outbound calls: none
@@ -2005,6 +1778,7 @@ response body:
     "error": "eid, projectName, techRole, pocEid required"
   }
 
+stored data: unchanged
 data files: unchanged
 
 outbound calls: none
@@ -2043,27 +1817,9 @@ response body:
     "createdAt": "<generated-timestamp>"
   }
 
-data files:
-  db.json: modified
-    raw text diff:
-      @@ -600,4 +600,15 @@
-             "groupNumber": null,
-             "createdAt": "2026-11-05T01:40:15.330Z"
-      +    },
-      +    {
-      +      "id": 6,
-      +      "eid": "jomar.c.pascual",
-      +      "projectName": "Harborline Insurance Portal",
-      +      "techRole": "AEM Developer",
-      +      "pocEid": "rafael.t.mendoza",
-      +      "status": "Teleported",
-      +      "details": "Junior slot, AEM components",
-      +      "groupNumber": 5,
-      +      "createdAt": "<generated-timestamp>"
-           }
-         ],
-    parsed JSON diff:
-      + /project-reachouts[id=6] (at index 5): {"id":6,"eid":"jomar.c.pascual","projectName":"Harborline Insurance Portal","techRole":"AEM Developer","pocEid":"rafael.t.mendoza","status":"Teleported","details":"Junior slot, AEM components","groupNumber":5,"createdAt":"<generated-timestamp>"}
+stored data:
+  + /project-reachouts[id=6] (at index 5): {"id":6,"eid":"jomar.c.pascual","projectName":"Harborline Insurance Portal","techRole":"AEM Developer","pocEid":"rafael.t.mendoza","status":"Teleported","details":"Junior slot, AEM components","groupNumber":5,"createdAt":"<generated-timestamp>"}
+data files: unchanged
 
 outbound calls: none
 
@@ -2120,27 +1876,9 @@ response body:
     "createdAt": "<generated-timestamp>"
   }
 
-data files:
-  db.json: modified
-    raw text diff:
-      @@ -600,4 +600,15 @@
-             "groupNumber": null,
-             "createdAt": "2026-11-05T01:40:15.330Z"
-      +    },
-      +    {
-      +      "id": 6,
-      +      "eid": "nobody.here",
-      +      "projectName": "Harborline Insurance Portal",
-      +      "techRole": "AEM Developer",
-      +      "pocEid": "rafael.t.mendoza",
-      +      "status": "CV Requested",
-      +      "details": "Junior slot, AEM components",
-      +      "groupNumber": 2,
-      +      "createdAt": "<generated-timestamp>"
-           }
-         ],
-    parsed JSON diff:
-      + /project-reachouts[id=6] (at index 5): {"id":6,"eid":"nobody.here","projectName":"Harborline Insurance Portal","techRole":"AEM Developer","pocEid":"rafael.t.mendoza","status":"CV Requested","details":"Junior slot, AEM components","groupNumber":2,"createdAt":"<generated-timestamp>"}
+stored data:
+  + /project-reachouts[id=6] (at index 5): {"id":6,"eid":"nobody.here","projectName":"Harborline Insurance Portal","techRole":"AEM Developer","pocEid":"rafael.t.mendoza","status":"CV Requested","details":"Junior slot, AEM components","groupNumber":2,"createdAt":"<generated-timestamp>"}
+data files: unchanged
 
 outbound calls: none
 
@@ -2178,27 +1916,9 @@ response body:
     "createdAt": "<generated-timestamp>"
   }
 
-data files:
-  db.json: modified
-    raw text diff:
-      @@ -600,4 +600,15 @@
-             "groupNumber": null,
-             "createdAt": "2026-11-05T01:40:15.330Z"
-      +    },
-      +    {
-      +      "id": 6,
-      +      "eid": "jomar.c.pascual",
-      +      "projectName": "Harborline Insurance Portal",
-      +      "techRole": "AEM Developer",
-      +      "pocEid": "rafael.t.mendoza",
-      +      "status": "CV Requested",
-      +      "details": "Junior slot, AEM components",
-      +      "groupNumber": 1,
-      +      "createdAt": "<generated-timestamp>"
-           }
-         ],
-    parsed JSON diff:
-      + /project-reachouts[id=6] (at index 5): {"id":6,"eid":"jomar.c.pascual","projectName":"Harborline Insurance Portal","techRole":"AEM Developer","pocEid":"rafael.t.mendoza","status":"CV Requested","details":"Junior slot, AEM components","groupNumber":1,"createdAt":"<generated-timestamp>"}
+stored data:
+  + /project-reachouts[id=6] (at index 5): {"id":6,"eid":"jomar.c.pascual","projectName":"Harborline Insurance Portal","techRole":"AEM Developer","pocEid":"rafael.t.mendoza","status":"CV Requested","details":"Junior slot, AEM components","groupNumber":1,"createdAt":"<generated-timestamp>"}
+data files: unchanged
 
 outbound calls: none
 
@@ -2236,29 +1956,9 @@ response body:
     "createdAt": "<generated-timestamp>"
   }
 
-data files:
-  db.json: modified
-    raw text diff:
-      @@ -565,4 +565,17 @@
-             "deletedAt": "2026-11-03T02:05:40.017Z"
-           }
-      +  ],
-      +  "project-reachouts": [
-      +    {
-      +      "id": 1,
-      +      "eid": "jomar.c.pascual",
-      +      "projectName": "Harborline Insurance Portal",
-      +      "techRole": "AEM Developer",
-      +      "pocEid": "rafael.t.mendoza",
-      +      "status": "CV Requested",
-      +      "details": "Junior slot, AEM components",
-      +      "groupNumber": 5,
-      +      "createdAt": "<generated-timestamp>"
-      +    }
-         ]
-       }
-    parsed JSON diff:
-      + /project-reachouts: [{"id":1,"eid":"jomar.c.pascual","projectName":"Harborline Insurance Portal","techRole":"AEM Developer","pocEid":"rafael.t.mendoza","status":"CV Requested","details":"Junior slot, AEM components","groupNumber":5,"createdAt":"<generated-timestamp>"}]
+stored data:
+  + /project-reachouts[id=1] (at index 0): {"id":1,"eid":"jomar.c.pascual","projectName":"Harborline Insurance Portal","techRole":"AEM Developer","pocEid":"rafael.t.mendoza","status":"CV Requested","details":"Junior slot, AEM components","groupNumber":5,"createdAt":"<generated-timestamp>"}
+data files: unchanged
 
 outbound calls: none
 

@@ -1009,6 +1009,7 @@ response body:
   </html>
   
 
+stored data: unchanged
 data files: unchanged
 
 outbound calls: none
@@ -1029,6 +1030,7 @@ response body:
     "a": 1
   }
 
+stored data: unchanged
 data files: unchanged
 
 outbound calls: none
@@ -1057,6 +1059,7 @@ response body:
   </html>
   
 
+stored data: unchanged
 data files: unchanged
 
 outbound calls: none
@@ -1087,6 +1090,7 @@ response body:
     "stock": 0
   }
 
+stored data: unchanged
 data files:
   test_bwd/db.json: modified
     raw text diff:
@@ -1137,6 +1141,7 @@ response body:
   </html>
   
 
+stored data: unchanged
 data files: unchanged
 
 outbound calls: none
@@ -1167,6 +1172,7 @@ response body:
     "stock": 0
   }
 
+stored data: unchanged
 data files:
   test_bwd/db.json: modified
     raw text diff:

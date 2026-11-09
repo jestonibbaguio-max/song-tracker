@@ -12,25 +12,9 @@ response body:
     "deleted": true
   }
 
-data files:
-  db.json: modified
-    raw text diff:
-      @@ -189,13 +189,4 @@
-           },
-           {
-      -      "id": 6,
-      -      "eid": "liza.m.navarro",
-      -      "year": 2026,
-      -      "month": 10,
-      -      "day": 28,
-      -      "status": "RTO",
-      -      "location": "Harbor Point Building"
-      -    },
-      -    {
-             "id": 7,
-             "eid": "jomar.c.pascual",
-    parsed JSON diff:
-      - /attendance[id=6]: {"id":6,"eid":"liza.m.navarro","year":2026,"month":10,"day":28,"status":"RTO","location":"Harbor Point Building"}
+stored data:
+  - /attendance[id=6]: {"id":6,"eid":"liza.m.navarro","year":2026,"month":10,"day":28,"status":"RTO","location":"Harbor Point Building"}
+data files: unchanged
 
 outbound calls: none
 
@@ -50,24 +34,9 @@ response body:
     "deleted": true
   }
 
-data files:
-  db.json: modified
-    raw text diff:
-      @@ -157,12 +157,4 @@
-           },
-           {
-      -      "id": "2",
-      -      "eid": "liza.m.navarro",
-      -      "year": 2026,
-      -      "month": 10,
-      -      "day": 27,
-      -      "status": "Present"
-      -    },
-      -    {
-             "id": "3",
-             "eid": "jomar.c.pascual",
-    parsed JSON diff:
-      - /attendance[id="2"]: {"id":"2","eid":"liza.m.navarro","year":2026,"month":10,"day":27,"status":"Present"}
+stored data:
+  - /attendance[id=2]: {"id":2,"eid":"liza.m.navarro","year":2026,"month":10,"day":27,"status":"Present"}
+data files: unchanged
 
 outbound calls: none
 
@@ -97,6 +66,7 @@ response body:
   </html>
   
 
+stored data: unchanged
 data files: unchanged
 
 outbound calls: none
@@ -117,6 +87,7 @@ response body:
     "error": "record not found"
   }
 
+stored data: unchanged
 data files: unchanged
 
 outbound calls: none
@@ -146,6 +117,7 @@ response body:
     "error": "record not found"
   }
 
+stored data: unchanged
 data files: unchanged
 
 outbound calls: none
@@ -199,6 +171,7 @@ response body:
     }
   ]
 
+stored data: unchanged
 data files: unchanged
 
 outbound calls: none
@@ -309,6 +282,7 @@ response body:
     }
   ]
 
+stored data: unchanged
 data files: unchanged
 
 outbound calls: none
@@ -394,6 +368,7 @@ response body:
     }
   ]
 
+stored data: unchanged
 data files: unchanged
 
 outbound calls: none
@@ -424,6 +399,7 @@ response body:
   </html>
   
 
+stored data: unchanged
 data files: unchanged
 
 outbound calls: none
@@ -442,6 +418,7 @@ x-powered-by: Express
 response body:
   []
 
+stored data: unchanged
 data files: unchanged
 
 outbound calls: none
@@ -460,6 +437,7 @@ x-powered-by: Express
 response body:
   []
 
+stored data: unchanged
 data files: unchanged
 
 outbound calls: none
@@ -487,6 +465,7 @@ x-powered-by: Express
 response body:
   []
 
+stored data: unchanged
 data files: unchanged
 
 outbound calls: none
@@ -505,6 +484,7 @@ x-powered-by: Express
 response body:
   []
 
+stored data: unchanged
 data files: unchanged
 
 outbound calls: none
@@ -581,6 +561,7 @@ response body:
     }
   ]
 
+stored data: unchanged
 data files: unchanged
 
 outbound calls: none
@@ -611,6 +592,7 @@ response body:
   </html>
   
 
+stored data: unchanged
 data files: unchanged
 
 outbound calls: none
@@ -638,6 +620,7 @@ x-powered-by: Express
 response body:
   []
 
+stored data: unchanged
 data files: unchanged
 
 outbound calls: none
@@ -706,6 +689,7 @@ response body:
     }
   ]
 
+stored data: unchanged
 data files: unchanged
 
 outbound calls: none
@@ -765,6 +749,7 @@ response body:
     }
   ]
 
+stored data: unchanged
 data files: unchanged
 
 outbound calls: none
@@ -824,6 +809,7 @@ response body:
     }
   ]
 
+stored data: unchanged
 data files: unchanged
 
 outbound calls: none
@@ -854,6 +840,7 @@ response body:
   </html>
   
 
+stored data: unchanged
 data files: unchanged
 
 outbound calls: none
@@ -872,6 +859,7 @@ x-powered-by: Express
 response body:
   []
 
+stored data: unchanged
 data files: unchanged
 
 outbound calls: none
@@ -899,6 +887,7 @@ x-powered-by: Express
 response body:
   []
 
+stored data: unchanged
 data files: unchanged
 
 outbound calls: none
@@ -917,6 +906,7 @@ x-powered-by: Express
 response body:
   []
 
+stored data: unchanged
 data files: unchanged
 
 outbound calls: none
@@ -953,6 +943,7 @@ response body:
     }
   ]
 
+stored data: unchanged
 data files: unchanged
 
 outbound calls: none
@@ -983,6 +974,7 @@ response body:
   </html>
   
 
+stored data: unchanged
 data files: unchanged
 
 outbound calls: none
@@ -1010,6 +1002,7 @@ x-powered-by: Express
 response body:
   []
 
+stored data: unchanged
 data files: unchanged
 
 outbound calls: none
@@ -1025,7 +1018,7 @@ credentials: no-group new joiner (paolo.d.ramos, role viewer)
 
 `;
 
-exports[`PATCH /api/attendance/:id > happy path › RTO cell changed to Absent keeps its stale location; string id becomes a number 1`] = `
+exports[`PATCH /api/attendance/:id > happy path › RTO cell changed to Absent keeps its stale location; string id becomes a number (raw db.json) 1`] = `
 
 PATCH /api/attendance/1
 credentials: group 5 POC (rafael.t.mendoza, role poc)
@@ -1073,6 +1066,38 @@ outbound calls: none
 
 `;
 
+exports[`PATCH /api/attendance/:id > happy path › RTO cell changed to Absent keeps its stale location; string id becomes a number 1`] = `
+
+PATCH /api/attendance/1
+credentials: group 5 POC (rafael.t.mendoza, role poc)
+request body:
+  {
+    "status": "Absent"
+  }
+
+status: 200
+content-type: application/json; charset=utf-8
+access-control-allow-origin: *
+x-powered-by: Express
+response body:
+  {
+    "id": 1,
+    "eid": "rafael.t.mendoza",
+    "year": 2026,
+    "month": 10,
+    "day": 27,
+    "status": "Absent",
+    "location": "Riverside Tech Tower 2"
+  }
+
+stored data:
+  ~ /attendance[id=1]/status: "RTO" → "Absent"
+data files: unchanged
+
+outbound calls: none
+
+`;
+
 exports[`PATCH /api/attendance/:id > happy path › changes a cell status (as the attendance page sends it) 1`] = `
 
 PATCH /api/attendance/6
@@ -1097,24 +1122,15 @@ response body:
     "location": "Harbor Point Building"
   }
 
-data files:
-  db.json: modified
-    raw text diff:
-      @@ -194,5 +194,5 @@
-             "month": 10,
-             "day": 28,
-      -      "status": "RTO",
-      +      "status": "Absent",
-             "location": "Harbor Point Building"
-           },
-    parsed JSON diff:
-      ~ /attendance[id=6]/status: "RTO" → "Absent"
+stored data:
+  ~ /attendance[id=6]/status: "RTO" → "Absent"
+data files: unchanged
 
 outbound calls: none
 
 `;
 
-exports[`PATCH /api/attendance/:id > happy path › changes an RTO location 1`] = `
+exports[`PATCH /api/attendance/:id > happy path › changes an RTO location (raw db.json) 1`] = `
 
 PATCH /api/attendance/1
 credentials: group 5 POC (rafael.t.mendoza, role poc)
@@ -1164,6 +1180,39 @@ outbound calls: none
 
 `;
 
+exports[`PATCH /api/attendance/:id > happy path › changes an RTO location 1`] = `
+
+PATCH /api/attendance/1
+credentials: group 5 POC (rafael.t.mendoza, role poc)
+request body:
+  {
+    "status": "RTO",
+    "location": "Harbor Point Building B"
+  }
+
+status: 200
+content-type: application/json; charset=utf-8
+access-control-allow-origin: *
+x-powered-by: Express
+response body:
+  {
+    "id": 1,
+    "eid": "rafael.t.mendoza",
+    "year": 2026,
+    "month": 10,
+    "day": 27,
+    "status": "RTO",
+    "location": "Harbor Point Building B"
+  }
+
+stored data:
+  ~ /attendance[id=1]/location: "Riverside Tech Tower 2" → "Harbor Point Building B"
+data files: unchanged
+
+outbound calls: none
+
+`;
+
 exports[`PATCH /api/attendance/:id > invalid input › arbitrary fields are merged; id cannot be changed 1`] = `
 
 PATCH /api/attendance/6
@@ -1192,34 +1241,17 @@ response body:
     "extra": true
   }
 
-data files:
-  db.json: modified
-    raw text diff:
-      @@ -190,10 +190,11 @@
-           {
-             "id": 6,
-      -      "eid": "liza.m.navarro",
-      +      "eid": "nobody.here",
-             "year": 2026,
-             "month": 10,
-             "day": 28,
-      -      "status": "RTO",
-      -      "location": "Harbor Point Building"
-      +      "status": "Nope",
-      +      "location": "Harbor Point Building",
-      +      "extra": true
-           },
-           {
-    parsed JSON diff:
-      ~ /attendance[id=6]/eid: "liza.m.navarro" → "nobody.here"
-      ~ /attendance[id=6]/status: "RTO" → "Nope"
-      + /attendance[id=6]/extra: true
+stored data:
+  ~ /attendance[id=6]/eid: "liza.m.navarro" → "nobody.here"
+  ~ /attendance[id=6]/status: "RTO" → "Nope"
+  + /attendance[id=6]/extra: true
+data files: unchanged
 
 outbound calls: none
 
 `;
 
-exports[`PATCH /api/attendance/:id > invalid input › empty body still rewrites the record 1`] = `
+exports[`PATCH /api/attendance/:id > invalid input › empty body still rewrites the record (raw db.json) 1`] = `
 
 PATCH /api/attendance/2
 credentials: group 5 POC (rafael.t.mendoza, role poc)
@@ -1258,6 +1290,34 @@ outbound calls: none
 
 `;
 
+exports[`PATCH /api/attendance/:id > invalid input › empty body still rewrites the record 1`] = `
+
+PATCH /api/attendance/2
+credentials: group 5 POC (rafael.t.mendoza, role poc)
+request body:
+  {}
+
+status: 200
+content-type: application/json; charset=utf-8
+access-control-allow-origin: *
+x-powered-by: Express
+response body:
+  {
+    "id": 2,
+    "eid": "liza.m.navarro",
+    "year": 2026,
+    "month": 10,
+    "day": 27,
+    "status": "Present"
+  }
+
+stored data: unchanged
+data files: unchanged
+
+outbound calls: none
+
+`;
+
 exports[`PATCH /api/attendance/:id > invalid input › malformed JSON body 1`] = `
 
 PATCH /api/attendance/6
@@ -1282,6 +1342,7 @@ response body:
   </html>
   
 
+stored data: unchanged
 data files: unchanged
 
 outbound calls: none
@@ -1308,6 +1369,7 @@ response body:
     "location": "Harbor Point Building"
   }
 
+stored data: unchanged
 data files: unchanged
 
 outbound calls: none
@@ -1345,6 +1407,7 @@ response body:
     "error": "record not found"
   }
 
+stored data: unchanged
 data files: unchanged
 
 outbound calls: none
@@ -1369,6 +1432,7 @@ response body:
     "error": "record not found"
   }
 
+stored data: unchanged
 data files: unchanged
 
 outbound calls: none
@@ -1415,24 +1479,9 @@ response body:
     "id": 12
   }
 
-data files:
-  db.json: modified
-    raw text diff:
-      @@ -237,4 +237,12 @@
-             "day": 4,
-             "status": "Present"
-      +    },
-      +    {
-      +      "eid": "liza.m.navarro",
-      +      "year": 2026,
-      +      "month": 11,
-      +      "day": 5,
-      +      "status": "Present",
-      +      "id": 12
-           }
-         ],
-    parsed JSON diff:
-      + /attendance[id=12] (at index 11): {"eid":"liza.m.navarro","year":2026,"month":11,"day":5,"status":"Present","id":12}
+stored data:
+  + /attendance[id=12] (at index 11): {"id":12,"eid":"liza.m.navarro","year":2026,"month":11,"day":5,"status":"Present"}
+data files: unchanged
 
 outbound calls: none
 
@@ -1467,25 +1516,9 @@ response body:
     "id": 12
   }
 
-data files:
-  db.json: modified
-    raw text diff:
-      @@ -237,4 +237,13 @@
-             "day": 4,
-             "status": "Present"
-      +    },
-      +    {
-      +      "eid": "jomar.c.pascual",
-      +      "year": 2026,
-      +      "month": 11,
-      +      "day": 5,
-      +      "status": "RTO",
-      +      "location": "Riverside Tech Tower 2",
-      +      "id": 12
-           }
-         ],
-    parsed JSON diff:
-      + /attendance[id=12] (at index 11): {"eid":"jomar.c.pascual","year":2026,"month":11,"day":5,"status":"RTO","location":"Riverside Tech Tower 2","id":12}
+stored data:
+  + /attendance[id=12] (at index 11): {"id":12,"eid":"jomar.c.pascual","year":2026,"month":11,"day":5,"status":"RTO","location":"Riverside Tech Tower 2"}
+data files: unchanged
 
 outbound calls: none
 
@@ -1521,25 +1554,9 @@ response body:
     "id": 12
   }
 
-data files:
-  db.json: modified
-    raw text diff:
-      @@ -237,4 +237,13 @@
-             "day": 4,
-             "status": "Present"
-      +    },
-      +    {
-      +      "eid": "jomar.c.pascual",
-      +      "year": 2026,
-      +      "month": 11,
-      +      "day": 5,
-      +      "status": "RTO",
-      +      "location": "Riverside Tech Tower 2",
-      +      "id": 12
-           }
-         ],
-    parsed JSON diff:
-      + /attendance[id=12] (at index 11): {"eid":"jomar.c.pascual","year":2026,"month":11,"day":5,"status":"RTO","location":"Riverside Tech Tower 2","id":12}
+stored data:
+  + /attendance[id=12] (at index 11): {"id":12,"eid":"jomar.c.pascual","year":2026,"month":11,"day":5,"status":"RTO","location":"Riverside Tech Tower 2"}
+data files: unchanged
 
 outbound calls: none
 
@@ -1572,24 +1589,9 @@ response body:
     "id": 12
   }
 
-data files:
-  db.json: modified
-    raw text diff:
-      @@ -237,4 +237,12 @@
-             "day": 4,
-             "status": "Present"
-      +    },
-      +    {
-      +      "eid": "rafael.t.mendoza",
-      +      "year": 2026,
-      +      "month": 10,
-      +      "day": 27,
-      +      "status": "Absent",
-      +      "id": 12
-           }
-         ],
-    parsed JSON diff:
-      + /attendance[id=12] (at index 11): {"eid":"rafael.t.mendoza","year":2026,"month":10,"day":27,"status":"Absent","id":12}
+stored data:
+  + /attendance[id=12] (at index 11): {"id":12,"eid":"rafael.t.mendoza","year":2026,"month":10,"day":27,"status":"Absent"}
+data files: unchanged
 
 outbound calls: none
 
@@ -1611,19 +1613,9 @@ response body:
     "id": 12
   }
 
-data files:
-  db.json: modified
-    raw text diff:
-      @@ -237,4 +237,7 @@
-             "day": 4,
-             "status": "Present"
-      +    },
-      +    {
-      +      "id": 12
-           }
-         ],
-    parsed JSON diff:
-      + /attendance[id=12] (at index 11): {"id":12}
+stored data:
+  + /attendance[id=12] (at index 11): {"id":12}
+data files: unchanged
 
 outbound calls: none
 
@@ -1653,6 +1645,7 @@ response body:
   </html>
   
 
+stored data: unchanged
 data files: unchanged
 
 outbound calls: none
@@ -1673,19 +1666,9 @@ response body:
     "id": 12
   }
 
-data files:
-  db.json: modified
-    raw text diff:
-      @@ -237,4 +237,7 @@
-             "day": 4,
-             "status": "Present"
-      +    },
-      +    {
-      +      "id": 12
-           }
-         ],
-    parsed JSON diff:
-      + /attendance[id=12] (at index 11): {"id":12}
+stored data:
+  + /attendance[id=12] (at index 11): {"id":12}
+data files: unchanged
 
 outbound calls: none
 
@@ -1712,21 +1695,9 @@ response body:
     "id": 12
   }
 
-data files:
-  db.json: modified
-    raw text diff:
-      @@ -237,4 +237,9 @@
-             "day": 4,
-             "status": "Present"
-      +    },
-      +    {
-      +      "0": "a",
-      +      "1": "b",
-      +      "id": 12
-           }
-         ],
-    parsed JSON diff:
-      + /attendance[id=12] (at index 11): {"0":"a","1":"b","id":12}
+stored data:
+  + /attendance[id=12] (at index 11): {"0":"a","1":"b","id":12}
+data files: unchanged
 
 outbound calls: none
 
@@ -1761,25 +1732,9 @@ response body:
     "id": 12
   }
 
-data files:
-  db.json: modified
-    raw text diff:
-      @@ -237,4 +237,13 @@
-             "day": 4,
-             "status": "Present"
-      +    },
-      +    {
-      +      "eid": "nobody.here",
-      +      "year": 2026,
-      +      "month": 11,
-      +      "day": 5,
-      +      "status": "Moon base",
-      +      "location": "Riverside Tech Tower 2",
-      +      "id": 12
-           }
-         ],
-    parsed JSON diff:
-      + /attendance[id=12] (at index 11): {"eid":"nobody.here","year":2026,"month":11,"day":5,"status":"Moon base","location":"Riverside Tech Tower 2","id":12}
+stored data:
+  + /attendance[id=12] (at index 11): {"id":12,"eid":"nobody.here","year":2026,"month":11,"day":5,"status":"Moon base","location":"Riverside Tech Tower 2"}
+data files: unchanged
 
 outbound calls: none
 
@@ -1832,27 +1787,9 @@ response body:
     "id": 1
   }
 
-data files:
-  db.json: modified
-    raw text diff:
-      @@ -531,4 +531,15 @@
-             "deletedAt": "2026-11-03T02:05:40.017Z"
-           }
-      +  ],
-      +  "attendance": [
-      +    {
-      +      "eid": "jomar.c.pascual",
-      +      "year": 2026,
-      +      "month": 11,
-      +      "day": 5,
-      +      "status": "RTO",
-      +      "location": "Riverside Tech Tower 2",
-      +      "id": 1
-      +    }
-         ]
-       }
-    parsed JSON diff:
-      + /attendance: [{"eid":"jomar.c.pascual","year":2026,"month":11,"day":5,"status":"RTO","location":"Riverside Tech Tower 2","id":1}]
+stored data:
+  + /attendance[id=1] (at index 0): {"id":1,"eid":"jomar.c.pascual","year":2026,"month":11,"day":5,"status":"RTO","location":"Riverside Tech Tower 2"}
+data files: unchanged
 
 outbound calls: none
 
@@ -1903,24 +1840,9 @@ response body:
     "holiday": 0
   }
 
-data files:
-  db.json: modified
-    raw text diff:
-      @@ -40,4 +40,12 @@
-             "admin": 0,
-             "holiday": 0
-      +    },
-      +    {
-      +      "id": 6,
-      +      "sprintName": "Sprint 3",
-      +      "eid": "rafael.t.mendoza",
-      +      "cadence": 4,
-      +      "admin": 1,
-      +      "holiday": 0
-           }
-         ],
-    parsed JSON diff:
-      + /capacity-entries[id=6] (at index 5): {"id":6,"sprintName":"Sprint 3","eid":"rafael.t.mendoza","cadence":4,"admin":1,"holiday":0}
+stored data:
+  + /capacity-entries[id=6] (at index 5): {"id":6,"sprintName":"Sprint 3","eid":"rafael.t.mendoza","cadence":4,"admin":1,"holiday":0}
+data files: unchanged
 
 outbound calls: none
 
@@ -1951,18 +1873,9 @@ response body:
     "holiday": 2
   }
 
-data files:
-  db.json: modified
-    raw text diff:
-      @@ -23,5 +23,5 @@
-             "cadence": 3,
-             "admin": 0,
-      -      "holiday": 1
-      +      "holiday": 2
-           },
-           {
-    parsed JSON diff:
-      ~ /capacity-entries[id=3]/holiday: 1 → 2
+stored data:
+  ~ /capacity-entries[id=3]/holiday: 1 → 2
+data files: unchanged
 
 outbound calls: none
 
@@ -1996,21 +1909,10 @@ response body:
     "holiday": 0
   }
 
-data files:
-  db.json: modified
-    raw text diff:
-      @@ -5,6 +5,6 @@
-             "sprintName": "Sprint 2",
-             "eid": "rafael.t.mendoza",
-      -      "cadence": 4,
-      -      "admin": 0,
-      +      "cadence": 3,
-      +      "admin": 1,
-             "holiday": 0
-           },
-    parsed JSON diff:
-      ~ /capacity-entries[id=1]/cadence: 4 → 3
-      ~ /capacity-entries[id=1]/admin: 0 → 1
+stored data:
+  ~ /capacity-entries[id=1]/cadence: 4 → 3
+  ~ /capacity-entries[id=1]/admin: 0 → 1
+data files: unchanged
 
 outbound calls: none
 
@@ -2041,24 +1943,9 @@ response body:
     "holiday": 0
   }
 
-data files:
-  db.json: modified
-    raw text diff:
-      @@ -40,4 +40,12 @@
-             "admin": 0,
-             "holiday": 0
-      +    },
-      +    {
-      +      "id": 6,
-      +      "sprintName": "Sprint 2",
-      +      "eid": "Rafael.T.Mendoza",
-      +      "cadence": 1,
-      +      "admin": 0,
-      +      "holiday": 0
-           }
-         ],
-    parsed JSON diff:
-      + /capacity-entries[id=6] (at index 5): {"id":6,"sprintName":"Sprint 2","eid":"Rafael.T.Mendoza","cadence":1,"admin":0,"holiday":0}
+stored data:
+  + /capacity-entries[id=6] (at index 5): {"id":6,"sprintName":"Sprint 2","eid":"Rafael.T.Mendoza","cadence":1,"admin":0,"holiday":0}
+data files: unchanged
 
 outbound calls: none
 
@@ -2088,6 +1975,7 @@ response body:
   </html>
   
 
+stored data: unchanged
 data files: unchanged
 
 outbound calls: none
@@ -2113,6 +2001,7 @@ response body:
     "error": "sprintName and eid are required"
   }
 
+stored data: unchanged
 data files: unchanged
 
 outbound calls: none
@@ -2145,24 +2034,9 @@ response body:
     "holiday": 0
   }
 
-data files:
-  db.json: modified
-    raw text diff:
-      @@ -40,4 +40,12 @@
-             "admin": 0,
-             "holiday": 0
-      +    },
-      +    {
-      +      "id": 6,
-      +      "sprintName": "Sprint 3",
-      +      "eid": "liza.m.navarro",
-      +      "cadence": -2,
-      +      "admin": 0.5,
-      +      "holiday": 0
-           }
-         ],
-    parsed JSON diff:
-      + /capacity-entries[id=6] (at index 5): {"id":6,"sprintName":"Sprint 3","eid":"liza.m.navarro","cadence":-2,"admin":0.5,"holiday":0}
+stored data:
+  + /capacity-entries[id=6] (at index 5): {"id":6,"sprintName":"Sprint 3","eid":"liza.m.navarro","cadence":-2,"admin":0.5,"holiday":0}
+data files: unchanged
 
 outbound calls: none
 
@@ -2190,6 +2064,7 @@ response body:
   </html>
   
 
+stored data: unchanged
 data files: unchanged
 
 outbound calls: none
@@ -2221,24 +2096,9 @@ response body:
     "holiday": 0
   }
 
-data files:
-  db.json: modified
-    raw text diff:
-      @@ -40,4 +40,12 @@
-             "admin": 0,
-             "holiday": 0
-      +    },
-      +    {
-      +      "id": 6,
-      +      "sprintName": "Sprint 3",
-      +      "eid": "liza.m.navarro",
-      +      "cadence": 0,
-      +      "admin": 0,
-      +      "holiday": 0
-           }
-         ],
-    parsed JSON diff:
-      + /capacity-entries[id=6] (at index 5): {"id":6,"sprintName":"Sprint 3","eid":"liza.m.navarro","cadence":0,"admin":0,"holiday":0}
+stored data:
+  + /capacity-entries[id=6] (at index 5): {"id":6,"sprintName":"Sprint 3","eid":"liza.m.navarro","cadence":0,"admin":0,"holiday":0}
+data files: unchanged
 
 outbound calls: none
 
@@ -2269,18 +2129,9 @@ response body:
     "holiday": 0
   }
 
-data files:
-  db.json: modified
-    raw text diff:
-      @@ -29,5 +29,5 @@
-             "sprintName": "Sprint 2",
-             "eid": "liza.m.navarro",
-      -      "cadence": 4,
-      +      "cadence": null,
-             "admin": 0,
-             "holiday": 0
-    parsed JSON diff:
-      ~ /capacity-entries[id=4]/cadence: 4 → null
+stored data:
+  ~ /capacity-entries[id=4]/cadence: 4 → null
+data files: unchanged
 
 outbound calls: none
 
@@ -2328,26 +2179,9 @@ response body:
     "holiday": 0
   }
 
-data files:
-  db.json: modified
-    raw text diff:
-      @@ -582,4 +582,14 @@
-             "deletedAt": "2026-11-03T02:05:40.017Z"
-           }
-      +  ],
-      +  "capacity-entries": [
-      +    {
-      +      "id": 1,
-      +      "sprintName": "Sprint 3",
-      +      "eid": "rafael.t.mendoza",
-      +      "cadence": 4,
-      +      "admin": 0,
-      +      "holiday": 0
-      +    }
-         ]
-       }
-    parsed JSON diff:
-      + /capacity-entries: [{"id":1,"sprintName":"Sprint 3","eid":"rafael.t.mendoza","cadence":4,"admin":0,"holiday":0}]
+stored data:
+  + /capacity-entries[id=1] (at index 0): {"id":1,"sprintName":"Sprint 3","eid":"rafael.t.mendoza","cadence":4,"admin":0,"holiday":0}
+data files: unchanged
 
 outbound calls: none
 
@@ -2378,24 +2212,9 @@ response body:
     "holiday": 0
   }
 
-data files:
-  db.json: modified
-    raw text diff:
-      @@ -40,4 +40,12 @@
-             "admin": 0,
-             "holiday": 0
-      +    },
-      +    {
-      +      "id": 6,
-      +      "sprintName": "Sprint 3",
-      +      "eid": "nobody.here",
-      +      "cadence": 4,
-      +      "admin": 0,
-      +      "holiday": 0
-           }
-         ],
-    parsed JSON diff:
-      + /capacity-entries[id=6] (at index 5): {"id":6,"sprintName":"Sprint 3","eid":"nobody.here","cadence":4,"admin":0,"holiday":0}
+stored data:
+  + /capacity-entries[id=6] (at index 5): {"id":6,"sprintName":"Sprint 3","eid":"nobody.here","cadence":4,"admin":0,"holiday":0}
+data files: unchanged
 
 outbound calls: none
 
@@ -2426,24 +2245,9 @@ response body:
     "holiday": 0
   }
 
-data files:
-  db.json: modified
-    raw text diff:
-      @@ -40,4 +40,12 @@
-             "admin": 0,
-             "holiday": 0
-      +    },
-      +    {
-      +      "id": 6,
-      +      "sprintName": "Sprint 99",
-      +      "eid": "rafael.t.mendoza",
-      +      "cadence": 4,
-      +      "admin": 0,
-      +      "holiday": 0
-           }
-         ],
-    parsed JSON diff:
-      + /capacity-entries[id=6] (at index 5): {"id":6,"sprintName":"Sprint 99","eid":"rafael.t.mendoza","cadence":4,"admin":0,"holiday":0}
+stored data:
+  + /capacity-entries[id=6] (at index 5): {"id":6,"sprintName":"Sprint 99","eid":"rafael.t.mendoza","cadence":4,"admin":0,"holiday":0}
+data files: unchanged
 
 outbound calls: none
 
