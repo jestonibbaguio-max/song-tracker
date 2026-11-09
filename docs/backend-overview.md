@@ -10,14 +10,14 @@ This is a snapshot of `server/` and of how the Angular app talks to it, taken fr
 |---|---|
 | Framework | **Express 5** (`express@^5.2.1`), plain CommonJS JavaScript, no TypeScript, no build step |
 | Entry point | [server/server.js](../server/server.js), started by `npm run api` (`node server/server.js`) or `npm run dev` (API + `ng serve` via `concurrently`) |
-| Dependencies | `express` and `cors` only. The server has no `package.json` of its own; both packages come from the root one |
+| Dependencies | `express`, `cors` and `better-sqlite3` (pinned at `13.0.3`; installed for the [SQLite migration](sqlite-migration-plan.md), but no server code uses it yet). The server has no `package.json` of its own; all three come from the root one |
 | Route organisation | One Express router per feature in [server/features/](../server/features/) (routes → controller → service → repository), mounted in [server/app.js](../server/app.js), which only composes the app |
-| Persistence | Flat JSON files read and written synchronously with `fs` on every request, only from [server/persistence/](../server/persistence/) (one repository per file). No ORM, no database driver |
+| Persistence | Flat JSON files read and written synchronously with `fs` on every request, only from [server/persistence/](../server/persistence/) (one repository per file). No ORM, and no code uses a database driver yet |
 | Database | **None in use yet.** The move to SQLite (`better-sqlite3`, installed but not used) is planned in [sqlite-migration-plan.md](sqlite-migration-plan.md) |
 | Auth | None. Every endpoint is public |
 | External services | None: no email, payments, object storage, queues, or third-party APIs |
 | Background jobs | None on the server. The only periodic work is a client-side 2.5 s poll in the Planner capacity view |
-| Config | One env var: `PORT` (default `3000`) |
+| Config | Three env vars: `PORT` (default `3000`), `DATA_DIR` (default `server/data`) and `PERSISTENCE` (default `json`) |
 
 ---
 
@@ -134,6 +134,8 @@ Things to know about this layer:
 | Name | Where | Default | Purpose |
 |---|---|---|---|
 | `PORT` | [config/index.js](../server/config/index.js) | `3000` | API listen port |
+| `DATA_DIR` | [config/index.js](../server/config/index.js) | `server/data` | Folder that holds the data files; the API tests point it at a temp copy |
+| `PERSISTENCE` | [config/index.js](../server/config/index.js) | `json` | Storage backend, `json` or `sqlite` (nothing uses `sqlite` yet; see [sqlite-migration-plan.md](sqlite-migration-plan.md)). Any other value throws when config loads |
 | `CI` | [playwright.config.ts](../playwright.config.ts) | – | Turns off `reuseExistingServer` for Playwright's webServers |
 
 The server has no `.env` loading and no secrets. [server/config/index.js](../server/config/index.js) resolves `PORT`, `DATA_DIR` (default `server/data`; a relative value resolves against the working directory) and every data-file path once, when it loads.

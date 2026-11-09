@@ -23,15 +23,24 @@ These were settled with the team on 2026-11-09. Don't reopen them while you carr
 
 ## What the plan relies on
 
-These are verified against `develop` (`0d602c3`) and `feature/backend-refactor` (`562c4e1`):
+These are verified against `develop` at `07f41a8` (the merge of `feature/backend-refactor`). Its `server/data` is identical to `0d602c3`, the commit before the merge:
 
 - **`develop`'s `server/data` is identical to this branch's committed data.** It has 98 roster records and 361 attendance rows (36 with random ids). After dropping those 36 there are **no duplicate cells and no duplicate ids**.
-- **Every `db.json` collection is stored in ascending id order.** `ORDER BY id` therefore returns rows in the same order as today's arrays. The roster is the exception: its file order is newest first (`unshift`), with gaps from id repair. See "Roster order" under Risks.
+- **Every `db.json` collection with ids is in ascending id order once the import has run.** `ORDER BY id` therefore returns rows in the same order as today's arrays. There are two caveats:
+  - **Attendance isn't ascending as stored.** The order breaks at index 226 (`"247"` → `'RxJX-3dWOPE'`), and it's ascending only after the 36 random-id rows are dropped (decision 6).
+  - **`competency-records` has no ids** (0 of 13 rows). Its order is file order, so its table must return rows `ORDER BY rowid` (insertion order). The import inserts rows in file order, and new rows are appended, as today.
+
+  The roster is the exception: its file order is newest first (`unshift`), with gaps from id repair. See "Roster order" under Risks.
 - **Ids are mixed types:** numeric strings appear in lookups, boards, some buckets, labels and attendance. Nothing in the frontend relies on string ids. Labels are compared with `Number()` (`planner.component.ts:579-599`), and attendance options and office locations are read by `label`/`name` only (`attendance.component.ts:34`, `shared-data.service.ts:37`).
-- **The roster mixes key styles:** 60 records are snake_case only, 24 camelCase only, and 14 have both. Where both exist, they disagree on 13 records (e.g. `hireDate: "08/05/2026"` next to `hire_date: ""`). `formatOnboardingResource` reads camelCase first, so the API already returns the camelCase value. The import uses exactly the same rule.
-- **Planner tasks carry fields the UI doesn't know about.** `completedDate` holds real dates on 86 tasks. `notes` exists on 78 tasks and is `""` on every one of them. Neither field is in `PlannerTask` or anywhere else in `src/`.
+- **The roster mixes key styles.** Not counting `created_at`/`updated_at`, which every record has:
+  - **By style:** 60 records use only snake_case fields, 20 only camelCase, and 18 have both.
+  - **By field:** 14 records store at least one field in both styles, and 24 others use camelCase without a duplicated field. 4 of those 24 (jayson.mark.d.castro, daniel.x.b.legaspi, erald.j.l.sanchez, johnbert.c.d.tagle) still keep 10 fields in snake_case only.
+  - **Disagreements:** in **14** records the two styles of a field disagree, e.g. `hireDate: "08/05/2026"` next to `hire_date: ""`, and iverson.c.cabangis with `groupNumber: 5` next to `group_number: 6`.
+
+  `formatOnboardingResource` reads camelCase first and falls back to snake_case, so the API already returns the camelCase value. The import uses exactly the same rule.
+- **Planner tasks carry fields the UI doesn't know about.** `completedDate` exists on 86 tasks, and holds a date on 59 of them and `""` on 27. `notes` exists on 78 tasks and is `""` on every one of them. Neither field is in `PlannerTask` or anywhere else in `src/`.
 - **`deletion-logs` doesn't exist in the real `db.json`** (the fixtures have 2 rows), and `project-reachouts` exists only in uncommitted edits. Both start empty.
-- **The test suite is green:** 588 tests, run with `npm run test:api`. The leftover `song-tracker.sqlite-wal`/`-shm` files are gitignored and untracked, and there's no main `.sqlite` file, so they can't be read.
+- **The test suite is green:** 588 tests before Phase 0 and 594 after it, run with `npm run test:api`. The leftover `song-tracker.sqlite-wal`/`-shm` files are gitignored and untracked, and there's no main `.sqlite` file, so they can't be read.
 
 ## Target structure
 
@@ -63,6 +72,7 @@ server/
 - **Services never see the storage shape.** No `db[...]`, no arrays loaded from a file, no SQL. They call the store interface only.
 - **The store interface is a unit of work.** `store.read(fn)` and `store.write(fn)` hand `fn` a session object with operations such as `list`, `findById`, `insert`, `update` and `remove`.
   - On JSON, `write` loads the file once and saves it once, and only if `fn` changed something. That keeps today's one-load, one-save pattern, and fs-trace stays green.
+  - **"Changed" means a mutating operation was called, not that the data differs.** Today a no-op `PATCH /api/sprints/1` with `{}` still saves `db.json` (`sprints.service.js:44-45`). A store that compared content before saving would silently stop that write, and fs-trace has no no-op case to catch it (Phase 1 step 0 adds one).
   - On SQLite, `write` wraps `fn` in a `db.transaction()`.
 - **Only `persistence/**` may require `fs` or `better-sqlite3`.** `server/middleware/static.js` stays the one documented exception, and `server/scripts/*` reach both only through `persistence/`.
 - **The server owns server fields.** `id`, `createdAt`, `updatedAt` and `deletedAt` are set by the service with `new Date().toISOString()`, never by SQL `CURRENT_TIMESTAMP`, whose format is different.
@@ -71,7 +81,7 @@ server/
 
 ## Schema
 
-Columns are snake_case, and the stores map them to the camelCase API fields. "Optional" columns are NULL when a record doesn't have the field, **and they're left out of responses when NULL**, so existing records keep their current response keys. Every other column is always present.
+Columns are snake_case, and the stores map them to the camelCase API fields. "Optional" columns are NULL when a record doesn't have the field, **and they're left out of responses when NULL**, so existing records keep their current response keys. **Only an absent key becomes NULL.** A stored `""` stays `""` through the import, the stores and the export; it must never turn into NULL and drop out of a response. Examples are the 27 empty `completedDate` values and every `notes` value. Every other column is always present.
 
 | Table | Columns (optional ones marked `?`) | Constraints and indexes |
 |---|---|---|
@@ -85,30 +95,43 @@ Columns are snake_case, and the stores map them to the camelCase API fields. "Op
 | `planner_labels` | `id`, `name`, `color` | read-only |
 | `planner_boards` | `id`, `group_number`, `name`, `description?` | read-only |
 | `planner_buckets` | `id`, `board_id`, `name`, `sort_order` (API: `order`) | index `(board_id)` |
-| `planner_tasks` | `id`, `board_id?`, `bucket_id?` (a non-numeric value is stored as NULL, as today), `title`, `status`, `priority`, `start_date`, `due_date`, `assignee`, `labels` (JSON, numbers), `checklist` (JSON), `comments?` (JSON), `description?`, `acceptance_criteria?`, `completed` (0/1 → boolean), `completed_date?`, `created_at`, `updated_at` | index `(board_id)`; `json_valid` checks |
+| `planner_tasks` | `id`, `board_id?`, `bucket_id?` (a non-numeric value is stored as NULL, as today), `title`, `status`, `priority`, `start_date`, `due_date`, `assignee`, `labels` (JSON, numbers), `checklist` (JSON), `comments?` (JSON), `description?`, `acceptance_criteria?`, `completed` (0/1 → boolean), `completed_date?`, `notes?`, `created_at`, `updated_at` | index `(board_id)`; `json_valid` checks |
 | `deletion_logs` | `id`, `type`, `task_id?`, `task_title`, `deleted_by`, `deleted_by_eid`, `comment_author?`, `comment_text?`, `comment_created_at?`, `deleted_at` | index `(deleted_by_eid)` |
 | `project_reachouts` | `id`, `eid`, `project_name`, `tech_role`, `poc_eid`, `status`, `details`, `group_number?`, `created_at`, `updated_at?` (POST doesn't set it today) | – |
 | `competency_records` | `eid` (PK), `primary_skill`, `primary_proficiency`, `recent_retake_date`, `next_retake_date`, `secondary_skill`, `secondary_proficiency`, `retake_date` | defaults `''` / `'N/A'`, the same as the GET's default row |
 
 Pragmas: `journal_mode = WAL`, `busy_timeout = 5000`, `foreign_keys = OFF` (decision 9). The schema version is kept in `PRAGMA user_version`.
 
-`planner_tasks.notes` doesn't exist; the column is dropped (always `""`). `completed_date` is kept, and it's on the write allowlist, so it survives a round trip.
+**Binding rules for `better-sqlite3`** (all verified on 13.0.3). The stores convert every value before binding it:
+- **Booleans throw.** Binding `true`/`false` fails with `TypeError: SQLite3 can only bind numbers, strings, bigints, buffers, and null`, so `planner_tasks.completed` needs an explicit `0`/`1` on write and `=== 1` on read.
+- **`NaN` binds as NULL**, so the M7 fix has to coerce it explicitly.
+- **Every JS number binds as a REAL**, so a TEXT column stores `1` as `"1.0"` (see the capacity risk under Risks). Numbers bound to TEXT columns have to go through `String()` first. INTEGER and REAL columns store them correctly.
+
+`planner_tasks.completed_date` and `planner_tasks.notes` are kept as optional columns, and both are on the write allowlist, so they survive a round trip. `notes` is `""` wherever it exists, but `GET /api/planner-tasks` returns every stored key, and the planner snapshots pin `"notes": ""`. Dropping it would change responses in Phase 4, which no snapshot update is allowed to cover.
 
 ## Phases
 
-Each phase is one or more PRs into `develop`, and each step within a phase is its own commit. Commits that only move files stay separate from commits that change logic. After every commit, `npm run test:api` passes. **Only Phase 2 (a format change) and Phase 3 (bug fixes) may update snapshots.** Every other phase must pass with no snapshot change at all.
+Each phase is one or more PRs into `develop`, and each step within a phase is its own commit. Commits that only move files stay separate from commits that change logic. After every commit, `npm run test:api` passes.
 
-| Phase | What | Snapshots | Risk |
+**The snapshot rule:**
+- **Existing snapshot entries** may change only in three phases, always as reviewed changes:
+  - Phase 2: the storage-section format change, verified by a script;
+  - Phase 3: one listed bug per commit;
+  - Phase 8: deleting the json-only tests and their snapshots, and the `sqlite-trace` changes caused by the Phase 8 clean-ups.
+- **New entries for new test cases** may be added in any phase. Examples are the Phase 1 no-op case (step 0) and `sqlite-trace` (Phase 4). Record each one against the code *before* the change it guards, and check that the snapshot diff only adds entries.
+- Everything else must pass with no snapshot change at all.
+
+| Phase | What | Existing snapshots | Risk |
 |---|---|---|---|
 | 0 | Prerequisites | none | Low |
-| 1 | Store interface on JSON | none | Medium |
+| 1 | Store interface on JSON | none (step 0 adds a case) | Medium |
 | 2 | Tests that work with any backend | format only, verified mechanically | Medium |
 | 3 | Fix the storage bugs, on JSON | reviewed, one bug per commit | Medium |
-| 4 | SQLite stores, import, schema | **none** | High |
+| 4 | SQLite stores, import, schema | **none** (adds `sqlite-trace`) | High |
 | 5 | Export (the fallback) and round-trip tests | none | Medium |
 | 6 | Cutover: SQLite becomes the default | none | Medium |
 | 7 | Soak period with the fallback available | – | Low |
-| 8 | Remove the JSON backend | delete the JSON-only tests | Low |
+| 8 | Remove the JSON backend | json-only snapshots deleted; `sqlite-trace` changes from the clean-ups, reviewed | Low |
 
 ### Phase 0: prerequisites
 
@@ -120,10 +143,10 @@ Each phase is one or more PRs into `develop`, and each step within a phase is it
    - after `close()`, the temp directory can be deleted;
    - `NaN` is bound as `NULL`, so the M7 fix has to coerce explicitly.
 
-   Still open: the first CI run on `ubuntu-latest`.
+   **The Linux check waits for Phase 4 step 6.** It can't run before then: the only workflow, `.github/workflows/playwright.yml`, runs only on `main`/`master` and only runs `npx playwright test`, never `npm run test:api`.
 3. Update [CLAUDE.md](../CLAUDE.md):
    - replace "Do not start any SQLite work" with a pointer to this plan;
-   - allow reviewed snapshot updates in Phases 2 and 3 only;
+   - state the snapshot rule (see "The snapshot rule" under Phases);
    - add `better-sqlite3` to the "only `persistence/`" rule;
    - drop the duplicate "Persistence rules" section.
 4. Delete the stale `server/schema.sql`, and the orphaned `song-tracker.sqlite-wal`/`-shm` files on each developer's machine (they're untracked). Add `server/data/*.sqlite` to `.gitignore` (`-wal`/`-shm` are already there).
@@ -131,6 +154,7 @@ Each phase is one or more PRs into `develop`, and each step within a phase is it
 
 ### Phase 1: store interface on JSON (no behaviour change)
 
+0. **Add a no-op PATCH case to fs-trace**, e.g. `PATCH /api/sprints/1` with `{}`, which today loads `db.json` and saves it unchanged. Record it against the pre-Phase-1 server, so the snapshot diff only adds that entry. Every later Phase 1 commit must keep it green, which pins "changed" as "a mutating operation was called".
 1. Pure move: `persistence/db-file.repository.js` and `persistence/roster-file.repository.js` → `persistence/json/`.
 2. One feature per commit, in the restructure order: lookups → sprints → capacity → attendance → planner → reachouts → competency → onboarding. Each commit adds `persistence/json/<feature>.store.js` with the unit-of-work interface, and rewrites the service against it.
    - Moving `nextId()` into the JSON stores is fine. The SQLite stores don't need it.
@@ -146,7 +170,10 @@ Done when: services contain no `db[` and no `repository.load()`, and the suite i
 Today's snapshots record the storage side as raw line diffs of the data files. A SQLite run can't produce those diffs.
 
 1. Add `dumpStore(dataDir)` to the harness. Through each store's `list` operations it returns `{ collection: rows[] }`, and the snapshot records a **logical diff**: rows added, changed and removed per collection. `tasks.json` and the fruits file keep their raw file diffs, because they stay on JSON.
-2. Switch the characterization snapshots from file diffs to logical diffs in **one commit that changes only the storage sections.** A script in the PR checks that every response section is byte-identical, and that each logical diff matches the parsed old file diff.
+   - **`dumpStore` returns canonical rows**, through the same mapper on both backends: numeric ids, merged roster keys (camelCase first), the schema's column set. The fixtures store string ids and snake_case roster rows, so dumping raw JSON rows would give logical diffs that the SQLite backend can't reproduce in Phase 4.
+   - **Canonical rows hide JSON-only storage differences.** Examples are M6's `"1"` → `1` and L9's records with both key styles. The json-only tests (step 3) keep raw file diffs for those.
+2. Switch the characterization snapshots from file diffs to logical diffs in **one commit that changes only the storage sections.** A script in the PR checks that every response section is byte-identical, and that each logical diff matches the old file diff.
+   - **Compare structurally, not by re-parsing line diffs.** `jsonDiff` in `test/helpers/characterize.js` (around line 290) already produces a structural diff that matches records by `id`/`eid`, and `characterize()` already calls it (around line 219). The snapshots don't record its output today; the script can run it on each case's before/after files and compare that with the new logical diff.
 3. Tag the tests that only make sense on JSON files as **json-only**. These cover BOMs, corrupt files, a missing roster and CSV seeding, fractional-id repair, non-array collections, `fs-trace` and the JSON half of `no-read-cache`. They keep pinning the JSON backend until Phase 8.
 4. The harness reads `PERSISTENCE` and skips tests tagged for the other backend. Add `npm run test:api:sqlite`, which sets `PERSISTENCE=sqlite`. It skips everything until Phase 4.
 5. **Raw-file guarantees for the JSON backend stay covered.** Keep a small json-only test that checks `db.json` is written with 2-space indentation and no trailing newline, and the roster with a trailing newline, because the export script (Phase 5) has to match it.
@@ -176,12 +203,13 @@ Update [found-bugs.md](found-bugs.md) in each commit, marking the bug as fixed w
 ### Phase 4: SQLite stores, import and schema
 
 1. Add `persistence/sqlite/connection.js`, `schema.sql` and `migrations.js`. The harness gets a `close()` hook: it requires `persistence/sqlite/connection.js` from the same freshly loaded module cache as `app.js`, and closes it in `t.after()`, before the temp directory is deleted. Without that, Windows refuses to delete the open file.
+   - **Replace one Phase 0 guardrail.** `paths.test.js` has "loading the app with PERSISTENCE=sqlite creates no database file". It passes trivially until this phase, and it will fail once the harness builds `dashboard.sqlite` before the app loads (step 3). The replacement checks the real rule, that loading `connection.js` doesn't open the database, e.g. by spying on the `better-sqlite3` constructor while the app loads and asserting it isn't called until the first query.
 2. Add `persistence/sqlite/import.js`. It reads `db.json` and `custom-onboarding.json` from `DATA_DIR` and fills the database in one transaction:
    - skip the dead keys (decision 5);
    - drop the attendance rows whose `Number(id)` isn't an integer (decision 6);
    - convert every id to a number, and task `labels` to numbers;
    - merge the roster's two key styles with the camelCase-first rule;
-   - keep `completedDate`, drop `notes`;
+   - keep `completedDate` and `notes`;
    - refuse rows that would break a `UNIQUE` constraint, with a clear error naming the row;
    - print a report: rows per table, dropped rows with their ids, and skipped keys.
 3. **The harness builds the database from the fixtures.** It copies the fixtures, runs the test's `setup(dataDir)` on the JSON (so existing setups keep working), then imports. Setups that break the JSON on purpose belong to json-only tests (Phase 2).
@@ -190,7 +218,12 @@ Update [found-bugs.md](found-bugs.md) in each commit, marking the bug as fixed w
    - extend `fs-boundary` to `better-sqlite3`;
    - add a sqlite half of `no-read-cache` that edits a row with SQL between requests;
    - add `sqlite-trace.test.js`, which records the SQL statements each request runs (through the `verbose` option) and snapshots them, catching N+1 queries and missing transactions;
-   - add import unit tests for the random-id rows, the mixed roster keys, a duplicate `eid`, and the dead keys (the fixtures have none of these, so they need tests of their own).
+   - add import unit tests, because the fixtures cover none of these cases:
+     - the random-id rows;
+     - a duplicate `eid`;
+     - the dead keys;
+     - the mixed roster keys, including a record whose two styles disagree (the shape of iverson.c.cabangis: `groupNumber: 5`, `group_number: 6` → 5) and a camelCase record that keeps some fields in snake_case only;
+     - `""` versus an absent `completedDate`/`notes`.
 6. CI runs `test:api` and `test:api:sqlite` on every push.
 
 Done when: both suites are green, no shared snapshot changed, and the import of `develop`'s real data reports 98 roster rows, 325 attendance rows (36 dropped), and the expected counts everywhere else.
@@ -230,7 +263,7 @@ Run on SQLite with the fallback available for **[N weeks: the team decides at cu
    - the competency join becomes one SQL `JOIN`;
    - list filters (`?boardId`, `?year`, `?month`…) move into `WHERE` clauses.
 
-   Each of these changes `sqlite-trace` only.
+   Each of these changes `sqlite-trace` snapshots only. Those are reviewed updates, which the snapshot rule allows in this phase. Responses and the shared snapshots must not change.
 5. **Decide what the seed becomes.** Either keep the committed JSON plus `import.js` as a seed loader, or replace them with a committed SQL seed. Also decide whether `export.js` stays as a backup tool. Neither choice affects the runtime.
 6. Still on JSON after Phase 8, by decision 10: `tasks-file.repository.js` and `fruits-file.repository.js`. Migrating or deleting them is separate work.
 
@@ -252,7 +285,12 @@ Never edit the exported files with PowerShell (`Set-Content`, `Out-File`). After
 
 ## Risks
 
-- **Native dependency.** `better-sqlite3` 13 bundles its binaries for Node-API, so normal Node upgrades don't need a rebuild. A platform without a bundled binary (e.g. Windows on 32-bit) would need a compiler. It requires Node ≥ 22, which matches the README.
+- **Native dependency.** `better-sqlite3` 13 bundles Node-API binaries for darwin, linux, linuxmusl and win32, each on x64 and arm64, so normal Node upgrades don't need a rebuild. It requires Node ≥ 22, which matches the README.
+  - **On any other platform (e.g. 32-bit Windows), nothing compiles automatically.** There's no install script, so `npm ci` succeeds. `lib/binding.js` then falls back to `build/Release/better_sqlite3.node`, so the **first `new Database()` fails** until someone runs `npm run build-release` inside `node_modules/better-sqlite3`, which needs node-gyp and a C++ toolchain.
+- **Numbers in TEXT columns (verify in Phase 4).** Capacity matches `(sprintName, eid)` with `===`, so on JSON a `sprintName` of `1` and one of `"1"` are two separate rows, and `1` comes back as a number.
+  - better-sqlite3 binds JS numbers as REAL, so a TEXT `sprint_name` stores `1` as `"1.0"` (verified). The two rows stay separate, but the response changes from `1` to `"1.0"`.
+  - Converting to `String()` before binding fixes that value, but then `1` and `"1"` would collide under `UNIQUE(sprint_name, eid)`.
+  - Decide in Phase 4, with a shared test for each case, how every TEXT key that a client can send as a number behaves. Check at least capacity `sprintName`/`eid`, reachout and competency eids, and attendance `status`.
 - **Roster order.** `GET /api/onboarding-resources` already sorts (newest `created_at` first, then highest id). But `GET /api/competency-records` lists group members **in roster file order**, which the real data doesn't keep consistently. The SQLite store gives the competency list the same order as the resources list. The fixtures are in strictly descending id order, so no snapshot changes. On the real data, the order of rows in the myCompetency table may change, which is harmless.
 - **Phase 3 reorders response keys.** The UI never relies on key order, but the snapshots do. The key-order-insensitive comparison is the safeguard; don't skip it.
 - **Two backends running against each other.** Never run the API on JSON and on SQLite against the same `DATA_DIR` at once, or `npm run json-api` alongside the API. The runbook always stops the server first.
