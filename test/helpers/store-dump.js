@@ -106,7 +106,7 @@ function numericId(value) {
   return Number.isFinite(n) ? n : value;
 }
 
-/** The roster's field rule, as formatOnboardingResource applies it (server/features/onboarding/onboarding.service.js). */
+/** The roster's field rule, as formatOnboardingResource applies it (server/features/onboarding/onboarding.format.js). */
 function mergeRosterKeys(r) {
   const pick = (camel, snake, fallback = '') => r[camel] || r[snake] || fallback;
   let groupNumber = null;
