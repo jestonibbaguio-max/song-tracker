@@ -23,15 +23,24 @@ These were settled with the team on 2026-11-09. Don't reopen them while you carr
 
 ## What the plan relies on
 
-These are verified against `develop` (`0d602c3`) and `feature/backend-refactor` (`562c4e1`):
+These are verified against `develop` at `07f41a8` (the merge of `feature/backend-refactor`). Its `server/data` is identical to `0d602c3`, the commit before the merge:
 
 - **`develop`'s `server/data` is identical to this branch's committed data.** It has 98 roster records and 361 attendance rows (36 with random ids). After dropping those 36 there are **no duplicate cells and no duplicate ids**.
-- **Every `db.json` collection is stored in ascending id order.** `ORDER BY id` therefore returns rows in the same order as today's arrays. The roster is the exception: its file order is newest first (`unshift`), with gaps from id repair. See "Roster order" under Risks.
+- **Every `db.json` collection with ids is in ascending id order once the import has run.** `ORDER BY id` therefore returns rows in the same order as today's arrays. There are two caveats:
+  - **Attendance isn't ascending as stored.** The order breaks at index 226 (`"247"` → `'RxJX-3dWOPE'`), and it's ascending only after the 36 random-id rows are dropped (decision 6).
+  - **`competency-records` has no ids** (0 of 13 rows). Its order is file order, so its table must return rows `ORDER BY rowid` (insertion order). The import inserts rows in file order, and new rows are appended, as today.
+
+  The roster is the exception: its file order is newest first (`unshift`), with gaps from id repair. See "Roster order" under Risks.
 - **Ids are mixed types:** numeric strings appear in lookups, boards, some buckets, labels and attendance. Nothing in the frontend relies on string ids. Labels are compared with `Number()` (`planner.component.ts:579-599`), and attendance options and office locations are read by `label`/`name` only (`attendance.component.ts:34`, `shared-data.service.ts:37`).
-- **The roster mixes key styles:** 60 records are snake_case only, 24 camelCase only, and 14 have both. Where both exist, they disagree on 13 records (e.g. `hireDate: "08/05/2026"` next to `hire_date: ""`). `formatOnboardingResource` reads camelCase first, so the API already returns the camelCase value. The import uses exactly the same rule.
-- **Planner tasks carry fields the UI doesn't know about.** `completedDate` holds real dates on 86 tasks. `notes` exists on 78 tasks and is `""` on every one of them. Neither field is in `PlannerTask` or anywhere else in `src/`.
+- **The roster mixes key styles.** Not counting `created_at`/`updated_at`, which every record has:
+  - **By style:** 60 records use only snake_case fields, 20 only camelCase, and 18 have both.
+  - **By field:** 14 records store at least one field in both styles, and 24 others use camelCase without a duplicated field. 4 of those 24 (jayson.mark.d.castro, daniel.x.b.legaspi, erald.j.l.sanchez, johnbert.c.d.tagle) still keep 10 fields in snake_case only.
+  - **Disagreements:** in **14** records the two styles of a field disagree, e.g. `hireDate: "08/05/2026"` next to `hire_date: ""`, and iverson.c.cabangis with `groupNumber: 5` next to `group_number: 6`.
+
+  `formatOnboardingResource` reads camelCase first and falls back to snake_case, so the API already returns the camelCase value. The import uses exactly the same rule.
+- **Planner tasks carry fields the UI doesn't know about.** `completedDate` exists on 86 tasks, and holds a date on 59 of them and `""` on 27. `notes` exists on 78 tasks and is `""` on every one of them. Neither field is in `PlannerTask` or anywhere else in `src/`.
 - **`deletion-logs` doesn't exist in the real `db.json`** (the fixtures have 2 rows), and `project-reachouts` exists only in uncommitted edits. Both start empty.
-- **The test suite is green:** 588 tests, run with `npm run test:api`. The leftover `song-tracker.sqlite-wal`/`-shm` files are gitignored and untracked, and there's no main `.sqlite` file, so they can't be read.
+- **The test suite is green:** 588 tests before Phase 0 and 594 after it, run with `npm run test:api`. The leftover `song-tracker.sqlite-wal`/`-shm` files are gitignored and untracked, and there's no main `.sqlite` file, so they can't be read.
 
 ## Target structure
 
@@ -71,7 +80,7 @@ server/
 
 ## Schema
 
-Columns are snake_case, and the stores map them to the camelCase API fields. "Optional" columns are NULL when a record doesn't have the field, **and they're left out of responses when NULL**, so existing records keep their current response keys. Every other column is always present.
+Columns are snake_case, and the stores map them to the camelCase API fields. "Optional" columns are NULL when a record doesn't have the field, **and they're left out of responses when NULL**, so existing records keep their current response keys. **Only an absent key becomes NULL.** A stored `""` stays `""` through the import, the stores and the export; it must never turn into NULL and drop out of a response. Examples are the 27 empty `completedDate` values and every `notes` value. Every other column is always present.
 
 | Table | Columns (optional ones marked `?`) | Constraints and indexes |
 |---|---|---|
@@ -198,7 +207,12 @@ Update [found-bugs.md](found-bugs.md) in each commit, marking the bug as fixed w
    - extend `fs-boundary` to `better-sqlite3`;
    - add a sqlite half of `no-read-cache` that edits a row with SQL between requests;
    - add `sqlite-trace.test.js`, which records the SQL statements each request runs (through the `verbose` option) and snapshots them, catching N+1 queries and missing transactions;
-   - add import unit tests for the random-id rows, the mixed roster keys, a duplicate `eid`, and the dead keys (the fixtures have none of these, so they need tests of their own).
+   - add import unit tests, because the fixtures cover none of these cases:
+     - the random-id rows;
+     - a duplicate `eid`;
+     - the dead keys;
+     - the mixed roster keys, including a record whose two styles disagree (the shape of iverson.c.cabangis: `groupNumber: 5`, `group_number: 6` → 5) and a camelCase record that keeps some fields in snake_case only;
+     - `""` versus an absent `completedDate`/`notes`.
 6. CI runs `test:api` and `test:api:sqlite` on every push.
 
 Done when: both suites are green, no shared snapshot changed, and the import of `develop`'s real data reports 98 roster rows, 325 attendance rows (36 dropped), and the expected counts everywhere else.
