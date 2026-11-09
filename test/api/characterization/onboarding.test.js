@@ -91,15 +91,19 @@ describeEndpoint('GET /api/onboarding-resources', {
     'malformed JSON body': MALFORMED_JSON,
     'stored record with a string id is coerced in the response but not rewritten': {
       setup: editRoster((records) => { records[0].id = '9'; }),
+      jsonOnly: 'a string id in custom-onboarding.json',
     },
     'stored record without an id is back-filled and the file rewritten': {
       setup: editRoster((records) => { delete records[3].id; }),
+      jsonOnly: 'roster id repair',
     },
     'stored anotherSkills as a JSON string is parsed': {
       setup: editRoster((records) => { records[1].anotherSkills = '["HTML","CSS"]'; }),
+      jsonOnly: 'anotherSkills stored as a string in custom-onboarding.json',
     },
     'custom-onboarding.json is not valid JSON': {
       setup: (dataDir) => fs.writeFileSync(path.join(dataDir, 'custom-onboarding.json'), '[{"id": 1,', 'utf8'),
+      jsonOnly: 'a corrupt custom-onboarding.json',
     },
   },
   notFound: {

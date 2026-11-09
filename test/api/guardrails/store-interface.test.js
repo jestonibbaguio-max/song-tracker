@@ -14,6 +14,7 @@ const assert = require('node:assert/strict');
 const fs = require('node:fs');
 const path = require('node:path');
 const { startTestServer, SERVER_DIR } = require('../../helpers/test-server');
+const { jsonOnly } = require('../../helpers/backend');
 
 process.env.NODE_ENV = 'test'; // error messages in Express error pages, as in the other guardrails
 
@@ -83,7 +84,7 @@ describe('guardrail: store selection', () => {
   });
 });
 
-describe('guardrail: db.json unit of work', () => {
+describe('guardrail: db.json unit of work', { skip: jsonOnly('the db.json store') }, () => {
   test('read() never saves, and a read session cannot mark a change', async (t) => {
     const { api, store, dbFile } = await sprintsDbStore(t);
     const before = fs.readFileSync(dbFile, 'utf8');

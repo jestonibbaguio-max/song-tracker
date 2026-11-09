@@ -8,6 +8,11 @@
 //     and a structural diff of the parsed JSON
 //   - every outbound network call the process attempted (see outbound-recorder)
 //
+// Cases are tagged by the backend they make sense on (see backend.js). A case
+// is json-only when it sets `jsonOnly: 'reason'`, or when its setup edits a
+// JSON store file directly (removeFile, addBom and writeFile on db.json,
+// custom-onboarding.json or custom.csv, or a setup wrapped in jsonOnlySetup()).
+//
 // Normalised so snapshots are stable across runs and machines:
 //   - ISO timestamps that weren't in the data or the request AND fall inside
 //     this case's run (from before the app loads until the response arrives)
@@ -32,6 +37,7 @@ const path = require('node:path');
 const { isDeepStrictEqual } = require('node:util');
 const { startTestServer } = require('./test-server');
 const outbound = require('./outbound-recorder');
+const { backendSkip } = require('./backend');
 
 // Express reads NODE_ENV when the app is created. Pin it so snapshots don't
 // depend on the shell: anything but "production" puts the error message in the
@@ -74,6 +80,30 @@ const NA = Symbol('not applicable');
 /** Mark a case category as not applicable to an endpoint, with the reason. */
 function notApplicable(reason) {
   return { [NA]: reason };
+}
+
+// ── Backends ─────────────────────────────────────────────────────────────────
+
+const JSON_ONLY = Symbol('json-only');
+
+/** The files behind the JSON stores. A setup that edits them directly makes its case json-only. */
+const JSON_STORE_INPUTS = ['db.json', 'custom-onboarding.json', 'custom.csv'];
+
+/** Tag a setup function as json-only, with the reason. */
+function jsonOnlySetup(reason, setup) {
+  setup[JSON_ONLY] = reason;
+  return setup;
+}
+
+/** Why a case is json-only, or undefined when it runs on every backend. */
+function jsonOnlyReason(kase) {
+  return kase.jsonOnly || (kase.setup && kase.setup[JSON_ONLY]) || undefined;
+}
+
+/** The node:test `skip` option for a case. */
+function caseSkip(kase) {
+  const reason = jsonOnlyReason(kase);
+  return backendSkip(reason ? 'json' : undefined, reason);
 }
 
 // ── Running one case ─────────────────────────────────────────────────────────
@@ -462,14 +492,14 @@ function describeEndpoint(route, spec) {
     assert.ok(happyEntries.length, `${route} needs at least one happy-path case`);
 
     for (const [name, kase] of happyEntries) {
-      test(`happy path › ${name}`, async (t) => {
+      test(`happy path › ${name}`, { skip: caseSkip(kase) }, async (t) => {
         snapshot(t, await runCase(method, defaultPath, kase, CREDENTIALS.poc));
       });
     }
 
     const [baseName, baseCase] = happyEntries[0];
     for (const [category, credentials] of [['no auth', CREDENTIALS.none], ['wrong role', CREDENTIALS.wrongRole]]) {
-      test(category, async (t) => {
+      test(category, { skip: caseSkip(baseCase) }, async (t) => {
         const happy = await runCase(method, defaultPath, baseCase, CREDENTIALS.poc);
         const probe = await runCase(method, defaultPath, baseCase, credentials);
         const { request: _a, ...happyRest } = happy;
@@ -485,7 +515,7 @@ function describeEndpoint(route, spec) {
       }
       assert.ok(cases && Object.keys(cases).length, `${route} needs "${category}" cases or notApplicable()`);
       for (const [name, kase] of Object.entries(cases)) {
-        test(`${category} › ${name}`, async (t) => {
+        test(`${category} › ${name}`, { skip: caseSkip(kase) }, async (t) => {
           snapshot(t, await runCase(method, defaultPath, kase, CREDENTIALS.poc));
         });
       }
@@ -505,24 +535,32 @@ function editDb(fn) {
   };
 }
 
+/** A setup that edits a file directly: json-only when the file is one of the JSON stores' files. */
+function fileSetup(relativePath, what, setup) {
+  return JSON_STORE_INPUTS.includes(relativePath) ? jsonOnlySetup(`${what} ${relativePath}`, setup) : setup;
+}
+
 function removeFile(relativePath) {
-  return (dataDir) => fs.rmSync(path.join(dataDir, relativePath));
+  return fileSetup(relativePath, 'removes', (dataDir) => fs.rmSync(path.join(dataDir, relativePath)));
 }
 
 /** Prepend a UTF-8 BOM, which is what PowerShell's Set-Content/Out-File adds (see CLAUDE.md). */
 function addBom(relativePath) {
-  return (dataDir) => {
+  return fileSetup(relativePath, 'adds a BOM to', (dataDir) => {
     const file = path.join(dataDir, relativePath);
     fs.writeFileSync(file, '﻿' + fs.readFileSync(file, 'utf8'), 'utf8');
-  };
+  });
 }
 
 function writeFile(relativePath, content) {
-  return (dataDir) => fs.writeFileSync(path.join(dataDir, relativePath), content, 'utf8');
+  return fileSetup(relativePath, 'writes', (dataDir) => fs.writeFileSync(path.join(dataDir, relativePath), content, 'utf8'));
 }
 
+/** Run setups in order. The result is json-only when any of them is. */
 function steps(...fns) {
-  return (dataDir) => fns.forEach((fn) => fn(dataDir));
+  const combined = (dataDir) => fns.forEach((fn) => fn(dataDir));
+  const reasons = [...new Set(fns.map((fn) => fn[JSON_ONLY]).filter(Boolean))];
+  return reasons.length ? jsonOnlySetup(reasons.join(', '), combined) : combined;
 }
 
 module.exports = {
@@ -530,6 +568,9 @@ module.exports = {
   notApplicable,
   runCase,
   snapshot,
+  caseSkip,
+  jsonOnlyReason,
+  jsonOnlySetup,
   CREDENTIALS,
   MALFORMED_JSON,
   editDb,

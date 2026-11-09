@@ -11,7 +11,9 @@ const { describe, test } = require('node:test');
 const fs = require('node:fs');
 const os = require('node:os');
 const path = require('node:path');
-const { runCase, snapshot, CREDENTIALS, removeFile, writeFile, steps } = require('../../helpers/characterize');
+const {
+  runCase, snapshot, caseSkip, jsonOnlySetup, CREDENTIALS, removeFile, writeFile, steps,
+} = require('../../helpers/characterize');
 
 const ROSTER = 'custom-onboarding.json';
 
@@ -22,10 +24,12 @@ const editRoster = (fn) => (dataDir) => {
   fn(records);
   fs.writeFileSync(file, JSON.stringify(records, null, 2) + '\n', 'utf8');
 };
-const setId = (from, to) => editRoster((records) => { records.find((r) => r.id === from).id = to; });
+const setId = (from, to) => jsonOnlySetup('roster id repair',
+  editRoster((records) => { records.find((r) => r.id === from).id = to; }));
 
 /** Make the roster read-only, so it can still be read but saving it throws (EPERM/EACCES). */
-const readOnlyRoster = (dataDir) => fs.chmodSync(path.join(dataDir, ROSTER), 0o444);
+const readOnlyRoster = jsonOnlySetup('a read-only custom-onboarding.json',
+  (dataDir) => fs.chmodSync(path.join(dataDir, ROSTER), 0o444));
 
 // Root on POSIX ignores read-only permissions, so the save would succeed and the
 // catch path would not run. Probe once and skip those cases if so.
@@ -60,7 +64,7 @@ const teresaEdited = {
 
 /** One snapshotted request with the group POC's credentials, like the other characterization files. */
 function caseTest(name, method, routePath, kase, options = {}) {
-  test(name, options, async (t) => {
+  test(name, { ...options, skip: caseSkip(kase) || options.skip }, async (t) => {
     snapshot(t, await runCase(method, routePath, kase, CREDENTIALS.poc));
   });
 }

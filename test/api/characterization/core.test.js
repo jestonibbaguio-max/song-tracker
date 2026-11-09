@@ -3,7 +3,7 @@
 // These pin down current behaviour, bugs included. See docs/found-bugs.md.
 const { describe, test } = require('node:test');
 const {
-  describeEndpoint, runCase, snapshot, CREDENTIALS, MALFORMED_JSON,
+  describeEndpoint, runCase, snapshot, caseSkip, CREDENTIALS, MALFORMED_JSON,
   removeFile, writeFile, steps,
 } = require('../../helpers/characterize');
 
@@ -41,6 +41,7 @@ describeEndpoint('GET /api/skill-options', {
   invalid: {
     'malformed JSON body': MALFORMED_JSON,
     'roster record without an id is back-filled and the file rewritten': {
+      jsonOnly: 'roster id repair',
       setup: (dataDir) => {
         const fs = require('node:fs');
         const file = require('node:path').join(dataDir, 'custom-onboarding.json');
@@ -156,7 +157,7 @@ describe('unmatched routes and static mounts', () => {
     'OPTIONS preflight from any origin': ['OPTIONS', '/api/sprints', {}],
   };
   for (const [name, [method, urlPath, kase]] of Object.entries(cases)) {
-    test(name, async (t) => {
+    test(name, { skip: caseSkip(kase) }, async (t) => {
       snapshot(t, await runCase(method, urlPath, kase, CREDENTIALS.none));
     });
   }

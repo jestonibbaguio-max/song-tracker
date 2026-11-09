@@ -10,11 +10,11 @@
 const { describe, test } = require('node:test');
 const fs = require('node:fs');
 const path = require('node:path');
-const { runCase, snapshot, CREDENTIALS, editDb } = require('../../helpers/characterize');
+const { runCase, snapshot, caseSkip, CREDENTIALS, editDb } = require('../../helpers/characterize');
 const { DB_ROUTES } = require('../../helpers/sample-requests');
 
 function caseTest(name, method, routePath, kase) {
-  test(name, async (t) => {
+  test(name, { skip: caseSkip(kase) }, async (t) => {
     snapshot(t, await runCase(method, routePath, kase, CREDENTIALS.poc));
   });
 }
@@ -32,6 +32,7 @@ describe('data shapes › db.json collection is an object, not an array', () => 
     const name = `${r.method} ${r.path}: "${r.collection}" is {"a":1}${r.note ? ` (${r.note})` : ''}`;
     caseTest(name, r.method, r.path, {
       setup: editDb((db) => { db[r.collection] = { a: 1 }; }),
+      jsonOnly: 'a db.json collection that is not an array',
       ...(r.body !== undefined ? { body: r.body } : {}),
     });
   }

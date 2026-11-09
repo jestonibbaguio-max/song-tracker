@@ -16,6 +16,7 @@ const assert = require('node:assert/strict');
 const fs = require('node:fs');
 const path = require('node:path');
 const { startTestServer } = require('../../helpers/test-server');
+const { jsonOnly } = require('../../helpers/backend');
 
 /** Rewrite a data file the way an outside editor would. db.json files have no trailing newline. */
 function handEdit(api, relativePath, fn, { trailingNewline }) {
@@ -31,7 +32,7 @@ const ok = (res, status = 200) => {
 };
 
 describe('guardrail: every request reads the file as it is on disk', () => {
-  test('db.json (sprints, retros, office locations)', async (t) => {
+  test('db.json (sprints, retros, office locations)', { skip: jsonOnly('hand-edits db.json') }, async (t) => {
     const api = await startTestServer(t);
     const names = async () => ok(await api.request('GET', '/api/sprints')).map((s) => `${s.id}:${s.name}`);
 
@@ -65,7 +66,7 @@ describe('guardrail: every request reads the file as it is on disk', () => {
     assert.deepEqual(api.readData('db.json').sprints.map((s) => s.id), [1, 2, 3, 11], 'the PATCH must not bring back the sprint removed by hand');
   });
 
-  test('custom-onboarding.json (resources, skill options, competency)', async (t) => {
+  test('custom-onboarding.json (resources, skill options, competency)', { skip: jsonOnly('hand-edits custom-onboarding.json') }, async (t) => {
     const api = await startTestServer(t);
     const eids = async () => ok(await api.request('GET', '/api/onboarding-resources')).map((r) => r.eid);
     const handAdded = {

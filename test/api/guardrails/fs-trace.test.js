@@ -18,6 +18,7 @@ const fs = require('node:fs');
 const path = require('node:path');
 const { startTestServer } = require('../../helpers/test-server');
 const { DB_ROUTES, newJoiner, teresaEdited } = require('../../helpers/sample-requests');
+const { jsonOnly } = require('../../helpers/backend');
 
 // Same as the characterization helpers: no request logging, messages in error pages.
 process.env.NODE_ENV = 'test';
@@ -98,7 +99,7 @@ const get = (p, label) => ({ method: 'GET', path: p, label });
 
 // ── Scenarios ────────────────────────────────────────────────────────────────
 
-describe('guardrail: fs calls per request', () => {
+describe('guardrail: fs calls per request', { skip: jsonOnly('pins the file reads and writes of the JSON backend') }, () => {
   test('db.json routes, in order on one app (each re-reads; at most one write)', async (t) => {
     const requests = [];
     // Entries with a note are variants for the data-shape cases; skip them here.
