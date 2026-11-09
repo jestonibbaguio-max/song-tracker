@@ -190,6 +190,23 @@ describe('guardrail: fs calls per request', () => {
     ]);
   });
 
+  // docs/sqlite-migration-plan.md, Phase 1 step 0. A write saves whenever it
+  // ran a mutating operation, even when the data comes out identical: each of
+  // these requests leaves db.json's content unchanged, yet each rewrites it
+  // today. A store that compared content before saving would drop these
+  // writes; this pins them. (Planner-task and reachout PATCHes always set
+  // updatedAt, and an attendance PATCH on a string id renumbers it (M6), so
+  // they're never no-ops and aren't here.) Recorded against the pre-Phase-1 server.
+  test('no-op writes still save db.json', async (t) => {
+    await scenario(t, [
+      { method: 'PATCH', path: '/api/sprints/1', body: {}, label: 'empty body' },
+      { method: 'PATCH', path: '/api/sprint-retros/1', body: { text: 'Pair on AEM environment setup earlier so blockers surface on day one' }, label: 'same text' },
+      { method: 'POST', path: '/api/capacity-entries', body: { sprintName: 'Sprint 2', eid: 'rafael.t.mendoza' }, label: 'existing entry, no values' },
+      { method: 'PATCH', path: '/api/attendance/5', body: {}, label: 'empty body, numeric id' },
+      { method: 'PATCH', path: '/api/competency-records/rafael.t.mendoza', body: {}, label: 'empty body' },
+    ]);
+  });
+
   test('routes that touch no data file', async (t) => {
     // The SPA fallback is left out: its status depends on whether dist/ is built.
     await scenario(t, [get('/api/health'), get('/api/dashboard')]);

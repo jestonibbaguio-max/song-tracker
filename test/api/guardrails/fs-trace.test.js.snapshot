@@ -229,6 +229,26 @@ DELETE /api/tasks/1 → 200
 
 `;
 
+exports[`guardrail: fs calls per request > no-op writes still save db.json 1`] = `
+
+PATCH /api/sprints/1 (empty body) → 200
+  readFileSync db.json
+  writeFileSync db.json
+PATCH /api/sprint-retros/1 (same text) → 200
+  readFileSync db.json
+  writeFileSync db.json
+POST /api/capacity-entries (existing entry, no values) → 200
+  readFileSync db.json
+  writeFileSync db.json
+PATCH /api/attendance/5 (empty body, numeric id) → 200
+  readFileSync db.json
+  writeFileSync db.json
+PATCH /api/competency-records/rafael.t.mendoza (empty body) → 200
+  readFileSync db.json
+  writeFileSync db.json
+
+`;
+
 exports[`guardrail: fs calls per request > roster record without an id is repaired on read 1`] = `
 
 GET /api/onboarding-resources → 200
