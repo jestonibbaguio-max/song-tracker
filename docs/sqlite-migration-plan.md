@@ -113,7 +113,14 @@ Each phase is one or more PRs into `develop`, and each step within a phase is it
 ### Phase 0: prerequisites
 
 1. Merge `feature/backend-refactor` into `develop`.
-2. **Spike `better-sqlite3`.** Install the current major version on a team Windows machine and on CI (`ubuntu-latest`), and confirm the prebuilt binary downloads. If a proxy blocks the download, it falls back to compiling, which needs Visual Studio Build Tools; the old `run-npm-install*.cmd` scripts suggest that happened before. **Stop the plan if it doesn't install cleanly on both.** Pin the exact version in `package.json`.
+2. **Spike `better-sqlite3`.** **Done:** `13.0.3` is pinned exactly. Version 13 ships its prebuilt binaries inside the npm package (`win32-x64`, `linux-x64` and others) and has no install script, so installing needs no download and no compiler. On Windows (Node 22.23.2, SQLite 3.53.4), a smoke test confirmed:
+   - WAL mode works;
+   - after the last row is deleted, its id is reused (`max(id)+1`);
+   - `json_valid` CHECK constraints work;
+   - after `close()`, the temp directory can be deleted;
+   - `NaN` is bound as `NULL`, so the M7 fix has to coerce explicitly.
+
+   Still open: the first CI run on `ubuntu-latest`.
 3. Update [CLAUDE.md](../CLAUDE.md):
    - replace "Do not start any SQLite work" with a pointer to this plan;
    - allow reviewed snapshot updates in Phases 2 and 3 only;
@@ -245,7 +252,7 @@ Never edit the exported files with PowerShell (`Set-Content`, `Out-File`). After
 
 ## Risks
 
-- **Native dependency.** `better-sqlite3` breaks when Node is upgraded without a rebuild, and wherever prebuilt binaries can't be downloaded. Phase 0 checks the install. Keep the Node version pinned in the README (22 LTS).
+- **Native dependency.** `better-sqlite3` 13 bundles its binaries for Node-API, so normal Node upgrades don't need a rebuild. A platform without a bundled binary (e.g. Windows on 32-bit) would need a compiler. It requires Node ≥ 22, which matches the README.
 - **Roster order.** `GET /api/onboarding-resources` already sorts (newest `created_at` first, then highest id). But `GET /api/competency-records` lists group members **in roster file order**, which the real data doesn't keep consistently. The SQLite store gives the competency list the same order as the resources list. The fixtures are in strictly descending id order, so no snapshot changes. On the real data, the order of rows in the myCompetency table may change, which is harmless.
 - **Phase 3 reorders response keys.** The UI never relies on key order, but the snapshots do. The key-order-insensitive comparison is the safeguard; don't skip it.
 - **Two backends running against each other.** Never run the API on JSON and on SQLite against the same `DATA_DIR` at once, or `npm run json-api` alongside the API. The runbook always stops the server first.
