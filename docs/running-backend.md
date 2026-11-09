@@ -92,7 +92,7 @@ Without a build, `/` returns a 404, but the API still works.
 |---|---|---|---|
 | `PORT` | No | `3000` | Port the API listens on |
 | `DATA_DIR` | No | `server/data` | Folder that holds the data files. A relative path resolves against the working directory. The API tests point it at a temp copy |
-| `PERSISTENCE` | No | `json` | Storage backend, `json` or `sqlite`. Nothing uses `sqlite` yet (see the [migration plan](sqlite-migration-plan.md)). Any other value stops the server from starting |
+| `PERSISTENCE` | No | `json` | Storage backend, `json` or `sqlite`. With `sqlite` the server starts, but every route that reads or writes stored data returns 500 until the SQLite stores exist (see the [migration plan](sqlite-migration-plan.md), Phase 4). Only `/api/health`, `/api/dashboard`, `/api/tasks` and `/api/fruits` keep working. Any other value stops the server from starting |
 
 All three are read once, in `server/config/index.js`. There's no `.env` loading, no config file, no secrets, and no API keys.
 
