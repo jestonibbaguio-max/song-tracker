@@ -163,5 +163,67 @@ describe('guardrail: real paths', () => {
     const config = require(CONFIG_MODULE);
     assertSamePath(config.browserDir, REAL_BROWSER_DIR, 'config.browserDir');
     assertSamePath(config.DATA_DIR, REAL_DATA_DIR, 'config.DATA_DIR with DATA_DIR unset');
+    assertSamePath(config.sqlitePath, path.join(REAL_DATA_DIR, 'dashboard.sqlite'), 'config.sqlitePath with DATA_DIR unset');
+  });
+});
+
+// docs/sqlite-migration-plan.md, Phase 0: the PERSISTENCE setting and the SQLite path.
+describe('guardrail: persistence backend setting', () => {
+  /** Set (or, with undefined, unset) env vars for this test only. */
+  function withEnv(t, vars) {
+    const previous = Object.fromEntries(Object.keys(vars).map((key) => [key, process.env[key]]));
+    for (const [key, value] of Object.entries(vars)) {
+      if (value === undefined) delete process.env[key];
+      else process.env[key] = value;
+    }
+    t.after(() => {
+      for (const [key, value] of Object.entries(previous)) {
+        if (value === undefined) delete process.env[key];
+        else process.env[key] = value;
+      }
+    });
+  }
+
+  /** A fresh copy of config/index.js for the current env. */
+  function freshConfig() {
+    loadFreshApp(); // clears server/ from require.cache, then loads app.js (and config) again
+    return require(CONFIG_MODULE);
+  }
+
+  test('PERSISTENCE defaults to json', (t) => {
+    withEnv(t, { PERSISTENCE: undefined });
+    assert.equal(freshConfig().PERSISTENCE, 'json');
+  });
+
+  test('an empty PERSISTENCE also means json', (t) => {
+    withEnv(t, { PERSISTENCE: '' });
+    assert.equal(freshConfig().PERSISTENCE, 'json');
+  });
+
+  test('PERSISTENCE=sqlite is accepted', (t) => {
+    withEnv(t, { PERSISTENCE: 'sqlite' });
+    assert.equal(freshConfig().PERSISTENCE, 'sqlite');
+  });
+
+  test('an unknown PERSISTENCE value stops the app from loading', (t) => {
+    withEnv(t, { PERSISTENCE: 'SQLite' });
+    assert.throws(() => loadFreshApp(), { message: 'PERSISTENCE must be one of json, sqlite; got "SQLite"' });
+  });
+
+  test('sqlitePath is <DATA_DIR>/dashboard.sqlite', (t) => {
+    const dataDir = fs.mkdtempSync(path.join(require('node:os').tmpdir(), 'song-tracker-config-'));
+    t.after(() => fs.rmSync(dataDir, { recursive: true, force: true }));
+    withEnv(t, { DATA_DIR: dataDir });
+    assertSamePath(freshConfig().sqlitePath, path.join(dataDir, 'dashboard.sqlite'), 'config.sqlitePath');
+  });
+
+  test('loading the app with PERSISTENCE=sqlite creates no database file', async (t) => {
+    withEnv(t, { PERSISTENCE: 'sqlite' });
+    const api = await startTestServer(t);
+    assert.deepEqual(
+      fs.readdirSync(api.dataDir).filter((name) => name.includes('.sqlite')),
+      [],
+      'the database must be opened lazily, on first use, never when a module loads',
+    );
   });
 });
