@@ -1,70 +1,57 @@
-// Planner boards, buckets, tasks and deletion logs (db.json). One load and at
-// most one save per call. Writes keep storing client fields as sent, with no
-// referential checks: bugs L3, L12, M1, M11 and M12 in docs/found-bugs.md are kept.
+// Planner boards, buckets, tasks and deletion logs. Each call runs in one
+// read() or write() of the planner store (one load, at most one save). Writes
+// keep storing client fields as sent, with no referential checks: bugs L3, L12,
+// M1, M11 and M12 in docs/found-bugs.md are kept.
 const repository = require('./planner.repository');
-const { nextId } = require('../../utils/ids');
 
 // ── Boards ───────────────────────────────────────────────────────────────────
 
 /** groupNumber is the raw query value (undefined when absent). */
 function listBoards(groupNumber) {
-  const db = repository.load();
-  // Inline, not repository.boardsOf(db): when the collection is not an array the TypeError
-  // names this exact expression (pinned in data-shape-edges.test.js).
-  let boards = (db['planner-boards'] || []).map(b => ({ ...b, id: Number(b.id), groupNumber: Number(b.groupNumber) }));
-  if (groupNumber !== undefined) {
-    const gn = Number(groupNumber);
-    boards = boards.filter(b => b.groupNumber === gn);
-  }
-  return boards;
+  return repository.read((store) => {
+    let boards = store.listBoards();
+    if (groupNumber !== undefined) {
+      const gn = Number(groupNumber);
+      boards = boards.filter(b => b.groupNumber === gn);
+    }
+    return boards;
+  });
 }
 
 // ── Buckets ──────────────────────────────────────────────────────────────────
 
 /** boardId is the raw query value (undefined when absent). */
 function listBuckets(boardId) {
-  const db = repository.load();
-  // Inline, not repository.bucketsOf(db): when the collection is not an array the TypeError
-  // names this exact expression (pinned in data-shape-edges.test.js).
-  let buckets = (db['planner-buckets'] || []).map(b => ({ ...b, id: Number(b.id), boardId: Number(b.boardId) }));
-  if (boardId !== undefined) {
-    const bid = Number(boardId);
-    buckets = buckets.filter(b => b.boardId === bid);
-  }
-  return buckets;
+  return repository.read((store) => {
+    let buckets = store.listBuckets();
+    if (boardId !== undefined) {
+      const bid = Number(boardId);
+      buckets = buckets.filter(b => b.boardId === bid);
+    }
+    return buckets;
+  });
 }
 
 /** { error } when boardId or name is missing (nothing read or written), otherwise { bucket }. */
 function createBucket({ boardId, name, order }) {
   if (!boardId || !name) return { error: 'boardId and name are required' };
-  const db = repository.load();
-  const buckets = repository.bucketsOf(db);
-  const id = nextId(buckets);
-  const bucket = { id, boardId: Number(boardId), name: String(name).trim(), order: Number(order) || 0 };
-  buckets.push(bucket);
-  repository.setBuckets(db, buckets);
-  repository.save(db);
-  return { bucket };
+  return repository.write((store) => ({
+    bucket: store.insertBucket({ boardId: Number(boardId), name: String(name).trim(), order: Number(order) || 0 })
+  }));
 }
 
 // ── Tasks ────────────────────────────────────────────────────────────────────
 
 /** boardId is the raw query value (undefined when absent). */
 function listTasks(boardId) {
-  const db = repository.load();
-  // Inline, not repository.tasksOf(db): when the collection is not an array the TypeError
-  // names this exact expression (pinned in data-shape-edges.test.js).
-  let tasks = (db['planner-tasks'] || []).map(t => ({
-    ...t,
-    id: Number(t.id),
-    boardId: Number(t.boardId),
-    bucketId: Number(t.bucketId),
-  }));
-  if (boardId !== undefined) {
-    const bid = Number(boardId);
-    tasks = tasks.filter(t => t.boardId === bid);
-  }
-  return tasks;
+  return repository.read((store) => {
+    let tasks = store.listTasks();
+    if (boardId !== undefined) {
+      const bid = Number(boardId);
+      tasks = tasks.filter(t => t.boardId === bid);
+    }
+    return tasks;
+  });
 }
 
 /**
@@ -73,64 +60,50 @@ function listTasks(boardId) {
  * throws after the load, as before (bug M1).
  */
 function createTask(body) {
-  const db = repository.load();
-  const tasks = repository.tasksOf(db);
-  const now = new Date().toISOString();
-  const id = nextId(tasks);
-  const task = { ...body, id, boardId: Number(body.boardId), bucketId: Number(body.bucketId), createdAt: now, updatedAt: now };
-  tasks.push(task);
-  repository.setTasks(db, tasks);
-  repository.save(db);
-  return task;
+  return repository.write((store) => {
+    const now = new Date().toISOString();
+    return store.insertTask(body, {
+      boardId: Number(body.boardId),
+      bucketId: Number(body.bucketId),
+      createdAt: now,
+      updatedAt: now
+    });
+  });
 }
 
-/** Merges body over the stored task (comments and checklists included). null when the id is unknown. */
+/**
+ * Merges body over the stored task (comments and checklists included). null
+ * when the id is unknown; the body is only read once the task is found.
+ */
 function updateTask(id, body) {
-  const db = repository.load();
-  const tasks = repository.tasksOf(db);
-  const idx = tasks.findIndex(t => Number(t.id) === id);
-  if (idx === -1) return null;
-  const changes = { ...body };
-  if (changes.boardId !== undefined) changes.boardId = Number(changes.boardId);
-  if (changes.bucketId !== undefined) changes.bucketId = Number(changes.bucketId);
-  tasks[idx] = { ...tasks[idx], ...changes, id, updatedAt: new Date().toISOString() };
-  repository.setTasks(db, tasks);
-  repository.save(db);
-  return tasks[idx];
+  return repository.write((store) => {
+    if (!store.findTask(id)) return null;
+    const changes = { ...body };
+    if (changes.boardId !== undefined) changes.boardId = Number(changes.boardId);
+    if (changes.bucketId !== undefined) changes.bucketId = Number(changes.bucketId);
+    return store.updateTask(id, changes, { updatedAt: new Date().toISOString() });
+  });
 }
 
 /** false when the id is unknown (nothing written). */
 function deleteTask(id) {
-  const db = repository.load();
-  const tasks = repository.tasksOf(db);
-  const idx = tasks.findIndex(t => Number(t.id) === id);
-  if (idx === -1) return false;
-  tasks.splice(idx, 1);
-  repository.setTasks(db, tasks);
-  repository.save(db);
-  return true;
+  return repository.write((store) => store.removeTask(id));
 }
 
 // ── Deletion logs ────────────────────────────────────────────────────────────
 
 /** eid is the raw query value; falsy means no filter. */
 function listDeletionLogs(eid) {
-  const db = repository.load();
-  let logs = repository.deletionLogsOf(db);
-  if (eid) logs = logs.filter(l => l.deletedByEid === eid);
-  return logs;
+  return repository.read((store) => {
+    let logs = store.listDeletionLogs();
+    if (eid) logs = logs.filter(l => l.deletedByEid === eid);
+    return logs;
+  });
 }
 
 /** body is req.body as parsed; every field is stored, then the new id and deletedAt. */
 function createDeletionLog(body) {
-  const db = repository.load();
-  const logs = repository.deletionLogsOf(db);
-  const id = nextId(logs);
-  const log = { ...body, id, deletedAt: new Date().toISOString() };
-  logs.push(log);
-  repository.setDeletionLogs(db, logs);
-  repository.save(db);
-  return log;
+  return repository.write((store) => store.insertDeletionLog(body, { deletedAt: new Date().toISOString() }));
 }
 
 module.exports = {
