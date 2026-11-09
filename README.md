@@ -99,7 +99,6 @@ atcpsongdashboard/
 │   ├── persistence/              # The only code that reads/writes data files (one repository per file)
 │   ├── middleware/static.js      # /test mount, dist/ static files, index.html fallback
 │   ├── utils/                    # nextId, normalizeEid, date and field normalisers
-│   ├── schema.sql                # Reference SQLite schema (not yet active)
 │   └── data/
 │       ├── custom.csv            # Seed data — initial resource roster
 │       ├── custom-onboarding.json  # Runtime-persisted onboarding records
@@ -358,7 +357,6 @@ Dates are stored and returned in **MM/DD/YYYY** format. The server normalizes an
 ### Dashboard store (`server/features/dashboard/dashboard.service.js`)
 
 - Dashboard payload is currently **hardcoded** as a JavaScript object
-- `server/schema.sql` defines the full intended SQLite relational schema for dynamic dashboard content (nav groups, stats, checklist items, initiatives, announcements, POC, quick tools) — this is the planned future data source
 
 ### Tasks store (`server/persistence/tasks-file.repository.js`)
 
@@ -451,5 +449,5 @@ Configured in `angular.json`:
 
 - **DSR (Daily Status Report) charts** — 12 chart types designed and mocked up; not yet implemented in code.
 - **Daily Attendance charts** — 2 attendance visualization mockups; not yet implemented.
-- **SQLite database** — `server/schema.sql` defines the full relational schema intended to replace the current JSON file store.
+- **SQLite database** — planned in [docs/sqlite-migration-plan.md](docs/sqlite-migration-plan.md), to replace the current JSON file store.
 - **Additional sidebar views** — Initiatives, Reports, Resource Tracking, POC How-To, Announcements, and Settings are present in the nav but not yet wired to views.

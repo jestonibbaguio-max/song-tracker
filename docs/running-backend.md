@@ -104,7 +104,7 @@ If something already holds port 3000, the server crashes on startup with `EADDRI
 
 ## 5. Where the data lives
 
-All data is plain JSON in **`server/data/`**. The server reads and rewrites these files synchronously on each request. There's no database: `server/schema.sql` and the `song-tracker.sqlite-wal`/`-shm` files are unused leftovers.
+All data is plain JSON in **`server/data/`**. The server reads and rewrites these files synchronously on each request. There's no database yet; the move to SQLite is planned in [sqlite-migration-plan.md](sqlite-migration-plan.md).
 
 | File | In git? | What uses it | Notes |
 |---|---|---|---|

@@ -13,7 +13,7 @@ This is a snapshot of `server/` and of how the Angular app talks to it, taken fr
 | Dependencies | `express` and `cors` only. The server has no `package.json` of its own; both packages come from the root one |
 | Route organisation | One Express router per feature in [server/features/](../server/features/) (routes → controller → service → repository), mounted in [server/app.js](../server/app.js), which only composes the app |
 | Persistence | Flat JSON files read and written synchronously with `fs` on every request, only from [server/persistence/](../server/persistence/) (one repository per file). No ORM, no database driver |
-| Database | **None in use.** [server/schema.sql](../server/schema.sql) is a SQLite schema that nothing loads, and `song-tracker.sqlite-wal`/`-shm` are leftovers with no main `.sqlite` file |
+| Database | **None in use yet.** The move to SQLite (`better-sqlite3`, installed but not used) is planned in [sqlite-migration-plan.md](sqlite-migration-plan.md) |
 | Auth | None. Every endpoint is public |
 | External services | None: no email, payments, object storage, queues, or third-party APIs |
 | Background jobs | None on the server. The only periodic work is a client-side 2.5 s poll in the Planner capacity view |
@@ -125,7 +125,7 @@ Things to know about this layer:
 - **Two copies of onboarding data.** `db.json` has its own `onboarding-resources` collection (81 records) that Express never reads. Express uses `custom-onboarding.json` (98 records). Running `npm run json-api` (json-server on `db.json`) therefore shows different resources than `npm run api`.
 - **Mixed key styles.** Records in `custom-onboarding.json` are a mix of camelCase (created through the API) and snake_case (seeded from the CSV). The read paths cope with both using `a || a_snake` fallbacks.
 - **Concurrency.** A single Node process is safe in practice because the I/O is synchronous and requests can't interleave. Running two writers against the same file (for example json-server and Express, both on port 3000, which the README warns about) would lose writes. Every request also re-parses the entire file.
-- **`schema.sql`** describes a SQLite design (tables `tasks`, `dashboard_settings`, `nav_*`, `onboarding_resources`, `skill_options`, …) that covers only the dashboard, onboarding, and tasks. It has no tables for sprints, planner, attendance, reachouts, or competency. Nothing executes it, and no SQLite driver is installed.
+- **SQLite is planned, not live.** See [sqlite-migration-plan.md](sqlite-migration-plan.md). The old, never-used `server/schema.sql` was deleted at the start of that plan.
 
 ---
 
@@ -254,6 +254,6 @@ These are things I saw while reading. None of them have been changed.
 3. **Changing an EID through PATCH duplicates the resource.** The old record stays, which `updateResource` in [onboarding.service.js](../server/features/onboarding/onboarding.service.js) does on purpose and the README documents. It's still surprising.
 4. **The attendance location sticks around.** When a cell changes from `RTO` to another status, the client sends `{ status }` without `location` (`undefined` is dropped from JSON), and the server merges, so the old `location` stays on the stored record.
 5. **Unknown `/api` GETs return `index.html` with 200** because of the SPA catch-all (§3).
-6. **There are three persistence stories.** JSON files are what's live, `schema.sql`/SQLite is half-planned, and json-server on `db.json` is still in `package.json`. The README both recommends `npm run json-api` (Option A) and says "Do NOT use json-server".
+6. **There are three persistence stories.** JSON files are what's live, SQLite is planned ([sqlite-migration-plan.md](sqlite-migration-plan.md)), and json-server on `db.json` is still in `package.json`. The README both recommends `npm run json-api` (Option A) and says "Do NOT use json-server".
 7. **`db.json` has dead collections** (`onboarding-resources`, `dashboard`) that diverge from what Express serves.
 8. **Planner tasks embed comments and checklists**, so every modal save rewrites the whole task, and two users editing comments at once overwrite each other.

@@ -6,6 +6,7 @@ Internal dashboard for the Accenture Song bench: resources/onboarding, attendanc
 
 Further reading:
 - [docs/backend-overview.md](docs/backend-overview.md) covers the full route list, middleware order, and every frontend→API call with its payload.
+- [docs/sqlite-migration-plan.md](docs/sqlite-migration-plan.md) is the plan for moving the backend to SQLite. See "SQLite migration" below.
 - [DASHBOARD_POLICIES.md](DASHBOARD_POLICIES.md) has the business rules (CL ranks, proficiency minimums, row colours, planner rules, reachout statuses). Read the relevant section before changing feature behaviour.
 - Parts of `README.md` are out of date. Its Architecture section says the app is a single component, and it both recommends and forbids json-server. Where the README and the code disagree, trust the code.
 
@@ -63,30 +64,29 @@ npm run codegen      # Playwright codegen against :4200
   - `server/data/db.json` holds everything else (sprints, sprint-retros, capacity-entries, attendance, planner-*, deletion-logs, project-reachouts, competency-records) through `server/persistence/db-file.repository.js` (`loadDb()`/`saveDb()`). Its own `onboarding-resources` and `dashboard` keys are stale and unused.
   - IDs are generated as `max(id)+1` (`nextId()` in `server/utils/ids.js`; the fruits test bench has its own rule in its repository). Never assign string or GUID IDs.
   - `/api/competency-records` gets group membership from `custom-onboarding.json` and joins it with the `db.json` rows.
-- `server/schema.sql` (SQLite) isn't used anywhere, and no SQLite driver is installed.
+- `better-sqlite3` is installed (pinned) for the SQLite migration, but no server code uses it yet.
 - `PORT` is the only env var. There's no auth, and CORS is open to all origins.
 - `/api/fruits` and `/test/` are a self-contained test bench (`data/test_bwd/`) that the Angular app doesn't use.
 
-## Persistence rules (JSON files)
-- Never read or write the real data directory in tests; always use DATA_DIR pointing to a temp copy.
-- Keep file paths, file names, JSON formatting (indentation, key order) and ID generation exactly as they are.
-- Keep sync vs async file operations as they are; don't change when data is read or written.
-- If the code caches file contents in memory, keep that behavior identical.
-- Do not start any SQLite work.
+## SQLite migration
 
-## Backend refactor rules
-- Behavior must not change: routes, request/response shapes, status codes, error messages.
-- Snapshots must never be updated during the refactor.
+The backend is being moved from JSON files to SQLite (`better-sqlite3`), following [docs/sqlite-migration-plan.md](docs/sqlite-migration-plan.md). Its "Decisions" table is settled; don't reopen it. Do SQLite work only as a phase of that plan, in the plan's order.
+
+## Persistence rules
+- Never read or write the real data directory in tests; always use DATA_DIR pointing to a temp copy.
+- Only `server/persistence/**` may require `fs` or `better-sqlite3` (`server/middleware/static.js` is the one documented exception).
+- Keep the JSON backend's file paths, file names, JSON formatting (indentation, key order, trailing newlines) and ID generation exactly as they are. The SQLite export must write the same format.
+- Keep everything synchronous, and don't change when data is read or written, unless a plan phase says so (fs-trace pins it).
+- No in-memory caches of stored data, on either backend.
+- Legacy `/api/tasks` (`tasks.json`) and the fruits test bench (`test_bwd/db.json`) stay on JSON; they're out of the migration's scope.
+
+## Backend change rules
+- Behavior must not change: routes, request/response shapes, status codes, error messages. The only exceptions are the storage-related bug fixes listed in the plan's Phase 3.
+- Snapshots may be updated only in the plan's Phase 2 (the storage-section format change, verified by script) and Phase 3 (one listed bug per commit, reviewed). Every other change must pass with no snapshot update.
 - No new or upgraded dependencies without asking.
 - Run the full test suite after every step; never proceed with failures.
-- Log bugs in docs/found-bugs.md; do NOT fix them.
+- Log bugs in docs/found-bugs.md; don't fix them unless the plan's Phase 3 lists them.
 - Keep file moves/renames in separate commits from logic changes.
-
-## Persistence rules (JSON files)
-- Tests never touch the real data directory; always use DATA_DIR.
-- Keep file paths, names, JSON formatting, and ID generation exactly as they are.
-- Keep sync vs async file operations and in-memory caching behavior identical.
-- Do not start any SQLite work.
 
 ## Gotchas
 
