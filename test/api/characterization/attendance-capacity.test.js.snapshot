@@ -1,0 +1,2467 @@
+exports[`DELETE /api/attendance/:id > happy path › clears a cell stored with a numeric id 1`] = `
+
+DELETE /api/attendance/6
+credentials: group 5 POC (rafael.t.mendoza, role poc)
+
+status: 200
+content-type: application/json; charset=utf-8
+access-control-allow-origin: *
+x-powered-by: Express
+response body:
+  {
+    "deleted": true
+  }
+
+data files:
+  db.json: modified
+    raw text diff:
+      @@ -189,13 +189,4 @@
+           },
+           {
+      -      "id": 6,
+      -      "eid": "liza.m.navarro",
+      -      "year": 2026,
+      -      "month": 10,
+      -      "day": 28,
+      -      "status": "RTO",
+      -      "location": "Harbor Point Building"
+      -    },
+      -    {
+             "id": 7,
+             "eid": "jomar.c.pascual",
+    parsed JSON diff:
+      - /attendance[id=6]: {"id":6,"eid":"liza.m.navarro","year":2026,"month":10,"day":28,"status":"RTO","location":"Harbor Point Building"}
+
+outbound calls: none
+
+`;
+
+exports[`DELETE /api/attendance/:id > happy path › clears a cell stored with a string id 1`] = `
+
+DELETE /api/attendance/2
+credentials: group 5 POC (rafael.t.mendoza, role poc)
+
+status: 200
+content-type: application/json; charset=utf-8
+access-control-allow-origin: *
+x-powered-by: Express
+response body:
+  {
+    "deleted": true
+  }
+
+data files:
+  db.json: modified
+    raw text diff:
+      @@ -157,12 +157,4 @@
+           },
+           {
+      -      "id": "2",
+      -      "eid": "liza.m.navarro",
+      -      "year": 2026,
+      -      "month": 10,
+      -      "day": 27,
+      -      "status": "Present"
+      -    },
+      -    {
+             "id": "3",
+             "eid": "jomar.c.pascual",
+    parsed JSON diff:
+      - /attendance[id="2"]: {"id":"2","eid":"liza.m.navarro","year":2026,"month":10,"day":27,"status":"Present"}
+
+outbound calls: none
+
+`;
+
+exports[`DELETE /api/attendance/:id > invalid input › malformed JSON body 1`] = `
+
+DELETE /api/attendance/6
+credentials: group 5 POC (rafael.t.mendoza, role poc)
+request body (raw):
+  {"broken": 
+
+status: 400
+content-type: text/html; charset=utf-8
+access-control-allow-origin: *
+x-powered-by: Express
+response body:
+  <!DOCTYPE html>
+  <html lang="en">
+  <head>
+  <meta charset="utf-8">
+  <title>Error</title>
+  </head>
+  <body>
+  <pre>SyntaxError: Unexpected end of JSON input<br> &nbsp; &nbsp;at <stack trace removed></pre>
+  </body>
+  </html>
+  
+
+data files: unchanged
+
+outbound calls: none
+
+`;
+
+exports[`DELETE /api/attendance/:id > invalid input › non-numeric id 1`] = `
+
+DELETE /api/attendance/abc
+credentials: group 5 POC (rafael.t.mendoza, role poc)
+
+status: 404
+content-type: application/json; charset=utf-8
+access-control-allow-origin: *
+x-powered-by: Express
+response body:
+  {
+    "error": "record not found"
+  }
+
+data files: unchanged
+
+outbound calls: none
+
+`;
+
+exports[`DELETE /api/attendance/:id > no auth 1`] = `
+
+DELETE /api/attendance/6
+credentials: none
+
+=> identical to the happy path (clears a cell stored with a numeric id): same status, body, data-file changes and outbound calls
+
+`;
+
+exports[`DELETE /api/attendance/:id > not found › unknown id 1`] = `
+
+DELETE /api/attendance/999
+credentials: group 5 POC (rafael.t.mendoza, role poc)
+
+status: 404
+content-type: application/json; charset=utf-8
+access-control-allow-origin: *
+x-powered-by: Express
+response body:
+  {
+    "error": "record not found"
+  }
+
+data files: unchanged
+
+outbound calls: none
+
+`;
+
+exports[`DELETE /api/attendance/:id > wrong role 1`] = `
+
+DELETE /api/attendance/6
+credentials: no-group new joiner (paolo.d.ramos, role viewer)
+
+=> identical to the happy path (clears a cell stored with a numeric id): same status, body, data-file changes and outbound calls
+
+`;
+
+exports[`GET /api/attendance > happy path › filters by year and month (as the planner capacity panel sends it) 1`] = `
+
+GET /api/attendance?year=2026&month=11
+credentials: group 5 POC (rafael.t.mendoza, role poc)
+
+status: 200
+content-type: application/json; charset=utf-8
+access-control-allow-origin: *
+x-powered-by: Express
+response body:
+  [
+    {
+      "id": 9,
+      "eid": "teresa.villanueva",
+      "year": 2026,
+      "month": 11,
+      "day": 3,
+      "status": "RTO",
+      "location": "Riverside Tech Tower 2"
+    },
+    {
+      "id": 10,
+      "eid": "liza.m.navarro",
+      "year": 2026,
+      "month": 11,
+      "day": 3,
+      "status": "Present"
+    },
+    {
+      "id": 11,
+      "eid": "kevin.r.lim",
+      "year": 2026,
+      "month": 11,
+      "day": 4,
+      "status": "Present"
+    }
+  ]
+
+data files: unchanged
+
+outbound calls: none
+
+`;
+
+exports[`GET /api/attendance > happy path › lists every record (as the attendance page sends it) 1`] = `
+
+GET /api/attendance
+credentials: group 5 POC (rafael.t.mendoza, role poc)
+
+status: 200
+content-type: application/json; charset=utf-8
+access-control-allow-origin: *
+x-powered-by: Express
+response body:
+  [
+    {
+      "id": "1",
+      "eid": "rafael.t.mendoza",
+      "year": 2026,
+      "month": 10,
+      "day": 27,
+      "status": "RTO",
+      "location": "Riverside Tech Tower 2"
+    },
+    {
+      "id": "2",
+      "eid": "liza.m.navarro",
+      "year": 2026,
+      "month": 10,
+      "day": 27,
+      "status": "Present"
+    },
+    {
+      "id": "3",
+      "eid": "jomar.c.pascual",
+      "year": 2026,
+      "month": 10,
+      "day": 27,
+      "status": "Present"
+    },
+    {
+      "id": "4",
+      "eid": "teresa.villanueva",
+      "year": 2026,
+      "month": 10,
+      "day": 27,
+      "status": "VL"
+    },
+    {
+      "id": 5,
+      "eid": "rafael.t.mendoza",
+      "year": 2026,
+      "month": 10,
+      "day": 28,
+      "status": "Present"
+    },
+    {
+      "id": 6,
+      "eid": "liza.m.navarro",
+      "year": 2026,
+      "month": 10,
+      "day": 28,
+      "status": "RTO",
+      "location": "Harbor Point Building"
+    },
+    {
+      "id": 7,
+      "eid": "jomar.c.pascual",
+      "year": 2026,
+      "month": 10,
+      "day": 28,
+      "status": "SL"
+    },
+    {
+      "id": 8,
+      "eid": "miguel.a.torres",
+      "year": 2026,
+      "month": 10,
+      "day": 28,
+      "status": "Deployed"
+    },
+    {
+      "id": 9,
+      "eid": "teresa.villanueva",
+      "year": 2026,
+      "month": 11,
+      "day": 3,
+      "status": "RTO",
+      "location": "Riverside Tech Tower 2"
+    },
+    {
+      "id": 10,
+      "eid": "liza.m.navarro",
+      "year": 2026,
+      "month": 11,
+      "day": 3,
+      "status": "Present"
+    },
+    {
+      "id": 11,
+      "eid": "kevin.r.lim",
+      "year": 2026,
+      "month": 11,
+      "day": 4,
+      "status": "Present"
+    }
+  ]
+
+data files: unchanged
+
+outbound calls: none
+
+`;
+
+exports[`GET /api/attendance > invalid input › empty year is ignored 1`] = `
+
+GET /api/attendance?year=&month=10
+credentials: group 5 POC (rafael.t.mendoza, role poc)
+
+status: 200
+content-type: application/json; charset=utf-8
+access-control-allow-origin: *
+x-powered-by: Express
+response body:
+  [
+    {
+      "id": "1",
+      "eid": "rafael.t.mendoza",
+      "year": 2026,
+      "month": 10,
+      "day": 27,
+      "status": "RTO",
+      "location": "Riverside Tech Tower 2"
+    },
+    {
+      "id": "2",
+      "eid": "liza.m.navarro",
+      "year": 2026,
+      "month": 10,
+      "day": 27,
+      "status": "Present"
+    },
+    {
+      "id": "3",
+      "eid": "jomar.c.pascual",
+      "year": 2026,
+      "month": 10,
+      "day": 27,
+      "status": "Present"
+    },
+    {
+      "id": "4",
+      "eid": "teresa.villanueva",
+      "year": 2026,
+      "month": 10,
+      "day": 27,
+      "status": "VL"
+    },
+    {
+      "id": 5,
+      "eid": "rafael.t.mendoza",
+      "year": 2026,
+      "month": 10,
+      "day": 28,
+      "status": "Present"
+    },
+    {
+      "id": 6,
+      "eid": "liza.m.navarro",
+      "year": 2026,
+      "month": 10,
+      "day": 28,
+      "status": "RTO",
+      "location": "Harbor Point Building"
+    },
+    {
+      "id": 7,
+      "eid": "jomar.c.pascual",
+      "year": 2026,
+      "month": 10,
+      "day": 28,
+      "status": "SL"
+    },
+    {
+      "id": 8,
+      "eid": "miguel.a.torres",
+      "year": 2026,
+      "month": 10,
+      "day": 28,
+      "status": "Deployed"
+    }
+  ]
+
+data files: unchanged
+
+outbound calls: none
+
+`;
+
+exports[`GET /api/attendance > invalid input › malformed JSON body 1`] = `
+
+GET /api/attendance
+credentials: group 5 POC (rafael.t.mendoza, role poc)
+request body (raw):
+  {"broken": 
+
+status: 400
+content-type: text/html; charset=utf-8
+access-control-allow-origin: *
+x-powered-by: Express
+response body:
+  <!DOCTYPE html>
+  <html lang="en">
+  <head>
+  <meta charset="utf-8">
+  <title>Error</title>
+  </head>
+  <body>
+  <pre>SyntaxError: Unexpected end of JSON input<br> &nbsp; &nbsp;at <stack trace removed></pre>
+  </body>
+  </html>
+  
+
+data files: unchanged
+
+outbound calls: none
+
+`;
+
+exports[`GET /api/attendance > invalid input › non-numeric month matches nothing 1`] = `
+
+GET /api/attendance?year=2026&month=abc
+credentials: group 5 POC (rafael.t.mendoza, role poc)
+
+status: 200
+content-type: application/json; charset=utf-8
+access-control-allow-origin: *
+x-powered-by: Express
+response body:
+  []
+
+data files: unchanged
+
+outbound calls: none
+
+`;
+
+exports[`GET /api/attendance > invalid input › repeated month parameter 1`] = `
+
+GET /api/attendance?month=10&month=11
+credentials: group 5 POC (rafael.t.mendoza, role poc)
+
+status: 200
+content-type: application/json; charset=utf-8
+access-control-allow-origin: *
+x-powered-by: Express
+response body:
+  []
+
+data files: unchanged
+
+outbound calls: none
+
+`;
+
+exports[`GET /api/attendance > no auth 1`] = `
+
+GET /api/attendance
+credentials: none
+
+=> identical to the happy path (lists every record (as the attendance page sends it)): same status, body, data-file changes and outbound calls
+
+`;
+
+exports[`GET /api/attendance > not found › attendance collection missing 1`] = `
+
+GET /api/attendance
+credentials: group 5 POC (rafael.t.mendoza, role poc)
+
+status: 200
+content-type: application/json; charset=utf-8
+access-control-allow-origin: *
+x-powered-by: Express
+response body:
+  []
+
+data files: unchanged
+
+outbound calls: none
+
+`;
+
+exports[`GET /api/attendance > not found › month with no records 1`] = `
+
+GET /api/attendance?year=2025&month=1
+credentials: group 5 POC (rafael.t.mendoza, role poc)
+
+status: 200
+content-type: application/json; charset=utf-8
+access-control-allow-origin: *
+x-powered-by: Express
+response body:
+  []
+
+data files: unchanged
+
+outbound calls: none
+
+`;
+
+exports[`GET /api/attendance > wrong role 1`] = `
+
+GET /api/attendance
+credentials: no-group new joiner (paolo.d.ramos, role viewer)
+
+=> identical to the happy path (lists every record (as the attendance page sends it)): same status, body, data-file changes and outbound calls
+
+`;
+
+exports[`GET /api/attendance-options > happy path › lists attendance statuses (ids are strings) 1`] = `
+
+GET /api/attendance-options
+credentials: group 5 POC (rafael.t.mendoza, role poc)
+
+status: 200
+content-type: application/json; charset=utf-8
+access-control-allow-origin: *
+x-powered-by: Express
+response body:
+  [
+    {
+      "id": "1",
+      "label": "Present"
+    },
+    {
+      "id": "2",
+      "label": "Absent"
+    },
+    {
+      "id": "3",
+      "label": "SL"
+    },
+    {
+      "id": "4",
+      "label": "VL"
+    },
+    {
+      "id": "5",
+      "label": "PL"
+    },
+    {
+      "id": "6",
+      "label": "ML"
+    },
+    {
+      "id": "7",
+      "label": "EH"
+    },
+    {
+      "id": "8",
+      "label": "BL"
+    },
+    {
+      "id": "9",
+      "label": "Deployed"
+    },
+    {
+      "id": "10",
+      "label": "RTO"
+    },
+    {
+      "id": "11",
+      "label": "NITC"
+    },
+    {
+      "id": "12",
+      "label": "Transferred"
+    }
+  ]
+
+data files: unchanged
+
+outbound calls: none
+
+`;
+
+exports[`GET /api/attendance-options > invalid input › malformed JSON body 1`] = `
+
+GET /api/attendance-options
+credentials: group 5 POC (rafael.t.mendoza, role poc)
+request body (raw):
+  {"broken": 
+
+status: 400
+content-type: text/html; charset=utf-8
+access-control-allow-origin: *
+x-powered-by: Express
+response body:
+  <!DOCTYPE html>
+  <html lang="en">
+  <head>
+  <meta charset="utf-8">
+  <title>Error</title>
+  </head>
+  <body>
+  <pre>SyntaxError: Unexpected end of JSON input<br> &nbsp; &nbsp;at <stack trace removed></pre>
+  </body>
+  </html>
+  
+
+data files: unchanged
+
+outbound calls: none
+
+`;
+
+exports[`GET /api/attendance-options > no auth 1`] = `
+
+GET /api/attendance-options
+credentials: none
+
+=> identical to the happy path (lists attendance statuses (ids are strings)): same status, body, data-file changes and outbound calls
+
+`;
+
+exports[`GET /api/attendance-options > not found › attendance-options collection missing 1`] = `
+
+GET /api/attendance-options
+credentials: group 5 POC (rafael.t.mendoza, role poc)
+
+status: 200
+content-type: application/json; charset=utf-8
+access-control-allow-origin: *
+x-powered-by: Express
+response body:
+  []
+
+data files: unchanged
+
+outbound calls: none
+
+`;
+
+exports[`GET /api/attendance-options > wrong role 1`] = `
+
+GET /api/attendance-options
+credentials: no-group new joiner (paolo.d.ramos, role viewer)
+
+=> identical to the happy path (lists attendance statuses (ids are strings)): same status, body, data-file changes and outbound calls
+
+`;
+
+exports[`GET /api/capacity-entries > happy path › filters by sprintName (as the planner sends it) 1`] = `
+
+GET /api/capacity-entries?sprintName=Sprint%202
+credentials: group 5 POC (rafael.t.mendoza, role poc)
+
+status: 200
+content-type: application/json; charset=utf-8
+access-control-allow-origin: *
+x-powered-by: Express
+response body:
+  [
+    {
+      "id": 1,
+      "sprintName": "Sprint 2",
+      "eid": "rafael.t.mendoza",
+      "cadence": 4,
+      "admin": 0,
+      "holiday": 0
+    },
+    {
+      "id": 2,
+      "sprintName": "Sprint 2",
+      "eid": "teresa.villanueva",
+      "cadence": 2,
+      "admin": 0,
+      "holiday": 0
+    },
+    {
+      "id": 3,
+      "sprintName": "Sprint 2",
+      "eid": "jomar.c.pascual",
+      "cadence": 3,
+      "admin": 0,
+      "holiday": 1
+    },
+    {
+      "id": 4,
+      "sprintName": "Sprint 2",
+      "eid": "liza.m.navarro",
+      "cadence": 4,
+      "admin": 0,
+      "holiday": 0
+    },
+    {
+      "id": 5,
+      "sprintName": "Sprint 2",
+      "eid": "andrea.s.bautista",
+      "cadence": 3,
+      "admin": 0,
+      "holiday": 0
+    }
+  ]
+
+data files: unchanged
+
+outbound calls: none
+
+`;
+
+exports[`GET /api/capacity-entries > happy path › lists every entry 1`] = `
+
+GET /api/capacity-entries
+credentials: group 5 POC (rafael.t.mendoza, role poc)
+
+status: 200
+content-type: application/json; charset=utf-8
+access-control-allow-origin: *
+x-powered-by: Express
+response body:
+  [
+    {
+      "id": 1,
+      "sprintName": "Sprint 2",
+      "eid": "rafael.t.mendoza",
+      "cadence": 4,
+      "admin": 0,
+      "holiday": 0
+    },
+    {
+      "id": 2,
+      "sprintName": "Sprint 2",
+      "eid": "teresa.villanueva",
+      "cadence": 2,
+      "admin": 0,
+      "holiday": 0
+    },
+    {
+      "id": 3,
+      "sprintName": "Sprint 2",
+      "eid": "jomar.c.pascual",
+      "cadence": 3,
+      "admin": 0,
+      "holiday": 1
+    },
+    {
+      "id": 4,
+      "sprintName": "Sprint 2",
+      "eid": "liza.m.navarro",
+      "cadence": 4,
+      "admin": 0,
+      "holiday": 0
+    },
+    {
+      "id": 5,
+      "sprintName": "Sprint 2",
+      "eid": "andrea.s.bautista",
+      "cadence": 3,
+      "admin": 0,
+      "holiday": 0
+    }
+  ]
+
+data files: unchanged
+
+outbound calls: none
+
+`;
+
+exports[`GET /api/capacity-entries > invalid input › empty sprintName returns everything 1`] = `
+
+GET /api/capacity-entries?sprintName=
+credentials: group 5 POC (rafael.t.mendoza, role poc)
+
+status: 200
+content-type: application/json; charset=utf-8
+access-control-allow-origin: *
+x-powered-by: Express
+response body:
+  [
+    {
+      "id": 1,
+      "sprintName": "Sprint 2",
+      "eid": "rafael.t.mendoza",
+      "cadence": 4,
+      "admin": 0,
+      "holiday": 0
+    },
+    {
+      "id": 2,
+      "sprintName": "Sprint 2",
+      "eid": "teresa.villanueva",
+      "cadence": 2,
+      "admin": 0,
+      "holiday": 0
+    },
+    {
+      "id": 3,
+      "sprintName": "Sprint 2",
+      "eid": "jomar.c.pascual",
+      "cadence": 3,
+      "admin": 0,
+      "holiday": 1
+    },
+    {
+      "id": 4,
+      "sprintName": "Sprint 2",
+      "eid": "liza.m.navarro",
+      "cadence": 4,
+      "admin": 0,
+      "holiday": 0
+    },
+    {
+      "id": 5,
+      "sprintName": "Sprint 2",
+      "eid": "andrea.s.bautista",
+      "cadence": 3,
+      "admin": 0,
+      "holiday": 0
+    }
+  ]
+
+data files: unchanged
+
+outbound calls: none
+
+`;
+
+exports[`GET /api/capacity-entries > invalid input › malformed JSON body 1`] = `
+
+GET /api/capacity-entries
+credentials: group 5 POC (rafael.t.mendoza, role poc)
+request body (raw):
+  {"broken": 
+
+status: 400
+content-type: text/html; charset=utf-8
+access-control-allow-origin: *
+x-powered-by: Express
+response body:
+  <!DOCTYPE html>
+  <html lang="en">
+  <head>
+  <meta charset="utf-8">
+  <title>Error</title>
+  </head>
+  <body>
+  <pre>SyntaxError: Unexpected end of JSON input<br> &nbsp; &nbsp;at <stack trace removed></pre>
+  </body>
+  </html>
+  
+
+data files: unchanged
+
+outbound calls: none
+
+`;
+
+exports[`GET /api/capacity-entries > invalid input › sprintName match is case-sensitive 1`] = `
+
+GET /api/capacity-entries?sprintName=sprint%202
+credentials: group 5 POC (rafael.t.mendoza, role poc)
+
+status: 200
+content-type: application/json; charset=utf-8
+access-control-allow-origin: *
+x-powered-by: Express
+response body:
+  []
+
+data files: unchanged
+
+outbound calls: none
+
+`;
+
+exports[`GET /api/capacity-entries > no auth 1`] = `
+
+GET /api/capacity-entries
+credentials: none
+
+=> identical to the happy path (lists every entry): same status, body, data-file changes and outbound calls
+
+`;
+
+exports[`GET /api/capacity-entries > not found › capacity-entries collection missing 1`] = `
+
+GET /api/capacity-entries
+credentials: group 5 POC (rafael.t.mendoza, role poc)
+
+status: 200
+content-type: application/json; charset=utf-8
+access-control-allow-origin: *
+x-powered-by: Express
+response body:
+  []
+
+data files: unchanged
+
+outbound calls: none
+
+`;
+
+exports[`GET /api/capacity-entries > not found › sprint with no entries 1`] = `
+
+GET /api/capacity-entries?sprintName=Sprint%203
+credentials: group 5 POC (rafael.t.mendoza, role poc)
+
+status: 200
+content-type: application/json; charset=utf-8
+access-control-allow-origin: *
+x-powered-by: Express
+response body:
+  []
+
+data files: unchanged
+
+outbound calls: none
+
+`;
+
+exports[`GET /api/capacity-entries > wrong role 1`] = `
+
+GET /api/capacity-entries
+credentials: no-group new joiner (paolo.d.ramos, role viewer)
+
+=> identical to the happy path (lists every entry): same status, body, data-file changes and outbound calls
+
+`;
+
+exports[`GET /api/office-locations > happy path › lists office locations (ids are strings) 1`] = `
+
+GET /api/office-locations
+credentials: group 5 POC (rafael.t.mendoza, role poc)
+
+status: 200
+content-type: application/json; charset=utf-8
+access-control-allow-origin: *
+x-powered-by: Express
+response body:
+  [
+    {
+      "id": "1",
+      "name": "Manila"
+    },
+    {
+      "id": "2",
+      "name": "Cebu"
+    }
+  ]
+
+data files: unchanged
+
+outbound calls: none
+
+`;
+
+exports[`GET /api/office-locations > invalid input › malformed JSON body 1`] = `
+
+GET /api/office-locations
+credentials: group 5 POC (rafael.t.mendoza, role poc)
+request body (raw):
+  {"broken": 
+
+status: 400
+content-type: text/html; charset=utf-8
+access-control-allow-origin: *
+x-powered-by: Express
+response body:
+  <!DOCTYPE html>
+  <html lang="en">
+  <head>
+  <meta charset="utf-8">
+  <title>Error</title>
+  </head>
+  <body>
+  <pre>SyntaxError: Unexpected end of JSON input<br> &nbsp; &nbsp;at <stack trace removed></pre>
+  </body>
+  </html>
+  
+
+data files: unchanged
+
+outbound calls: none
+
+`;
+
+exports[`GET /api/office-locations > no auth 1`] = `
+
+GET /api/office-locations
+credentials: none
+
+=> identical to the happy path (lists office locations (ids are strings)): same status, body, data-file changes and outbound calls
+
+`;
+
+exports[`GET /api/office-locations > not found › office-locations collection missing 1`] = `
+
+GET /api/office-locations
+credentials: group 5 POC (rafael.t.mendoza, role poc)
+
+status: 200
+content-type: application/json; charset=utf-8
+access-control-allow-origin: *
+x-powered-by: Express
+response body:
+  []
+
+data files: unchanged
+
+outbound calls: none
+
+`;
+
+exports[`GET /api/office-locations > wrong role 1`] = `
+
+GET /api/office-locations
+credentials: no-group new joiner (paolo.d.ramos, role viewer)
+
+=> identical to the happy path (lists office locations (ids are strings)): same status, body, data-file changes and outbound calls
+
+`;
+
+exports[`PATCH /api/attendance/:id > happy path › RTO cell changed to Absent keeps its stale location; string id becomes a number 1`] = `
+
+PATCH /api/attendance/1
+credentials: group 5 POC (rafael.t.mendoza, role poc)
+request body:
+  {
+    "status": "Absent"
+  }
+
+status: 200
+content-type: application/json; charset=utf-8
+access-control-allow-origin: *
+x-powered-by: Express
+response body:
+  {
+    "id": 1,
+    "eid": "rafael.t.mendoza",
+    "year": 2026,
+    "month": 10,
+    "day": 27,
+    "status": "Absent",
+    "location": "Riverside Tech Tower 2"
+  }
+
+data files:
+  db.json: modified
+    raw text diff:
+      @@ -148,10 +148,10 @@
+         "attendance": [
+           {
+      -      "id": "1",
+      +      "id": 1,
+             "eid": "rafael.t.mendoza",
+             "year": 2026,
+             "month": 10,
+             "day": 27,
+      -      "status": "RTO",
+      +      "status": "Absent",
+             "location": "Riverside Tech Tower 2"
+           },
+    parsed JSON diff:
+      - /attendance[id="1"]: {"id":"1","eid":"rafael.t.mendoza","year":2026,"month":10,"day":27,"status":"RTO","location":"Riverside Tech Tower 2"}
+      + /attendance[id=1] (at index 0): {"id":1,"eid":"rafael.t.mendoza","year":2026,"month":10,"day":27,"status":"Absent","location":"Riverside Tech Tower 2"}
+
+outbound calls: none
+
+`;
+
+exports[`PATCH /api/attendance/:id > happy path › changes a cell status (as the attendance page sends it) 1`] = `
+
+PATCH /api/attendance/6
+credentials: group 5 POC (rafael.t.mendoza, role poc)
+request body:
+  {
+    "status": "Absent"
+  }
+
+status: 200
+content-type: application/json; charset=utf-8
+access-control-allow-origin: *
+x-powered-by: Express
+response body:
+  {
+    "id": 6,
+    "eid": "liza.m.navarro",
+    "year": 2026,
+    "month": 10,
+    "day": 28,
+    "status": "Absent",
+    "location": "Harbor Point Building"
+  }
+
+data files:
+  db.json: modified
+    raw text diff:
+      @@ -194,5 +194,5 @@
+             "month": 10,
+             "day": 28,
+      -      "status": "RTO",
+      +      "status": "Absent",
+             "location": "Harbor Point Building"
+           },
+    parsed JSON diff:
+      ~ /attendance[id=6]/status: "RTO" → "Absent"
+
+outbound calls: none
+
+`;
+
+exports[`PATCH /api/attendance/:id > happy path › changes an RTO location 1`] = `
+
+PATCH /api/attendance/1
+credentials: group 5 POC (rafael.t.mendoza, role poc)
+request body:
+  {
+    "status": "RTO",
+    "location": "Harbor Point Building B"
+  }
+
+status: 200
+content-type: application/json; charset=utf-8
+access-control-allow-origin: *
+x-powered-by: Express
+response body:
+  {
+    "id": 1,
+    "eid": "rafael.t.mendoza",
+    "year": 2026,
+    "month": 10,
+    "day": 27,
+    "status": "RTO",
+    "location": "Harbor Point Building B"
+  }
+
+data files:
+  db.json: modified
+    raw text diff:
+      @@ -148,5 +148,5 @@
+         "attendance": [
+           {
+      -      "id": "1",
+      +      "id": 1,
+             "eid": "rafael.t.mendoza",
+             "year": 2026,
+      @@ -154,5 +154,5 @@
+             "day": 27,
+             "status": "RTO",
+      -      "location": "Riverside Tech Tower 2"
+      +      "location": "Harbor Point Building B"
+           },
+           {
+    parsed JSON diff:
+      - /attendance[id="1"]: {"id":"1","eid":"rafael.t.mendoza","year":2026,"month":10,"day":27,"status":"RTO","location":"Riverside Tech Tower 2"}
+      + /attendance[id=1] (at index 0): {"id":1,"eid":"rafael.t.mendoza","year":2026,"month":10,"day":27,"status":"RTO","location":"Harbor Point Building B"}
+
+outbound calls: none
+
+`;
+
+exports[`PATCH /api/attendance/:id > invalid input › arbitrary fields are merged; id cannot be changed 1`] = `
+
+PATCH /api/attendance/6
+credentials: group 5 POC (rafael.t.mendoza, role poc)
+request body:
+  {
+    "status": "Nope",
+    "eid": "nobody.here",
+    "id": 99,
+    "extra": true
+  }
+
+status: 200
+content-type: application/json; charset=utf-8
+access-control-allow-origin: *
+x-powered-by: Express
+response body:
+  {
+    "id": 6,
+    "eid": "nobody.here",
+    "year": 2026,
+    "month": 10,
+    "day": 28,
+    "status": "Nope",
+    "location": "Harbor Point Building",
+    "extra": true
+  }
+
+data files:
+  db.json: modified
+    raw text diff:
+      @@ -190,10 +190,11 @@
+           {
+             "id": 6,
+      -      "eid": "liza.m.navarro",
+      +      "eid": "nobody.here",
+             "year": 2026,
+             "month": 10,
+             "day": 28,
+      -      "status": "RTO",
+      -      "location": "Harbor Point Building"
+      +      "status": "Nope",
+      +      "location": "Harbor Point Building",
+      +      "extra": true
+           },
+           {
+    parsed JSON diff:
+      ~ /attendance[id=6]/eid: "liza.m.navarro" → "nobody.here"
+      ~ /attendance[id=6]/status: "RTO" → "Nope"
+      + /attendance[id=6]/extra: true
+
+outbound calls: none
+
+`;
+
+exports[`PATCH /api/attendance/:id > invalid input › empty body still rewrites the record 1`] = `
+
+PATCH /api/attendance/2
+credentials: group 5 POC (rafael.t.mendoza, role poc)
+request body:
+  {}
+
+status: 200
+content-type: application/json; charset=utf-8
+access-control-allow-origin: *
+x-powered-by: Express
+response body:
+  {
+    "id": 2,
+    "eid": "liza.m.navarro",
+    "year": 2026,
+    "month": 10,
+    "day": 27,
+    "status": "Present"
+  }
+
+data files:
+  db.json: modified
+    raw text diff:
+      @@ -157,5 +157,5 @@
+           },
+           {
+      -      "id": "2",
+      +      "id": 2,
+             "eid": "liza.m.navarro",
+             "year": 2026,
+    parsed JSON diff:
+      - /attendance[id="2"]: {"id":"2","eid":"liza.m.navarro","year":2026,"month":10,"day":27,"status":"Present"}
+      + /attendance[id=2] (at index 1): {"id":2,"eid":"liza.m.navarro","year":2026,"month":10,"day":27,"status":"Present"}
+
+outbound calls: none
+
+`;
+
+exports[`PATCH /api/attendance/:id > invalid input › malformed JSON body 1`] = `
+
+PATCH /api/attendance/6
+credentials: group 5 POC (rafael.t.mendoza, role poc)
+request body (raw):
+  {"broken": 
+
+status: 400
+content-type: text/html; charset=utf-8
+access-control-allow-origin: *
+x-powered-by: Express
+response body:
+  <!DOCTYPE html>
+  <html lang="en">
+  <head>
+  <meta charset="utf-8">
+  <title>Error</title>
+  </head>
+  <body>
+  <pre>SyntaxError: Unexpected end of JSON input<br> &nbsp; &nbsp;at <stack trace removed></pre>
+  </body>
+  </html>
+  
+
+data files: unchanged
+
+outbound calls: none
+
+`;
+
+exports[`PATCH /api/attendance/:id > invalid input › no body 1`] = `
+
+PATCH /api/attendance/6
+credentials: group 5 POC (rafael.t.mendoza, role poc)
+
+status: 200
+content-type: application/json; charset=utf-8
+access-control-allow-origin: *
+x-powered-by: Express
+response body:
+  {
+    "id": 6,
+    "eid": "liza.m.navarro",
+    "year": 2026,
+    "month": 10,
+    "day": 28,
+    "status": "RTO",
+    "location": "Harbor Point Building"
+  }
+
+data files: unchanged
+
+outbound calls: none
+
+`;
+
+exports[`PATCH /api/attendance/:id > no auth 1`] = `
+
+PATCH /api/attendance/6
+credentials: none
+request body:
+  {
+    "status": "Absent"
+  }
+
+=> identical to the happy path (changes a cell status (as the attendance page sends it)): same status, body, data-file changes and outbound calls
+
+`;
+
+exports[`PATCH /api/attendance/:id > not found › non-numeric id 1`] = `
+
+PATCH /api/attendance/abc
+credentials: group 5 POC (rafael.t.mendoza, role poc)
+request body:
+  {
+    "status": "Absent"
+  }
+
+status: 404
+content-type: application/json; charset=utf-8
+access-control-allow-origin: *
+x-powered-by: Express
+response body:
+  {
+    "error": "record not found"
+  }
+
+data files: unchanged
+
+outbound calls: none
+
+`;
+
+exports[`PATCH /api/attendance/:id > not found › unknown id 1`] = `
+
+PATCH /api/attendance/999
+credentials: group 5 POC (rafael.t.mendoza, role poc)
+request body:
+  {
+    "status": "Absent"
+  }
+
+status: 404
+content-type: application/json; charset=utf-8
+access-control-allow-origin: *
+x-powered-by: Express
+response body:
+  {
+    "error": "record not found"
+  }
+
+data files: unchanged
+
+outbound calls: none
+
+`;
+
+exports[`PATCH /api/attendance/:id > wrong role 1`] = `
+
+PATCH /api/attendance/6
+credentials: no-group new joiner (paolo.d.ramos, role viewer)
+request body:
+  {
+    "status": "Absent"
+  }
+
+=> identical to the happy path (changes a cell status (as the attendance page sends it)): same status, body, data-file changes and outbound calls
+
+`;
+
+exports[`POST /api/attendance > happy path › records a Present day without a location 1`] = `
+
+POST /api/attendance
+credentials: group 5 POC (rafael.t.mendoza, role poc)
+request body:
+  {
+    "eid": "liza.m.navarro",
+    "year": 2026,
+    "month": 11,
+    "day": 5,
+    "status": "Present"
+  }
+
+status: 201
+content-type: application/json; charset=utf-8
+access-control-allow-origin: *
+x-powered-by: Express
+response body:
+  {
+    "eid": "liza.m.navarro",
+    "year": 2026,
+    "month": 11,
+    "day": 5,
+    "status": "Present",
+    "id": 12
+  }
+
+data files:
+  db.json: modified
+    raw text diff:
+      @@ -237,4 +237,12 @@
+             "day": 4,
+             "status": "Present"
+      +    },
+      +    {
+      +      "eid": "liza.m.navarro",
+      +      "year": 2026,
+      +      "month": 11,
+      +      "day": 5,
+      +      "status": "Present",
+      +      "id": 12
+           }
+         ],
+    parsed JSON diff:
+      + /attendance[id=12] (at index 11): {"eid":"liza.m.navarro","year":2026,"month":11,"day":5,"status":"Present","id":12}
+
+outbound calls: none
+
+`;
+
+exports[`POST /api/attendance > happy path › records an RTO day with a location (as the attendance page sends it) 1`] = `
+
+POST /api/attendance
+credentials: group 5 POC (rafael.t.mendoza, role poc)
+request body:
+  {
+    "eid": "jomar.c.pascual",
+    "year": 2026,
+    "month": 11,
+    "day": 5,
+    "status": "RTO",
+    "location": "Riverside Tech Tower 2"
+  }
+
+status: 201
+content-type: application/json; charset=utf-8
+access-control-allow-origin: *
+x-powered-by: Express
+response body:
+  {
+    "eid": "jomar.c.pascual",
+    "year": 2026,
+    "month": 11,
+    "day": 5,
+    "status": "RTO",
+    "location": "Riverside Tech Tower 2",
+    "id": 12
+  }
+
+data files:
+  db.json: modified
+    raw text diff:
+      @@ -237,4 +237,13 @@
+             "day": 4,
+             "status": "Present"
+      +    },
+      +    {
+      +      "eid": "jomar.c.pascual",
+      +      "year": 2026,
+      +      "month": 11,
+      +      "day": 5,
+      +      "status": "RTO",
+      +      "location": "Riverside Tech Tower 2",
+      +      "id": 12
+           }
+         ],
+    parsed JSON diff:
+      + /attendance[id=12] (at index 11): {"eid":"jomar.c.pascual","year":2026,"month":11,"day":5,"status":"RTO","location":"Riverside Tech Tower 2","id":12}
+
+outbound calls: none
+
+`;
+
+exports[`POST /api/attendance > invalid input › client id is overwritten by the server id 1`] = `
+
+POST /api/attendance
+credentials: group 5 POC (rafael.t.mendoza, role poc)
+request body:
+  {
+    "eid": "jomar.c.pascual",
+    "year": 2026,
+    "month": 11,
+    "day": 5,
+    "status": "RTO",
+    "location": "Riverside Tech Tower 2",
+    "id": 1
+  }
+
+status: 201
+content-type: application/json; charset=utf-8
+access-control-allow-origin: *
+x-powered-by: Express
+response body:
+  {
+    "eid": "jomar.c.pascual",
+    "year": 2026,
+    "month": 11,
+    "day": 5,
+    "status": "RTO",
+    "location": "Riverside Tech Tower 2",
+    "id": 12
+  }
+
+data files:
+  db.json: modified
+    raw text diff:
+      @@ -237,4 +237,13 @@
+             "day": 4,
+             "status": "Present"
+      +    },
+      +    {
+      +      "eid": "jomar.c.pascual",
+      +      "year": 2026,
+      +      "month": 11,
+      +      "day": 5,
+      +      "status": "RTO",
+      +      "location": "Riverside Tech Tower 2",
+      +      "id": 12
+           }
+         ],
+    parsed JSON diff:
+      + /attendance[id=12] (at index 11): {"eid":"jomar.c.pascual","year":2026,"month":11,"day":5,"status":"RTO","location":"Riverside Tech Tower 2","id":12}
+
+outbound calls: none
+
+`;
+
+exports[`POST /api/attendance > invalid input › duplicate cell for the same person and day is accepted 1`] = `
+
+POST /api/attendance
+credentials: group 5 POC (rafael.t.mendoza, role poc)
+request body:
+  {
+    "eid": "rafael.t.mendoza",
+    "year": 2026,
+    "month": 10,
+    "day": 27,
+    "status": "Absent"
+  }
+
+status: 201
+content-type: application/json; charset=utf-8
+access-control-allow-origin: *
+x-powered-by: Express
+response body:
+  {
+    "eid": "rafael.t.mendoza",
+    "year": 2026,
+    "month": 10,
+    "day": 27,
+    "status": "Absent",
+    "id": 12
+  }
+
+data files:
+  db.json: modified
+    raw text diff:
+      @@ -237,4 +237,12 @@
+             "day": 4,
+             "status": "Present"
+      +    },
+      +    {
+      +      "eid": "rafael.t.mendoza",
+      +      "year": 2026,
+      +      "month": 10,
+      +      "day": 27,
+      +      "status": "Absent",
+      +      "id": 12
+           }
+         ],
+    parsed JSON diff:
+      + /attendance[id=12] (at index 11): {"eid":"rafael.t.mendoza","year":2026,"month":10,"day":27,"status":"Absent","id":12}
+
+outbound calls: none
+
+`;
+
+exports[`POST /api/attendance > invalid input › empty object is stored as-is 1`] = `
+
+POST /api/attendance
+credentials: group 5 POC (rafael.t.mendoza, role poc)
+request body:
+  {}
+
+status: 201
+content-type: application/json; charset=utf-8
+access-control-allow-origin: *
+x-powered-by: Express
+response body:
+  {
+    "id": 12
+  }
+
+data files:
+  db.json: modified
+    raw text diff:
+      @@ -237,4 +237,7 @@
+             "day": 4,
+             "status": "Present"
+      +    },
+      +    {
+      +      "id": 12
+           }
+         ],
+    parsed JSON diff:
+      + /attendance[id=12] (at index 11): {"id":12}
+
+outbound calls: none
+
+`;
+
+exports[`POST /api/attendance > invalid input › malformed JSON body 1`] = `
+
+POST /api/attendance
+credentials: group 5 POC (rafael.t.mendoza, role poc)
+request body (raw):
+  {"broken": 
+
+status: 400
+content-type: text/html; charset=utf-8
+access-control-allow-origin: *
+x-powered-by: Express
+response body:
+  <!DOCTYPE html>
+  <html lang="en">
+  <head>
+  <meta charset="utf-8">
+  <title>Error</title>
+  </head>
+  <body>
+  <pre>SyntaxError: Unexpected end of JSON input<br> &nbsp; &nbsp;at <stack trace removed></pre>
+  </body>
+  </html>
+  
+
+data files: unchanged
+
+outbound calls: none
+
+`;
+
+exports[`POST /api/attendance > invalid input › no body 1`] = `
+
+POST /api/attendance
+credentials: group 5 POC (rafael.t.mendoza, role poc)
+
+status: 201
+content-type: application/json; charset=utf-8
+access-control-allow-origin: *
+x-powered-by: Express
+response body:
+  {
+    "id": 12
+  }
+
+data files:
+  db.json: modified
+    raw text diff:
+      @@ -237,4 +237,7 @@
+             "day": 4,
+             "status": "Present"
+      +    },
+      +    {
+      +      "id": 12
+           }
+         ],
+    parsed JSON diff:
+      + /attendance[id=12] (at index 11): {"id":12}
+
+outbound calls: none
+
+`;
+
+exports[`POST /api/attendance > invalid input › non-object JSON (array) is spread into the record 1`] = `
+
+POST /api/attendance
+credentials: group 5 POC (rafael.t.mendoza, role poc)
+request body:
+  [
+    "a",
+    "b"
+  ]
+
+status: 201
+content-type: application/json; charset=utf-8
+access-control-allow-origin: *
+x-powered-by: Express
+response body:
+  {
+    "0": "a",
+    "1": "b",
+    "id": 12
+  }
+
+data files:
+  db.json: modified
+    raw text diff:
+      @@ -237,4 +237,9 @@
+             "day": 4,
+             "status": "Present"
+      +    },
+      +    {
+      +      "0": "a",
+      +      "1": "b",
+      +      "id": 12
+           }
+         ],
+    parsed JSON diff:
+      + /attendance[id=12] (at index 11): {"0":"a","1":"b","id":12}
+
+outbound calls: none
+
+`;
+
+exports[`POST /api/attendance > invalid input › unknown status and eid are accepted 1`] = `
+
+POST /api/attendance
+credentials: group 5 POC (rafael.t.mendoza, role poc)
+request body:
+  {
+    "eid": "nobody.here",
+    "year": 2026,
+    "month": 11,
+    "day": 5,
+    "status": "Moon base",
+    "location": "Riverside Tech Tower 2"
+  }
+
+status: 201
+content-type: application/json; charset=utf-8
+access-control-allow-origin: *
+x-powered-by: Express
+response body:
+  {
+    "eid": "nobody.here",
+    "year": 2026,
+    "month": 11,
+    "day": 5,
+    "status": "Moon base",
+    "location": "Riverside Tech Tower 2",
+    "id": 12
+  }
+
+data files:
+  db.json: modified
+    raw text diff:
+      @@ -237,4 +237,13 @@
+             "day": 4,
+             "status": "Present"
+      +    },
+      +    {
+      +      "eid": "nobody.here",
+      +      "year": 2026,
+      +      "month": 11,
+      +      "day": 5,
+      +      "status": "Moon base",
+      +      "location": "Riverside Tech Tower 2",
+      +      "id": 12
+           }
+         ],
+    parsed JSON diff:
+      + /attendance[id=12] (at index 11): {"eid":"nobody.here","year":2026,"month":11,"day":5,"status":"Moon base","location":"Riverside Tech Tower 2","id":12}
+
+outbound calls: none
+
+`;
+
+exports[`POST /api/attendance > no auth 1`] = `
+
+POST /api/attendance
+credentials: none
+request body:
+  {
+    "eid": "jomar.c.pascual",
+    "year": 2026,
+    "month": 11,
+    "day": 5,
+    "status": "RTO",
+    "location": "Riverside Tech Tower 2"
+  }
+
+=> identical to the happy path (records an RTO day with a location (as the attendance page sends it)): same status, body, data-file changes and outbound calls
+
+`;
+
+exports[`POST /api/attendance > not found › attendance collection missing 1`] = `
+
+POST /api/attendance
+credentials: group 5 POC (rafael.t.mendoza, role poc)
+request body:
+  {
+    "eid": "jomar.c.pascual",
+    "year": 2026,
+    "month": 11,
+    "day": 5,
+    "status": "RTO",
+    "location": "Riverside Tech Tower 2"
+  }
+
+status: 201
+content-type: application/json; charset=utf-8
+access-control-allow-origin: *
+x-powered-by: Express
+response body:
+  {
+    "eid": "jomar.c.pascual",
+    "year": 2026,
+    "month": 11,
+    "day": 5,
+    "status": "RTO",
+    "location": "Riverside Tech Tower 2",
+    "id": 1
+  }
+
+data files:
+  db.json: modified
+    raw text diff:
+      @@ -531,4 +531,15 @@
+             "deletedAt": "2026-11-03T02:05:40.017Z"
+           }
+      +  ],
+      +  "attendance": [
+      +    {
+      +      "eid": "jomar.c.pascual",
+      +      "year": 2026,
+      +      "month": 11,
+      +      "day": 5,
+      +      "status": "RTO",
+      +      "location": "Riverside Tech Tower 2",
+      +      "id": 1
+      +    }
+         ]
+       }
+    parsed JSON diff:
+      + /attendance: [{"eid":"jomar.c.pascual","year":2026,"month":11,"day":5,"status":"RTO","location":"Riverside Tech Tower 2","id":1}]
+
+outbound calls: none
+
+`;
+
+exports[`POST /api/attendance > wrong role 1`] = `
+
+POST /api/attendance
+credentials: no-group new joiner (paolo.d.ramos, role viewer)
+request body:
+  {
+    "eid": "jomar.c.pascual",
+    "year": 2026,
+    "month": 11,
+    "day": 5,
+    "status": "RTO",
+    "location": "Riverside Tech Tower 2"
+  }
+
+=> identical to the happy path (records an RTO day with a location (as the attendance page sends it)): same status, body, data-file changes and outbound calls
+
+`;
+
+exports[`POST /api/capacity-entries > happy path › creates an entry for a new person and sprint 1`] = `
+
+POST /api/capacity-entries
+credentials: group 5 POC (rafael.t.mendoza, role poc)
+request body:
+  {
+    "sprintName": "Sprint 3",
+    "eid": "rafael.t.mendoza",
+    "cadence": 4,
+    "admin": 1,
+    "holiday": 0
+  }
+
+status: 201
+content-type: application/json; charset=utf-8
+access-control-allow-origin: *
+x-powered-by: Express
+response body:
+  {
+    "id": 6,
+    "sprintName": "Sprint 3",
+    "eid": "rafael.t.mendoza",
+    "cadence": 4,
+    "admin": 1,
+    "holiday": 0
+  }
+
+data files:
+  db.json: modified
+    raw text diff:
+      @@ -40,4 +40,12 @@
+             "admin": 0,
+             "holiday": 0
+      +    },
+      +    {
+      +      "id": 6,
+      +      "sprintName": "Sprint 3",
+      +      "eid": "rafael.t.mendoza",
+      +      "cadence": 4,
+      +      "admin": 1,
+      +      "holiday": 0
+           }
+         ],
+    parsed JSON diff:
+      + /capacity-entries[id=6] (at index 5): {"id":6,"sprintName":"Sprint 3","eid":"rafael.t.mendoza","cadence":4,"admin":1,"holiday":0}
+
+outbound calls: none
+
+`;
+
+exports[`POST /api/capacity-entries > happy path › upsert with only some fields leaves the others 1`] = `
+
+POST /api/capacity-entries
+credentials: group 5 POC (rafael.t.mendoza, role poc)
+request body:
+  {
+    "sprintName": "Sprint 2",
+    "eid": "jomar.c.pascual",
+    "holiday": 2
+  }
+
+status: 200
+content-type: application/json; charset=utf-8
+access-control-allow-origin: *
+x-powered-by: Express
+response body:
+  {
+    "id": 3,
+    "sprintName": "Sprint 2",
+    "eid": "jomar.c.pascual",
+    "cadence": 3,
+    "admin": 0,
+    "holiday": 2
+  }
+
+data files:
+  db.json: modified
+    raw text diff:
+      @@ -23,5 +23,5 @@
+             "cadence": 3,
+             "admin": 0,
+      -      "holiday": 1
+      +      "holiday": 2
+           },
+           {
+    parsed JSON diff:
+      ~ /capacity-entries[id=3]/holiday: 1 → 2
+
+outbound calls: none
+
+`;
+
+exports[`POST /api/capacity-entries > happy path › upserts the existing (sprintName, eid) entry and returns 200 (as the planner sends it, with id) 1`] = `
+
+POST /api/capacity-entries
+credentials: group 5 POC (rafael.t.mendoza, role poc)
+request body:
+  {
+    "id": 1,
+    "sprintName": "Sprint 2",
+    "eid": "rafael.t.mendoza",
+    "cadence": 3,
+    "admin": 1,
+    "holiday": 0
+  }
+
+status: 200
+content-type: application/json; charset=utf-8
+access-control-allow-origin: *
+x-powered-by: Express
+response body:
+  {
+    "id": 1,
+    "sprintName": "Sprint 2",
+    "eid": "rafael.t.mendoza",
+    "cadence": 3,
+    "admin": 1,
+    "holiday": 0
+  }
+
+data files:
+  db.json: modified
+    raw text diff:
+      @@ -5,6 +5,6 @@
+             "sprintName": "Sprint 2",
+             "eid": "rafael.t.mendoza",
+      -      "cadence": 4,
+      -      "admin": 0,
+      +      "cadence": 3,
+      +      "admin": 1,
+             "holiday": 0
+           },
+    parsed JSON diff:
+      ~ /capacity-entries[id=1]/cadence: 4 → 3
+      ~ /capacity-entries[id=1]/admin: 0 → 1
+
+outbound calls: none
+
+`;
+
+exports[`POST /api/capacity-entries > invalid input › eid is not normalised, so a differently-cased eid creates a second entry 1`] = `
+
+POST /api/capacity-entries
+credentials: group 5 POC (rafael.t.mendoza, role poc)
+request body:
+  {
+    "sprintName": "Sprint 2",
+    "eid": "Rafael.T.Mendoza",
+    "cadence": 1
+  }
+
+status: 201
+content-type: application/json; charset=utf-8
+access-control-allow-origin: *
+x-powered-by: Express
+response body:
+  {
+    "id": 6,
+    "sprintName": "Sprint 2",
+    "eid": "Rafael.T.Mendoza",
+    "cadence": 1,
+    "admin": 0,
+    "holiday": 0
+  }
+
+data files:
+  db.json: modified
+    raw text diff:
+      @@ -40,4 +40,12 @@
+             "admin": 0,
+             "holiday": 0
+      +    },
+      +    {
+      +      "id": 6,
+      +      "sprintName": "Sprint 2",
+      +      "eid": "Rafael.T.Mendoza",
+      +      "cadence": 1,
+      +      "admin": 0,
+      +      "holiday": 0
+           }
+         ],
+    parsed JSON diff:
+      + /capacity-entries[id=6] (at index 5): {"id":6,"sprintName":"Sprint 2","eid":"Rafael.T.Mendoza","cadence":1,"admin":0,"holiday":0}
+
+outbound calls: none
+
+`;
+
+exports[`POST /api/capacity-entries > invalid input › malformed JSON body 1`] = `
+
+POST /api/capacity-entries
+credentials: group 5 POC (rafael.t.mendoza, role poc)
+request body (raw):
+  {"broken": 
+
+status: 400
+content-type: text/html; charset=utf-8
+access-control-allow-origin: *
+x-powered-by: Express
+response body:
+  <!DOCTYPE html>
+  <html lang="en">
+  <head>
+  <meta charset="utf-8">
+  <title>Error</title>
+  </head>
+  <body>
+  <pre>SyntaxError: Unexpected end of JSON input<br> &nbsp; &nbsp;at <stack trace removed></pre>
+  </body>
+  </html>
+  
+
+data files: unchanged
+
+outbound calls: none
+
+`;
+
+exports[`POST /api/capacity-entries > invalid input › missing eid 1`] = `
+
+POST /api/capacity-entries
+credentials: group 5 POC (rafael.t.mendoza, role poc)
+request body:
+  {
+    "sprintName": "Sprint 3",
+    "cadence": 4
+  }
+
+status: 400
+content-type: application/json; charset=utf-8
+access-control-allow-origin: *
+x-powered-by: Express
+response body:
+  {
+    "error": "sprintName and eid are required"
+  }
+
+data files: unchanged
+
+outbound calls: none
+
+`;
+
+exports[`POST /api/capacity-entries > invalid input › negative and fractional values are accepted 1`] = `
+
+POST /api/capacity-entries
+credentials: group 5 POC (rafael.t.mendoza, role poc)
+request body:
+  {
+    "sprintName": "Sprint 3",
+    "eid": "liza.m.navarro",
+    "cadence": -2,
+    "admin": 0.5
+  }
+
+status: 201
+content-type: application/json; charset=utf-8
+access-control-allow-origin: *
+x-powered-by: Express
+response body:
+  {
+    "id": 6,
+    "sprintName": "Sprint 3",
+    "eid": "liza.m.navarro",
+    "cadence": -2,
+    "admin": 0.5,
+    "holiday": 0
+  }
+
+data files:
+  db.json: modified
+    raw text diff:
+      @@ -40,4 +40,12 @@
+             "admin": 0,
+             "holiday": 0
+      +    },
+      +    {
+      +      "id": 6,
+      +      "sprintName": "Sprint 3",
+      +      "eid": "liza.m.navarro",
+      +      "cadence": -2,
+      +      "admin": 0.5,
+      +      "holiday": 0
+           }
+         ],
+    parsed JSON diff:
+      + /capacity-entries[id=6] (at index 5): {"id":6,"sprintName":"Sprint 3","eid":"liza.m.navarro","cadence":-2,"admin":0.5,"holiday":0}
+
+outbound calls: none
+
+`;
+
+exports[`POST /api/capacity-entries > invalid input › no body 1`] = `
+
+POST /api/capacity-entries
+credentials: group 5 POC (rafael.t.mendoza, role poc)
+
+status: 500
+content-type: text/html; charset=utf-8
+access-control-allow-origin: *
+x-powered-by: Express
+response body:
+  <!DOCTYPE html>
+  <html lang="en">
+  <head>
+  <meta charset="utf-8">
+  <title>Error</title>
+  </head>
+  <body>
+  <pre>TypeError: Cannot destructure property &#39;sprintName&#39; of &#39;req.body&#39; as it is undefined.<br> &nbsp; &nbsp;at <stack trace removed></pre>
+  </body>
+  </html>
+  
+
+data files: unchanged
+
+outbound calls: none
+
+`;
+
+exports[`POST /api/capacity-entries > invalid input › non-numeric cadence on a new entry becomes 0 1`] = `
+
+POST /api/capacity-entries
+credentials: group 5 POC (rafael.t.mendoza, role poc)
+request body:
+  {
+    "sprintName": "Sprint 3",
+    "eid": "liza.m.navarro",
+    "cadence": "four"
+  }
+
+status: 201
+content-type: application/json; charset=utf-8
+access-control-allow-origin: *
+x-powered-by: Express
+response body:
+  {
+    "id": 6,
+    "sprintName": "Sprint 3",
+    "eid": "liza.m.navarro",
+    "cadence": 0,
+    "admin": 0,
+    "holiday": 0
+  }
+
+data files:
+  db.json: modified
+    raw text diff:
+      @@ -40,4 +40,12 @@
+             "admin": 0,
+             "holiday": 0
+      +    },
+      +    {
+      +      "id": 6,
+      +      "sprintName": "Sprint 3",
+      +      "eid": "liza.m.navarro",
+      +      "cadence": 0,
+      +      "admin": 0,
+      +      "holiday": 0
+           }
+         ],
+    parsed JSON diff:
+      + /capacity-entries[id=6] (at index 5): {"id":6,"sprintName":"Sprint 3","eid":"liza.m.navarro","cadence":0,"admin":0,"holiday":0}
+
+outbound calls: none
+
+`;
+
+exports[`POST /api/capacity-entries > invalid input › non-numeric cadence on an existing entry is stored as null 1`] = `
+
+POST /api/capacity-entries
+credentials: group 5 POC (rafael.t.mendoza, role poc)
+request body:
+  {
+    "sprintName": "Sprint 2",
+    "eid": "liza.m.navarro",
+    "cadence": "four"
+  }
+
+status: 200
+content-type: application/json; charset=utf-8
+access-control-allow-origin: *
+x-powered-by: Express
+response body:
+  {
+    "id": 4,
+    "sprintName": "Sprint 2",
+    "eid": "liza.m.navarro",
+    "cadence": null,
+    "admin": 0,
+    "holiday": 0
+  }
+
+data files:
+  db.json: modified
+    raw text diff:
+      @@ -29,5 +29,5 @@
+             "sprintName": "Sprint 2",
+             "eid": "liza.m.navarro",
+      -      "cadence": 4,
+      +      "cadence": null,
+             "admin": 0,
+             "holiday": 0
+    parsed JSON diff:
+      ~ /capacity-entries[id=4]/cadence: 4 → null
+
+outbound calls: none
+
+`;
+
+exports[`POST /api/capacity-entries > no auth 1`] = `
+
+POST /api/capacity-entries
+credentials: none
+request body:
+  {
+    "sprintName": "Sprint 3",
+    "eid": "rafael.t.mendoza",
+    "cadence": 4,
+    "admin": 1,
+    "holiday": 0
+  }
+
+=> identical to the happy path (creates an entry for a new person and sprint): same status, body, data-file changes and outbound calls
+
+`;
+
+exports[`POST /api/capacity-entries > not found › capacity-entries collection missing 1`] = `
+
+POST /api/capacity-entries
+credentials: group 5 POC (rafael.t.mendoza, role poc)
+request body:
+  {
+    "sprintName": "Sprint 3",
+    "eid": "rafael.t.mendoza",
+    "cadence": 4
+  }
+
+status: 201
+content-type: application/json; charset=utf-8
+access-control-allow-origin: *
+x-powered-by: Express
+response body:
+  {
+    "id": 1,
+    "sprintName": "Sprint 3",
+    "eid": "rafael.t.mendoza",
+    "cadence": 4,
+    "admin": 0,
+    "holiday": 0
+  }
+
+data files:
+  db.json: modified
+    raw text diff:
+      @@ -582,4 +582,14 @@
+             "deletedAt": "2026-11-03T02:05:40.017Z"
+           }
+      +  ],
+      +  "capacity-entries": [
+      +    {
+      +      "id": 1,
+      +      "sprintName": "Sprint 3",
+      +      "eid": "rafael.t.mendoza",
+      +      "cadence": 4,
+      +      "admin": 0,
+      +      "holiday": 0
+      +    }
+         ]
+       }
+    parsed JSON diff:
+      + /capacity-entries: [{"id":1,"sprintName":"Sprint 3","eid":"rafael.t.mendoza","cadence":4,"admin":0,"holiday":0}]
+
+outbound calls: none
+
+`;
+
+exports[`POST /api/capacity-entries > not found › eid that is not on the roster is accepted 1`] = `
+
+POST /api/capacity-entries
+credentials: group 5 POC (rafael.t.mendoza, role poc)
+request body:
+  {
+    "sprintName": "Sprint 3",
+    "eid": "nobody.here",
+    "cadence": 4
+  }
+
+status: 201
+content-type: application/json; charset=utf-8
+access-control-allow-origin: *
+x-powered-by: Express
+response body:
+  {
+    "id": 6,
+    "sprintName": "Sprint 3",
+    "eid": "nobody.here",
+    "cadence": 4,
+    "admin": 0,
+    "holiday": 0
+  }
+
+data files:
+  db.json: modified
+    raw text diff:
+      @@ -40,4 +40,12 @@
+             "admin": 0,
+             "holiday": 0
+      +    },
+      +    {
+      +      "id": 6,
+      +      "sprintName": "Sprint 3",
+      +      "eid": "nobody.here",
+      +      "cadence": 4,
+      +      "admin": 0,
+      +      "holiday": 0
+           }
+         ],
+    parsed JSON diff:
+      + /capacity-entries[id=6] (at index 5): {"id":6,"sprintName":"Sprint 3","eid":"nobody.here","cadence":4,"admin":0,"holiday":0}
+
+outbound calls: none
+
+`;
+
+exports[`POST /api/capacity-entries > not found › sprint that does not exist is accepted 1`] = `
+
+POST /api/capacity-entries
+credentials: group 5 POC (rafael.t.mendoza, role poc)
+request body:
+  {
+    "sprintName": "Sprint 99",
+    "eid": "rafael.t.mendoza",
+    "cadence": 4
+  }
+
+status: 201
+content-type: application/json; charset=utf-8
+access-control-allow-origin: *
+x-powered-by: Express
+response body:
+  {
+    "id": 6,
+    "sprintName": "Sprint 99",
+    "eid": "rafael.t.mendoza",
+    "cadence": 4,
+    "admin": 0,
+    "holiday": 0
+  }
+
+data files:
+  db.json: modified
+    raw text diff:
+      @@ -40,4 +40,12 @@
+             "admin": 0,
+             "holiday": 0
+      +    },
+      +    {
+      +      "id": 6,
+      +      "sprintName": "Sprint 99",
+      +      "eid": "rafael.t.mendoza",
+      +      "cadence": 4,
+      +      "admin": 0,
+      +      "holiday": 0
+           }
+         ],
+    parsed JSON diff:
+      + /capacity-entries[id=6] (at index 5): {"id":6,"sprintName":"Sprint 99","eid":"rafael.t.mendoza","cadence":4,"admin":0,"holiday":0}
+
+outbound calls: none
+
+`;
+
+exports[`POST /api/capacity-entries > wrong role 1`] = `
+
+POST /api/capacity-entries
+credentials: no-group new joiner (paolo.d.ramos, role viewer)
+request body:
+  {
+    "sprintName": "Sprint 3",
+    "eid": "rafael.t.mendoza",
+    "cadence": 4,
+    "admin": 1,
+    "holiday": 0
+  }
+
+=> identical to the happy path (creates an entry for a new person and sprint): same status, body, data-file changes and outbound calls
+
+`;

@@ -1,0 +1,2127 @@
+exports[`DELETE /api/tasks/:id > happy path › deletes a task 1`] = `
+
+DELETE /api/tasks/2
+credentials: group 5 POC (rafael.t.mendoza, role poc)
+
+status: 200
+content-type: application/json; charset=utf-8
+access-control-allow-origin: *
+x-powered-by: Express
+response body:
+  {
+    "deleted": true
+  }
+
+data files:
+  tasks.json: modified
+    raw text diff:
+      @@ -8,11 +8,4 @@
+         },
+         {
+      -    "id": 2,
+      -    "title": "Collect group 5 retro notes",
+      -    "status": "done",
+      -    "created_at": "2026-10-24T06:30:00.000Z",
+      -    "updated_at": "2026-10-25T01:15:00.000Z"
+      -  },
+      -  {
+           "id": 1,
+           "title": "Prepare onboarding report",
+    parsed JSON diff:
+      - [id=2]: {"id":2,"title":"Collect group 5 retro notes","status":"done","created_at":"2026-10-24T06:30:00.000Z","updated_at":"2026-10-25T01:15:00.000Z"}
+
+outbound calls: none
+
+`;
+
+exports[`DELETE /api/tasks/:id > invalid input › malformed JSON body 1`] = `
+
+DELETE /api/tasks/2
+credentials: group 5 POC (rafael.t.mendoza, role poc)
+request body (raw):
+  {"broken": 
+
+status: 400
+content-type: text/html; charset=utf-8
+access-control-allow-origin: *
+x-powered-by: Express
+response body:
+  <!DOCTYPE html>
+  <html lang="en">
+  <head>
+  <meta charset="utf-8">
+  <title>Error</title>
+  </head>
+  <body>
+  <pre>SyntaxError: Unexpected end of JSON input<br> &nbsp; &nbsp;at <stack trace removed></pre>
+  </body>
+  </html>
+  
+
+data files: unchanged
+
+outbound calls: none
+
+`;
+
+exports[`DELETE /api/tasks/:id > invalid input › non-numeric id 1`] = `
+
+DELETE /api/tasks/abc
+credentials: group 5 POC (rafael.t.mendoza, role poc)
+
+status: 200
+content-type: application/json; charset=utf-8
+access-control-allow-origin: *
+x-powered-by: Express
+response body:
+  {
+    "deleted": false
+  }
+
+data files: unchanged
+
+outbound calls: none
+
+`;
+
+exports[`DELETE /api/tasks/:id > no auth 1`] = `
+
+DELETE /api/tasks/2
+credentials: none
+
+=> identical to the happy path (deletes a task): same status, body, data-file changes and outbound calls
+
+`;
+
+exports[`DELETE /api/tasks/:id > not found › tasks.json missing: seed created, then deleted false 1`] = `
+
+DELETE /api/tasks/999
+credentials: group 5 POC (rafael.t.mendoza, role poc)
+
+status: 200
+content-type: application/json; charset=utf-8
+access-control-allow-origin: *
+x-powered-by: Express
+response body:
+  {
+    "deleted": false
+  }
+
+data files:
+  tasks.json: created
+    raw text:
+      [
+        {
+          "id": 1,
+          "title": "Prepare onboarding report",
+          "status": "open",
+          "created_at": "<generated-timestamp>",
+          "updated_at": "<generated-timestamp>"
+        }
+      ]
+    parsed JSON:
+      [
+        {
+          "id": 1,
+          "title": "Prepare onboarding report",
+          "status": "open",
+          "created_at": "<generated-timestamp>",
+          "updated_at": "<generated-timestamp>"
+        }
+      ]
+
+outbound calls: none
+
+`;
+
+exports[`DELETE /api/tasks/:id > not found › unknown id: 200 with deleted false 1`] = `
+
+DELETE /api/tasks/999
+credentials: group 5 POC (rafael.t.mendoza, role poc)
+
+status: 200
+content-type: application/json; charset=utf-8
+access-control-allow-origin: *
+x-powered-by: Express
+response body:
+  {
+    "deleted": false
+  }
+
+data files: unchanged
+
+outbound calls: none
+
+`;
+
+exports[`DELETE /api/tasks/:id > wrong role 1`] = `
+
+DELETE /api/tasks/2
+credentials: no-group new joiner (paolo.d.ramos, role viewer)
+
+=> identical to the happy path (deletes a task): same status, body, data-file changes and outbound calls
+
+`;
+
+exports[`GET /api/dashboard > happy path › returns the hard-coded dashboard payload 1`] = `
+
+GET /api/dashboard
+credentials: group 5 POC (rafael.t.mendoza, role poc)
+
+status: 200
+content-type: application/json; charset=utf-8
+access-control-allow-origin: *
+x-powered-by: Express
+response body:
+  {
+    "notice": {
+      "title": "RTO policy update effective Aug 1",
+      "detail": "3 days onsite required for bench resources.",
+      "badge": "New"
+    },
+    "header": {
+      "welcomeName": "Aldhen Dignaran test 01",
+      "detail": "Song Bench - Week 3 on bench - New joiner track"
+    },
+    "checklistProgress": {
+      "completed": 8,
+      "total": 12,
+      "percent": 67
+    },
+    "navGroups": [
+      {
+        "label": "MAIN",
+        "items": [
+          {
+            "icon": "bi-grid-1x2",
+            "label": "Dashboard",
+            "badge": null,
+            "active": true
+          },
+          {
+            "icon": "bi-person-check",
+            "label": "Resources",
+            "badge": null,
+            "active": false
+          },
+          {
+            "icon": "bi-calendar-check",
+            "label": "Attendance Tracker",
+            "badge": null,
+            "active": false
+          },
+          {
+            "icon": "bi-calendar3",
+            "label": "Planner",
+            "badge": null,
+            "active": false
+          },
+          {
+            "icon": "bi-patch-check",
+            "label": "myCompetency",
+            "badge": null,
+            "active": false
+          },
+          {
+            "icon": "bi-journals",
+            "label": "Bench Trainings",
+            "badge": null,
+            "active": false
+          },
+          {
+            "icon": "bi-person-video3",
+            "label": "Mock Interview",
+            "badge": null,
+            "active": false
+          },
+          {
+            "icon": "bi-send",
+            "label": "Project Reachouts",
+            "badge": null,
+            "active": false
+          },
+          {
+            "icon": "bi-mortarboard",
+            "label": "Group Trainings",
+            "badge": null,
+            "active": false
+          },
+          {
+            "icon": "bi-kanban",
+            "label": "Initiatives",
+            "badge": null,
+            "active": false
+          }
+        ]
+      },
+      {
+        "label": "POC TOOLS",
+        "items": [
+          {
+            "icon": "bi-file-earmark-bar-graph",
+            "label": "Reports",
+            "badge": null,
+            "active": false
+          },
+          {
+            "icon": "bi-people",
+            "label": "Resource tracking",
+            "badge": null,
+            "active": false
+          },
+          {
+            "icon": "bi-journal-text",
+            "label": "POC how-to",
+            "badge": null,
+            "active": false
+          }
+        ]
+      },
+      {
+        "label": "GENERAL",
+        "items": [
+          {
+            "icon": "bi-megaphone",
+            "label": "Announcements",
+            "badge": null,
+            "active": false
+          },
+          {
+            "icon": "bi-gear",
+            "label": "Settings",
+            "badge": null,
+            "active": false
+          }
+        ]
+      }
+    ],
+    "stats": [
+      {
+        "label": "Onboarding progress",
+        "value": "67%",
+        "detail": "8 of 12 tasks complete"
+      },
+      {
+        "label": "Pending tasks",
+        "value": "4",
+        "detail": "2 overdue"
+      },
+      {
+        "label": "Active initiatives",
+        "value": "23",
+        "detail": "Across 5 Song groups"
+      },
+      {
+        "label": "Resources on bench",
+        "value": "47",
+        "detail": "6 not started onboarding"
+      }
+    ],
+    "checklist": [
+      {
+        "label": "Complete HR verification",
+        "status": "Done Jul 10",
+        "done": true,
+        "warning": false
+      },
+      {
+        "label": "Attend bench orientation",
+        "status": "Done Jul 12",
+        "done": true,
+        "warning": false
+      },
+      {
+        "label": "Submit BIR documents",
+        "status": "Overdue",
+        "done": false,
+        "warning": true
+      }
+    ],
+    "initiatives": [
+      {
+        "id": 1,
+        "title": "Song Bench rollout",
+        "group": "Group A",
+        "meta": "Release plan active",
+        "status": "On track"
+      },
+      {
+        "id": 2,
+        "title": "Mobile lift initiative",
+        "group": "Group B",
+        "meta": "Scope review pending",
+        "status": "Planning"
+      }
+    ],
+    "announcements": [
+      {
+        "title": "New bench orientation date",
+        "meta": "Aug 5 at 10am"
+      },
+      {
+        "title": "Process update",
+        "meta": "Submit onboarding in Song Bench portal"
+      }
+    ],
+    "poc": [
+      {
+        "initials": "AD",
+        "name": "Aldhen Dignaran",
+        "role": "Bench coordinator",
+        "pending": "3 actions"
+      },
+      {
+        "initials": "JG",
+        "name": "Jannrey Tolop",
+        "role": "Project lead",
+        "pending": "1 action"
+      }
+    ],
+    "quickTools": [
+      {
+        "icon": "bi-file-earmark-bar-graph",
+        "label": "Reports"
+      },
+      {
+        "icon": "bi-people",
+        "label": "Resource tracking"
+      },
+      {
+        "icon": "bi-journal-text",
+        "label": "POC how-to"
+      }
+    ]
+  }
+
+data files: unchanged
+
+outbound calls: none
+
+`;
+
+exports[`GET /api/dashboard > invalid input › malformed JSON body 1`] = `
+
+GET /api/dashboard
+credentials: group 5 POC (rafael.t.mendoza, role poc)
+request body (raw):
+  {"broken": 
+
+status: 400
+content-type: text/html; charset=utf-8
+access-control-allow-origin: *
+x-powered-by: Express
+response body:
+  <!DOCTYPE html>
+  <html lang="en">
+  <head>
+  <meta charset="utf-8">
+  <title>Error</title>
+  </head>
+  <body>
+  <pre>SyntaxError: Unexpected end of JSON input<br> &nbsp; &nbsp;at <stack trace removed></pre>
+  </body>
+  </html>
+  
+
+data files: unchanged
+
+outbound calls: none
+
+`;
+
+exports[`GET /api/dashboard > no auth 1`] = `
+
+GET /api/dashboard
+credentials: none
+
+=> identical to the happy path (returns the hard-coded dashboard payload): same status, body, data-file changes and outbound calls
+
+`;
+
+exports[`GET /api/dashboard > not found › unknown sub-path falls through to the SPA catch-all 1`] = `
+
+GET /api/dashboard/1
+credentials: group 5 POC (rafael.t.mendoza, role poc)
+
+status: SPA catch-all
+note: GET /.*/ fallback: 200 with dist/atcp-song-dashboard/browser/index.html when the Angular app is built, otherwise 404 ENOENT
+
+data files: unchanged
+
+outbound calls: none
+
+`;
+
+exports[`GET /api/dashboard > wrong role 1`] = `
+
+GET /api/dashboard
+credentials: no-group new joiner (paolo.d.ramos, role viewer)
+
+=> identical to the happy path (returns the hard-coded dashboard payload): same status, body, data-file changes and outbound calls
+
+`;
+
+exports[`GET /api/health > happy path › reports ok 1`] = `
+
+GET /api/health
+credentials: group 5 POC (rafael.t.mendoza, role poc)
+
+status: 200
+content-type: application/json; charset=utf-8
+access-control-allow-origin: *
+x-powered-by: Express
+response body:
+  {
+    "ok": true
+  }
+
+data files: unchanged
+
+outbound calls: none
+
+`;
+
+exports[`GET /api/health > invalid input › malformed JSON body 1`] = `
+
+GET /api/health
+credentials: group 5 POC (rafael.t.mendoza, role poc)
+request body (raw):
+  {"broken": 
+
+status: 400
+content-type: text/html; charset=utf-8
+access-control-allow-origin: *
+x-powered-by: Express
+response body:
+  <!DOCTYPE html>
+  <html lang="en">
+  <head>
+  <meta charset="utf-8">
+  <title>Error</title>
+  </head>
+  <body>
+  <pre>SyntaxError: Unexpected end of JSON input<br> &nbsp; &nbsp;at <stack trace removed></pre>
+  </body>
+  </html>
+  
+
+data files: unchanged
+
+outbound calls: none
+
+`;
+
+exports[`GET /api/health > invalid input › unexpected query string is ignored 1`] = `
+
+GET /api/health?verbose=true&x[]=1
+credentials: group 5 POC (rafael.t.mendoza, role poc)
+
+status: 200
+content-type: application/json; charset=utf-8
+access-control-allow-origin: *
+x-powered-by: Express
+response body:
+  {
+    "ok": true
+  }
+
+data files: unchanged
+
+outbound calls: none
+
+`;
+
+exports[`GET /api/health > no auth 1`] = `
+
+GET /api/health
+credentials: none
+
+=> identical to the happy path (reports ok): same status, body, data-file changes and outbound calls
+
+`;
+
+exports[`GET /api/health > not found › unknown sub-path falls through to the SPA catch-all 1`] = `
+
+GET /api/health/details
+credentials: group 5 POC (rafael.t.mendoza, role poc)
+
+status: SPA catch-all
+note: GET /.*/ fallback: 200 with dist/atcp-song-dashboard/browser/index.html when the Angular app is built, otherwise 404 ENOENT
+
+data files: unchanged
+
+outbound calls: none
+
+`;
+
+exports[`GET /api/health > wrong role 1`] = `
+
+GET /api/health
+credentials: no-group new joiner (paolo.d.ramos, role viewer)
+
+=> identical to the happy path (reports ok): same status, body, data-file changes and outbound calls
+
+`;
+
+exports[`GET /api/skill-options > happy path › lists skills from the roster 1`] = `
+
+GET /api/skill-options
+credentials: group 5 POC (rafael.t.mendoza, role poc)
+
+status: 200
+content-type: application/json; charset=utf-8
+access-control-allow-origin: *
+x-powered-by: Express
+response body:
+  [
+    "AEM",
+    "React Native"
+  ]
+
+data files: unchanged
+
+outbound calls: none
+
+`;
+
+exports[`GET /api/skill-options > invalid input › malformed JSON body 1`] = `
+
+GET /api/skill-options
+credentials: group 5 POC (rafael.t.mendoza, role poc)
+request body (raw):
+  {"broken": 
+
+status: 400
+content-type: text/html; charset=utf-8
+access-control-allow-origin: *
+x-powered-by: Express
+response body:
+  <!DOCTYPE html>
+  <html lang="en">
+  <head>
+  <meta charset="utf-8">
+  <title>Error</title>
+  </head>
+  <body>
+  <pre>SyntaxError: Unexpected end of JSON input<br> &nbsp; &nbsp;at <stack trace removed></pre>
+  </body>
+  </html>
+  
+
+data files: unchanged
+
+outbound calls: none
+
+`;
+
+exports[`GET /api/skill-options > invalid input › roster record without an id is back-filled and the file rewritten 1`] = `
+
+GET /api/skill-options
+credentials: group 5 POC (rafael.t.mendoza, role poc)
+
+status: 200
+content-type: application/json; charset=utf-8
+access-control-allow-origin: *
+x-powered-by: Express
+response body:
+  [
+    "AEM",
+    "React Native"
+  ]
+
+data files:
+  custom-onboarding.json: modified
+    raw text diff:
+      @@ -21,5 +21,6 @@
+           "officeLocation": "Manila",
+           "created_at": "2026-11-02T01:12:45.318Z",
+      -    "updated_at": "2026-11-02T01:12:45.318Z"
+      +    "updated_at": "2026-11-02T01:12:45.318Z",
+      +    "id": 9
+         },
+         {
+    parsed JSON diff:
+      + [eid="paolo.d.ramos"]/id: 9
+
+outbound calls: none
+
+`;
+
+exports[`GET /api/skill-options > no auth 1`] = `
+
+GET /api/skill-options
+credentials: none
+
+=> identical to the happy path (lists skills from the roster): same status, body, data-file changes and outbound calls
+
+`;
+
+exports[`GET /api/skill-options > not found › custom-onboarding.json and custom.csv both missing 1`] = `
+
+GET /api/skill-options
+credentials: group 5 POC (rafael.t.mendoza, role poc)
+
+status: 500
+content-type: text/html; charset=utf-8
+access-control-allow-origin: *
+x-powered-by: Express
+response body:
+  <!DOCTYPE html>
+  <html lang="en">
+  <head>
+  <meta charset="utf-8">
+  <title>Error</title>
+  </head>
+  <body>
+  <pre>Error: ENOENT: no such file or directory, open &#39;<DATA_DIR>/custom.csv&#39;<br> &nbsp; &nbsp;at <stack trace removed></pre>
+  </body>
+  </html>
+  
+
+data files: unchanged
+
+outbound calls: none
+
+`;
+
+exports[`GET /api/skill-options > not found › custom-onboarding.json missing: reseeded from custom.csv 1`] = `
+
+GET /api/skill-options
+credentials: group 5 POC (rafael.t.mendoza, role poc)
+
+status: 200
+content-type: application/json; charset=utf-8
+access-control-allow-origin: *
+x-powered-by: Express
+response body:
+  [
+    "AEM",
+    "React Native"
+  ]
+
+data files:
+  custom-onboarding.json: created
+    raw text:
+      [
+        {
+          "name": "kevin.r.lim",
+          "eid": "kevin.r.lim",
+          "hire_date": "",
+          "roll_in_date": "",
+          "project_deployed": "No",
+          "deployment_date": "",
+          "project_name": "Song Bench",
+          "poc": "",
+          "dn": "No",
+          "roll_off_date": "",
+          "from_project": "",
+          "group_number": 5,
+          "primary_skill": "AEM",
+          "primary_years": "",
+          "secondary_skill": "",
+          "secondary_years": "",
+          "another_skills": [],
+          "created_at": "<generated-timestamp>",
+          "updated_at": "<generated-timestamp>",
+          "id": 1
+        },
+        {
+          "name": "nina.g.castro",
+          "eid": "nina.g.castro",
+          "hire_date": "",
+          "roll_in_date": "",
+          "project_deployed": "No",
+          "deployment_date": "",
+          "project_name": "Song Bench",
+          "poc": "",
+          "dn": "No",
+          "roll_off_date": "",
+          "from_project": "",
+          "group_number": 1,
+          "primary_skill": "React Native",
+          "primary_years": "",
+          "secondary_skill": "",
+          "secondary_years": "",
+          "another_skills": [],
+          "created_at": "<generated-timestamp>",
+          "updated_at": "<generated-timestamp>",
+          "id": 2
+        }
+      ]
+    parsed JSON:
+      [
+        {
+          "name": "kevin.r.lim",
+          "eid": "kevin.r.lim",
+          "hire_date": "",
+          "roll_in_date": "",
+          "project_deployed": "No",
+          "deployment_date": "",
+          "project_name": "Song Bench",
+          "poc": "",
+          "dn": "No",
+          "roll_off_date": "",
+          "from_project": "",
+          "group_number": 5,
+          "primary_skill": "AEM",
+          "primary_years": "",
+          "secondary_skill": "",
+          "secondary_years": "",
+          "another_skills": [],
+          "created_at": "<generated-timestamp>",
+          "updated_at": "<generated-timestamp>",
+          "id": 1
+        },
+        {
+          "name": "nina.g.castro",
+          "eid": "nina.g.castro",
+          "hire_date": "",
+          "roll_in_date": "",
+          "project_deployed": "No",
+          "deployment_date": "",
+          "project_name": "Song Bench",
+          "poc": "",
+          "dn": "No",
+          "roll_off_date": "",
+          "from_project": "",
+          "group_number": 1,
+          "primary_skill": "React Native",
+          "primary_years": "",
+          "secondary_skill": "",
+          "secondary_years": "",
+          "another_skills": [],
+          "created_at": "<generated-timestamp>",
+          "updated_at": "<generated-timestamp>",
+          "id": 2
+        }
+      ]
+
+outbound calls: none
+
+`;
+
+exports[`GET /api/skill-options > wrong role 1`] = `
+
+GET /api/skill-options
+credentials: no-group new joiner (paolo.d.ramos, role viewer)
+
+=> identical to the happy path (lists skills from the roster): same status, body, data-file changes and outbound calls
+
+`;
+
+exports[`GET /api/tasks > happy path › lists tasks from tasks.json 1`] = `
+
+GET /api/tasks
+credentials: group 5 POC (rafael.t.mendoza, role poc)
+
+status: 200
+content-type: application/json; charset=utf-8
+access-control-allow-origin: *
+x-powered-by: Express
+response body:
+  [
+    {
+      "id": 3,
+      "title": "Review sprint 2 capacity sheet",
+      "status": "open",
+      "created_at": "2026-10-28T02:00:00.000Z",
+      "updated_at": "2026-10-28T02:00:00.000Z"
+    },
+    {
+      "id": 2,
+      "title": "Collect group 5 retro notes",
+      "status": "done",
+      "created_at": "2026-10-24T06:30:00.000Z",
+      "updated_at": "2026-10-25T01:15:00.000Z"
+    },
+    {
+      "id": 1,
+      "title": "Prepare onboarding report",
+      "status": "open",
+      "created_at": "2026-10-13T00:10:00.000Z",
+      "updated_at": "2026-10-13T00:10:00.000Z"
+    }
+  ]
+
+data files: unchanged
+
+outbound calls: none
+
+`;
+
+exports[`GET /api/tasks > invalid input › malformed JSON body 1`] = `
+
+GET /api/tasks
+credentials: group 5 POC (rafael.t.mendoza, role poc)
+request body (raw):
+  {"broken": 
+
+status: 400
+content-type: text/html; charset=utf-8
+access-control-allow-origin: *
+x-powered-by: Express
+response body:
+  <!DOCTYPE html>
+  <html lang="en">
+  <head>
+  <meta charset="utf-8">
+  <title>Error</title>
+  </head>
+  <body>
+  <pre>SyntaxError: Unexpected end of JSON input<br> &nbsp; &nbsp;at <stack trace removed></pre>
+  </body>
+  </html>
+  
+
+data files: unchanged
+
+outbound calls: none
+
+`;
+
+exports[`GET /api/tasks > invalid input › tasks.json is not valid JSON: replaced with the seed task 1`] = `
+
+GET /api/tasks
+credentials: group 5 POC (rafael.t.mendoza, role poc)
+
+status: 200
+content-type: application/json; charset=utf-8
+access-control-allow-origin: *
+x-powered-by: Express
+response body:
+  [
+    {
+      "id": 1,
+      "title": "Prepare onboarding report",
+      "status": "open",
+      "created_at": "<generated-timestamp>",
+      "updated_at": "<generated-timestamp>"
+    }
+  ]
+
+data files:
+  tasks.json: modified
+    raw text diff:
+      @@ -1,2 +1,9 @@
+      -[{"id": 1,
+      -\\ No newline at end of file
+      +[
+      +  {
+      +    "id": 1,
+      +    "title": "Prepare onboarding report",
+      +    "status": "open",
+      +    "created_at": "<generated-timestamp>",
+      +    "updated_at": "<generated-timestamp>"
+      +  }
+      +]
+    parsed JSON diff:
+      before: not valid JSON: Expected double-quoted property name in JSON at position 10 (line 1 column 11)
+      after: valid JSON
+
+outbound calls: none
+
+`;
+
+exports[`GET /api/tasks > invalid input › tasks.json starts with a UTF-8 BOM: replaced with the seed task 1`] = `
+
+GET /api/tasks
+credentials: group 5 POC (rafael.t.mendoza, role poc)
+
+status: 200
+content-type: application/json; charset=utf-8
+access-control-allow-origin: *
+x-powered-by: Express
+response body:
+  [
+    {
+      "id": 1,
+      "title": "Prepare onboarding report",
+      "status": "open",
+      "created_at": "<generated-timestamp>",
+      "updated_at": "<generated-timestamp>"
+    }
+  ]
+
+data files:
+  tasks.json: modified
+    raw text diff:
+      @@ -1,24 +1,9 @@
+      -<UTF-8 BOM>
+       [
+         {
+      -    "id": 3,
+      -    "title": "Review sprint 2 capacity sheet",
+      -    "status": "open",
+      -    "created_at": "2026-10-28T02:00:00.000Z",
+      -    "updated_at": "2026-10-28T02:00:00.000Z"
+      -  },
+      -  {
+      -    "id": 2,
+      -    "title": "Collect group 5 retro notes",
+      -    "status": "done",
+      -    "created_at": "2026-10-24T06:30:00.000Z",
+      -    "updated_at": "2026-10-25T01:15:00.000Z"
+      -  },
+      -  {
+           "id": 1,
+           "title": "Prepare onboarding report",
+           "status": "open",
+      -    "created_at": "2026-10-13T00:10:00.000Z",
+      -    "updated_at": "2026-10-13T00:10:00.000Z"
+      +    "created_at": "<generated-timestamp>",
+      +    "updated_at": "<generated-timestamp>"
+         }
+       ]
+    parsed JSON diff:
+      before: not valid JSON: Unexpected token '﻿', "﻿[
+        {
+         "... is not valid JSON
+      after: valid JSON
+
+outbound calls: none
+
+`;
+
+exports[`GET /api/tasks > no auth 1`] = `
+
+GET /api/tasks
+credentials: none
+
+=> identical to the happy path (lists tasks from tasks.json): same status, body, data-file changes and outbound calls
+
+`;
+
+exports[`GET /api/tasks > not found › tasks.json missing: created with a seed task 1`] = `
+
+GET /api/tasks
+credentials: group 5 POC (rafael.t.mendoza, role poc)
+
+status: 200
+content-type: application/json; charset=utf-8
+access-control-allow-origin: *
+x-powered-by: Express
+response body:
+  [
+    {
+      "id": 1,
+      "title": "Prepare onboarding report",
+      "status": "open",
+      "created_at": "<generated-timestamp>",
+      "updated_at": "<generated-timestamp>"
+    }
+  ]
+
+data files:
+  tasks.json: created
+    raw text:
+      [
+        {
+          "id": 1,
+          "title": "Prepare onboarding report",
+          "status": "open",
+          "created_at": "<generated-timestamp>",
+          "updated_at": "<generated-timestamp>"
+        }
+      ]
+    parsed JSON:
+      [
+        {
+          "id": 1,
+          "title": "Prepare onboarding report",
+          "status": "open",
+          "created_at": "<generated-timestamp>",
+          "updated_at": "<generated-timestamp>"
+        }
+      ]
+
+outbound calls: none
+
+`;
+
+exports[`GET /api/tasks > wrong role 1`] = `
+
+GET /api/tasks
+credentials: no-group new joiner (paolo.d.ramos, role viewer)
+
+=> identical to the happy path (lists tasks from tasks.json): same status, body, data-file changes and outbound calls
+
+`;
+
+exports[`PATCH /api/tasks/:id > happy path › status only 1`] = `
+
+PATCH /api/tasks/3
+credentials: group 5 POC (rafael.t.mendoza, role poc)
+request body:
+  {
+    "status": "done"
+  }
+
+status: 200
+content-type: application/json; charset=utf-8
+access-control-allow-origin: *
+x-powered-by: Express
+response body:
+  {
+    "id": 3,
+    "title": "Review sprint 2 capacity sheet",
+    "status": "done",
+    "created_at": "2026-10-28T02:00:00.000Z",
+    "updated_at": "<generated-timestamp>"
+  }
+
+data files:
+  tasks.json: modified
+    raw text diff:
+      @@ -3,7 +3,7 @@
+           "id": 3,
+           "title": "Review sprint 2 capacity sheet",
+      -    "status": "open",
+      +    "status": "done",
+           "created_at": "2026-10-28T02:00:00.000Z",
+      -    "updated_at": "2026-10-28T02:00:00.000Z"
+      +    "updated_at": "<generated-timestamp>"
+         },
+         {
+    parsed JSON diff:
+      ~ [id=3]/status: "open" → "done"
+      ~ [id=3]/updated_at: "2026-10-28T02:00:00.000Z" → "<generated-timestamp>"
+
+outbound calls: none
+
+`;
+
+exports[`PATCH /api/tasks/:id > happy path › updates title and status 1`] = `
+
+PATCH /api/tasks/2
+credentials: group 5 POC (rafael.t.mendoza, role poc)
+request body:
+  {
+    "title": "Collect all retro notes",
+    "status": "open"
+  }
+
+status: 200
+content-type: application/json; charset=utf-8
+access-control-allow-origin: *
+x-powered-by: Express
+response body:
+  {
+    "id": 2,
+    "title": "Collect all retro notes",
+    "status": "open",
+    "created_at": "2026-10-24T06:30:00.000Z",
+    "updated_at": "<generated-timestamp>"
+  }
+
+data files:
+  tasks.json: modified
+    raw text diff:
+      @@ -9,8 +9,8 @@
+         {
+           "id": 2,
+      -    "title": "Collect group 5 retro notes",
+      -    "status": "done",
+      +    "title": "Collect all retro notes",
+      +    "status": "open",
+           "created_at": "2026-10-24T06:30:00.000Z",
+      -    "updated_at": "2026-10-25T01:15:00.000Z"
+      +    "updated_at": "<generated-timestamp>"
+         },
+         {
+    parsed JSON diff:
+      ~ [id=2]/title: "Collect group 5 retro notes" → "Collect all retro notes"
+      ~ [id=2]/status: "done" → "open"
+      ~ [id=2]/updated_at: "2026-10-25T01:15:00.000Z" → "<generated-timestamp>"
+
+outbound calls: none
+
+`;
+
+exports[`PATCH /api/tasks/:id > invalid input › empty body still bumps updated_at 1`] = `
+
+PATCH /api/tasks/2
+credentials: group 5 POC (rafael.t.mendoza, role poc)
+request body:
+  {}
+
+status: 200
+content-type: application/json; charset=utf-8
+access-control-allow-origin: *
+x-powered-by: Express
+response body:
+  {
+    "id": 2,
+    "title": "Collect group 5 retro notes",
+    "status": "done",
+    "created_at": "2026-10-24T06:30:00.000Z",
+    "updated_at": "<generated-timestamp>"
+  }
+
+data files:
+  tasks.json: modified
+    raw text diff:
+      @@ -12,5 +12,5 @@
+           "status": "done",
+           "created_at": "2026-10-24T06:30:00.000Z",
+      -    "updated_at": "2026-10-25T01:15:00.000Z"
+      +    "updated_at": "<generated-timestamp>"
+         },
+         {
+    parsed JSON diff:
+      ~ [id=2]/updated_at: "2026-10-25T01:15:00.000Z" → "<generated-timestamp>"
+
+outbound calls: none
+
+`;
+
+exports[`PATCH /api/tasks/:id > invalid input › empty title 1`] = `
+
+PATCH /api/tasks/2
+credentials: group 5 POC (rafael.t.mendoza, role poc)
+request body:
+  {
+    "title": ""
+  }
+
+status: 400
+content-type: application/json; charset=utf-8
+access-control-allow-origin: *
+x-powered-by: Express
+response body:
+  {
+    "error": "title and status cannot be empty"
+  }
+
+data files: unchanged
+
+outbound calls: none
+
+`;
+
+exports[`PATCH /api/tasks/:id > invalid input › malformed JSON body 1`] = `
+
+PATCH /api/tasks/2
+credentials: group 5 POC (rafael.t.mendoza, role poc)
+request body (raw):
+  {"broken": 
+
+status: 400
+content-type: text/html; charset=utf-8
+access-control-allow-origin: *
+x-powered-by: Express
+response body:
+  <!DOCTYPE html>
+  <html lang="en">
+  <head>
+  <meta charset="utf-8">
+  <title>Error</title>
+  </head>
+  <body>
+  <pre>SyntaxError: Unexpected end of JSON input<br> &nbsp; &nbsp;at <stack trace removed></pre>
+  </body>
+  </html>
+  
+
+data files: unchanged
+
+outbound calls: none
+
+`;
+
+exports[`PATCH /api/tasks/:id > invalid input › no body 1`] = `
+
+PATCH /api/tasks/2
+credentials: group 5 POC (rafael.t.mendoza, role poc)
+
+status: 200
+content-type: application/json; charset=utf-8
+access-control-allow-origin: *
+x-powered-by: Express
+response body:
+  {
+    "id": 2,
+    "title": "Collect group 5 retro notes",
+    "status": "done",
+    "created_at": "2026-10-24T06:30:00.000Z",
+    "updated_at": "<generated-timestamp>"
+  }
+
+data files:
+  tasks.json: modified
+    raw text diff:
+      @@ -12,5 +12,5 @@
+           "status": "done",
+           "created_at": "2026-10-24T06:30:00.000Z",
+      -    "updated_at": "2026-10-25T01:15:00.000Z"
+      +    "updated_at": "<generated-timestamp>"
+         },
+         {
+    parsed JSON diff:
+      ~ [id=2]/updated_at: "2026-10-25T01:15:00.000Z" → "<generated-timestamp>"
+
+outbound calls: none
+
+`;
+
+exports[`PATCH /api/tasks/:id > invalid input › null title becomes the string \"null\" 1`] = `
+
+PATCH /api/tasks/2
+credentials: group 5 POC (rafael.t.mendoza, role poc)
+request body:
+  {
+    "title": null
+  }
+
+status: 200
+content-type: application/json; charset=utf-8
+access-control-allow-origin: *
+x-powered-by: Express
+response body:
+  {
+    "id": 2,
+    "title": "null",
+    "status": "done",
+    "created_at": "2026-10-24T06:30:00.000Z",
+    "updated_at": "<generated-timestamp>"
+  }
+
+data files:
+  tasks.json: modified
+    raw text diff:
+      @@ -9,8 +9,8 @@
+         {
+           "id": 2,
+      -    "title": "Collect group 5 retro notes",
+      +    "title": "null",
+           "status": "done",
+           "created_at": "2026-10-24T06:30:00.000Z",
+      -    "updated_at": "2026-10-25T01:15:00.000Z"
+      +    "updated_at": "<generated-timestamp>"
+         },
+         {
+    parsed JSON diff:
+      ~ [id=2]/title: "Collect group 5 retro notes" → "null"
+      ~ [id=2]/updated_at: "2026-10-25T01:15:00.000Z" → "<generated-timestamp>"
+
+outbound calls: none
+
+`;
+
+exports[`PATCH /api/tasks/:id > invalid input › whitespace-only status 1`] = `
+
+PATCH /api/tasks/2
+credentials: group 5 POC (rafael.t.mendoza, role poc)
+request body:
+  {
+    "status": "  "
+  }
+
+status: 400
+content-type: application/json; charset=utf-8
+access-control-allow-origin: *
+x-powered-by: Express
+response body:
+  {
+    "error": "title and status cannot be empty"
+  }
+
+data files: unchanged
+
+outbound calls: none
+
+`;
+
+exports[`PATCH /api/tasks/:id > no auth 1`] = `
+
+PATCH /api/tasks/2
+credentials: none
+request body:
+  {
+    "title": "Collect all retro notes",
+    "status": "open"
+  }
+
+=> identical to the happy path (updates title and status): same status, body, data-file changes and outbound calls
+
+`;
+
+exports[`PATCH /api/tasks/:id > not found › non-numeric id 1`] = `
+
+PATCH /api/tasks/abc
+credentials: group 5 POC (rafael.t.mendoza, role poc)
+request body:
+  {
+    "status": "done"
+  }
+
+status: 404
+content-type: application/json; charset=utf-8
+access-control-allow-origin: *
+x-powered-by: Express
+response body:
+  {
+    "error": "task not found"
+  }
+
+data files: unchanged
+
+outbound calls: none
+
+`;
+
+exports[`PATCH /api/tasks/:id > not found › tasks.json missing: seed created, then 404 1`] = `
+
+PATCH /api/tasks/999
+credentials: group 5 POC (rafael.t.mendoza, role poc)
+request body:
+  {
+    "status": "done"
+  }
+
+status: 404
+content-type: application/json; charset=utf-8
+access-control-allow-origin: *
+x-powered-by: Express
+response body:
+  {
+    "error": "task not found"
+  }
+
+data files:
+  tasks.json: created
+    raw text:
+      [
+        {
+          "id": 1,
+          "title": "Prepare onboarding report",
+          "status": "open",
+          "created_at": "<generated-timestamp>",
+          "updated_at": "<generated-timestamp>"
+        }
+      ]
+    parsed JSON:
+      [
+        {
+          "id": 1,
+          "title": "Prepare onboarding report",
+          "status": "open",
+          "created_at": "<generated-timestamp>",
+          "updated_at": "<generated-timestamp>"
+        }
+      ]
+
+outbound calls: none
+
+`;
+
+exports[`PATCH /api/tasks/:id > not found › unknown id 1`] = `
+
+PATCH /api/tasks/999
+credentials: group 5 POC (rafael.t.mendoza, role poc)
+request body:
+  {
+    "status": "done"
+  }
+
+status: 404
+content-type: application/json; charset=utf-8
+access-control-allow-origin: *
+x-powered-by: Express
+response body:
+  {
+    "error": "task not found"
+  }
+
+data files: unchanged
+
+outbound calls: none
+
+`;
+
+exports[`PATCH /api/tasks/:id > wrong role 1`] = `
+
+PATCH /api/tasks/2
+credentials: no-group new joiner (paolo.d.ramos, role viewer)
+request body:
+  {
+    "title": "Collect all retro notes",
+    "status": "open"
+  }
+
+=> identical to the happy path (updates title and status): same status, body, data-file changes and outbound calls
+
+`;
+
+exports[`POST /api/tasks > happy path › adds a task to the front of the list 1`] = `
+
+POST /api/tasks
+credentials: group 5 POC (rafael.t.mendoza, role poc)
+request body:
+  {
+    "title": "Book mock interview slots",
+    "status": "in-progress"
+  }
+
+status: 201
+content-type: application/json; charset=utf-8
+access-control-allow-origin: *
+x-powered-by: Express
+response body:
+  {
+    "id": 4,
+    "title": "Book mock interview slots",
+    "status": "in-progress",
+    "created_at": "<generated-timestamp>",
+    "updated_at": "<generated-timestamp>"
+  }
+
+data files:
+  tasks.json: modified
+    raw text diff:
+      @@ -1,4 +1,11 @@
+       [
+         {
+      +    "id": 4,
+      +    "title": "Book mock interview slots",
+      +    "status": "in-progress",
+      +    "created_at": "<generated-timestamp>",
+      +    "updated_at": "<generated-timestamp>"
+      +  },
+      +  {
+           "id": 3,
+           "title": "Review sprint 2 capacity sheet",
+    parsed JSON diff:
+      + [id=4] (at index 0): {"id":4,"title":"Book mock interview slots","status":"in-progress","created_at":"<generated-timestamp>","updated_at":"<generated-timestamp>"}
+
+outbound calls: none
+
+`;
+
+exports[`POST /api/tasks > happy path › status defaults to \"open\" and title is trimmed 1`] = `
+
+POST /api/tasks
+credentials: group 5 POC (rafael.t.mendoza, role poc)
+request body:
+  {
+    "title": "  Book mock interview slots  "
+  }
+
+status: 201
+content-type: application/json; charset=utf-8
+access-control-allow-origin: *
+x-powered-by: Express
+response body:
+  {
+    "id": 4,
+    "title": "Book mock interview slots",
+    "status": "open",
+    "created_at": "<generated-timestamp>",
+    "updated_at": "<generated-timestamp>"
+  }
+
+data files:
+  tasks.json: modified
+    raw text diff:
+      @@ -1,4 +1,11 @@
+       [
+         {
+      +    "id": 4,
+      +    "title": "Book mock interview slots",
+      +    "status": "open",
+      +    "created_at": "<generated-timestamp>",
+      +    "updated_at": "<generated-timestamp>"
+      +  },
+      +  {
+           "id": 3,
+           "title": "Review sprint 2 capacity sheet",
+    parsed JSON diff:
+      + [id=4] (at index 0): {"id":4,"title":"Book mock interview slots","status":"open","created_at":"<generated-timestamp>","updated_at":"<generated-timestamp>"}
+
+outbound calls: none
+
+`;
+
+exports[`POST /api/tasks > invalid input › extra fields are dropped 1`] = `
+
+POST /api/tasks
+credentials: group 5 POC (rafael.t.mendoza, role poc)
+request body:
+  {
+    "title": "x",
+    "id": 99,
+    "created_at": "2020-01-01T00:00:00.000Z"
+  }
+
+status: 201
+content-type: application/json; charset=utf-8
+access-control-allow-origin: *
+x-powered-by: Express
+response body:
+  {
+    "id": 4,
+    "title": "x",
+    "status": "open",
+    "created_at": "<generated-timestamp>",
+    "updated_at": "<generated-timestamp>"
+  }
+
+data files:
+  tasks.json: modified
+    raw text diff:
+      @@ -1,4 +1,11 @@
+       [
+         {
+      +    "id": 4,
+      +    "title": "x",
+      +    "status": "open",
+      +    "created_at": "<generated-timestamp>",
+      +    "updated_at": "<generated-timestamp>"
+      +  },
+      +  {
+           "id": 3,
+           "title": "Review sprint 2 capacity sheet",
+    parsed JSON diff:
+      + [id=4] (at index 0): {"id":4,"title":"x","status":"open","created_at":"<generated-timestamp>","updated_at":"<generated-timestamp>"}
+
+outbound calls: none
+
+`;
+
+exports[`POST /api/tasks > invalid input › malformed JSON body 1`] = `
+
+POST /api/tasks
+credentials: group 5 POC (rafael.t.mendoza, role poc)
+request body (raw):
+  {"broken": 
+
+status: 400
+content-type: text/html; charset=utf-8
+access-control-allow-origin: *
+x-powered-by: Express
+response body:
+  <!DOCTYPE html>
+  <html lang="en">
+  <head>
+  <meta charset="utf-8">
+  <title>Error</title>
+  </head>
+  <body>
+  <pre>SyntaxError: Unexpected end of JSON input<br> &nbsp; &nbsp;at <stack trace removed></pre>
+  </body>
+  </html>
+  
+
+data files: unchanged
+
+outbound calls: none
+
+`;
+
+exports[`POST /api/tasks > invalid input › missing title 1`] = `
+
+POST /api/tasks
+credentials: group 5 POC (rafael.t.mendoza, role poc)
+request body:
+  {
+    "status": "open"
+  }
+
+status: 400
+content-type: application/json; charset=utf-8
+access-control-allow-origin: *
+x-powered-by: Express
+response body:
+  {
+    "error": "title is required"
+  }
+
+data files: unchanged
+
+outbound calls: none
+
+`;
+
+exports[`POST /api/tasks > invalid input › no body 1`] = `
+
+POST /api/tasks
+credentials: group 5 POC (rafael.t.mendoza, role poc)
+
+status: 400
+content-type: application/json; charset=utf-8
+access-control-allow-origin: *
+x-powered-by: Express
+response body:
+  {
+    "error": "title is required"
+  }
+
+data files: unchanged
+
+outbound calls: none
+
+`;
+
+exports[`POST /api/tasks > invalid input › non-string title is stringified 1`] = `
+
+POST /api/tasks
+credentials: group 5 POC (rafael.t.mendoza, role poc)
+request body:
+  {
+    "title": 42,
+    "status": true
+  }
+
+status: 201
+content-type: application/json; charset=utf-8
+access-control-allow-origin: *
+x-powered-by: Express
+response body:
+  {
+    "id": 4,
+    "title": "42",
+    "status": "true",
+    "created_at": "<generated-timestamp>",
+    "updated_at": "<generated-timestamp>"
+  }
+
+data files:
+  tasks.json: modified
+    raw text diff:
+      @@ -1,4 +1,11 @@
+       [
+         {
+      +    "id": 4,
+      +    "title": "42",
+      +    "status": "true",
+      +    "created_at": "<generated-timestamp>",
+      +    "updated_at": "<generated-timestamp>"
+      +  },
+      +  {
+           "id": 3,
+           "title": "Review sprint 2 capacity sheet",
+    parsed JSON diff:
+      + [id=4] (at index 0): {"id":4,"title":"42","status":"true","created_at":"<generated-timestamp>","updated_at":"<generated-timestamp>"}
+
+outbound calls: none
+
+`;
+
+exports[`POST /api/tasks > invalid input › whitespace-only status falls back to \"open\" 1`] = `
+
+POST /api/tasks
+credentials: group 5 POC (rafael.t.mendoza, role poc)
+request body:
+  {
+    "title": "x",
+    "status": "   "
+  }
+
+status: 201
+content-type: application/json; charset=utf-8
+access-control-allow-origin: *
+x-powered-by: Express
+response body:
+  {
+    "id": 4,
+    "title": "x",
+    "status": "open",
+    "created_at": "<generated-timestamp>",
+    "updated_at": "<generated-timestamp>"
+  }
+
+data files:
+  tasks.json: modified
+    raw text diff:
+      @@ -1,4 +1,11 @@
+       [
+         {
+      +    "id": 4,
+      +    "title": "x",
+      +    "status": "open",
+      +    "created_at": "<generated-timestamp>",
+      +    "updated_at": "<generated-timestamp>"
+      +  },
+      +  {
+           "id": 3,
+           "title": "Review sprint 2 capacity sheet",
+    parsed JSON diff:
+      + [id=4] (at index 0): {"id":4,"title":"x","status":"open","created_at":"<generated-timestamp>","updated_at":"<generated-timestamp>"}
+
+outbound calls: none
+
+`;
+
+exports[`POST /api/tasks > invalid input › whitespace-only title 1`] = `
+
+POST /api/tasks
+credentials: group 5 POC (rafael.t.mendoza, role poc)
+request body:
+  {
+    "title": "   "
+  }
+
+status: 400
+content-type: application/json; charset=utf-8
+access-control-allow-origin: *
+x-powered-by: Express
+response body:
+  {
+    "error": "title is required"
+  }
+
+data files: unchanged
+
+outbound calls: none
+
+`;
+
+exports[`POST /api/tasks > no auth 1`] = `
+
+POST /api/tasks
+credentials: none
+request body:
+  {
+    "title": "Book mock interview slots",
+    "status": "in-progress"
+  }
+
+=> identical to the happy path (adds a task to the front of the list): same status, body, data-file changes and outbound calls
+
+`;
+
+exports[`POST /api/tasks > not found › tasks.json missing: seed task created first 1`] = `
+
+POST /api/tasks
+credentials: group 5 POC (rafael.t.mendoza, role poc)
+request body:
+  {
+    "title": "Book mock interview slots"
+  }
+
+status: 201
+content-type: application/json; charset=utf-8
+access-control-allow-origin: *
+x-powered-by: Express
+response body:
+  {
+    "id": 2,
+    "title": "Book mock interview slots",
+    "status": "open",
+    "created_at": "<generated-timestamp>",
+    "updated_at": "<generated-timestamp>"
+  }
+
+data files:
+  tasks.json: created
+    raw text:
+      [
+        {
+          "id": 2,
+          "title": "Book mock interview slots",
+          "status": "open",
+          "created_at": "<generated-timestamp>",
+          "updated_at": "<generated-timestamp>"
+        },
+        {
+          "id": 1,
+          "title": "Prepare onboarding report",
+          "status": "open",
+          "created_at": "<generated-timestamp>",
+          "updated_at": "<generated-timestamp>"
+        }
+      ]
+    parsed JSON:
+      [
+        {
+          "id": 2,
+          "title": "Book mock interview slots",
+          "status": "open",
+          "created_at": "<generated-timestamp>",
+          "updated_at": "<generated-timestamp>"
+        },
+        {
+          "id": 1,
+          "title": "Prepare onboarding report",
+          "status": "open",
+          "created_at": "<generated-timestamp>",
+          "updated_at": "<generated-timestamp>"
+        }
+      ]
+
+outbound calls: none
+
+`;
+
+exports[`POST /api/tasks > wrong role 1`] = `
+
+POST /api/tasks
+credentials: no-group new joiner (paolo.d.ramos, role viewer)
+request body:
+  {
+    "title": "Book mock interview slots",
+    "status": "in-progress"
+  }
+
+=> identical to the happy path (adds a task to the front of the list): same status, body, data-file changes and outbound calls
+
+`;
+
+exports[`unmatched routes and static mounts > DELETE /api/onboarding-resources without an id 1`] = `
+
+DELETE /api/onboarding-resources
+credentials: none
+
+status: 404
+content-type: text/html; charset=utf-8
+access-control-allow-origin: *
+x-powered-by: Express
+response body:
+  <!DOCTYPE html>
+  <html lang="en">
+  <head>
+  <meta charset="utf-8">
+  <title>Error</title>
+  </head>
+  <body>
+  <pre>Cannot DELETE /api/onboarding-resources</pre>
+  </body>
+  </html>
+  
+
+data files: unchanged
+
+outbound calls: none
+
+`;
+
+exports[`unmatched routes and static mounts > GET /test/ (test bench has no index.html in the fixtures) 1`] = `
+
+GET /test/
+credentials: none
+
+status: SPA catch-all
+note: GET /.*/ fallback: 200 with dist/atcp-song-dashboard/browser/index.html when the Angular app is built, otherwise 404 ENOENT
+
+data files: unchanged
+
+outbound calls: none
+
+`;
+
+exports[`unmatched routes and static mounts > GET /test/../db.json does not escape the static root 1`] = `
+
+GET /test/..%2fdb.json
+credentials: none
+
+status: SPA catch-all
+note: GET /.*/ fallback: 200 with dist/atcp-song-dashboard/browser/index.html when the Angular app is built, otherwise 404 ENOENT
+
+data files: unchanged
+
+outbound calls: none
+
+`;
+
+exports[`unmatched routes and static mounts > GET /test/db.json serves the fruits data file 1`] = `
+
+GET /test/db.json
+credentials: none
+
+status: 200
+content-type: application/json; charset=utf-8
+access-control-allow-origin: *
+x-powered-by: Express
+response body:
+  {
+    "fruits": [
+      {
+        "id": 1,
+        "name": "Calamansi",
+        "emoji": "🍋",
+        "category": "Citrus",
+        "price": 0.4,
+        "stock": 320
+      },
+      {
+        "id": 2,
+        "name": "Mango",
+        "emoji": "🥭",
+        "category": "Tropical",
+        "price": 1.8,
+        "stock": 95
+      },
+      {
+        "id": 3,
+        "name": "Pear",
+        "emoji": "🍐",
+        "category": "Temperate",
+        "price": 1.1,
+        "stock": 40
+      }
+    ]
+  }
+
+data files: unchanged
+
+outbound calls: none
+
+`;
+
+exports[`unmatched routes and static mounts > GET a planned but unimplemented endpoint (/api/trainings-progress/:eid) 1`] = `
+
+GET /api/trainings-progress/liza.m.navarro
+credentials: none
+
+status: SPA catch-all
+note: GET /.*/ fallback: 200 with dist/atcp-song-dashboard/browser/index.html when the Angular app is built, otherwise 404 ENOENT
+
+data files: unchanged
+
+outbound calls: none
+
+`;
+
+exports[`unmatched routes and static mounts > GET unknown /api path 1`] = `
+
+GET /api/does-not-exist
+credentials: none
+
+status: SPA catch-all
+note: GET /.*/ fallback: 200 with dist/atcp-song-dashboard/browser/index.html when the Angular app is built, otherwise 404 ENOENT
+
+data files: unchanged
+
+outbound calls: none
+
+`;
+
+exports[`unmatched routes and static mounts > GET unknown /api path with a JSON body 1`] = `
+
+GET /api/does-not-exist
+credentials: none
+request body:
+  {
+    "a": 1
+  }
+
+status: SPA catch-all
+note: GET /.*/ fallback: 200 with dist/atcp-song-dashboard/browser/index.html when the Angular app is built, otherwise 404 ENOENT
+
+data files: unchanged
+
+outbound calls: none
+
+`;
+
+exports[`unmatched routes and static mounts > OPTIONS preflight from any origin 1`] = `
+
+OPTIONS /api/sprints
+credentials: none
+
+status: 204
+access-control-allow-origin: *
+x-powered-by: Express
+response body:
+  (empty)
+
+data files: unchanged
+
+outbound calls: none
+
+`;
+
+exports[`unmatched routes and static mounts > PATCH a collection route without an id 1`] = `
+
+PATCH /api/sprints
+credentials: none
+request body:
+  {
+    "name": "x"
+  }
+
+status: 404
+content-type: text/html; charset=utf-8
+access-control-allow-origin: *
+x-powered-by: Express
+response body:
+  <!DOCTYPE html>
+  <html lang="en">
+  <head>
+  <meta charset="utf-8">
+  <title>Error</title>
+  </head>
+  <body>
+  <pre>Cannot PATCH /api/sprints</pre>
+  </body>
+  </html>
+  
+
+data files: unchanged
+
+outbound calls: none
+
+`;
+
+exports[`unmatched routes and static mounts > POST unknown /api path 1`] = `
+
+POST /api/does-not-exist
+credentials: none
+request body:
+  {
+    "a": 1
+  }
+
+status: 404
+content-type: text/html; charset=utf-8
+access-control-allow-origin: *
+x-powered-by: Express
+response body:
+  <!DOCTYPE html>
+  <html lang="en">
+  <head>
+  <meta charset="utf-8">
+  <title>Error</title>
+  </head>
+  <body>
+  <pre>Cannot POST /api/does-not-exist</pre>
+  </body>
+  </html>
+  
+
+data files: unchanged
+
+outbound calls: none
+
+`;
+
+exports[`unmatched routes and static mounts > PUT on an existing collection (no PUT routes) 1`] = `
+
+PUT /api/sprints/1
+credentials: none
+request body:
+  {
+    "name": "x"
+  }
+
+status: 404
+content-type: text/html; charset=utf-8
+access-control-allow-origin: *
+x-powered-by: Express
+response body:
+  <!DOCTYPE html>
+  <html lang="en">
+  <head>
+  <meta charset="utf-8">
+  <title>Error</title>
+  </head>
+  <body>
+  <pre>Cannot PUT /api/sprints/1</pre>
+  </body>
+  </html>
+  
+
+data files: unchanged
+
+outbound calls: none
+
+`;

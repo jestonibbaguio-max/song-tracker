@@ -1,0 +1,1156 @@
+exports[`DELETE /api/fruits/:id > happy path › deletes a fruit 1`] = `
+
+DELETE /api/fruits/1
+credentials: group 5 POC (rafael.t.mendoza, role poc)
+
+status: 200
+content-type: application/json; charset=utf-8
+access-control-allow-origin: *
+x-powered-by: Express
+response body:
+  {
+    "deleted": true
+  }
+
+data files:
+  test_bwd/db.json: modified
+    raw text diff:
+      @@ -2,12 +2,4 @@
+         "fruits": [
+           {
+      -      "id": 1,
+      -      "name": "Calamansi",
+      -      "emoji": "🍋",
+      -      "category": "Citrus",
+      -      "price": 0.4,
+      -      "stock": 320
+      -    },
+      -    {
+             "id": 2,
+             "name": "Mango",
+    parsed JSON diff:
+      - /fruits[id=1]: {"id":1,"name":"Calamansi","emoji":"🍋","category":"Citrus","price":0.4,"stock":320}
+
+outbound calls: none
+
+`;
+
+exports[`DELETE /api/fruits/:id > invalid input › malformed JSON body 1`] = `
+
+DELETE /api/fruits/1
+credentials: group 5 POC (rafael.t.mendoza, role poc)
+request body (raw):
+  {"broken": 
+
+status: 400
+content-type: text/html; charset=utf-8
+access-control-allow-origin: *
+x-powered-by: Express
+response body:
+  <!DOCTYPE html>
+  <html lang="en">
+  <head>
+  <meta charset="utf-8">
+  <title>Error</title>
+  </head>
+  <body>
+  <pre>SyntaxError: Unexpected end of JSON input<br> &nbsp; &nbsp;at <stack trace removed></pre>
+  </body>
+  </html>
+  
+
+data files: unchanged
+
+outbound calls: none
+
+`;
+
+exports[`DELETE /api/fruits/:id > invalid input › non-numeric id 1`] = `
+
+DELETE /api/fruits/abc
+credentials: group 5 POC (rafael.t.mendoza, role poc)
+
+status: 404
+content-type: application/json; charset=utf-8
+access-control-allow-origin: *
+x-powered-by: Express
+response body:
+  {
+    "error": "not found"
+  }
+
+data files: unchanged
+
+outbound calls: none
+
+`;
+
+exports[`DELETE /api/fruits/:id > no auth 1`] = `
+
+DELETE /api/fruits/1
+credentials: none
+
+=> identical to the happy path (deletes a fruit): same status, body, data-file changes and outbound calls
+
+`;
+
+exports[`DELETE /api/fruits/:id > not found › test_bwd/db.json missing 1`] = `
+
+DELETE /api/fruits/1
+credentials: group 5 POC (rafael.t.mendoza, role poc)
+
+status: 404
+content-type: application/json; charset=utf-8
+access-control-allow-origin: *
+x-powered-by: Express
+response body:
+  {
+    "error": "not found"
+  }
+
+data files: unchanged
+
+outbound calls: none
+
+`;
+
+exports[`DELETE /api/fruits/:id > not found › unknown id 1`] = `
+
+DELETE /api/fruits/999
+credentials: group 5 POC (rafael.t.mendoza, role poc)
+
+status: 404
+content-type: application/json; charset=utf-8
+access-control-allow-origin: *
+x-powered-by: Express
+response body:
+  {
+    "error": "not found"
+  }
+
+data files: unchanged
+
+outbound calls: none
+
+`;
+
+exports[`DELETE /api/fruits/:id > wrong role 1`] = `
+
+DELETE /api/fruits/1
+credentials: no-group new joiner (paolo.d.ramos, role viewer)
+
+=> identical to the happy path (deletes a fruit): same status, body, data-file changes and outbound calls
+
+`;
+
+exports[`GET /api/fruits > happy path › filters by category 1`] = `
+
+GET /api/fruits?category=Citrus
+credentials: group 5 POC (rafael.t.mendoza, role poc)
+
+status: 200
+content-type: application/json; charset=utf-8
+access-control-allow-origin: *
+x-powered-by: Express
+response body:
+  [
+    {
+      "id": 1,
+      "name": "Calamansi",
+      "emoji": "🍋",
+      "category": "Citrus",
+      "price": 0.4,
+      "stock": 320
+    }
+  ]
+
+data files: unchanged
+
+outbound calls: none
+
+`;
+
+exports[`GET /api/fruits > happy path › lists every fruit 1`] = `
+
+GET /api/fruits
+credentials: group 5 POC (rafael.t.mendoza, role poc)
+
+status: 200
+content-type: application/json; charset=utf-8
+access-control-allow-origin: *
+x-powered-by: Express
+response body:
+  [
+    {
+      "id": 1,
+      "name": "Calamansi",
+      "emoji": "🍋",
+      "category": "Citrus",
+      "price": 0.4,
+      "stock": 320
+    },
+    {
+      "id": 2,
+      "name": "Mango",
+      "emoji": "🥭",
+      "category": "Tropical",
+      "price": 1.8,
+      "stock": 95
+    },
+    {
+      "id": 3,
+      "name": "Pear",
+      "emoji": "🍐",
+      "category": "Temperate",
+      "price": 1.1,
+      "stock": 40
+    }
+  ]
+
+data files: unchanged
+
+outbound calls: none
+
+`;
+
+exports[`GET /api/fruits > happy path › searches name and category, case-insensitively 1`] = `
+
+GET /api/fruits?q=TROP
+credentials: group 5 POC (rafael.t.mendoza, role poc)
+
+status: 200
+content-type: application/json; charset=utf-8
+access-control-allow-origin: *
+x-powered-by: Express
+response body:
+  [
+    {
+      "id": 2,
+      "name": "Mango",
+      "emoji": "🥭",
+      "category": "Tropical",
+      "price": 1.8,
+      "stock": 95
+    }
+  ]
+
+data files: unchanged
+
+outbound calls: none
+
+`;
+
+exports[`GET /api/fruits > invalid input › malformed JSON body 1`] = `
+
+GET /api/fruits
+credentials: group 5 POC (rafael.t.mendoza, role poc)
+request body (raw):
+  {"broken": 
+
+status: 400
+content-type: text/html; charset=utf-8
+access-control-allow-origin: *
+x-powered-by: Express
+response body:
+  <!DOCTYPE html>
+  <html lang="en">
+  <head>
+  <meta charset="utf-8">
+  <title>Error</title>
+  </head>
+  <body>
+  <pre>SyntaxError: Unexpected end of JSON input<br> &nbsp; &nbsp;at <stack trace removed></pre>
+  </body>
+  </html>
+  
+
+data files: unchanged
+
+outbound calls: none
+
+`;
+
+exports[`GET /api/fruits > invalid input › repeated q parameter 1`] = `
+
+GET /api/fruits?q=a&q=b
+credentials: group 5 POC (rafael.t.mendoza, role poc)
+
+status: 500
+content-type: text/html; charset=utf-8
+access-control-allow-origin: *
+x-powered-by: Express
+response body:
+  <!DOCTYPE html>
+  <html lang="en">
+  <head>
+  <meta charset="utf-8">
+  <title>Error</title>
+  </head>
+  <body>
+  <pre>TypeError: req.query.q.toLowerCase is not a function<br> &nbsp; &nbsp;at <stack trace removed></pre>
+  </body>
+  </html>
+  
+
+data files: unchanged
+
+outbound calls: none
+
+`;
+
+exports[`GET /api/fruits > invalid input › stored fruit without a category breaks search 1`] = `
+
+GET /api/fruits?q=zz
+credentials: group 5 POC (rafael.t.mendoza, role poc)
+
+status: 500
+content-type: text/html; charset=utf-8
+access-control-allow-origin: *
+x-powered-by: Express
+response body:
+  <!DOCTYPE html>
+  <html lang="en">
+  <head>
+  <meta charset="utf-8">
+  <title>Error</title>
+  </head>
+  <body>
+  <pre>TypeError: Cannot read properties of undefined (reading &#39;toLowerCase&#39;)<br> &nbsp; &nbsp;at <stack trace removed></pre>
+  </body>
+  </html>
+  
+
+data files: unchanged
+
+outbound calls: none
+
+`;
+
+exports[`GET /api/fruits > no auth 1`] = `
+
+GET /api/fruits
+credentials: none
+
+=> identical to the happy path (lists every fruit): same status, body, data-file changes and outbound calls
+
+`;
+
+exports[`GET /api/fruits > not found › category with no fruits 1`] = `
+
+GET /api/fruits?category=Berry
+credentials: group 5 POC (rafael.t.mendoza, role poc)
+
+status: 200
+content-type: application/json; charset=utf-8
+access-control-allow-origin: *
+x-powered-by: Express
+response body:
+  []
+
+data files: unchanged
+
+outbound calls: none
+
+`;
+
+exports[`GET /api/fruits > not found › test_bwd/db.json missing 1`] = `
+
+GET /api/fruits
+credentials: group 5 POC (rafael.t.mendoza, role poc)
+
+status: 200
+content-type: application/json; charset=utf-8
+access-control-allow-origin: *
+x-powered-by: Express
+response body:
+  []
+
+data files: unchanged
+
+outbound calls: none
+
+`;
+
+exports[`GET /api/fruits > wrong role 1`] = `
+
+GET /api/fruits
+credentials: no-group new joiner (paolo.d.ramos, role viewer)
+
+=> identical to the happy path (lists every fruit): same status, body, data-file changes and outbound calls
+
+`;
+
+exports[`GET /api/fruits/:id > happy path › returns one fruit 1`] = `
+
+GET /api/fruits/2
+credentials: group 5 POC (rafael.t.mendoza, role poc)
+
+status: 200
+content-type: application/json; charset=utf-8
+access-control-allow-origin: *
+x-powered-by: Express
+response body:
+  {
+    "id": 2,
+    "name": "Mango",
+    "emoji": "🥭",
+    "category": "Tropical",
+    "price": 1.8,
+    "stock": 95
+  }
+
+data files: unchanged
+
+outbound calls: none
+
+`;
+
+exports[`GET /api/fruits/:id > invalid input › malformed JSON body 1`] = `
+
+GET /api/fruits/2
+credentials: group 5 POC (rafael.t.mendoza, role poc)
+request body (raw):
+  {"broken": 
+
+status: 400
+content-type: text/html; charset=utf-8
+access-control-allow-origin: *
+x-powered-by: Express
+response body:
+  <!DOCTYPE html>
+  <html lang="en">
+  <head>
+  <meta charset="utf-8">
+  <title>Error</title>
+  </head>
+  <body>
+  <pre>SyntaxError: Unexpected end of JSON input<br> &nbsp; &nbsp;at <stack trace removed></pre>
+  </body>
+  </html>
+  
+
+data files: unchanged
+
+outbound calls: none
+
+`;
+
+exports[`GET /api/fruits/:id > invalid input › non-numeric id 1`] = `
+
+GET /api/fruits/abc
+credentials: group 5 POC (rafael.t.mendoza, role poc)
+
+status: 404
+content-type: application/json; charset=utf-8
+access-control-allow-origin: *
+x-powered-by: Express
+response body:
+  {
+    "error": "not found"
+  }
+
+data files: unchanged
+
+outbound calls: none
+
+`;
+
+exports[`GET /api/fruits/:id > no auth 1`] = `
+
+GET /api/fruits/2
+credentials: none
+
+=> identical to the happy path (returns one fruit): same status, body, data-file changes and outbound calls
+
+`;
+
+exports[`GET /api/fruits/:id > not found › test_bwd/db.json missing 1`] = `
+
+GET /api/fruits/1
+credentials: group 5 POC (rafael.t.mendoza, role poc)
+
+status: 404
+content-type: application/json; charset=utf-8
+access-control-allow-origin: *
+x-powered-by: Express
+response body:
+  {
+    "error": "not found"
+  }
+
+data files: unchanged
+
+outbound calls: none
+
+`;
+
+exports[`GET /api/fruits/:id > not found › unknown id 1`] = `
+
+GET /api/fruits/999
+credentials: group 5 POC (rafael.t.mendoza, role poc)
+
+status: 404
+content-type: application/json; charset=utf-8
+access-control-allow-origin: *
+x-powered-by: Express
+response body:
+  {
+    "error": "not found"
+  }
+
+data files: unchanged
+
+outbound calls: none
+
+`;
+
+exports[`GET /api/fruits/:id > wrong role 1`] = `
+
+GET /api/fruits/2
+credentials: no-group new joiner (paolo.d.ramos, role viewer)
+
+=> identical to the happy path (returns one fruit): same status, body, data-file changes and outbound calls
+
+`;
+
+exports[`PATCH /api/fruits/:id > happy path › updates stock 1`] = `
+
+PATCH /api/fruits/2
+credentials: group 5 POC (rafael.t.mendoza, role poc)
+request body:
+  {
+    "stock": 80
+  }
+
+status: 200
+content-type: application/json; charset=utf-8
+access-control-allow-origin: *
+x-powered-by: Express
+response body:
+  {
+    "id": 2,
+    "name": "Mango",
+    "emoji": "🥭",
+    "category": "Tropical",
+    "price": 1.8,
+    "stock": 80
+  }
+
+data files:
+  test_bwd/db.json: modified
+    raw text diff:
+      @@ -15,5 +15,5 @@
+             "category": "Tropical",
+             "price": 1.8,
+      -      "stock": 95
+      +      "stock": 80
+           },
+           {
+    parsed JSON diff:
+      ~ /fruits[id=2]/stock: 95 → 80
+
+outbound calls: none
+
+`;
+
+exports[`PATCH /api/fruits/:id > invalid input › arbitrary fields and types are merged; id is kept 1`] = `
+
+PATCH /api/fruits/2
+credentials: group 5 POC (rafael.t.mendoza, role poc)
+request body:
+  {
+    "price": "free",
+    "id": 99,
+    "color": "yellow"
+  }
+
+status: 200
+content-type: application/json; charset=utf-8
+access-control-allow-origin: *
+x-powered-by: Express
+response body:
+  {
+    "id": 2,
+    "name": "Mango",
+    "emoji": "🥭",
+    "category": "Tropical",
+    "price": "free",
+    "stock": 95,
+    "color": "yellow"
+  }
+
+data files:
+  test_bwd/db.json: modified
+    raw text diff:
+      @@ -14,6 +14,7 @@
+             "emoji": "🥭",
+             "category": "Tropical",
+      -      "price": 1.8,
+      -      "stock": 95
+      +      "price": "free",
+      +      "stock": 95,
+      +      "color": "yellow"
+           },
+           {
+    parsed JSON diff:
+      ~ /fruits[id=2]/price: 1.8 → "free"
+      + /fruits[id=2]/color: "yellow"
+
+outbound calls: none
+
+`;
+
+exports[`PATCH /api/fruits/:id > invalid input › malformed JSON body 1`] = `
+
+PATCH /api/fruits/2
+credentials: group 5 POC (rafael.t.mendoza, role poc)
+request body (raw):
+  {"broken": 
+
+status: 400
+content-type: text/html; charset=utf-8
+access-control-allow-origin: *
+x-powered-by: Express
+response body:
+  <!DOCTYPE html>
+  <html lang="en">
+  <head>
+  <meta charset="utf-8">
+  <title>Error</title>
+  </head>
+  <body>
+  <pre>SyntaxError: Unexpected end of JSON input<br> &nbsp; &nbsp;at <stack trace removed></pre>
+  </body>
+  </html>
+  
+
+data files: unchanged
+
+outbound calls: none
+
+`;
+
+exports[`PATCH /api/fruits/:id > invalid input › no body 1`] = `
+
+PATCH /api/fruits/2
+credentials: group 5 POC (rafael.t.mendoza, role poc)
+
+status: 200
+content-type: application/json; charset=utf-8
+access-control-allow-origin: *
+x-powered-by: Express
+response body:
+  {
+    "id": 2,
+    "name": "Mango",
+    "emoji": "🥭",
+    "category": "Tropical",
+    "price": 1.8,
+    "stock": 95
+  }
+
+data files: unchanged
+
+outbound calls: none
+
+`;
+
+exports[`PATCH /api/fruits/:id > no auth 1`] = `
+
+PATCH /api/fruits/2
+credentials: none
+request body:
+  {
+    "stock": 80
+  }
+
+=> identical to the happy path (updates stock): same status, body, data-file changes and outbound calls
+
+`;
+
+exports[`PATCH /api/fruits/:id > not found › non-numeric id 1`] = `
+
+PATCH /api/fruits/abc
+credentials: group 5 POC (rafael.t.mendoza, role poc)
+request body:
+  {
+    "stock": 1
+  }
+
+status: 404
+content-type: application/json; charset=utf-8
+access-control-allow-origin: *
+x-powered-by: Express
+response body:
+  {
+    "error": "not found"
+  }
+
+data files: unchanged
+
+outbound calls: none
+
+`;
+
+exports[`PATCH /api/fruits/:id > not found › unknown id 1`] = `
+
+PATCH /api/fruits/999
+credentials: group 5 POC (rafael.t.mendoza, role poc)
+request body:
+  {
+    "stock": 1
+  }
+
+status: 404
+content-type: application/json; charset=utf-8
+access-control-allow-origin: *
+x-powered-by: Express
+response body:
+  {
+    "error": "not found"
+  }
+
+data files: unchanged
+
+outbound calls: none
+
+`;
+
+exports[`PATCH /api/fruits/:id > wrong role 1`] = `
+
+PATCH /api/fruits/2
+credentials: no-group new joiner (paolo.d.ramos, role viewer)
+request body:
+  {
+    "stock": 80
+  }
+
+=> identical to the happy path (updates stock): same status, body, data-file changes and outbound calls
+
+`;
+
+exports[`POST /api/fruits > happy path › adds a fruit 1`] = `
+
+POST /api/fruits
+credentials: group 5 POC (rafael.t.mendoza, role poc)
+request body:
+  {
+    "name": "Papaya",
+    "emoji": "🍈",
+    "category": "Tropical",
+    "price": 1.25,
+    "stock": 60
+  }
+
+status: 201
+content-type: application/json; charset=utf-8
+access-control-allow-origin: *
+x-powered-by: Express
+response body:
+  {
+    "id": 4,
+    "name": "Papaya",
+    "emoji": "🍈",
+    "category": "Tropical",
+    "price": 1.25,
+    "stock": 60
+  }
+
+data files:
+  test_bwd/db.json: modified
+    raw text diff:
+      @@ -24,4 +24,12 @@
+             "price": 1.1,
+             "stock": 40
+      +    },
+      +    {
+      +      "id": 4,
+      +      "name": "Papaya",
+      +      "emoji": "🍈",
+      +      "category": "Tropical",
+      +      "price": 1.25,
+      +      "stock": 60
+           }
+         ]
+    parsed JSON diff:
+      + /fruits[id=4] (at index 3): {"id":4,"name":"Papaya","emoji":"🍈","category":"Tropical","price":1.25,"stock":60}
+
+outbound calls: none
+
+`;
+
+exports[`POST /api/fruits > happy path › defaults emoji, price and stock 1`] = `
+
+POST /api/fruits
+credentials: group 5 POC (rafael.t.mendoza, role poc)
+request body:
+  {
+    "name": "Papaya",
+    "category": "Tropical"
+  }
+
+status: 201
+content-type: application/json; charset=utf-8
+access-control-allow-origin: *
+x-powered-by: Express
+response body:
+  {
+    "id": 4,
+    "name": "Papaya",
+    "emoji": "🍎",
+    "category": "Tropical",
+    "price": 0,
+    "stock": 0
+  }
+
+data files:
+  test_bwd/db.json: modified
+    raw text diff:
+      @@ -24,4 +24,12 @@
+             "price": 1.1,
+             "stock": 40
+      +    },
+      +    {
+      +      "id": 4,
+      +      "name": "Papaya",
+      +      "emoji": "🍎",
+      +      "category": "Tropical",
+      +      "price": 0,
+      +      "stock": 0
+           }
+         ]
+    parsed JSON diff:
+      + /fruits[id=4] (at index 3): {"id":4,"name":"Papaya","emoji":"🍎","category":"Tropical","price":0,"stock":0}
+
+outbound calls: none
+
+`;
+
+exports[`POST /api/fruits > invalid input › client id is ignored; unknown fields dropped 1`] = `
+
+POST /api/fruits
+credentials: group 5 POC (rafael.t.mendoza, role poc)
+request body:
+  {
+    "name": "Papaya",
+    "emoji": "🍈",
+    "category": "Tropical",
+    "price": 1.25,
+    "stock": 60,
+    "id": 1,
+    "color": "orange"
+  }
+
+status: 201
+content-type: application/json; charset=utf-8
+access-control-allow-origin: *
+x-powered-by: Express
+response body:
+  {
+    "id": 4,
+    "name": "Papaya",
+    "emoji": "🍈",
+    "category": "Tropical",
+    "price": 1.25,
+    "stock": 60
+  }
+
+data files:
+  test_bwd/db.json: modified
+    raw text diff:
+      @@ -24,4 +24,12 @@
+             "price": 1.1,
+             "stock": 40
+      +    },
+      +    {
+      +      "id": 4,
+      +      "name": "Papaya",
+      +      "emoji": "🍈",
+      +      "category": "Tropical",
+      +      "price": 1.25,
+      +      "stock": 60
+           }
+         ]
+    parsed JSON diff:
+      + /fruits[id=4] (at index 3): {"id":4,"name":"Papaya","emoji":"🍈","category":"Tropical","price":1.25,"stock":60}
+
+outbound calls: none
+
+`;
+
+exports[`POST /api/fruits > invalid input › duplicate name is accepted 1`] = `
+
+POST /api/fruits
+credentials: group 5 POC (rafael.t.mendoza, role poc)
+request body:
+  {
+    "name": "Mango",
+    "emoji": "🍈",
+    "category": "Tropical",
+    "price": 1.25,
+    "stock": 60
+  }
+
+status: 201
+content-type: application/json; charset=utf-8
+access-control-allow-origin: *
+x-powered-by: Express
+response body:
+  {
+    "id": 4,
+    "name": "Mango",
+    "emoji": "🍈",
+    "category": "Tropical",
+    "price": 1.25,
+    "stock": 60
+  }
+
+data files:
+  test_bwd/db.json: modified
+    raw text diff:
+      @@ -24,4 +24,12 @@
+             "price": 1.1,
+             "stock": 40
+      +    },
+      +    {
+      +      "id": 4,
+      +      "name": "Mango",
+      +      "emoji": "🍈",
+      +      "category": "Tropical",
+      +      "price": 1.25,
+      +      "stock": 60
+           }
+         ]
+    parsed JSON diff:
+      + /fruits[id=4] (at index 3): {"id":4,"name":"Mango","emoji":"🍈","category":"Tropical","price":1.25,"stock":60}
+
+outbound calls: none
+
+`;
+
+exports[`POST /api/fruits > invalid input › malformed JSON body 1`] = `
+
+POST /api/fruits
+credentials: group 5 POC (rafael.t.mendoza, role poc)
+request body (raw):
+  {"broken": 
+
+status: 400
+content-type: text/html; charset=utf-8
+access-control-allow-origin: *
+x-powered-by: Express
+response body:
+  <!DOCTYPE html>
+  <html lang="en">
+  <head>
+  <meta charset="utf-8">
+  <title>Error</title>
+  </head>
+  <body>
+  <pre>SyntaxError: Unexpected end of JSON input<br> &nbsp; &nbsp;at <stack trace removed></pre>
+  </body>
+  </html>
+  
+
+data files: unchanged
+
+outbound calls: none
+
+`;
+
+exports[`POST /api/fruits > invalid input › missing category 1`] = `
+
+POST /api/fruits
+credentials: group 5 POC (rafael.t.mendoza, role poc)
+request body:
+  {
+    "name": "Papaya"
+  }
+
+status: 400
+content-type: application/json; charset=utf-8
+access-control-allow-origin: *
+x-powered-by: Express
+response body:
+  {
+    "error": "name and category are required"
+  }
+
+data files: unchanged
+
+outbound calls: none
+
+`;
+
+exports[`POST /api/fruits > invalid input › no body 1`] = `
+
+POST /api/fruits
+credentials: group 5 POC (rafael.t.mendoza, role poc)
+
+status: 500
+content-type: text/html; charset=utf-8
+access-control-allow-origin: *
+x-powered-by: Express
+response body:
+  <!DOCTYPE html>
+  <html lang="en">
+  <head>
+  <meta charset="utf-8">
+  <title>Error</title>
+  </head>
+  <body>
+  <pre>TypeError: Cannot destructure property &#39;name&#39; of &#39;req.body&#39; as it is undefined.<br> &nbsp; &nbsp;at <stack trace removed></pre>
+  </body>
+  </html>
+  
+
+data files: unchanged
+
+outbound calls: none
+
+`;
+
+exports[`POST /api/fruits > invalid input › non-numeric price and stock become 0 1`] = `
+
+POST /api/fruits
+credentials: group 5 POC (rafael.t.mendoza, role poc)
+request body:
+  {
+    "name": "Papaya",
+    "emoji": "🍈",
+    "category": "Tropical",
+    "price": "cheap",
+    "stock": "lots"
+  }
+
+status: 201
+content-type: application/json; charset=utf-8
+access-control-allow-origin: *
+x-powered-by: Express
+response body:
+  {
+    "id": 4,
+    "name": "Papaya",
+    "emoji": "🍈",
+    "category": "Tropical",
+    "price": 0,
+    "stock": 0
+  }
+
+data files:
+  test_bwd/db.json: modified
+    raw text diff:
+      @@ -24,4 +24,12 @@
+             "price": 1.1,
+             "stock": 40
+      +    },
+      +    {
+      +      "id": 4,
+      +      "name": "Papaya",
+      +      "emoji": "🍈",
+      +      "category": "Tropical",
+      +      "price": 0,
+      +      "stock": 0
+           }
+         ]
+    parsed JSON diff:
+      + /fruits[id=4] (at index 3): {"id":4,"name":"Papaya","emoji":"🍈","category":"Tropical","price":0,"stock":0}
+
+outbound calls: none
+
+`;
+
+exports[`POST /api/fruits > no auth 1`] = `
+
+POST /api/fruits
+credentials: none
+request body:
+  {
+    "name": "Papaya",
+    "emoji": "🍈",
+    "category": "Tropical",
+    "price": 1.25,
+    "stock": 60
+  }
+
+=> identical to the happy path (adds a fruit): same status, body, data-file changes and outbound calls
+
+`;
+
+exports[`POST /api/fruits > not found › test_bwd/db.json missing: file created 1`] = `
+
+POST /api/fruits
+credentials: group 5 POC (rafael.t.mendoza, role poc)
+request body:
+  {
+    "name": "Papaya",
+    "emoji": "🍈",
+    "category": "Tropical",
+    "price": 1.25,
+    "stock": 60
+  }
+
+status: 201
+content-type: application/json; charset=utf-8
+access-control-allow-origin: *
+x-powered-by: Express
+response body:
+  {
+    "id": 1,
+    "name": "Papaya",
+    "emoji": "🍈",
+    "category": "Tropical",
+    "price": 1.25,
+    "stock": 60
+  }
+
+data files:
+  test_bwd/db.json: created
+    raw text:
+      {
+        "fruits": [
+          {
+            "id": 1,
+            "name": "Papaya",
+            "emoji": "🍈",
+            "category": "Tropical",
+            "price": 1.25,
+            "stock": 60
+          }
+        ]
+      }
+      \\ No newline at end of file
+    parsed JSON:
+      {
+        "fruits": [
+          {
+            "id": 1,
+            "name": "Papaya",
+            "emoji": "🍈",
+            "category": "Tropical",
+            "price": 1.25,
+            "stock": 60
+          }
+        ]
+      }
+
+outbound calls: none
+
+`;
+
+exports[`POST /api/fruits > wrong role 1`] = `
+
+POST /api/fruits
+credentials: no-group new joiner (paolo.d.ramos, role viewer)
+request body:
+  {
+    "name": "Papaya",
+    "emoji": "🍈",
+    "category": "Tropical",
+    "price": 1.25,
+    "stock": 60
+  }
+
+=> identical to the happy path (adds a fruit): same status, body, data-file changes and outbound calls
+
+`;

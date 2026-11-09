@@ -1,0 +1,2284 @@
+exports[`DELETE /api/project-reachouts/:id > happy path › deletes reachout 4 1`] = `
+
+DELETE /api/project-reachouts/4
+credentials: group 5 POC (rafael.t.mendoza, role poc)
+
+status: 200
+content-type: application/json; charset=utf-8
+access-control-allow-origin: *
+x-powered-by: Express
+response body:
+  {
+    "deleted": true
+  }
+
+data files:
+  db.json: modified
+    raw text diff:
+      @@ -580,15 +580,4 @@
+           },
+           {
+      -      "id": 4,
+      -      "eid": "jomar.c.pascual",
+      -      "projectName": "Atlas Banking Revamp",
+      -      "techRole": "AEM Developer",
+      -      "pocEid": "rafael.t.mendoza",
+      -      "status": "On hold",
+      -      "details": "Uses a retired status value; the UI keeps it until someone changes it",
+      -      "groupNumber": 5,
+      -      "createdAt": "2026-10-08T04:22:10.006Z"
+      -    },
+      -    {
+             "id": 5,
+             "eid": "external.candidate",
+    parsed JSON diff:
+      - /project-reachouts[id=4]: {"id":4,"eid":"jomar.c.pascual","projectName":"Atlas Banking Revamp","techRole":"AEM Developer","pocEid":"rafael.t.mendoza","status":"On hold","details":"Uses a retired status value; the UI keeps it until someone changes it","groupNumber":5,"createdAt":"2026-10-08T04:22:10.006Z"}
+
+outbound calls: none
+
+`;
+
+exports[`DELETE /api/project-reachouts/:id > invalid input › malformed JSON body 1`] = `
+
+DELETE /api/project-reachouts/4
+credentials: group 5 POC (rafael.t.mendoza, role poc)
+request body (raw):
+  {"broken": 
+
+status: 400
+content-type: text/html; charset=utf-8
+access-control-allow-origin: *
+x-powered-by: Express
+response body:
+  <!DOCTYPE html>
+  <html lang="en">
+  <head>
+  <meta charset="utf-8">
+  <title>Error</title>
+  </head>
+  <body>
+  <pre>SyntaxError: Unexpected end of JSON input<br> &nbsp; &nbsp;at <stack trace removed></pre>
+  </body>
+  </html>
+  
+
+data files: unchanged
+
+outbound calls: none
+
+`;
+
+exports[`DELETE /api/project-reachouts/:id > invalid input › non-numeric id 1`] = `
+
+DELETE /api/project-reachouts/abc
+credentials: group 5 POC (rafael.t.mendoza, role poc)
+
+status: 404
+content-type: application/json; charset=utf-8
+access-control-allow-origin: *
+x-powered-by: Express
+response body:
+  {
+    "error": "reachout not found"
+  }
+
+data files: unchanged
+
+outbound calls: none
+
+`;
+
+exports[`DELETE /api/project-reachouts/:id > no auth 1`] = `
+
+DELETE /api/project-reachouts/4
+credentials: none
+
+=> identical to the happy path (deletes reachout 4): same status, body, data-file changes and outbound calls
+
+`;
+
+exports[`DELETE /api/project-reachouts/:id > not found › unknown id 1`] = `
+
+DELETE /api/project-reachouts/999
+credentials: group 5 POC (rafael.t.mendoza, role poc)
+
+status: 404
+content-type: application/json; charset=utf-8
+access-control-allow-origin: *
+x-powered-by: Express
+response body:
+  {
+    "error": "reachout not found"
+  }
+
+data files: unchanged
+
+outbound calls: none
+
+`;
+
+exports[`DELETE /api/project-reachouts/:id > wrong role 1`] = `
+
+DELETE /api/project-reachouts/4
+credentials: no-group new joiner (paolo.d.ramos, role viewer)
+
+=> identical to the happy path (deletes reachout 4): same status, body, data-file changes and outbound calls
+
+`;
+
+exports[`GET /api/competency-records > happy path › group 1: a member with no saved row gets a default row 1`] = `
+
+GET /api/competency-records?group=1
+credentials: group 5 POC (rafael.t.mendoza, role poc)
+
+status: 200
+content-type: application/json; charset=utf-8
+access-control-allow-origin: *
+x-powered-by: Express
+response body:
+  [
+    {
+      "name": "Miguel Torres",
+      "clLevel": "10",
+      "eid": "miguel.a.torres",
+      "primarySkill": "",
+      "primaryProficiency": "N/A",
+      "recentRetakeDate": "",
+      "nextRetakeDate": "",
+      "secondarySkill": "",
+      "secondaryProficiency": "N/A",
+      "retakeDate": ""
+    },
+    {
+      "name": "Andrea Bautista",
+      "clLevel": "8",
+      "eid": "andrea.s.bautista",
+      "primarySkill": "React",
+      "primaryProficiency": "P3",
+      "recentRetakeDate": "2026-08-25",
+      "nextRetakeDate": "",
+      "secondarySkill": "React Native",
+      "secondaryProficiency": "P3",
+      "retakeDate": ""
+    }
+  ]
+
+data files: unchanged
+
+outbound calls: none
+
+`;
+
+exports[`GET /api/competency-records > happy path › joins group 5 members with saved rows (as myCompetency sends it) 1`] = `
+
+GET /api/competency-records?group=5
+credentials: group 5 POC (rafael.t.mendoza, role poc)
+
+status: 200
+content-type: application/json; charset=utf-8
+access-control-allow-origin: *
+x-powered-by: Express
+response body:
+  [
+    {
+      "name": "Liza Navarro",
+      "clLevel": "12",
+      "eid": "liza.m.navarro",
+      "primarySkill": "Angular",
+      "primaryProficiency": "P2",
+      "recentRetakeDate": "2026-10-22",
+      "nextRetakeDate": "",
+      "secondarySkill": "TBD",
+      "secondaryProficiency": "TBD",
+      "retakeDate": ""
+    },
+    {
+      "name": "Jomar Pascual",
+      "clLevel": "11",
+      "eid": "jomar.c.pascual",
+      "primarySkill": "AEM",
+      "primaryProficiency": "P1",
+      "recentRetakeDate": "2026-10-20",
+      "nextRetakeDate": "2026-11-17",
+      "secondarySkill": "",
+      "secondaryProficiency": "N/A",
+      "retakeDate": ""
+    },
+    {
+      "name": "Teresa Villanueva",
+      "clLevel": "9",
+      "eid": "teresa.villanueva",
+      "primarySkill": "AEM",
+      "primaryProficiency": "P2",
+      "recentRetakeDate": "2026-09-28",
+      "nextRetakeDate": "2026-11-12",
+      "secondarySkill": "Java",
+      "secondaryProficiency": "P1",
+      "retakeDate": ""
+    },
+    {
+      "name": "Rafael Mendoza",
+      "clLevel": "7",
+      "eid": "rafael.t.mendoza",
+      "primarySkill": "Angular",
+      "primaryProficiency": "P3+",
+      "recentRetakeDate": "2026-08-20",
+      "nextRetakeDate": "",
+      "secondarySkill": "AEM",
+      "secondaryProficiency": "P3",
+      "retakeDate": ""
+    }
+  ]
+
+data files: unchanged
+
+outbound calls: none
+
+`;
+
+exports[`GET /api/competency-records > happy path › no group defaults to 5 1`] = `
+
+GET /api/competency-records
+credentials: group 5 POC (rafael.t.mendoza, role poc)
+
+status: 200
+content-type: application/json; charset=utf-8
+access-control-allow-origin: *
+x-powered-by: Express
+response body:
+  [
+    {
+      "name": "Liza Navarro",
+      "clLevel": "12",
+      "eid": "liza.m.navarro",
+      "primarySkill": "Angular",
+      "primaryProficiency": "P2",
+      "recentRetakeDate": "2026-10-22",
+      "nextRetakeDate": "",
+      "secondarySkill": "TBD",
+      "secondaryProficiency": "TBD",
+      "retakeDate": ""
+    },
+    {
+      "name": "Jomar Pascual",
+      "clLevel": "11",
+      "eid": "jomar.c.pascual",
+      "primarySkill": "AEM",
+      "primaryProficiency": "P1",
+      "recentRetakeDate": "2026-10-20",
+      "nextRetakeDate": "2026-11-17",
+      "secondarySkill": "",
+      "secondaryProficiency": "N/A",
+      "retakeDate": ""
+    },
+    {
+      "name": "Teresa Villanueva",
+      "clLevel": "9",
+      "eid": "teresa.villanueva",
+      "primarySkill": "AEM",
+      "primaryProficiency": "P2",
+      "recentRetakeDate": "2026-09-28",
+      "nextRetakeDate": "2026-11-12",
+      "secondarySkill": "Java",
+      "secondaryProficiency": "P1",
+      "retakeDate": ""
+    },
+    {
+      "name": "Rafael Mendoza",
+      "clLevel": "7",
+      "eid": "rafael.t.mendoza",
+      "primarySkill": "Angular",
+      "primaryProficiency": "P3+",
+      "recentRetakeDate": "2026-08-20",
+      "nextRetakeDate": "",
+      "secondarySkill": "AEM",
+      "secondaryProficiency": "P3",
+      "retakeDate": ""
+    }
+  ]
+
+data files: unchanged
+
+outbound calls: none
+
+`;
+
+exports[`GET /api/competency-records > invalid input › group=0 matches nothing 1`] = `
+
+GET /api/competency-records?group=0
+credentials: group 5 POC (rafael.t.mendoza, role poc)
+
+status: 200
+content-type: application/json; charset=utf-8
+access-control-allow-origin: *
+x-powered-by: Express
+response body:
+  [
+    {
+      "name": "Paolo Ramos",
+      "clLevel": "12",
+      "eid": "paolo.d.ramos",
+      "primarySkill": "",
+      "primaryProficiency": "N/A",
+      "recentRetakeDate": "",
+      "nextRetakeDate": "",
+      "secondarySkill": "",
+      "secondaryProficiency": "N/A",
+      "retakeDate": ""
+    }
+  ]
+
+data files: unchanged
+
+outbound calls: none
+
+`;
+
+exports[`GET /api/competency-records > invalid input › malformed JSON body 1`] = `
+
+GET /api/competency-records
+credentials: group 5 POC (rafael.t.mendoza, role poc)
+request body (raw):
+  {"broken": 
+
+status: 400
+content-type: text/html; charset=utf-8
+access-control-allow-origin: *
+x-powered-by: Express
+response body:
+  <!DOCTYPE html>
+  <html lang="en">
+  <head>
+  <meta charset="utf-8">
+  <title>Error</title>
+  </head>
+  <body>
+  <pre>SyntaxError: Unexpected end of JSON input<br> &nbsp; &nbsp;at <stack trace removed></pre>
+  </body>
+  </html>
+  
+
+data files: unchanged
+
+outbound calls: none
+
+`;
+
+exports[`GET /api/competency-records > invalid input › non-numeric group matches nothing 1`] = `
+
+GET /api/competency-records?group=abc
+credentials: group 5 POC (rafael.t.mendoza, role poc)
+
+status: 200
+content-type: application/json; charset=utf-8
+access-control-allow-origin: *
+x-powered-by: Express
+response body:
+  []
+
+data files: unchanged
+
+outbound calls: none
+
+`;
+
+exports[`GET /api/competency-records > no auth 1`] = `
+
+GET /api/competency-records?group=5
+credentials: none
+
+=> identical to the happy path (joins group 5 members with saved rows (as myCompetency sends it)): same status, body, data-file changes and outbound calls
+
+`;
+
+exports[`GET /api/competency-records > not found › competency-records collection missing: every member gets a default row 1`] = `
+
+GET /api/competency-records?group=5
+credentials: group 5 POC (rafael.t.mendoza, role poc)
+
+status: 200
+content-type: application/json; charset=utf-8
+access-control-allow-origin: *
+x-powered-by: Express
+response body:
+  [
+    {
+      "name": "Liza Navarro",
+      "clLevel": "12",
+      "eid": "liza.m.navarro",
+      "primarySkill": "",
+      "primaryProficiency": "N/A",
+      "recentRetakeDate": "",
+      "nextRetakeDate": "",
+      "secondarySkill": "",
+      "secondaryProficiency": "N/A",
+      "retakeDate": ""
+    },
+    {
+      "name": "Jomar Pascual",
+      "clLevel": "11",
+      "eid": "jomar.c.pascual",
+      "primarySkill": "",
+      "primaryProficiency": "N/A",
+      "recentRetakeDate": "",
+      "nextRetakeDate": "",
+      "secondarySkill": "",
+      "secondaryProficiency": "N/A",
+      "retakeDate": ""
+    },
+    {
+      "name": "Teresa Villanueva",
+      "clLevel": "9",
+      "eid": "teresa.villanueva",
+      "primarySkill": "",
+      "primaryProficiency": "N/A",
+      "recentRetakeDate": "",
+      "nextRetakeDate": "",
+      "secondarySkill": "",
+      "secondaryProficiency": "N/A",
+      "retakeDate": ""
+    },
+    {
+      "name": "Rafael Mendoza",
+      "clLevel": "7",
+      "eid": "rafael.t.mendoza",
+      "primarySkill": "",
+      "primaryProficiency": "N/A",
+      "recentRetakeDate": "",
+      "nextRetakeDate": "",
+      "secondarySkill": "",
+      "secondaryProficiency": "N/A",
+      "retakeDate": ""
+    }
+  ]
+
+data files: unchanged
+
+outbound calls: none
+
+`;
+
+exports[`GET /api/competency-records > not found › custom-onboarding.json missing: reseeded from custom.csv 1`] = `
+
+GET /api/competency-records?group=5
+credentials: group 5 POC (rafael.t.mendoza, role poc)
+
+status: 200
+content-type: application/json; charset=utf-8
+access-control-allow-origin: *
+x-powered-by: Express
+response body:
+  []
+
+data files:
+  custom-onboarding.json: created
+    raw text:
+      [
+        {
+          "name": "kevin.r.lim",
+          "eid": "kevin.r.lim",
+          "hire_date": "",
+          "roll_in_date": "",
+          "project_deployed": "No",
+          "deployment_date": "",
+          "project_name": "Song Bench",
+          "poc": "",
+          "dn": "No",
+          "roll_off_date": "",
+          "from_project": "",
+          "group_number": 5,
+          "primary_skill": "AEM",
+          "primary_years": "",
+          "secondary_skill": "",
+          "secondary_years": "",
+          "another_skills": [],
+          "created_at": "<generated-timestamp>",
+          "updated_at": "<generated-timestamp>",
+          "id": 1
+        },
+        {
+          "name": "nina.g.castro",
+          "eid": "nina.g.castro",
+          "hire_date": "",
+          "roll_in_date": "",
+          "project_deployed": "No",
+          "deployment_date": "",
+          "project_name": "Song Bench",
+          "poc": "",
+          "dn": "No",
+          "roll_off_date": "",
+          "from_project": "",
+          "group_number": 1,
+          "primary_skill": "React Native",
+          "primary_years": "",
+          "secondary_skill": "",
+          "secondary_years": "",
+          "another_skills": [],
+          "created_at": "<generated-timestamp>",
+          "updated_at": "<generated-timestamp>",
+          "id": 2
+        }
+      ]
+    parsed JSON:
+      [
+        {
+          "name": "kevin.r.lim",
+          "eid": "kevin.r.lim",
+          "hire_date": "",
+          "roll_in_date": "",
+          "project_deployed": "No",
+          "deployment_date": "",
+          "project_name": "Song Bench",
+          "poc": "",
+          "dn": "No",
+          "roll_off_date": "",
+          "from_project": "",
+          "group_number": 5,
+          "primary_skill": "AEM",
+          "primary_years": "",
+          "secondary_skill": "",
+          "secondary_years": "",
+          "another_skills": [],
+          "created_at": "<generated-timestamp>",
+          "updated_at": "<generated-timestamp>",
+          "id": 1
+        },
+        {
+          "name": "nina.g.castro",
+          "eid": "nina.g.castro",
+          "hire_date": "",
+          "roll_in_date": "",
+          "project_deployed": "No",
+          "deployment_date": "",
+          "project_name": "Song Bench",
+          "poc": "",
+          "dn": "No",
+          "roll_off_date": "",
+          "from_project": "",
+          "group_number": 1,
+          "primary_skill": "React Native",
+          "primary_years": "",
+          "secondary_skill": "",
+          "secondary_years": "",
+          "another_skills": [],
+          "created_at": "<generated-timestamp>",
+          "updated_at": "<generated-timestamp>",
+          "id": 2
+        }
+      ]
+
+outbound calls: none
+
+`;
+
+exports[`GET /api/competency-records > not found › group with no members 1`] = `
+
+GET /api/competency-records?group=3
+credentials: group 5 POC (rafael.t.mendoza, role poc)
+
+status: 200
+content-type: application/json; charset=utf-8
+access-control-allow-origin: *
+x-powered-by: Express
+response body:
+  []
+
+data files: unchanged
+
+outbound calls: none
+
+`;
+
+exports[`GET /api/competency-records > wrong role 1`] = `
+
+GET /api/competency-records?group=5
+credentials: no-group new joiner (paolo.d.ramos, role viewer)
+
+=> identical to the happy path (joins group 5 members with saved rows (as myCompetency sends it)): same status, body, data-file changes and outbound calls
+
+`;
+
+exports[`GET /api/project-reachouts > happy path › filters by group 1`] = `
+
+GET /api/project-reachouts?group=5
+credentials: group 5 POC (rafael.t.mendoza, role poc)
+
+status: 200
+content-type: application/json; charset=utf-8
+access-control-allow-origin: *
+x-powered-by: Express
+response body:
+  [
+    {
+      "id": 1,
+      "eid": "teresa.villanueva",
+      "projectName": "Harborline Insurance Portal",
+      "techRole": "AEM Developer",
+      "pocEid": "rafael.t.mendoza",
+      "status": "Interview Scheduled",
+      "details": "Client interview on 11/10, 2pm",
+      "groupNumber": 5,
+      "createdAt": "2026-10-29T03:12:40.551Z",
+      "updatedAt": "2026-11-03T05:48:09.207Z"
+    },
+    {
+      "id": 2,
+      "eid": "liza.m.navarro",
+      "projectName": "Harborline Insurance Portal",
+      "techRole": "Angular Developer",
+      "pocEid": "rafael.t.mendoza",
+      "status": "CV Requested",
+      "details": "",
+      "groupNumber": 5,
+      "createdAt": "2026-11-03T05:50:22.874Z"
+    },
+    {
+      "id": 4,
+      "eid": "jomar.c.pascual",
+      "projectName": "Atlas Banking Revamp",
+      "techRole": "AEM Developer",
+      "pocEid": "rafael.t.mendoza",
+      "status": "On hold",
+      "details": "Uses a retired status value; the UI keeps it until someone changes it",
+      "groupNumber": 5,
+      "createdAt": "2026-10-08T04:22:10.006Z"
+    }
+  ]
+
+data files: unchanged
+
+outbound calls: none
+
+`;
+
+exports[`GET /api/project-reachouts > happy path › lists every reachout (as the reachouts page sends it) 1`] = `
+
+GET /api/project-reachouts
+credentials: group 5 POC (rafael.t.mendoza, role poc)
+
+status: 200
+content-type: application/json; charset=utf-8
+access-control-allow-origin: *
+x-powered-by: Express
+response body:
+  [
+    {
+      "id": 1,
+      "eid": "teresa.villanueva",
+      "projectName": "Harborline Insurance Portal",
+      "techRole": "AEM Developer",
+      "pocEid": "rafael.t.mendoza",
+      "status": "Interview Scheduled",
+      "details": "Client interview on 11/10, 2pm",
+      "groupNumber": 5,
+      "createdAt": "2026-10-29T03:12:40.551Z",
+      "updatedAt": "2026-11-03T05:48:09.207Z"
+    },
+    {
+      "id": 2,
+      "eid": "liza.m.navarro",
+      "projectName": "Harborline Insurance Portal",
+      "techRole": "Angular Developer",
+      "pocEid": "rafael.t.mendoza",
+      "status": "CV Requested",
+      "details": "",
+      "groupNumber": 5,
+      "createdAt": "2026-11-03T05:50:22.874Z"
+    },
+    {
+      "id": 3,
+      "eid": "nina.g.castro",
+      "projectName": "Northwind Commerce",
+      "techRole": "React Native Developer",
+      "pocEid": "andrea.s.bautista",
+      "status": "Passed",
+      "details": "Start date to be confirmed by the client",
+      "groupNumber": 1,
+      "createdAt": "2026-10-14T02:05:33.119Z",
+      "updatedAt": "2026-10-30T09:31:57.642Z"
+    },
+    {
+      "id": 4,
+      "eid": "jomar.c.pascual",
+      "projectName": "Atlas Banking Revamp",
+      "techRole": "AEM Developer",
+      "pocEid": "rafael.t.mendoza",
+      "status": "On hold",
+      "details": "Uses a retired status value; the UI keeps it until someone changes it",
+      "groupNumber": 5,
+      "createdAt": "2026-10-08T04:22:10.006Z"
+    },
+    {
+      "id": 5,
+      "eid": "external.candidate",
+      "projectName": "Northwind Commerce",
+      "techRole": "QA Engineer",
+      "pocEid": "andrea.s.bautista",
+      "status": "Pending Update",
+      "details": "Not on the bench roster yet",
+      "groupNumber": null,
+      "createdAt": "2026-11-05T01:40:15.330Z"
+    }
+  ]
+
+data files: unchanged
+
+outbound calls: none
+
+`;
+
+exports[`GET /api/project-reachouts > invalid input › group=null matches the reachout stored with a null group 1`] = `
+
+GET /api/project-reachouts?group=null
+credentials: group 5 POC (rafael.t.mendoza, role poc)
+
+status: 200
+content-type: application/json; charset=utf-8
+access-control-allow-origin: *
+x-powered-by: Express
+response body:
+  [
+    {
+      "id": 5,
+      "eid": "external.candidate",
+      "projectName": "Northwind Commerce",
+      "techRole": "QA Engineer",
+      "pocEid": "andrea.s.bautista",
+      "status": "Pending Update",
+      "details": "Not on the bench roster yet",
+      "groupNumber": null,
+      "createdAt": "2026-11-05T01:40:15.330Z"
+    }
+  ]
+
+data files: unchanged
+
+outbound calls: none
+
+`;
+
+exports[`GET /api/project-reachouts > invalid input › malformed JSON body 1`] = `
+
+GET /api/project-reachouts
+credentials: group 5 POC (rafael.t.mendoza, role poc)
+request body (raw):
+  {"broken": 
+
+status: 400
+content-type: text/html; charset=utf-8
+access-control-allow-origin: *
+x-powered-by: Express
+response body:
+  <!DOCTYPE html>
+  <html lang="en">
+  <head>
+  <meta charset="utf-8">
+  <title>Error</title>
+  </head>
+  <body>
+  <pre>SyntaxError: Unexpected end of JSON input<br> &nbsp; &nbsp;at <stack trace removed></pre>
+  </body>
+  </html>
+  
+
+data files: unchanged
+
+outbound calls: none
+
+`;
+
+exports[`GET /api/project-reachouts > invalid input › non-numeric group matches nothing 1`] = `
+
+GET /api/project-reachouts?group=abc
+credentials: group 5 POC (rafael.t.mendoza, role poc)
+
+status: 200
+content-type: application/json; charset=utf-8
+access-control-allow-origin: *
+x-powered-by: Express
+response body:
+  []
+
+data files: unchanged
+
+outbound calls: none
+
+`;
+
+exports[`GET /api/project-reachouts > no auth 1`] = `
+
+GET /api/project-reachouts
+credentials: none
+
+=> identical to the happy path (lists every reachout (as the reachouts page sends it)): same status, body, data-file changes and outbound calls
+
+`;
+
+exports[`GET /api/project-reachouts > not found › group with no reachouts 1`] = `
+
+GET /api/project-reachouts?group=3
+credentials: group 5 POC (rafael.t.mendoza, role poc)
+
+status: 200
+content-type: application/json; charset=utf-8
+access-control-allow-origin: *
+x-powered-by: Express
+response body:
+  []
+
+data files: unchanged
+
+outbound calls: none
+
+`;
+
+exports[`GET /api/project-reachouts > not found › project-reachouts collection missing 1`] = `
+
+GET /api/project-reachouts
+credentials: group 5 POC (rafael.t.mendoza, role poc)
+
+status: 200
+content-type: application/json; charset=utf-8
+access-control-allow-origin: *
+x-powered-by: Express
+response body:
+  []
+
+data files: unchanged
+
+outbound calls: none
+
+`;
+
+exports[`GET /api/project-reachouts > wrong role 1`] = `
+
+GET /api/project-reachouts
+credentials: no-group new joiner (paolo.d.ramos, role viewer)
+
+=> identical to the happy path (lists every reachout (as the reachouts page sends it)): same status, body, data-file changes and outbound calls
+
+`;
+
+exports[`PATCH /api/competency-records/:eid > happy path › member with no saved row: a row is created with only the sent field 1`] = `
+
+PATCH /api/competency-records/miguel.a.torres
+credentials: group 5 POC (rafael.t.mendoza, role poc)
+request body:
+  {
+    "primarySkill": "React"
+  }
+
+status: 200
+content-type: application/json; charset=utf-8
+access-control-allow-origin: *
+x-powered-by: Express
+response body:
+  {
+    "eid": "miguel.a.torres",
+    "primarySkill": "React"
+  }
+
+data files:
+  db.json: modified
+    raw text diff:
+      @@ -541,4 +541,8 @@
+             "secondaryProficiency": "P3",
+             "retakeDate": ""
+      +    },
+      +    {
+      +      "eid": "miguel.a.torres",
+      +      "primarySkill": "React"
+           }
+         ],
+    parsed JSON diff:
+      + /competency-records[eid="miguel.a.torres"] (at index 5): {"eid":"miguel.a.torres","primarySkill":"React"}
+
+outbound calls: none
+
+`;
+
+exports[`PATCH /api/competency-records/:eid > happy path › updates one field (as myCompetency sends it) 1`] = `
+
+PATCH /api/competency-records/liza.m.navarro
+credentials: group 5 POC (rafael.t.mendoza, role poc)
+request body:
+  {
+    "primaryProficiency": "P3"
+  }
+
+status: 200
+content-type: application/json; charset=utf-8
+access-control-allow-origin: *
+x-powered-by: Express
+response body:
+  {
+    "eid": "liza.m.navarro",
+    "primarySkill": "Angular",
+    "primaryProficiency": "P3",
+    "recentRetakeDate": "2026-10-22",
+    "nextRetakeDate": "",
+    "secondarySkill": "TBD",
+    "secondaryProficiency": "TBD",
+    "retakeDate": ""
+  }
+
+data files:
+  db.json: modified
+    raw text diff:
+      @@ -525,5 +525,5 @@
+             "eid": "liza.m.navarro",
+             "primarySkill": "Angular",
+      -      "primaryProficiency": "P2",
+      +      "primaryProficiency": "P3",
+             "recentRetakeDate": "2026-10-22",
+             "nextRetakeDate": "",
+    parsed JSON diff:
+      ~ /competency-records[eid="liza.m.navarro"]/primaryProficiency: "P2" → "P3"
+
+outbound calls: none
+
+`;
+
+exports[`PATCH /api/competency-records/:eid > invalid input › any value and any field are accepted 1`] = `
+
+PATCH /api/competency-records/liza.m.navarro
+credentials: group 5 POC (rafael.t.mendoza, role poc)
+request body:
+  {
+    "primaryProficiency": "P99",
+    "isAdmin": true
+  }
+
+status: 200
+content-type: application/json; charset=utf-8
+access-control-allow-origin: *
+x-powered-by: Express
+response body:
+  {
+    "eid": "liza.m.navarro",
+    "primarySkill": "Angular",
+    "primaryProficiency": "P99",
+    "recentRetakeDate": "2026-10-22",
+    "nextRetakeDate": "",
+    "secondarySkill": "TBD",
+    "secondaryProficiency": "TBD",
+    "retakeDate": "",
+    "isAdmin": true
+  }
+
+data files:
+  db.json: modified
+    raw text diff:
+      @@ -525,10 +525,11 @@
+             "eid": "liza.m.navarro",
+             "primarySkill": "Angular",
+      -      "primaryProficiency": "P2",
+      +      "primaryProficiency": "P99",
+             "recentRetakeDate": "2026-10-22",
+             "nextRetakeDate": "",
+             "secondarySkill": "TBD",
+             "secondaryProficiency": "TBD",
+      -      "retakeDate": ""
+      +      "retakeDate": "",
+      +      "isAdmin": true
+           },
+           {
+    parsed JSON diff:
+      ~ /competency-records[eid="liza.m.navarro"]/primaryProficiency: "P2" → "P99"
+      + /competency-records[eid="liza.m.navarro"]/isAdmin: true
+
+outbound calls: none
+
+`;
+
+exports[`PATCH /api/competency-records/:eid > invalid input › body that changes eid: row is renamed and the response body is empty 1`] = `
+
+PATCH /api/competency-records/liza.m.navarro
+credentials: group 5 POC (rafael.t.mendoza, role poc)
+request body:
+  {
+    "eid": "someone.else"
+  }
+
+status: 200
+content-type: application/json; charset=utf-8
+access-control-allow-origin: *
+x-powered-by: Express
+response body:
+  (empty)
+
+data files:
+  db.json: modified
+    raw text diff:
+      @@ -523,5 +523,5 @@
+           },
+           {
+      -      "eid": "liza.m.navarro",
+      +      "eid": "someone.else",
+             "primarySkill": "Angular",
+             "primaryProficiency": "P2",
+    parsed JSON diff:
+      - /competency-records[eid="liza.m.navarro"]: {"eid":"liza.m.navarro","primarySkill":"Angular","primaryProficiency":"P2","recentRetakeDate":"2026-10-22","nextRetakeDate":"","secondarySkill":"TBD","secondaryProficiency":"TBD","retakeDate":""}
+      + /competency-records[eid="someone.else"] (at index 3): {"eid":"someone.else","primarySkill":"Angular","primaryProficiency":"P2","recentRetakeDate":"2026-10-22","nextRetakeDate":"","secondarySkill":"TBD","secondaryProficiency":"TBD","retakeDate":""}
+
+outbound calls: none
+
+`;
+
+exports[`PATCH /api/competency-records/:eid > invalid input › eid in a different case creates a second row 1`] = `
+
+PATCH /api/competency-records/Liza.M.Navarro
+credentials: group 5 POC (rafael.t.mendoza, role poc)
+request body:
+  {
+    "primaryProficiency": "P1"
+  }
+
+status: 200
+content-type: application/json; charset=utf-8
+access-control-allow-origin: *
+x-powered-by: Express
+response body:
+  {
+    "eid": "Liza.M.Navarro",
+    "primaryProficiency": "P1"
+  }
+
+data files:
+  db.json: modified
+    raw text diff:
+      @@ -541,4 +541,8 @@
+             "secondaryProficiency": "P3",
+             "retakeDate": ""
+      +    },
+      +    {
+      +      "eid": "Liza.M.Navarro",
+      +      "primaryProficiency": "P1"
+           }
+         ],
+    parsed JSON diff:
+      + /competency-records[eid="Liza.M.Navarro"] (at index 5): {"eid":"Liza.M.Navarro","primaryProficiency":"P1"}
+
+outbound calls: none
+
+`;
+
+exports[`PATCH /api/competency-records/:eid > invalid input › malformed JSON body 1`] = `
+
+PATCH /api/competency-records/liza.m.navarro
+credentials: group 5 POC (rafael.t.mendoza, role poc)
+request body (raw):
+  {"broken": 
+
+status: 400
+content-type: text/html; charset=utf-8
+access-control-allow-origin: *
+x-powered-by: Express
+response body:
+  <!DOCTYPE html>
+  <html lang="en">
+  <head>
+  <meta charset="utf-8">
+  <title>Error</title>
+  </head>
+  <body>
+  <pre>SyntaxError: Unexpected end of JSON input<br> &nbsp; &nbsp;at <stack trace removed></pre>
+  </body>
+  </html>
+  
+
+data files: unchanged
+
+outbound calls: none
+
+`;
+
+exports[`PATCH /api/competency-records/:eid > invalid input › no body for a new eid: a row with only eid is created 1`] = `
+
+PATCH /api/competency-records/kevin.r.lim
+credentials: group 5 POC (rafael.t.mendoza, role poc)
+
+status: 200
+content-type: application/json; charset=utf-8
+access-control-allow-origin: *
+x-powered-by: Express
+response body:
+  {
+    "eid": "kevin.r.lim"
+  }
+
+data files:
+  db.json: modified
+    raw text diff:
+      @@ -541,4 +541,7 @@
+             "secondaryProficiency": "P3",
+             "retakeDate": ""
+      +    },
+      +    {
+      +      "eid": "kevin.r.lim"
+           }
+         ],
+    parsed JSON diff:
+      + /competency-records[eid="kevin.r.lim"] (at index 5): {"eid":"kevin.r.lim"}
+
+outbound calls: none
+
+`;
+
+exports[`PATCH /api/competency-records/:eid > invalid input › no body: the row is rewritten unchanged 1`] = `
+
+PATCH /api/competency-records/liza.m.navarro
+credentials: group 5 POC (rafael.t.mendoza, role poc)
+
+status: 200
+content-type: application/json; charset=utf-8
+access-control-allow-origin: *
+x-powered-by: Express
+response body:
+  {
+    "eid": "liza.m.navarro",
+    "primarySkill": "Angular",
+    "primaryProficiency": "P2",
+    "recentRetakeDate": "2026-10-22",
+    "nextRetakeDate": "",
+    "secondarySkill": "TBD",
+    "secondaryProficiency": "TBD",
+    "retakeDate": ""
+  }
+
+data files: unchanged
+
+outbound calls: none
+
+`;
+
+exports[`PATCH /api/competency-records/:eid > no auth 1`] = `
+
+PATCH /api/competency-records/liza.m.navarro
+credentials: none
+request body:
+  {
+    "primaryProficiency": "P3"
+  }
+
+=> identical to the happy path (updates one field (as myCompetency sends it)): same status, body, data-file changes and outbound calls
+
+`;
+
+exports[`PATCH /api/competency-records/:eid > not found › competency-records collection missing 1`] = `
+
+PATCH /api/competency-records/liza.m.navarro
+credentials: group 5 POC (rafael.t.mendoza, role poc)
+request body:
+  {
+    "primaryProficiency": "P3"
+  }
+
+status: 200
+content-type: application/json; charset=utf-8
+access-control-allow-origin: *
+x-powered-by: Express
+response body:
+  {
+    "eid": "liza.m.navarro",
+    "primaryProficiency": "P3"
+  }
+
+data files:
+  db.json: modified
+    raw text diff:
+      @@ -572,4 +572,10 @@
+             "deletedAt": "2026-11-03T02:05:40.017Z"
+           }
+      +  ],
+      +  "competency-records": [
+      +    {
+      +      "eid": "liza.m.navarro",
+      +      "primaryProficiency": "P3"
+      +    }
+         ]
+       }
+    parsed JSON diff:
+      + /competency-records: [{"eid":"liza.m.navarro","primaryProficiency":"P3"}]
+
+outbound calls: none
+
+`;
+
+exports[`PATCH /api/competency-records/:eid > not found › eid not on the roster: a row is created anyway 1`] = `
+
+PATCH /api/competency-records/nobody.here
+credentials: group 5 POC (rafael.t.mendoza, role poc)
+request body:
+  {
+    "primaryProficiency": "P2"
+  }
+
+status: 200
+content-type: application/json; charset=utf-8
+access-control-allow-origin: *
+x-powered-by: Express
+response body:
+  {
+    "eid": "nobody.here",
+    "primaryProficiency": "P2"
+  }
+
+data files:
+  db.json: modified
+    raw text diff:
+      @@ -541,4 +541,8 @@
+             "secondaryProficiency": "P3",
+             "retakeDate": ""
+      +    },
+      +    {
+      +      "eid": "nobody.here",
+      +      "primaryProficiency": "P2"
+           }
+         ],
+    parsed JSON diff:
+      + /competency-records[eid="nobody.here"] (at index 5): {"eid":"nobody.here","primaryProficiency":"P2"}
+
+outbound calls: none
+
+`;
+
+exports[`PATCH /api/competency-records/:eid > wrong role 1`] = `
+
+PATCH /api/competency-records/liza.m.navarro
+credentials: no-group new joiner (paolo.d.ramos, role viewer)
+request body:
+  {
+    "primaryProficiency": "P3"
+  }
+
+=> identical to the happy path (updates one field (as myCompetency sends it)): same status, body, data-file changes and outbound calls
+
+`;
+
+exports[`PATCH /api/project-reachouts/:id > happy path › full edit from the dialog 1`] = `
+
+PATCH /api/project-reachouts/2
+credentials: group 5 POC (rafael.t.mendoza, role poc)
+request body:
+  {
+    "eid": "liza.m.navarro",
+    "projectName": "Harborline Insurance Portal",
+    "techRole": "Angular Developer",
+    "pocEid": "rafael.t.mendoza",
+    "status": "CV Requested",
+    "details": "Moved to the portal team",
+    "groupNumber": 5
+  }
+
+status: 200
+content-type: application/json; charset=utf-8
+access-control-allow-origin: *
+x-powered-by: Express
+response body:
+  {
+    "id": 2,
+    "eid": "liza.m.navarro",
+    "projectName": "Harborline Insurance Portal",
+    "techRole": "Angular Developer",
+    "pocEid": "rafael.t.mendoza",
+    "status": "CV Requested",
+    "details": "Moved to the portal team",
+    "groupNumber": 5,
+    "createdAt": "2026-11-03T05:50:22.874Z",
+    "updatedAt": "<generated-timestamp>"
+  }
+
+data files:
+  db.json: modified
+    raw text diff:
+      @@ -563,7 +563,8 @@
+             "pocEid": "rafael.t.mendoza",
+             "status": "CV Requested",
+      -      "details": "",
+      +      "details": "Moved to the portal team",
+             "groupNumber": 5,
+      -      "createdAt": "2026-11-03T05:50:22.874Z"
+      +      "createdAt": "2026-11-03T05:50:22.874Z",
+      +      "updatedAt": "<generated-timestamp>"
+           },
+           {
+    parsed JSON diff:
+      ~ /project-reachouts[id=2]/details: "" → "Moved to the portal team"
+      + /project-reachouts[id=2]/updatedAt: "<generated-timestamp>"
+
+outbound calls: none
+
+`;
+
+exports[`PATCH /api/project-reachouts/:id > happy path › inline status change (as the reachouts page sends it) 1`] = `
+
+PATCH /api/project-reachouts/2
+credentials: group 5 POC (rafael.t.mendoza, role poc)
+request body:
+  {
+    "status": "Interview Scheduled"
+  }
+
+status: 200
+content-type: application/json; charset=utf-8
+access-control-allow-origin: *
+x-powered-by: Express
+response body:
+  {
+    "id": 2,
+    "eid": "liza.m.navarro",
+    "projectName": "Harborline Insurance Portal",
+    "techRole": "Angular Developer",
+    "pocEid": "rafael.t.mendoza",
+    "status": "Interview Scheduled",
+    "details": "",
+    "groupNumber": 5,
+    "createdAt": "2026-11-03T05:50:22.874Z",
+    "updatedAt": "<generated-timestamp>"
+  }
+
+data files:
+  db.json: modified
+    raw text diff:
+      @@ -562,8 +562,9 @@
+             "techRole": "Angular Developer",
+             "pocEid": "rafael.t.mendoza",
+      -      "status": "CV Requested",
+      +      "status": "Interview Scheduled",
+             "details": "",
+             "groupNumber": 5,
+      -      "createdAt": "2026-11-03T05:50:22.874Z"
+      +      "createdAt": "2026-11-03T05:50:22.874Z",
+      +      "updatedAt": "<generated-timestamp>"
+           },
+           {
+    parsed JSON diff:
+      ~ /project-reachouts[id=2]/status: "CV Requested" → "Interview Scheduled"
+      + /project-reachouts[id=2]/updatedAt: "<generated-timestamp>"
+
+outbound calls: none
+
+`;
+
+exports[`PATCH /api/project-reachouts/:id > invalid input › blank status falls back to the default 1`] = `
+
+PATCH /api/project-reachouts/1
+credentials: group 5 POC (rafael.t.mendoza, role poc)
+request body:
+  {
+    "status": ""
+  }
+
+status: 200
+content-type: application/json; charset=utf-8
+access-control-allow-origin: *
+x-powered-by: Express
+response body:
+  {
+    "id": 1,
+    "eid": "teresa.villanueva",
+    "projectName": "Harborline Insurance Portal",
+    "techRole": "AEM Developer",
+    "pocEid": "rafael.t.mendoza",
+    "status": "CV Requested",
+    "details": "Client interview on 11/10, 2pm",
+    "groupNumber": 5,
+    "createdAt": "2026-10-29T03:12:40.551Z",
+    "updatedAt": "<generated-timestamp>"
+  }
+
+data files:
+  db.json: modified
+    raw text diff:
+      @@ -550,9 +550,9 @@
+             "techRole": "AEM Developer",
+             "pocEid": "rafael.t.mendoza",
+      -      "status": "Interview Scheduled",
+      +      "status": "CV Requested",
+             "details": "Client interview on 11/10, 2pm",
+             "groupNumber": 5,
+             "createdAt": "2026-10-29T03:12:40.551Z",
+      -      "updatedAt": "2026-11-03T05:48:09.207Z"
+      +      "updatedAt": "<generated-timestamp>"
+           },
+           {
+    parsed JSON diff:
+      ~ /project-reachouts[id=1]/status: "Interview Scheduled" → "CV Requested"
+      ~ /project-reachouts[id=1]/updatedAt: "2026-11-03T05:48:09.207Z" → "<generated-timestamp>"
+
+outbound calls: none
+
+`;
+
+exports[`PATCH /api/project-reachouts/:id > invalid input › blank techRole is rejected and nothing is saved 1`] = `
+
+PATCH /api/project-reachouts/2
+credentials: group 5 POC (rafael.t.mendoza, role poc)
+request body:
+  {
+    "techRole": "   "
+  }
+
+status: 400
+content-type: application/json; charset=utf-8
+access-control-allow-origin: *
+x-powered-by: Express
+response body:
+  {
+    "error": "techRole required"
+  }
+
+data files: unchanged
+
+outbound calls: none
+
+`;
+
+exports[`PATCH /api/project-reachouts/:id > invalid input › changing eid keeps the old groupNumber 1`] = `
+
+PATCH /api/project-reachouts/2
+credentials: group 5 POC (rafael.t.mendoza, role poc)
+request body:
+  {
+    "eid": "andrea.s.bautista"
+  }
+
+status: 200
+content-type: application/json; charset=utf-8
+access-control-allow-origin: *
+x-powered-by: Express
+response body:
+  {
+    "id": 2,
+    "eid": "andrea.s.bautista",
+    "projectName": "Harborline Insurance Portal",
+    "techRole": "Angular Developer",
+    "pocEid": "rafael.t.mendoza",
+    "status": "CV Requested",
+    "details": "",
+    "groupNumber": 5,
+    "createdAt": "2026-11-03T05:50:22.874Z",
+    "updatedAt": "<generated-timestamp>"
+  }
+
+data files:
+  db.json: modified
+    raw text diff:
+      @@ -558,5 +558,5 @@
+           {
+             "id": 2,
+      -      "eid": "liza.m.navarro",
+      +      "eid": "andrea.s.bautista",
+             "projectName": "Harborline Insurance Portal",
+             "techRole": "Angular Developer",
+      @@ -565,5 +565,6 @@
+             "details": "",
+             "groupNumber": 5,
+      -      "createdAt": "2026-11-03T05:50:22.874Z"
+      +      "createdAt": "2026-11-03T05:50:22.874Z",
+      +      "updatedAt": "<generated-timestamp>"
+           },
+           {
+    parsed JSON diff:
+      ~ /project-reachouts[id=2]/eid: "liza.m.navarro" → "andrea.s.bautista"
+      + /project-reachouts[id=2]/updatedAt: "<generated-timestamp>"
+
+outbound calls: none
+
+`;
+
+exports[`PATCH /api/project-reachouts/:id > invalid input › malformed JSON body 1`] = `
+
+PATCH /api/project-reachouts/2
+credentials: group 5 POC (rafael.t.mendoza, role poc)
+request body (raw):
+  {"broken": 
+
+status: 400
+content-type: text/html; charset=utf-8
+access-control-allow-origin: *
+x-powered-by: Express
+response body:
+  <!DOCTYPE html>
+  <html lang="en">
+  <head>
+  <meta charset="utf-8">
+  <title>Error</title>
+  </head>
+  <body>
+  <pre>SyntaxError: Unexpected end of JSON input<br> &nbsp; &nbsp;at <stack trace removed></pre>
+  </body>
+  </html>
+  
+
+data files: unchanged
+
+outbound calls: none
+
+`;
+
+exports[`PATCH /api/project-reachouts/:id > invalid input › no body still bumps updatedAt 1`] = `
+
+PATCH /api/project-reachouts/2
+credentials: group 5 POC (rafael.t.mendoza, role poc)
+
+status: 200
+content-type: application/json; charset=utf-8
+access-control-allow-origin: *
+x-powered-by: Express
+response body:
+  {
+    "id": 2,
+    "eid": "liza.m.navarro",
+    "projectName": "Harborline Insurance Portal",
+    "techRole": "Angular Developer",
+    "pocEid": "rafael.t.mendoza",
+    "status": "CV Requested",
+    "details": "",
+    "groupNumber": 5,
+    "createdAt": "2026-11-03T05:50:22.874Z",
+    "updatedAt": "<generated-timestamp>"
+  }
+
+data files:
+  db.json: modified
+    raw text diff:
+      @@ -565,5 +565,6 @@
+             "details": "",
+             "groupNumber": 5,
+      -      "createdAt": "2026-11-03T05:50:22.874Z"
+      +      "createdAt": "2026-11-03T05:50:22.874Z",
+      +      "updatedAt": "<generated-timestamp>"
+           },
+           {
+    parsed JSON diff:
+      + /project-reachouts[id=2]/updatedAt: "<generated-timestamp>"
+
+outbound calls: none
+
+`;
+
+exports[`PATCH /api/project-reachouts/:id > invalid input › retired status \"On hold\" is accepted 1`] = `
+
+PATCH /api/project-reachouts/2
+credentials: group 5 POC (rafael.t.mendoza, role poc)
+request body:
+  {
+    "status": "On hold"
+  }
+
+status: 200
+content-type: application/json; charset=utf-8
+access-control-allow-origin: *
+x-powered-by: Express
+response body:
+  {
+    "id": 2,
+    "eid": "liza.m.navarro",
+    "projectName": "Harborline Insurance Portal",
+    "techRole": "Angular Developer",
+    "pocEid": "rafael.t.mendoza",
+    "status": "On hold",
+    "details": "",
+    "groupNumber": 5,
+    "createdAt": "2026-11-03T05:50:22.874Z",
+    "updatedAt": "<generated-timestamp>"
+  }
+
+data files:
+  db.json: modified
+    raw text diff:
+      @@ -562,8 +562,9 @@
+             "techRole": "Angular Developer",
+             "pocEid": "rafael.t.mendoza",
+      -      "status": "CV Requested",
+      +      "status": "On hold",
+             "details": "",
+             "groupNumber": 5,
+      -      "createdAt": "2026-11-03T05:50:22.874Z"
+      +      "createdAt": "2026-11-03T05:50:22.874Z",
+      +      "updatedAt": "<generated-timestamp>"
+           },
+           {
+    parsed JSON diff:
+      ~ /project-reachouts[id=2]/status: "CV Requested" → "On hold"
+      + /project-reachouts[id=2]/updatedAt: "<generated-timestamp>"
+
+outbound calls: none
+
+`;
+
+exports[`PATCH /api/project-reachouts/:id > invalid input › unknown fields are ignored 1`] = `
+
+PATCH /api/project-reachouts/2
+credentials: group 5 POC (rafael.t.mendoza, role poc)
+request body:
+  {
+    "id": 99,
+    "createdAt": "2020-01-01T00:00:00.000Z",
+    "extra": 1
+  }
+
+status: 200
+content-type: application/json; charset=utf-8
+access-control-allow-origin: *
+x-powered-by: Express
+response body:
+  {
+    "id": 2,
+    "eid": "liza.m.navarro",
+    "projectName": "Harborline Insurance Portal",
+    "techRole": "Angular Developer",
+    "pocEid": "rafael.t.mendoza",
+    "status": "CV Requested",
+    "details": "",
+    "groupNumber": 5,
+    "createdAt": "2026-11-03T05:50:22.874Z",
+    "updatedAt": "<generated-timestamp>"
+  }
+
+data files:
+  db.json: modified
+    raw text diff:
+      @@ -565,5 +565,6 @@
+             "details": "",
+             "groupNumber": 5,
+      -      "createdAt": "2026-11-03T05:50:22.874Z"
+      +      "createdAt": "2026-11-03T05:50:22.874Z",
+      +      "updatedAt": "<generated-timestamp>"
+           },
+           {
+    parsed JSON diff:
+      + /project-reachouts[id=2]/updatedAt: "<generated-timestamp>"
+
+outbound calls: none
+
+`;
+
+exports[`PATCH /api/project-reachouts/:id > no auth 1`] = `
+
+PATCH /api/project-reachouts/2
+credentials: none
+request body:
+  {
+    "status": "Interview Scheduled"
+  }
+
+=> identical to the happy path (inline status change (as the reachouts page sends it)): same status, body, data-file changes and outbound calls
+
+`;
+
+exports[`PATCH /api/project-reachouts/:id > not found › non-numeric id 1`] = `
+
+PATCH /api/project-reachouts/abc
+credentials: group 5 POC (rafael.t.mendoza, role poc)
+request body:
+  {
+    "status": "Interview Scheduled"
+  }
+
+status: 404
+content-type: application/json; charset=utf-8
+access-control-allow-origin: *
+x-powered-by: Express
+response body:
+  {
+    "error": "reachout not found"
+  }
+
+data files: unchanged
+
+outbound calls: none
+
+`;
+
+exports[`PATCH /api/project-reachouts/:id > not found › unknown id 1`] = `
+
+PATCH /api/project-reachouts/999
+credentials: group 5 POC (rafael.t.mendoza, role poc)
+request body:
+  {
+    "status": "Interview Scheduled"
+  }
+
+status: 404
+content-type: application/json; charset=utf-8
+access-control-allow-origin: *
+x-powered-by: Express
+response body:
+  {
+    "error": "reachout not found"
+  }
+
+data files: unchanged
+
+outbound calls: none
+
+`;
+
+exports[`PATCH /api/project-reachouts/:id > wrong role 1`] = `
+
+PATCH /api/project-reachouts/2
+credentials: no-group new joiner (paolo.d.ramos, role viewer)
+request body:
+  {
+    "status": "Interview Scheduled"
+  }
+
+=> identical to the happy path (inline status change (as the reachouts page sends it)): same status, body, data-file changes and outbound calls
+
+`;
+
+exports[`POST /api/project-reachouts > happy path › creates a reachout (as the reachouts page sends it) 1`] = `
+
+POST /api/project-reachouts
+credentials: group 5 POC (rafael.t.mendoza, role poc)
+request body:
+  {
+    "eid": "jomar.c.pascual",
+    "projectName": "Harborline Insurance Portal",
+    "techRole": "AEM Developer",
+    "pocEid": "rafael.t.mendoza",
+    "status": "CV Requested",
+    "details": "Junior slot, AEM components",
+    "groupNumber": 5
+  }
+
+status: 201
+content-type: application/json; charset=utf-8
+access-control-allow-origin: *
+x-powered-by: Express
+response body:
+  {
+    "id": 6,
+    "eid": "jomar.c.pascual",
+    "projectName": "Harborline Insurance Portal",
+    "techRole": "AEM Developer",
+    "pocEid": "rafael.t.mendoza",
+    "status": "CV Requested",
+    "details": "Junior slot, AEM components",
+    "groupNumber": 5,
+    "createdAt": "<generated-timestamp>"
+  }
+
+data files:
+  db.json: modified
+    raw text diff:
+      @@ -600,4 +600,15 @@
+             "groupNumber": null,
+             "createdAt": "2026-11-05T01:40:15.330Z"
+      +    },
+      +    {
+      +      "id": 6,
+      +      "eid": "jomar.c.pascual",
+      +      "projectName": "Harborline Insurance Portal",
+      +      "techRole": "AEM Developer",
+      +      "pocEid": "rafael.t.mendoza",
+      +      "status": "CV Requested",
+      +      "details": "Junior slot, AEM components",
+      +      "groupNumber": 5,
+      +      "createdAt": "<generated-timestamp>"
+           }
+         ],
+    parsed JSON diff:
+      + /project-reachouts[id=6] (at index 5): {"id":6,"eid":"jomar.c.pascual","projectName":"Harborline Insurance Portal","techRole":"AEM Developer","pocEid":"rafael.t.mendoza","status":"CV Requested","details":"Junior slot, AEM components","groupNumber":5,"createdAt":"<generated-timestamp>"}
+
+outbound calls: none
+
+`;
+
+exports[`POST /api/project-reachouts > happy path › normalises eids, defaults status, and nulls an out-of-range group 1`] = `
+
+POST /api/project-reachouts
+credentials: group 5 POC (rafael.t.mendoza, role poc)
+request body:
+  {
+    "eid": "  Jomar.C.Pascual@accenture.com",
+    "projectName": "Harborline Insurance Portal",
+    "techRole": "AEM Developer",
+    "pocEid": "RAFAEL.T.MENDOZA",
+    "status": "  ",
+    "details": "Junior slot, AEM components",
+    "groupNumber": "7"
+  }
+
+status: 201
+content-type: application/json; charset=utf-8
+access-control-allow-origin: *
+x-powered-by: Express
+response body:
+  {
+    "id": 6,
+    "eid": "jomar.c.pascual",
+    "projectName": "Harborline Insurance Portal",
+    "techRole": "AEM Developer",
+    "pocEid": "rafael.t.mendoza",
+    "status": "CV Requested",
+    "details": "Junior slot, AEM components",
+    "groupNumber": null,
+    "createdAt": "<generated-timestamp>"
+  }
+
+data files:
+  db.json: modified
+    raw text diff:
+      @@ -600,4 +600,15 @@
+             "groupNumber": null,
+             "createdAt": "2026-11-05T01:40:15.330Z"
+      +    },
+      +    {
+      +      "id": 6,
+      +      "eid": "jomar.c.pascual",
+      +      "projectName": "Harborline Insurance Portal",
+      +      "techRole": "AEM Developer",
+      +      "pocEid": "rafael.t.mendoza",
+      +      "status": "CV Requested",
+      +      "details": "Junior slot, AEM components",
+      +      "groupNumber": null,
+      +      "createdAt": "<generated-timestamp>"
+           }
+         ],
+    parsed JSON diff:
+      + /project-reachouts[id=6] (at index 5): {"id":6,"eid":"jomar.c.pascual","projectName":"Harborline Insurance Portal","techRole":"AEM Developer","pocEid":"rafael.t.mendoza","status":"CV Requested","details":"Junior slot, AEM components","groupNumber":null,"createdAt":"<generated-timestamp>"}
+
+outbound calls: none
+
+`;
+
+exports[`POST /api/project-reachouts > invalid input › client id and timestamps are ignored 1`] = `
+
+POST /api/project-reachouts
+credentials: group 5 POC (rafael.t.mendoza, role poc)
+request body:
+  {
+    "eid": "jomar.c.pascual",
+    "projectName": "Harborline Insurance Portal",
+    "techRole": "AEM Developer",
+    "pocEid": "rafael.t.mendoza",
+    "status": "CV Requested",
+    "details": "Junior slot, AEM components",
+    "groupNumber": 5,
+    "id": 1,
+    "createdAt": "2020-01-01T00:00:00.000Z",
+    "updatedAt": "x"
+  }
+
+status: 201
+content-type: application/json; charset=utf-8
+access-control-allow-origin: *
+x-powered-by: Express
+response body:
+  {
+    "id": 6,
+    "eid": "jomar.c.pascual",
+    "projectName": "Harborline Insurance Portal",
+    "techRole": "AEM Developer",
+    "pocEid": "rafael.t.mendoza",
+    "status": "CV Requested",
+    "details": "Junior slot, AEM components",
+    "groupNumber": 5,
+    "createdAt": "<generated-timestamp>"
+  }
+
+data files:
+  db.json: modified
+    raw text diff:
+      @@ -600,4 +600,15 @@
+             "groupNumber": null,
+             "createdAt": "2026-11-05T01:40:15.330Z"
+      +    },
+      +    {
+      +      "id": 6,
+      +      "eid": "jomar.c.pascual",
+      +      "projectName": "Harborline Insurance Portal",
+      +      "techRole": "AEM Developer",
+      +      "pocEid": "rafael.t.mendoza",
+      +      "status": "CV Requested",
+      +      "details": "Junior slot, AEM components",
+      +      "groupNumber": 5,
+      +      "createdAt": "<generated-timestamp>"
+           }
+         ],
+    parsed JSON diff:
+      + /project-reachouts[id=6] (at index 5): {"id":6,"eid":"jomar.c.pascual","projectName":"Harborline Insurance Portal","techRole":"AEM Developer","pocEid":"rafael.t.mendoza","status":"CV Requested","details":"Junior slot, AEM components","groupNumber":5,"createdAt":"<generated-timestamp>"}
+
+outbound calls: none
+
+`;
+
+exports[`POST /api/project-reachouts > invalid input › eid that is only a domain 1`] = `
+
+POST /api/project-reachouts
+credentials: group 5 POC (rafael.t.mendoza, role poc)
+request body:
+  {
+    "eid": "@accenture.com",
+    "projectName": "Harborline Insurance Portal",
+    "techRole": "AEM Developer",
+    "pocEid": "rafael.t.mendoza",
+    "status": "CV Requested",
+    "details": "Junior slot, AEM components",
+    "groupNumber": 5
+  }
+
+status: 400
+content-type: application/json; charset=utf-8
+access-control-allow-origin: *
+x-powered-by: Express
+response body:
+  {
+    "error": "eid required"
+  }
+
+data files: unchanged
+
+outbound calls: none
+
+`;
+
+exports[`POST /api/project-reachouts > invalid input › malformed JSON body 1`] = `
+
+POST /api/project-reachouts
+credentials: group 5 POC (rafael.t.mendoza, role poc)
+request body (raw):
+  {"broken": 
+
+status: 400
+content-type: text/html; charset=utf-8
+access-control-allow-origin: *
+x-powered-by: Express
+response body:
+  <!DOCTYPE html>
+  <html lang="en">
+  <head>
+  <meta charset="utf-8">
+  <title>Error</title>
+  </head>
+  <body>
+  <pre>SyntaxError: Unexpected end of JSON input<br> &nbsp; &nbsp;at <stack trace removed></pre>
+  </body>
+  </html>
+  
+
+data files: unchanged
+
+outbound calls: none
+
+`;
+
+exports[`POST /api/project-reachouts > invalid input › missing projectName, techRole and pocEid 1`] = `
+
+POST /api/project-reachouts
+credentials: group 5 POC (rafael.t.mendoza, role poc)
+request body:
+  {
+    "eid": "jomar.c.pascual"
+  }
+
+status: 400
+content-type: application/json; charset=utf-8
+access-control-allow-origin: *
+x-powered-by: Express
+response body:
+  {
+    "error": "projectName, techRole, pocEid required"
+  }
+
+data files: unchanged
+
+outbound calls: none
+
+`;
+
+exports[`POST /api/project-reachouts > invalid input › no body 1`] = `
+
+POST /api/project-reachouts
+credentials: group 5 POC (rafael.t.mendoza, role poc)
+
+status: 400
+content-type: application/json; charset=utf-8
+access-control-allow-origin: *
+x-powered-by: Express
+response body:
+  {
+    "error": "eid, projectName, techRole, pocEid required"
+  }
+
+data files: unchanged
+
+outbound calls: none
+
+`;
+
+exports[`POST /api/project-reachouts > invalid input › unknown status is accepted 1`] = `
+
+POST /api/project-reachouts
+credentials: group 5 POC (rafael.t.mendoza, role poc)
+request body:
+  {
+    "eid": "jomar.c.pascual",
+    "projectName": "Harborline Insurance Portal",
+    "techRole": "AEM Developer",
+    "pocEid": "rafael.t.mendoza",
+    "status": "Teleported",
+    "details": "Junior slot, AEM components",
+    "groupNumber": 5
+  }
+
+status: 201
+content-type: application/json; charset=utf-8
+access-control-allow-origin: *
+x-powered-by: Express
+response body:
+  {
+    "id": 6,
+    "eid": "jomar.c.pascual",
+    "projectName": "Harborline Insurance Portal",
+    "techRole": "AEM Developer",
+    "pocEid": "rafael.t.mendoza",
+    "status": "Teleported",
+    "details": "Junior slot, AEM components",
+    "groupNumber": 5,
+    "createdAt": "<generated-timestamp>"
+  }
+
+data files:
+  db.json: modified
+    raw text diff:
+      @@ -600,4 +600,15 @@
+             "groupNumber": null,
+             "createdAt": "2026-11-05T01:40:15.330Z"
+      +    },
+      +    {
+      +      "id": 6,
+      +      "eid": "jomar.c.pascual",
+      +      "projectName": "Harborline Insurance Portal",
+      +      "techRole": "AEM Developer",
+      +      "pocEid": "rafael.t.mendoza",
+      +      "status": "Teleported",
+      +      "details": "Junior slot, AEM components",
+      +      "groupNumber": 5,
+      +      "createdAt": "<generated-timestamp>"
+           }
+         ],
+    parsed JSON diff:
+      + /project-reachouts[id=6] (at index 5): {"id":6,"eid":"jomar.c.pascual","projectName":"Harborline Insurance Portal","techRole":"AEM Developer","pocEid":"rafael.t.mendoza","status":"Teleported","details":"Junior slot, AEM components","groupNumber":5,"createdAt":"<generated-timestamp>"}
+
+outbound calls: none
+
+`;
+
+exports[`POST /api/project-reachouts > no auth 1`] = `
+
+POST /api/project-reachouts
+credentials: none
+request body:
+  {
+    "eid": "jomar.c.pascual",
+    "projectName": "Harborline Insurance Portal",
+    "techRole": "AEM Developer",
+    "pocEid": "rafael.t.mendoza",
+    "status": "CV Requested",
+    "details": "Junior slot, AEM components",
+    "groupNumber": 5
+  }
+
+=> identical to the happy path (creates a reachout (as the reachouts page sends it)): same status, body, data-file changes and outbound calls
+
+`;
+
+exports[`POST /api/project-reachouts > not found › eid not on the roster is accepted, group taken from the body 1`] = `
+
+POST /api/project-reachouts
+credentials: group 5 POC (rafael.t.mendoza, role poc)
+request body:
+  {
+    "eid": "nobody.here",
+    "projectName": "Harborline Insurance Portal",
+    "techRole": "AEM Developer",
+    "pocEid": "rafael.t.mendoza",
+    "status": "CV Requested",
+    "details": "Junior slot, AEM components",
+    "groupNumber": 2
+  }
+
+status: 201
+content-type: application/json; charset=utf-8
+access-control-allow-origin: *
+x-powered-by: Express
+response body:
+  {
+    "id": 6,
+    "eid": "nobody.here",
+    "projectName": "Harborline Insurance Portal",
+    "techRole": "AEM Developer",
+    "pocEid": "rafael.t.mendoza",
+    "status": "CV Requested",
+    "details": "Junior slot, AEM components",
+    "groupNumber": 2,
+    "createdAt": "<generated-timestamp>"
+  }
+
+data files:
+  db.json: modified
+    raw text diff:
+      @@ -600,4 +600,15 @@
+             "groupNumber": null,
+             "createdAt": "2026-11-05T01:40:15.330Z"
+      +    },
+      +    {
+      +      "id": 6,
+      +      "eid": "nobody.here",
+      +      "projectName": "Harborline Insurance Portal",
+      +      "techRole": "AEM Developer",
+      +      "pocEid": "rafael.t.mendoza",
+      +      "status": "CV Requested",
+      +      "details": "Junior slot, AEM components",
+      +      "groupNumber": 2,
+      +      "createdAt": "<generated-timestamp>"
+           }
+         ],
+    parsed JSON diff:
+      + /project-reachouts[id=6] (at index 5): {"id":6,"eid":"nobody.here","projectName":"Harborline Insurance Portal","techRole":"AEM Developer","pocEid":"rafael.t.mendoza","status":"CV Requested","details":"Junior slot, AEM components","groupNumber":2,"createdAt":"<generated-timestamp>"}
+
+outbound calls: none
+
+`;
+
+exports[`POST /api/project-reachouts > not found › groupNumber that disagrees with the roster is accepted 1`] = `
+
+POST /api/project-reachouts
+credentials: group 5 POC (rafael.t.mendoza, role poc)
+request body:
+  {
+    "eid": "jomar.c.pascual",
+    "projectName": "Harborline Insurance Portal",
+    "techRole": "AEM Developer",
+    "pocEid": "rafael.t.mendoza",
+    "status": "CV Requested",
+    "details": "Junior slot, AEM components",
+    "groupNumber": 1
+  }
+
+status: 201
+content-type: application/json; charset=utf-8
+access-control-allow-origin: *
+x-powered-by: Express
+response body:
+  {
+    "id": 6,
+    "eid": "jomar.c.pascual",
+    "projectName": "Harborline Insurance Portal",
+    "techRole": "AEM Developer",
+    "pocEid": "rafael.t.mendoza",
+    "status": "CV Requested",
+    "details": "Junior slot, AEM components",
+    "groupNumber": 1,
+    "createdAt": "<generated-timestamp>"
+  }
+
+data files:
+  db.json: modified
+    raw text diff:
+      @@ -600,4 +600,15 @@
+             "groupNumber": null,
+             "createdAt": "2026-11-05T01:40:15.330Z"
+      +    },
+      +    {
+      +      "id": 6,
+      +      "eid": "jomar.c.pascual",
+      +      "projectName": "Harborline Insurance Portal",
+      +      "techRole": "AEM Developer",
+      +      "pocEid": "rafael.t.mendoza",
+      +      "status": "CV Requested",
+      +      "details": "Junior slot, AEM components",
+      +      "groupNumber": 1,
+      +      "createdAt": "<generated-timestamp>"
+           }
+         ],
+    parsed JSON diff:
+      + /project-reachouts[id=6] (at index 5): {"id":6,"eid":"jomar.c.pascual","projectName":"Harborline Insurance Portal","techRole":"AEM Developer","pocEid":"rafael.t.mendoza","status":"CV Requested","details":"Junior slot, AEM components","groupNumber":1,"createdAt":"<generated-timestamp>"}
+
+outbound calls: none
+
+`;
+
+exports[`POST /api/project-reachouts > not found › project-reachouts collection missing 1`] = `
+
+POST /api/project-reachouts
+credentials: group 5 POC (rafael.t.mendoza, role poc)
+request body:
+  {
+    "eid": "jomar.c.pascual",
+    "projectName": "Harborline Insurance Portal",
+    "techRole": "AEM Developer",
+    "pocEid": "rafael.t.mendoza",
+    "status": "CV Requested",
+    "details": "Junior slot, AEM components",
+    "groupNumber": 5
+  }
+
+status: 201
+content-type: application/json; charset=utf-8
+access-control-allow-origin: *
+x-powered-by: Express
+response body:
+  {
+    "id": 1,
+    "eid": "jomar.c.pascual",
+    "projectName": "Harborline Insurance Portal",
+    "techRole": "AEM Developer",
+    "pocEid": "rafael.t.mendoza",
+    "status": "CV Requested",
+    "details": "Junior slot, AEM components",
+    "groupNumber": 5,
+    "createdAt": "<generated-timestamp>"
+  }
+
+data files:
+  db.json: modified
+    raw text diff:
+      @@ -565,4 +565,17 @@
+             "deletedAt": "2026-11-03T02:05:40.017Z"
+           }
+      +  ],
+      +  "project-reachouts": [
+      +    {
+      +      "id": 1,
+      +      "eid": "jomar.c.pascual",
+      +      "projectName": "Harborline Insurance Portal",
+      +      "techRole": "AEM Developer",
+      +      "pocEid": "rafael.t.mendoza",
+      +      "status": "CV Requested",
+      +      "details": "Junior slot, AEM components",
+      +      "groupNumber": 5,
+      +      "createdAt": "<generated-timestamp>"
+      +    }
+         ]
+       }
+    parsed JSON diff:
+      + /project-reachouts: [{"id":1,"eid":"jomar.c.pascual","projectName":"Harborline Insurance Portal","techRole":"AEM Developer","pocEid":"rafael.t.mendoza","status":"CV Requested","details":"Junior slot, AEM components","groupNumber":5,"createdAt":"<generated-timestamp>"}]
+
+outbound calls: none
+
+`;
+
+exports[`POST /api/project-reachouts > wrong role 1`] = `
+
+POST /api/project-reachouts
+credentials: no-group new joiner (paolo.d.ramos, role viewer)
+request body:
+  {
+    "eid": "jomar.c.pascual",
+    "projectName": "Harborline Insurance Portal",
+    "techRole": "AEM Developer",
+    "pocEid": "rafael.t.mendoza",
+    "status": "CV Requested",
+    "details": "Junior slot, AEM components",
+    "groupNumber": 5
+  }
+
+=> identical to the happy path (creates a reachout (as the reachouts page sends it)): same status, body, data-file changes and outbound calls
+
+`;
