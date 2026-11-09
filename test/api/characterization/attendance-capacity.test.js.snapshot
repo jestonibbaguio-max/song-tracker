@@ -190,7 +190,7 @@ x-powered-by: Express
 response body:
   [
     {
-      "id": "1",
+      "id": 1,
       "eid": "rafael.t.mendoza",
       "year": 2026,
       "month": 10,
@@ -199,7 +199,7 @@ response body:
       "location": "Riverside Tech Tower 2"
     },
     {
-      "id": "2",
+      "id": 2,
       "eid": "liza.m.navarro",
       "year": 2026,
       "month": 10,
@@ -207,7 +207,7 @@ response body:
       "status": "Present"
     },
     {
-      "id": "3",
+      "id": 3,
       "eid": "jomar.c.pascual",
       "year": 2026,
       "month": 10,
@@ -215,7 +215,7 @@ response body:
       "status": "Present"
     },
     {
-      "id": "4",
+      "id": 4,
       "eid": "teresa.villanueva",
       "year": 2026,
       "month": 10,
@@ -301,7 +301,7 @@ x-powered-by: Express
 response body:
   [
     {
-      "id": "1",
+      "id": 1,
       "eid": "rafael.t.mendoza",
       "year": 2026,
       "month": 10,
@@ -310,7 +310,7 @@ response body:
       "location": "Riverside Tech Tower 2"
     },
     {
-      "id": "2",
+      "id": 2,
       "eid": "liza.m.navarro",
       "year": 2026,
       "month": 10,
@@ -318,7 +318,7 @@ response body:
       "status": "Present"
     },
     {
-      "id": "3",
+      "id": 3,
       "eid": "jomar.c.pascual",
       "year": 2026,
       "month": 10,
@@ -326,7 +326,7 @@ response body:
       "status": "Present"
     },
     {
-      "id": "4",
+      "id": 4,
       "eid": "teresa.villanueva",
       "year": 2026,
       "month": 10,

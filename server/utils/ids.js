@@ -4,4 +4,15 @@ function nextId(arr) {
   return (arr.reduce((m, r) => Math.max(m, Number(r.id) || 0), 0)) + 1;
 }
 
-module.exports = { nextId };
+/**
+ * A stored id as the API returns it: a numeric string ("1") becomes a number;
+ * anything else stays as it is, e.g. the random attendance ids that the SQLite
+ * import drops (docs/sqlite-migration-plan.md, decision 6).
+ */
+function numericId(id) {
+  if (typeof id !== 'string' || id.trim() === '') return id;
+  const n = Number(id);
+  return Number.isFinite(n) ? n : id;
+}
+
+module.exports = { nextId, numericId };
