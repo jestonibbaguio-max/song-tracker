@@ -1,7 +1,7 @@
 // Onboarding resources and skill options, through the onboarding store
 // (list/append/update/remove; each call reads the roster again). The number and
 // order of roster reads and writes per request are exactly as before, and so
-// are the try/catch boundaries. Bugs H4, L5, L9, L10, M3, M5, M10 and M15 in
+// are the try/catch boundaries. Bugs H4, L5, L9, L10, M3, M10 and M15 in
 // docs/found-bugs.md are kept.
 const repository = require('./onboarding.repository');
 const { normalizeEid } = require('../../utils/eid');
@@ -114,24 +114,27 @@ function validateOnboardingPayload(payload, requireDates = true) {
   return '';
 }
 
+/**
+ * Every skill on the roster, sorted. Records are read the way the resources
+ * list reads them (camelCase first, then snake_case), so skills on camelCase
+ * records count too (M5).
+ */
 function getSkillOptions() {
-  const records = repository.list();
+  const records = repository.list().map(formatOnboardingResource);
   const skills = new Set();
 
   records.forEach((record) => {
-    if (record.primary_skill) {
-      skills.add(record.primary_skill);
+    if (record.primarySkill) {
+      skills.add(record.primarySkill);
     }
-    if (record.secondary_skill) {
-      skills.add(record.secondary_skill);
+    if (record.secondarySkill) {
+      skills.add(record.secondarySkill);
     }
-    if (Array.isArray(record.another_skills)) {
-      record.another_skills.forEach((skill) => {
-        if (skill) {
-          skills.add(skill);
-        }
-      });
-    }
+    record.anotherSkills.forEach((skill) => {
+      if (skill) {
+        skills.add(skill);
+      }
+    });
   });
 
   return [...skills].sort((a, b) => a.localeCompare(b));
