@@ -1,22 +1,7 @@
-// The competency-records collection in db.json. load()/save() go through the
-// db.json file repository; recordsOf()/setRecords() are pure functions on the
-// loaded db object (the stored array itself, or a new [] when missing).
-const dbFile = require('../../persistence/json/db-file.repository');
+// The competency store for the configured backend (docs/sqlite-migration-plan.md).
+// read(fn) / write(fn) hand fn a session; see persistence/json/competency.store.js.
+const { selectStore } = require('../../persistence/select-store');
 
-function load() {
-  return dbFile.loadDb();
-}
-
-function save(db) {
-  dbFile.saveDb(db);
-}
-
-function recordsOf(db) {
-  return db['competency-records'] || [];
-}
-
-function setRecords(db, records) {
-  db['competency-records'] = records;
-}
-
-module.exports = { load, save, recordsOf, setRecords };
+module.exports = selectStore('competency', ['read', 'write'], {
+  json: () => require('../../persistence/json/competency.store'),
+});
