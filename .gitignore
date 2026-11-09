@@ -14,6 +14,7 @@ ng-serve*.log
 node-api*.log
 creds.md
 secret/
+server/data/*.sqlite
 server/data/*.sqlite-shm
 server/data/*.sqlite-wal
 
