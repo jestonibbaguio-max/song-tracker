@@ -10,13 +10,13 @@ const dropCollection = (name) => editDb((db) => { delete db[name]; });
 // ── Lookup lists ─────────────────────────────────────────────────────────────
 
 describeEndpoint('GET /api/attendance-options', {
-  happy: { 'lists attendance statuses (ids are strings)': {} },
+  happy: { 'lists attendance statuses (ids as numbers)': {} },
   invalid: { 'malformed JSON body': MALFORMED_JSON },
   notFound: { 'attendance-options collection missing': { setup: dropCollection('attendance-options') } },
 });
 
 describeEndpoint('GET /api/office-locations', {
-  happy: { 'lists office locations (ids are strings)': {} },
+  happy: { 'lists office locations (ids as numbers)': {} },
   invalid: { 'malformed JSON body': MALFORMED_JSON },
   notFound: { 'office-locations collection missing': { setup: dropCollection('office-locations') } },
 });
@@ -54,7 +54,7 @@ describeEndpoint('POST /api/attendance', {
       body: { eid: 'rafael.t.mendoza', year: 2026, month: 10, day: 27, status: 'Absent' },
     },
     'client id is overwritten by the server id': { body: { ...rtoCell, id: 1 } },
-    'non-object JSON (array) is spread into the record': { body: ['a', 'b'] },
+    'non-object JSON (array) stores no fields': { body: ['a', 'b'] },
     'no body': {},
     'malformed JSON body': MALFORMED_JSON,
   },
@@ -84,7 +84,7 @@ describeEndpoint('PATCH /api/attendance/:id', {
     },
   },
   invalid: {
-    'arbitrary fields are merged; id cannot be changed': { path: '/api/attendance/6', body: { status: 'Nope', eid: 'nobody.here', id: 99, extra: true } },
+    'any status and eid are merged, unknown fields dropped; id cannot be changed': { path: '/api/attendance/6', body: { status: 'Nope', eid: 'nobody.here', id: 99, extra: true } },
     'empty body still rewrites the record': { path: '/api/attendance/2', body: {} },
     // The same request, pinning db.json itself: the stored id "2" is rewritten
     // as the number 2 (bug M6), which the logical diff of the stores can't show.
@@ -141,7 +141,7 @@ describeEndpoint('POST /api/capacity-entries', {
   invalid: {
     'missing eid': { body: { sprintName: 'Sprint 3', cadence: 4 } },
     'non-numeric cadence on a new entry becomes 0': { body: { sprintName: 'Sprint 3', eid: 'liza.m.navarro', cadence: 'four' } },
-    'non-numeric cadence on an existing entry is stored as null': { body: { sprintName: 'Sprint 2', eid: 'liza.m.navarro', cadence: 'four' } },
+    'non-numeric cadence on an existing entry becomes 0': { body: { sprintName: 'Sprint 2', eid: 'liza.m.navarro', cadence: 'four' } },
     'negative and fractional values are accepted': { body: { sprintName: 'Sprint 3', eid: 'liza.m.navarro', cadence: -2, admin: 0.5 } },
     'eid is not normalised, so a differently-cased eid creates a second entry': {
       body: { sprintName: 'Sprint 2', eid: 'Rafael.T.Mendoza', cadence: 1 },

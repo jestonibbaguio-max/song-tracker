@@ -68,7 +68,7 @@ All routes take and return JSON. "Store" is the file the route reads and writes 
 | POST | `/api/tasks` | `data/tasks.json` | `{ title, status? }` → 201. `title` is required |
 | PATCH | `/api/tasks/:id` | `data/tasks.json` | `{ title?, status? }`. 400 if either is an empty string, 404 if the id doesn't exist |
 | DELETE | `/api/tasks/:id` | `data/tasks.json` | `{ deleted: boolean }` (always 200) |
-| GET | `/api/skill-options` | `custom-onboarding.json` | Sorted, de-duplicated list of skills (see the snake_case bug in §8) |
+| GET | `/api/skill-options` | `custom-onboarding.json` | Sorted, de-duplicated list of skills from every roster record (camelCase or snake_case keys) |
 
 ### Onboarding resources — `persistence/json/roster-file.repository.js`
 
@@ -99,7 +99,7 @@ Each of these routes loads all of `db.json` (~185 KB), changes one collection, a
 | `planner-tasks` | GET (`?boardId`), POST, PATCH `/:id`, DELETE `/:id` | **None.** The body is spread into the record and the server sets `createdAt`/`updatedAt` |
 | `deletion-logs` | GET (`?eid`), POST | **None.** The server adds `deletedAt` |
 | `project-reachouts` | GET (`?group`), POST, PATCH `/:id`, DELETE `/:id` | Requires `eid`, `projectName`, `techRole`, `pocEid`. EIDs are normalised, `status` defaults to `CV Requested`, `groupNumber` must be 1–6 or it becomes null |
-| `competency-records` | GET (`?group`, default `5`), PATCH `/:eid` | GET joins the group's members from `custom-onboarding.json` with any saved competency rows. PATCH upserts by eid and merges the body without validation |
+| `competency-records` | GET (`?group`, default `5`), PATCH `/:eid` | GET joins the group's members from `custom-onboarding.json` with any saved competency rows. PATCH upserts by eid and merges the body's competency fields without validation (`eid`, `name`, `clLevel` and unknown fields are ignored) |
 
 ### Test bench (not used by the Angular app)
 
@@ -251,8 +251,8 @@ These services return `of(...)` with fake delays and say in comments which endpo
 
 These are things I saw while reading. None of them have been changed.
 
-1. **No auth, open CORS, and no validation on several write routes.** `POST/PATCH /api/attendance`, `POST/PATCH /api/planner-tasks`, `POST /api/deletion-logs`, and `PATCH /api/competency-records/:eid` spread `req.body` straight into stored records, so a client can write any fields, including overwriting `createdAt`.
-2. **`getSkillOptions()` reads only snake_case keys** (`primary_skill`, `another_skills`, [onboarding.service.js](../server/features/onboarding/onboarding.service.js)), so skills from records created through the API (stored in camelCase) never appear. The frontend doesn't call this endpoint, which hides the bug.
+1. **No auth, open CORS, and no validation on several write routes.** `POST/PATCH /api/attendance`, `POST/PATCH /api/planner-tasks`, `POST /api/deletion-logs`, and `PATCH /api/competency-records/:eid` accept any values for their fields. Since Phase 3 of the SQLite migration they store only their collection's fields ([server/utils/fields.js](../server/utils/fields.js)) and ignore a client's `id` and timestamps, but nothing checks the values.
+2. **Fixed in Phase 3: `getSkillOptions()` read only snake_case keys.** It now reads every record through `formatOnboardingResource` ([onboarding.format.js](../server/features/onboarding/onboarding.format.js)), like the resources list, so skills on camelCase records appear too. The frontend doesn't call this endpoint.
 3. **Changing an EID through PATCH duplicates the resource.** The old record stays, which `updateResource` in [onboarding.service.js](../server/features/onboarding/onboarding.service.js) does on purpose and the README documents. It's still surprising.
 4. **The attendance location sticks around.** When a cell changes from `RTO` to another status, the client sends `{ status }` without `location` (`undefined` is dropped from JSON), and the server merges, so the old `location` stays on the stored record.
 5. **Unknown `/api` GETs return `index.html` with 200** because of the SPA catch-all (§3).

@@ -145,6 +145,18 @@ response body:
       "secondarySkill": "React Native",
       "secondaryProficiency": "P3",
       "retakeDate": ""
+    },
+    {
+      "name": "nina.g.castro",
+      "clLevel": "",
+      "eid": "nina.g.castro",
+      "primarySkill": "",
+      "primaryProficiency": "N/A",
+      "recentRetakeDate": "",
+      "nextRetakeDate": "",
+      "secondarySkill": "",
+      "secondaryProficiency": "N/A",
+      "retakeDate": ""
     }
   ]
 
@@ -212,6 +224,18 @@ response body:
       "nextRetakeDate": "",
       "secondarySkill": "AEM",
       "secondaryProficiency": "P3",
+      "retakeDate": ""
+    },
+    {
+      "name": "kevin.r.lim",
+      "clLevel": "",
+      "eid": "kevin.r.lim",
+      "primarySkill": "",
+      "primaryProficiency": "N/A",
+      "recentRetakeDate": "",
+      "nextRetakeDate": "",
+      "secondarySkill": "",
+      "secondaryProficiency": "N/A",
       "retakeDate": ""
     }
   ]
@@ -281,6 +305,18 @@ response body:
       "secondarySkill": "AEM",
       "secondaryProficiency": "P3",
       "retakeDate": ""
+    },
+    {
+      "name": "kevin.r.lim",
+      "clLevel": "",
+      "eid": "kevin.r.lim",
+      "primarySkill": "",
+      "primaryProficiency": "N/A",
+      "recentRetakeDate": "",
+      "nextRetakeDate": "",
+      "secondarySkill": "",
+      "secondaryProficiency": "N/A",
+      "retakeDate": ""
     }
   ]
 
@@ -291,7 +327,7 @@ outbound calls: none
 
 `;
 
-exports[`GET /api/competency-records > invalid input › group=0 matches nothing 1`] = `
+exports[`GET /api/competency-records > invalid input › group=0 lists members with no group (bug L17) 1`] = `
 
 GET /api/competency-records?group=0
 credentials: group 5 POC (rafael.t.mendoza, role poc)
@@ -346,6 +382,86 @@ response body:
   </body>
   </html>
   
+
+stored data: unchanged
+data files: unchanged
+
+outbound calls: none
+
+`;
+
+exports[`GET /api/competency-records > invalid input › name and clLevel sent in a PATCH don't replace the roster values (bug M8) 1`] = `
+
+GET /api/competency-records?group=5
+credentials: group 5 POC (rafael.t.mendoza, role poc)
+
+status: 200
+content-type: application/json; charset=utf-8
+access-control-allow-origin: *
+x-powered-by: Express
+response body:
+  [
+    {
+      "name": "Liza Navarro",
+      "clLevel": "12",
+      "eid": "liza.m.navarro",
+      "primarySkill": "Angular",
+      "primaryProficiency": "P2",
+      "recentRetakeDate": "2026-10-22",
+      "nextRetakeDate": "",
+      "secondarySkill": "TBD",
+      "secondaryProficiency": "TBD",
+      "retakeDate": ""
+    },
+    {
+      "name": "Jomar Pascual",
+      "clLevel": "11",
+      "eid": "jomar.c.pascual",
+      "primarySkill": "AEM",
+      "primaryProficiency": "P1",
+      "recentRetakeDate": "2026-10-20",
+      "nextRetakeDate": "2026-11-17",
+      "secondarySkill": "",
+      "secondaryProficiency": "N/A",
+      "retakeDate": ""
+    },
+    {
+      "name": "Teresa Villanueva",
+      "clLevel": "9",
+      "eid": "teresa.villanueva",
+      "primarySkill": "AEM",
+      "primaryProficiency": "P2",
+      "recentRetakeDate": "2026-09-28",
+      "nextRetakeDate": "2026-11-12",
+      "secondarySkill": "Java",
+      "secondaryProficiency": "P1",
+      "retakeDate": ""
+    },
+    {
+      "name": "Rafael Mendoza",
+      "clLevel": "7",
+      "eid": "rafael.t.mendoza",
+      "primarySkill": "Angular",
+      "primaryProficiency": "P3+",
+      "recentRetakeDate": "2026-08-20",
+      "nextRetakeDate": "",
+      "secondarySkill": "AEM",
+      "secondaryProficiency": "P3",
+      "retakeDate": ""
+    },
+    {
+      "name": "kevin.r.lim",
+      "clLevel": "",
+      "eid": "kevin.r.lim",
+      "primarySkill": "",
+      "primaryProficiency": "N/A",
+      "recentRetakeDate": "",
+      "nextRetakeDate": "",
+      "secondarySkill": "",
+      "secondaryProficiency": "N/A",
+      "retakeDate": ""
+    }
+  ]
 
 stored data: unchanged
 data files: unchanged
@@ -440,6 +556,18 @@ response body:
       "secondarySkill": "",
       "secondaryProficiency": "N/A",
       "retakeDate": ""
+    },
+    {
+      "name": "kevin.r.lim",
+      "clLevel": "",
+      "eid": "kevin.r.lim",
+      "primarySkill": "",
+      "primaryProficiency": "N/A",
+      "recentRetakeDate": "",
+      "nextRetakeDate": "",
+      "secondarySkill": "",
+      "secondaryProficiency": "N/A",
+      "retakeDate": ""
     }
   ]
 
@@ -460,7 +588,20 @@ content-type: application/json; charset=utf-8
 access-control-allow-origin: *
 x-powered-by: Express
 response body:
-  []
+  [
+    {
+      "name": "kevin.r.lim",
+      "clLevel": "",
+      "eid": "kevin.r.lim",
+      "primarySkill": "",
+      "primaryProficiency": "N/A",
+      "recentRetakeDate": "",
+      "nextRetakeDate": "",
+      "secondarySkill": "",
+      "secondaryProficiency": "N/A",
+      "retakeDate": ""
+    }
+  ]
 
 data files:
   custom-onboarding.json: created
@@ -919,7 +1060,7 @@ outbound calls: none
 
 `;
 
-exports[`PATCH /api/competency-records/:eid > invalid input › any value and any field are accepted 1`] = `
+exports[`PATCH /api/competency-records/:eid > invalid input › any value is accepted; unknown fields dropped 1`] = `
 
 PATCH /api/competency-records/liza.m.navarro
 credentials: group 5 POC (rafael.t.mendoza, role poc)
@@ -942,38 +1083,11 @@ response body:
     "nextRetakeDate": "",
     "secondarySkill": "TBD",
     "secondaryProficiency": "TBD",
-    "retakeDate": "",
-    "isAdmin": true
+    "retakeDate": ""
   }
 
 stored data:
   ~ /competency-records[eid="liza.m.navarro"]/primaryProficiency: "P2" → "P99"
-  + /competency-records[eid="liza.m.navarro"]/isAdmin: true
-data files: unchanged
-
-outbound calls: none
-
-`;
-
-exports[`PATCH /api/competency-records/:eid > invalid input › body that changes eid: row is renamed and the response body is empty 1`] = `
-
-PATCH /api/competency-records/liza.m.navarro
-credentials: group 5 POC (rafael.t.mendoza, role poc)
-request body:
-  {
-    "eid": "someone.else"
-  }
-
-status: 200
-content-type: application/json; charset=utf-8
-access-control-allow-origin: *
-x-powered-by: Express
-response body:
-  (empty)
-
-stored data:
-  - /competency-records[eid="liza.m.navarro"]: {"eid":"liza.m.navarro","primarySkill":"Angular","primaryProficiency":"P2","recentRetakeDate":"2026-10-22","nextRetakeDate":"","secondarySkill":"TBD","secondaryProficiency":"TBD","retakeDate":""}
-  + /competency-records[eid="someone.else"] (at index 3): {"eid":"someone.else","primarySkill":"Angular","primaryProficiency":"P2","recentRetakeDate":"2026-10-22","nextRetakeDate":"","secondarySkill":"TBD","secondaryProficiency":"TBD","retakeDate":""}
 data files: unchanged
 
 outbound calls: none
@@ -1007,6 +1121,38 @@ outbound calls: none
 
 `;
 
+exports[`PATCH /api/competency-records/:eid > invalid input › eid in the body is ignored (bug M8) 1`] = `
+
+PATCH /api/competency-records/liza.m.navarro
+credentials: group 5 POC (rafael.t.mendoza, role poc)
+request body:
+  {
+    "eid": "someone.else"
+  }
+
+status: 200
+content-type: application/json; charset=utf-8
+access-control-allow-origin: *
+x-powered-by: Express
+response body:
+  {
+    "eid": "liza.m.navarro",
+    "primarySkill": "Angular",
+    "primaryProficiency": "P2",
+    "recentRetakeDate": "2026-10-22",
+    "nextRetakeDate": "",
+    "secondarySkill": "TBD",
+    "secondaryProficiency": "TBD",
+    "retakeDate": ""
+  }
+
+stored data: unchanged
+data files: unchanged
+
+outbound calls: none
+
+`;
+
 exports[`PATCH /api/competency-records/:eid > invalid input › malformed JSON body 1`] = `
 
 PATCH /api/competency-records/liza.m.navarro
@@ -1030,6 +1176,39 @@ response body:
   </body>
   </html>
   
+
+stored data: unchanged
+data files: unchanged
+
+outbound calls: none
+
+`;
+
+exports[`PATCH /api/competency-records/:eid > invalid input › name and clLevel in the body are ignored (bug M8) 1`] = `
+
+PATCH /api/competency-records/liza.m.navarro
+credentials: group 5 POC (rafael.t.mendoza, role poc)
+request body:
+  {
+    "name": "Hidden Name",
+    "clLevel": "1"
+  }
+
+status: 200
+content-type: application/json; charset=utf-8
+access-control-allow-origin: *
+x-powered-by: Express
+response body:
+  {
+    "eid": "liza.m.navarro",
+    "primarySkill": "Angular",
+    "primaryProficiency": "P2",
+    "recentRetakeDate": "2026-10-22",
+    "nextRetakeDate": "",
+    "secondarySkill": "TBD",
+    "secondaryProficiency": "TBD",
+    "retakeDate": ""
+  }
 
 stored data: unchanged
 data files: unchanged

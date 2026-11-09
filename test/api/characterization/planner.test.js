@@ -9,7 +9,7 @@ const dropCollection = (name) => editDb((db) => { delete db[name]; });
 // ── Labels and boards ────────────────────────────────────────────────────────
 
 describeEndpoint('GET /api/planner-labels', {
-  happy: { 'lists labels (mixed string and number ids, returned as stored)': {} },
+  happy: { 'lists labels (ids as numbers)': {} },
   invalid: { 'malformed JSON body': MALFORMED_JSON },
   notFound: { 'planner-labels collection missing': { setup: dropCollection('planner-labels') } },
 });
@@ -112,7 +112,7 @@ describeEndpoint('POST /api/planner-tasks', {
   invalid: {
     'empty object: boardId and bucketId stored as null': { body: {} },
     'no title, status or assignee is accepted': { body: { boardId: 1, bucketId: 4 } },
-    'client id is overwritten; arbitrary fields kept': { body: { ...newTask, id: 1, isAdmin: true } },
+    'client id is overwritten; unknown fields dropped': { body: { ...newTask, id: 1, isAdmin: true } },
     'completed flag contradicting status is accepted': { body: { ...newTask, status: 'Not started', completed: true } },
     'no body': {},
     'malformed JSON body': MALFORMED_JSON,
@@ -152,7 +152,7 @@ describeEndpoint('PATCH /api/planner-tasks/:id', {
   },
   invalid: {
     'non-numeric boardId is stored as null': { path: '/api/planner-tasks/2', body: { boardId: 'abc' } },
-    'client can overwrite createdAt and add arbitrary fields; id is kept': {
+    'client createdAt and unknown fields are ignored; id is kept': {
       path: '/api/planner-tasks/2',
       body: { id: 99, createdAt: '2020-01-01T00:00:00.000Z', isAdmin: true },
     },
@@ -224,7 +224,7 @@ describeEndpoint('POST /api/deletion-logs', {
   },
   invalid: {
     'empty object is stored with an id and deletedAt': { body: {} },
-    'unknown type and arbitrary fields are accepted': { body: { ...taskDeletionLog, type: 'anything', extra: 1 } },
+    'unknown type is accepted; unknown fields dropped': { body: { ...taskDeletionLog, type: 'anything', extra: 1 } },
     'client id and deletedAt are overwritten': { body: { ...taskDeletionLog, id: 1, deletedAt: '2020-01-01T00:00:00.000Z' } },
     'no body': {},
     'malformed JSON body': MALFORMED_JSON,

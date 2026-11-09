@@ -128,7 +128,7 @@ Dashboard content (`/api/dashboard`, which includes the sidebar nav) isn't store
 - **Your local edits change files that are committed to git.** Every save in the UI rewrites `db.json` or `custom-onboarding.json`. Check `git diff server/data` before you commit, and leave those files out unless the data change is intentional.
 - **Resetting data:** `git checkout -- server/data` restores the committed data. You can also delete `server/data/tasks.json`, which isn't tracked.
 - **Don't delete `custom-onboarding.json` to "reset" it.** The server reseeds it from `custom.csv`, but that CSV is now a training-progress sheet rather than the `EID,GROUP,Primary Skill` layout the seeder expects. I tested this on a copy: it produces 41 records that are all named `Unknown` with eid `unknown` and no group. Restore the file from git instead.
-- **Never edit the JSON files with PowerShell** (`ConvertTo-Json`, `Set-Content`, `Out-File`). They add a UTF-8 BOM. `JSON.parse` then fails, `loadDb()` silently falls back to `{}`, and every `db.json` endpoint returns empty arrays without any error. Edit them in your editor or with Node instead.
+- **Never edit the JSON files with PowerShell** (`ConvertTo-Json`, `Set-Content`, `Out-File`). They add a UTF-8 BOM. `JSON.parse` then fails, and every `db.json` endpoint returns a 500 with "db.json is not valid JSON" until the file is fixed. Nothing is written over it. Edit them in your editor or with Node instead.
 - **Run only one writer at a time.** `npm run json-api` (json-server) also writes `db.json` on port 3000. Running it alongside the Express server means lost writes, or an `EADDRINUSE` crash.
 - **The server is reachable from your network.** It listens on all interfaces, even though the log line says `127.0.0.1`, with no auth and CORS open to every origin. Be careful on shared networks.
 
@@ -138,7 +138,7 @@ Dashboard content (`/api/dashboard`, which includes the sidebar nav) isn't store
 |---|---|
 | `Error: Cannot find module 'express'` | You haven't run `npm ci` in the repo root yet, or you're running from a directory that can't see the root `node_modules` |
 | `EADDRINUSE :::3000` | Another process (often json-server, or a previous `npm run api`) is on 3000 |
-| Every `db.json` endpoint returns `[]` | `db.json` is invalid JSON, most likely because of a BOM. Run `node -e "JSON.parse(require('fs').readFileSync('server/data/db.json','utf8'))"` to see the parse error |
+| Every `db.json` endpoint returns 500 "db.json is not valid JSON" | `db.json` is invalid JSON, most likely because of a BOM. Run `node -e "JSON.parse(require('fs').readFileSync('server/data/db.json','utf8'))"` to see the parse error |
 | Resources list is full of `Unknown` | `custom-onboarding.json` was deleted and reseeded from the CSV. Run `git checkout -- server/data/custom-onboarding.json` |
 | UI on :4200 loads but has no data | The API isn't running on **3000** specifically (see the `PORT` warning above) |
 | GET `/api/something-new` returns HTML | That route doesn't exist. The SPA catch-all serves `index.html` whenever `dist/` has been built, and returns a 404 when it hasn't |

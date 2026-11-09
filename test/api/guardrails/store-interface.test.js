@@ -80,7 +80,9 @@ describe('guardrail: store selection', () => {
     const api = await startTestServer(t);
     const res = await api.request('GET', '/api/attendance-options');
     assert.equal(res.status, 200);
-    assert.deepEqual(res.body, api.readData('db.json')['attendance-options']);
+    // The stored rows, with ids as numbers ("1" → 1, bug L16).
+    const stored = api.readData('db.json')['attendance-options'].map((o) => ({ ...o, id: Number(o.id) }));
+    assert.deepEqual(res.body, stored);
   });
 });
 

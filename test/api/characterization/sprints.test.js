@@ -53,7 +53,7 @@ describeEndpoint('PATCH /api/sprints/:id', {
   },
   invalid: {
     'empty name is accepted': { path: '/api/sprints/3', body: { name: '' } },
-    'null start becomes the string "null"': { path: '/api/sprints/3', body: { start: null } },
+    'null start leaves the field unchanged': { path: '/api/sprints/3', body: { start: null } },
     'no body': { path: '/api/sprints/3' },
     'malformed JSON body': { path: '/api/sprints/3', ...MALFORMED_JSON },
   },

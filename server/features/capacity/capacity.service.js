@@ -1,14 +1,15 @@
 // Sprint capacity entries. Each call runs in one read() or write() of the
 // capacity store (one load, at most one save).
-// Bugs M1, M7, M9 and M11 in docs/found-bugs.md are kept.
+// Bugs M1, M9 and M11 in docs/found-bugs.md are kept.
 const repository = require('./capacity.repository');
+const { inColumnOrder, rowsInColumnOrder } = require('../../utils/fields');
 
 /** sprintName is the raw query value; falsy means no filter. */
 function listEntries(sprintName) {
   return repository.read((store) => {
     let entries = store.listEntries();
     if (sprintName) entries = entries.filter(e => e.sprintName === sprintName);
-    return entries;
+    return rowsInColumnOrder('capacity-entries', entries);
   });
 }
 
@@ -22,10 +23,11 @@ function upsertEntry({ sprintName, eid, cadence, admin, holiday }) {
   return repository.write((store) => {
     if (store.findEntry(sprintName, eid)) {
       const changes = {};
-      if (cadence !== undefined) changes.cadence = Number(cadence);
-      if (admin !== undefined) changes.admin = Number(admin);
-      if (holiday !== undefined) changes.holiday = Number(holiday);
-      return { entry: store.updateEntry(sprintName, eid, changes), created: false };
+      // A value that isn't a number becomes 0, the same as on a new entry (M7).
+      if (cadence !== undefined) changes.cadence = Number(cadence) || 0;
+      if (admin !== undefined) changes.admin = Number(admin) || 0;
+      if (holiday !== undefined) changes.holiday = Number(holiday) || 0;
+      return { entry: inColumnOrder('capacity-entries', store.updateEntry(sprintName, eid, changes)), created: false };
     }
     const entry = store.insertEntry({
       sprintName,
@@ -34,7 +36,7 @@ function upsertEntry({ sprintName, eid, cadence, admin, holiday }) {
       admin: Number(admin) || 0,
       holiday: Number(holiday) || 0
     });
-    return { entry, created: true };
+    return { entry: inColumnOrder('capacity-entries', entry), created: true };
   });
 }
 

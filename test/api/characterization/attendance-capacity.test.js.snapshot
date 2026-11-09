@@ -190,7 +190,7 @@ x-powered-by: Express
 response body:
   [
     {
-      "id": "1",
+      "id": 1,
       "eid": "rafael.t.mendoza",
       "year": 2026,
       "month": 10,
@@ -199,7 +199,7 @@ response body:
       "location": "Riverside Tech Tower 2"
     },
     {
-      "id": "2",
+      "id": 2,
       "eid": "liza.m.navarro",
       "year": 2026,
       "month": 10,
@@ -207,7 +207,7 @@ response body:
       "status": "Present"
     },
     {
-      "id": "3",
+      "id": 3,
       "eid": "jomar.c.pascual",
       "year": 2026,
       "month": 10,
@@ -215,7 +215,7 @@ response body:
       "status": "Present"
     },
     {
-      "id": "4",
+      "id": 4,
       "eid": "teresa.villanueva",
       "year": 2026,
       "month": 10,
@@ -301,7 +301,7 @@ x-powered-by: Express
 response body:
   [
     {
-      "id": "1",
+      "id": 1,
       "eid": "rafael.t.mendoza",
       "year": 2026,
       "month": 10,
@@ -310,7 +310,7 @@ response body:
       "location": "Riverside Tech Tower 2"
     },
     {
-      "id": "2",
+      "id": 2,
       "eid": "liza.m.navarro",
       "year": 2026,
       "month": 10,
@@ -318,7 +318,7 @@ response body:
       "status": "Present"
     },
     {
-      "id": "3",
+      "id": 3,
       "eid": "jomar.c.pascual",
       "year": 2026,
       "month": 10,
@@ -326,7 +326,7 @@ response body:
       "status": "Present"
     },
     {
-      "id": "4",
+      "id": 4,
       "eid": "teresa.villanueva",
       "year": 2026,
       "month": 10,
@@ -500,7 +500,7 @@ credentials: no-group new joiner (paolo.d.ramos, role viewer)
 
 `;
 
-exports[`GET /api/attendance-options > happy path › lists attendance statuses (ids are strings) 1`] = `
+exports[`GET /api/attendance-options > happy path › lists attendance statuses (ids as numbers) 1`] = `
 
 GET /api/attendance-options
 credentials: group 5 POC (rafael.t.mendoza, role poc)
@@ -512,51 +512,51 @@ x-powered-by: Express
 response body:
   [
     {
-      "id": "1",
+      "id": 1,
       "label": "Present"
     },
     {
-      "id": "2",
+      "id": 2,
       "label": "Absent"
     },
     {
-      "id": "3",
+      "id": 3,
       "label": "SL"
     },
     {
-      "id": "4",
+      "id": 4,
       "label": "VL"
     },
     {
-      "id": "5",
+      "id": 5,
       "label": "PL"
     },
     {
-      "id": "6",
+      "id": 6,
       "label": "ML"
     },
     {
-      "id": "7",
+      "id": 7,
       "label": "EH"
     },
     {
-      "id": "8",
+      "id": 8,
       "label": "BL"
     },
     {
-      "id": "9",
+      "id": 9,
       "label": "Deployed"
     },
     {
-      "id": "10",
+      "id": 10,
       "label": "RTO"
     },
     {
-      "id": "11",
+      "id": 11,
       "label": "NITC"
     },
     {
-      "id": "12",
+      "id": 12,
       "label": "Transferred"
     }
   ]
@@ -604,7 +604,7 @@ exports[`GET /api/attendance-options > no auth 1`] = `
 GET /api/attendance-options
 credentials: none
 
-=> identical to the happy path (lists attendance statuses (ids are strings)): same status, body, data-file changes and outbound calls
+=> identical to the happy path (lists attendance statuses (ids as numbers)): same status, body, data-file changes and outbound calls
 
 `;
 
@@ -632,7 +632,7 @@ exports[`GET /api/attendance-options > wrong role 1`] = `
 GET /api/attendance-options
 credentials: no-group new joiner (paolo.d.ramos, role viewer)
 
-=> identical to the happy path (lists attendance statuses (ids are strings)): same status, body, data-file changes and outbound calls
+=> identical to the happy path (lists attendance statuses (ids as numbers)): same status, body, data-file changes and outbound calls
 
 `;
 
@@ -922,7 +922,7 @@ credentials: no-group new joiner (paolo.d.ramos, role viewer)
 
 `;
 
-exports[`GET /api/office-locations > happy path › lists office locations (ids are strings) 1`] = `
+exports[`GET /api/office-locations > happy path › lists office locations (ids as numbers) 1`] = `
 
 GET /api/office-locations
 credentials: group 5 POC (rafael.t.mendoza, role poc)
@@ -934,11 +934,11 @@ x-powered-by: Express
 response body:
   [
     {
-      "id": "1",
+      "id": 1,
       "name": "Manila"
     },
     {
-      "id": "2",
+      "id": 2,
       "name": "Cebu"
     }
   ]
@@ -986,7 +986,7 @@ exports[`GET /api/office-locations > no auth 1`] = `
 GET /api/office-locations
 credentials: none
 
-=> identical to the happy path (lists office locations (ids are strings)): same status, body, data-file changes and outbound calls
+=> identical to the happy path (lists office locations (ids as numbers)): same status, body, data-file changes and outbound calls
 
 `;
 
@@ -1014,7 +1014,7 @@ exports[`GET /api/office-locations > wrong role 1`] = `
 GET /api/office-locations
 credentials: no-group new joiner (paolo.d.ramos, role viewer)
 
-=> identical to the happy path (lists office locations (ids are strings)): same status, body, data-file changes and outbound calls
+=> identical to the happy path (lists office locations (ids as numbers)): same status, body, data-file changes and outbound calls
 
 `;
 
@@ -1213,7 +1213,7 @@ outbound calls: none
 
 `;
 
-exports[`PATCH /api/attendance/:id > invalid input › arbitrary fields are merged; id cannot be changed 1`] = `
+exports[`PATCH /api/attendance/:id > invalid input › any status and eid are merged, unknown fields dropped; id cannot be changed 1`] = `
 
 PATCH /api/attendance/6
 credentials: group 5 POC (rafael.t.mendoza, role poc)
@@ -1237,14 +1237,12 @@ response body:
     "month": 10,
     "day": 28,
     "status": "Nope",
-    "location": "Harbor Point Building",
-    "extra": true
+    "location": "Harbor Point Building"
   }
 
 stored data:
   ~ /attendance[id=6]/eid: "liza.m.navarro" → "nobody.here"
   ~ /attendance[id=6]/status: "RTO" → "Nope"
-  + /attendance[id=6]/extra: true
 data files: unchanged
 
 outbound calls: none
@@ -1471,12 +1469,12 @@ access-control-allow-origin: *
 x-powered-by: Express
 response body:
   {
+    "id": 12,
     "eid": "liza.m.navarro",
     "year": 2026,
     "month": 11,
     "day": 5,
-    "status": "Present",
-    "id": 12
+    "status": "Present"
   }
 
 stored data:
@@ -1507,13 +1505,13 @@ access-control-allow-origin: *
 x-powered-by: Express
 response body:
   {
+    "id": 12,
     "eid": "jomar.c.pascual",
     "year": 2026,
     "month": 11,
     "day": 5,
     "status": "RTO",
-    "location": "Riverside Tech Tower 2",
-    "id": 12
+    "location": "Riverside Tech Tower 2"
   }
 
 stored data:
@@ -1545,13 +1543,13 @@ access-control-allow-origin: *
 x-powered-by: Express
 response body:
   {
+    "id": 12,
     "eid": "jomar.c.pascual",
     "year": 2026,
     "month": 11,
     "day": 5,
     "status": "RTO",
-    "location": "Riverside Tech Tower 2",
-    "id": 12
+    "location": "Riverside Tech Tower 2"
   }
 
 stored data:
@@ -1581,12 +1579,12 @@ access-control-allow-origin: *
 x-powered-by: Express
 response body:
   {
+    "id": 12,
     "eid": "rafael.t.mendoza",
     "year": 2026,
     "month": 10,
     "day": 27,
-    "status": "Absent",
-    "id": 12
+    "status": "Absent"
   }
 
 stored data:
@@ -1674,7 +1672,7 @@ outbound calls: none
 
 `;
 
-exports[`POST /api/attendance > invalid input › non-object JSON (array) is spread into the record 1`] = `
+exports[`POST /api/attendance > invalid input › non-object JSON (array) stores no fields 1`] = `
 
 POST /api/attendance
 credentials: group 5 POC (rafael.t.mendoza, role poc)
@@ -1690,13 +1688,11 @@ access-control-allow-origin: *
 x-powered-by: Express
 response body:
   {
-    "0": "a",
-    "1": "b",
     "id": 12
   }
 
 stored data:
-  + /attendance[id=12] (at index 11): {"0":"a","1":"b","id":12}
+  + /attendance[id=12] (at index 11): {"id":12}
 data files: unchanged
 
 outbound calls: none
@@ -1723,13 +1719,13 @@ access-control-allow-origin: *
 x-powered-by: Express
 response body:
   {
+    "id": 12,
     "eid": "nobody.here",
     "year": 2026,
     "month": 11,
     "day": 5,
     "status": "Moon base",
-    "location": "Riverside Tech Tower 2",
-    "id": 12
+    "location": "Riverside Tech Tower 2"
   }
 
 stored data:
@@ -1778,13 +1774,13 @@ access-control-allow-origin: *
 x-powered-by: Express
 response body:
   {
+    "id": 1,
     "eid": "jomar.c.pascual",
     "year": 2026,
     "month": 11,
     "day": 5,
     "status": "RTO",
-    "location": "Riverside Tech Tower 2",
-    "id": 1
+    "location": "Riverside Tech Tower 2"
   }
 
 stored data:
@@ -2104,7 +2100,7 @@ outbound calls: none
 
 `;
 
-exports[`POST /api/capacity-entries > invalid input › non-numeric cadence on an existing entry is stored as null 1`] = `
+exports[`POST /api/capacity-entries > invalid input › non-numeric cadence on an existing entry becomes 0 1`] = `
 
 POST /api/capacity-entries
 credentials: group 5 POC (rafael.t.mendoza, role poc)
@@ -2124,13 +2120,13 @@ response body:
     "id": 4,
     "sprintName": "Sprint 2",
     "eid": "liza.m.navarro",
-    "cadence": null,
+    "cadence": 0,
     "admin": 0,
     "holiday": 0
   }
 
 stored data:
-  ~ /capacity-entries[id=4]/cadence: 4 → null
+  ~ /capacity-entries[id=4]/cadence: 4 → 0
 data files: unchanged
 
 outbound calls: none

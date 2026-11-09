@@ -587,7 +587,18 @@ x-powered-by: Express
 response body:
   [
     "AEM",
-    "React Native"
+    "Angular",
+    "CSS",
+    "HTL",
+    "HTML",
+    "Java",
+    "Next.js",
+    "Node.js",
+    "React",
+    "React Native",
+    "RxJS",
+    "Sling",
+    "TypeScript"
   ]
 
 stored data: unchanged
@@ -640,7 +651,18 @@ x-powered-by: Express
 response body:
   [
     "AEM",
-    "React Native"
+    "Angular",
+    "CSS",
+    "HTL",
+    "HTML",
+    "Java",
+    "Next.js",
+    "Node.js",
+    "React",
+    "React Native",
+    "RxJS",
+    "Sling",
+    "TypeScript"
   ]
 
 data files:

@@ -3,6 +3,7 @@
 // are kept (no roster check; changing a reachout's eid keeps its old groupNumber).
 const repository = require('./reachouts.repository');
 const { normalizeEid } = require('../../utils/eid');
+const { inColumnOrder, rowsInColumnOrder } = require('../../utils/fields');
 
 const REACHOUT_DEFAULT_STATUS = 'CV Requested';
 const REACHOUT_REQUIRED_FIELDS = ['eid', 'projectName', 'techRole', 'pocEid'];
@@ -29,7 +30,7 @@ function listReachouts(group) {
   return repository.read((store) => {
     let rows = store.listRows();
     if (group) rows = rows.filter(r => String(r.groupNumber) === String(group));
-    return rows.map(r => ({ ...r, id: Number(r.id) }));
+    return rowsInColumnOrder('project-reachouts', rows.map(r => ({ ...r, id: Number(r.id) })));
   });
 }
 
@@ -40,7 +41,7 @@ function createReachout(body) {
   if (missing.length) return { error: `${missing.join(', ')} required` };
 
   return repository.write((store) => ({
-    row: store.insertRow({ ...payload, createdAt: new Date().toISOString() })
+    row: inColumnOrder('project-reachouts', store.insertRow({ ...payload, createdAt: new Date().toISOString() }))
   }));
 }
 
@@ -71,7 +72,7 @@ function updateReachout(id, body) {
     if (missing.length) return { error: `${missing.join(', ')} required` };
 
     updates.updatedAt = new Date().toISOString();
-    return { row: store.updateRow(id, updates) };
+    return { row: inColumnOrder('project-reachouts', store.updateRow(id, updates)) };
   });
 }
 
