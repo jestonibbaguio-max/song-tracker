@@ -1,6 +1,6 @@
 # SQLite migration plan
 
-**Status:** not started. This plan builds on the restructured backend from [server-restructure-plan.md](server-restructure-plan.md), so `feature/backend-refactor` has to be merged into `develop` first. Every phase branches off `develop`, and its PRs target `develop`.
+**Status:** Phase 0 done on `feature/sqlite-phase-0`, apart from the first CI run on Ubuntu. Phases 1–8 haven't started. This plan builds on the restructured backend from [server-restructure-plan.md](server-restructure-plan.md), which was merged into `develop` in `07f41a8`. Every phase branches off `develop`, and its PRs target `develop`.
 
 **Goal:** move the dashboard data (`db.json` and `custom-onboarding.json`) from whole-file JSON reads and writes to SQLite, using `better-sqlite3`. The HTTP contract stays the same, apart from storage-related bugs fixed on purpose (see "Bug scope"). The JSON backend stays for a while as a fallback that a setting can switch back to. It is then removed completely (Phase 8).
 
