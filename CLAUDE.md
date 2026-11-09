@@ -96,6 +96,6 @@ The backend is being moved from JSON files to SQLite (`better-sqlite3`), followi
 
 ## Gotchas
 
-- **Never write the JSON data files with PowerShell** (`ConvertTo-Json`, `Set-Content`, `Out-File`). They add a UTF-8 BOM, `JSON.parse` fails, `loadDb()` silently returns `{}`, and every endpoint then returns empty data. Use Node (`fs.writeFileSync(p, JSON.stringify(db, null, 2), 'utf8')`) or the Edit tool.
+- **Never write the JSON data files with PowerShell** (`ConvertTo-Json`, `Set-Content`, `Out-File`). They add a UTF-8 BOM, `JSON.parse` fails, and every `db.json` route then returns a 500 ("db.json is not valid JSON") until the file is fixed. (Before Phase 3's H2 fix it silently loaded as `{}`, and the next write wiped every other collection.) Use Node (`fs.writeFileSync(p, JSON.stringify(db, null, 2), 'utf8')`) or the Edit tool.
 - When the app runs against `npm run api`, every save goes to the real files in `server/data/`, which are committed to git. The same applies to any e2e spec that saves through a real endpoint. Check `git diff server/data` before committing.
 - Onboarding dates go over the wire as `MM/DD/YYYY`. Sprint dates use `YYYY-MM-DD`. The server normalises EIDs by lower-casing them and removing everything from `@` onwards.
