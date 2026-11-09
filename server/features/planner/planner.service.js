@@ -6,6 +6,13 @@
 // M1, M11 and the validation part of M12 in docs/found-bugs.md are kept.
 const repository = require('./planner.repository');
 const { pickWritable } = require('../../utils/fields');
+const { numericId } = require('../../utils/ids');
+
+/** A task's label ids as numbers ("5" → 5), as they're stored and returned (L16). */
+function withNumericLabels(fields) {
+  if (Array.isArray(fields.labels)) fields.labels = fields.labels.map(numericId);
+  return fields;
+}
 
 // ── Boards ───────────────────────────────────────────────────────────────────
 
@@ -65,7 +72,7 @@ function listTasks(boardId) {
 function createTask(body) {
   return repository.write((store) => {
     const now = new Date().toISOString();
-    return store.insertTask(pickWritable('planner-tasks', body), {
+    return store.insertTask(withNumericLabels(pickWritable('planner-tasks', body)), {
       boardId: Number(body.boardId),
       bucketId: Number(body.bucketId),
       createdAt: now,
@@ -82,7 +89,7 @@ function createTask(body) {
 function updateTask(id, body) {
   return repository.write((store) => {
     if (!store.findTask(id)) return null;
-    const changes = pickWritable('planner-tasks', body);
+    const changes = withNumericLabels(pickWritable('planner-tasks', body));
     if (changes.boardId !== undefined) changes.boardId = Number(changes.boardId);
     if (changes.bucketId !== undefined) changes.bucketId = Number(changes.bucketId);
     return store.updateTask(id, changes, { updatedAt: new Date().toISOString() });

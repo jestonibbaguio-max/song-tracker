@@ -709,27 +709,27 @@ x-powered-by: Express
 response body:
   [
     {
-      "id": "1",
+      "id": 1,
       "name": "Sprint Delivery",
       "color": "#a99bd4"
     },
     {
-      "id": "2",
+      "id": 2,
       "name": "Training",
       "color": "#62b8bd"
     },
     {
-      "id": "3",
+      "id": 3,
       "name": "Story Point 1",
       "color": "#f2cc8f"
     },
     {
-      "id": "4",
+      "id": 4,
       "name": "Story Point 2",
       "color": "#ee8a5b"
     },
     {
-      "id": "5",
+      "id": 5,
       "name": "Story Point 3",
       "color": "#d65f5f"
     },
@@ -901,7 +901,7 @@ response body:
       "dueDate": "2026-11-06",
       "labels": [
         1,
-        "5"
+        5
       ],
       "assignee": "teresa.villanueva",
       "checklist": [],
@@ -1034,7 +1034,7 @@ response body:
       "dueDate": "2026-11-06",
       "labels": [
         1,
-        "5"
+        5
       ],
       "assignee": "teresa.villanueva",
       "checklist": [],

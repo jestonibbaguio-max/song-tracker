@@ -512,51 +512,51 @@ x-powered-by: Express
 response body:
   [
     {
-      "id": "1",
+      "id": 1,
       "label": "Present"
     },
     {
-      "id": "2",
+      "id": 2,
       "label": "Absent"
     },
     {
-      "id": "3",
+      "id": 3,
       "label": "SL"
     },
     {
-      "id": "4",
+      "id": 4,
       "label": "VL"
     },
     {
-      "id": "5",
+      "id": 5,
       "label": "PL"
     },
     {
-      "id": "6",
+      "id": 6,
       "label": "ML"
     },
     {
-      "id": "7",
+      "id": 7,
       "label": "EH"
     },
     {
-      "id": "8",
+      "id": 8,
       "label": "BL"
     },
     {
-      "id": "9",
+      "id": 9,
       "label": "Deployed"
     },
     {
-      "id": "10",
+      "id": 10,
       "label": "RTO"
     },
     {
-      "id": "11",
+      "id": 11,
       "label": "NITC"
     },
     {
-      "id": "12",
+      "id": 12,
       "label": "Transferred"
     }
   ]
@@ -934,11 +934,11 @@ x-powered-by: Express
 response body:
   [
     {
-      "id": "1",
+      "id": 1,
       "name": "Manila"
     },
     {
-      "id": "2",
+      "id": 2,
       "name": "Cebu"
     }
   ]
