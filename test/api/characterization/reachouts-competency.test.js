@@ -101,6 +101,10 @@ describeEndpoint('GET /api/competency-records', {
     'non-numeric group matches nothing': { path: '/api/competency-records?group=abc' },
     'group=0 matches nothing': { path: '/api/competency-records?group=0' },
     'malformed JSON body': MALFORMED_JSON,
+    'a saved row with name and clLevel replaces the roster values (bug M8)': {
+      path: '/api/competency-records?group=5',
+      before: [{ method: 'PATCH', path: '/api/competency-records/liza.m.navarro', body: { name: 'Hidden Name', clLevel: '1' } }],
+    },
   },
   notFound: {
     'group with no members': { path: '/api/competency-records?group=3' },
@@ -128,6 +132,10 @@ describeEndpoint('PATCH /api/competency-records/:eid', {
     'body that changes eid: row is renamed and the response body is empty': {
       path: '/api/competency-records/liza.m.navarro',
       body: { eid: 'someone.else' },
+    },
+    'name and clLevel in the body are stored on the row (bug M8)': {
+      path: '/api/competency-records/liza.m.navarro',
+      body: { name: 'Hidden Name', clLevel: '1' },
     },
     'eid in a different case creates a second row': { path: '/api/competency-records/Liza.M.Navarro', body: { primaryProficiency: 'P1' } },
     'no body: the row is rewritten unchanged': { path: '/api/competency-records/liza.m.navarro' },

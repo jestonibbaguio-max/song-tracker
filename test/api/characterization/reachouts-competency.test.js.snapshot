@@ -291,6 +291,74 @@ outbound calls: none
 
 `;
 
+exports[`GET /api/competency-records > invalid input › a saved row with name and clLevel replaces the roster values (bug M8) 1`] = `
+
+GET /api/competency-records?group=5
+credentials: group 5 POC (rafael.t.mendoza, role poc)
+
+status: 200
+content-type: application/json; charset=utf-8
+access-control-allow-origin: *
+x-powered-by: Express
+response body:
+  [
+    {
+      "name": "Hidden Name",
+      "clLevel": "1",
+      "eid": "liza.m.navarro",
+      "primarySkill": "Angular",
+      "primaryProficiency": "P2",
+      "recentRetakeDate": "2026-10-22",
+      "nextRetakeDate": "",
+      "secondarySkill": "TBD",
+      "secondaryProficiency": "TBD",
+      "retakeDate": ""
+    },
+    {
+      "name": "Jomar Pascual",
+      "clLevel": "11",
+      "eid": "jomar.c.pascual",
+      "primarySkill": "AEM",
+      "primaryProficiency": "P1",
+      "recentRetakeDate": "2026-10-20",
+      "nextRetakeDate": "2026-11-17",
+      "secondarySkill": "",
+      "secondaryProficiency": "N/A",
+      "retakeDate": ""
+    },
+    {
+      "name": "Teresa Villanueva",
+      "clLevel": "9",
+      "eid": "teresa.villanueva",
+      "primarySkill": "AEM",
+      "primaryProficiency": "P2",
+      "recentRetakeDate": "2026-09-28",
+      "nextRetakeDate": "2026-11-12",
+      "secondarySkill": "Java",
+      "secondaryProficiency": "P1",
+      "retakeDate": ""
+    },
+    {
+      "name": "Rafael Mendoza",
+      "clLevel": "7",
+      "eid": "rafael.t.mendoza",
+      "primarySkill": "Angular",
+      "primaryProficiency": "P3+",
+      "recentRetakeDate": "2026-08-20",
+      "nextRetakeDate": "",
+      "secondarySkill": "AEM",
+      "secondaryProficiency": "P3",
+      "retakeDate": ""
+    }
+  ]
+
+stored data: unchanged
+data files: unchanged
+
+outbound calls: none
+
+`;
+
 exports[`GET /api/competency-records > invalid input › group=0 matches nothing 1`] = `
 
 GET /api/competency-records?group=0
@@ -1030,6 +1098,43 @@ response body:
   
 
 stored data: unchanged
+data files: unchanged
+
+outbound calls: none
+
+`;
+
+exports[`PATCH /api/competency-records/:eid > invalid input › name and clLevel in the body are stored on the row (bug M8) 1`] = `
+
+PATCH /api/competency-records/liza.m.navarro
+credentials: group 5 POC (rafael.t.mendoza, role poc)
+request body:
+  {
+    "name": "Hidden Name",
+    "clLevel": "1"
+  }
+
+status: 200
+content-type: application/json; charset=utf-8
+access-control-allow-origin: *
+x-powered-by: Express
+response body:
+  {
+    "eid": "liza.m.navarro",
+    "primarySkill": "Angular",
+    "primaryProficiency": "P2",
+    "recentRetakeDate": "2026-10-22",
+    "nextRetakeDate": "",
+    "secondarySkill": "TBD",
+    "secondaryProficiency": "TBD",
+    "retakeDate": "",
+    "name": "Hidden Name",
+    "clLevel": "1"
+  }
+
+stored data:
+  + /competency-records[eid="liza.m.navarro"]/name: "Hidden Name"
+  + /competency-records[eid="liza.m.navarro"]/clLevel: "1"
 data files: unchanged
 
 outbound calls: none
