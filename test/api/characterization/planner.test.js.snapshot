@@ -1348,7 +1348,7 @@ response body:
     "assignee": "andrea.s.bautista",
     "checklist": [],
     "completed": false,
-    "createdAt": "2026-10-29T02:00:00.000Z",
+    "createdAt": "2026-10-27T01:58:20.733Z",
     "updatedAt": "<generated-timestamp>",
     "completedDate": "2026-10-30",
     "notes": "",
@@ -1374,7 +1374,6 @@ stored data:
   - /planner-tasks[id=6]/labels[1]: 3
   - /planner-tasks[id=6]/checklist[id=1]: {"id":1,"text":"Write tests for a form component","done":true}
   ~ /planner-tasks[id=6]/completed: true → false
-  ~ /planner-tasks[id=6]/createdAt: "2026-10-27T01:58:20.733Z" → "2026-10-29T02:00:00.000Z"
   ~ /planner-tasks[id=6]/updatedAt: "2026-10-30T07:26:44.019Z" → "<generated-timestamp>"
   + /planner-tasks[id=6]/comments: [{"id":1,"author":"Miguel Torres","text":"Can we cover layouts too?","createdAt":"2026-11-04T05:00:00.000Z"}]
   + /planner-tasks[id=6]/description: "<p>Walk through the app router</p>"
@@ -1428,17 +1427,14 @@ response body:
       }
     ],
     "completed": false,
-    "createdAt": "2020-01-01T00:00:00.000Z",
+    "createdAt": "2026-10-27T02:11:08.940Z",
     "updatedAt": "<generated-timestamp>",
     "completedDate": "",
-    "notes": "",
-    "isAdmin": true
+    "notes": ""
   }
 
 stored data:
-  ~ /planner-tasks[id=2]/createdAt: "2026-10-27T02:11:08.940Z" → "2020-01-01T00:00:00.000Z"
   ~ /planner-tasks[id=2]/updatedAt: "2026-11-02T03:45:51.006Z" → "<generated-timestamp>"
-  + /planner-tasks[id=2]/isAdmin: true
 data files: unchanged
 
 outbound calls: none
@@ -1962,13 +1958,12 @@ response body:
     "taskTitle": "Accessibility audit of the onboarding form",
     "deletedBy": "Rafael Mendoza",
     "deletedByEid": "rafael.t.mendoza",
-    "extra": 1,
     "id": 3,
     "deletedAt": "<generated-timestamp>"
   }
 
 stored data:
-  + /deletion-logs[id=3] (at index 2): {"id":3,"type":"anything","taskId":5,"taskTitle":"Accessibility audit of the onboarding form","deletedBy":"Rafael Mendoza","deletedByEid":"rafael.t.mendoza","deletedAt":"<generated-timestamp>","extra":1}
+  + /deletion-logs[id=3] (at index 2): {"id":3,"type":"anything","taskId":5,"taskTitle":"Accessibility audit of the onboarding form","deletedBy":"Rafael Mendoza","deletedByEid":"rafael.t.mendoza","deletedAt":"<generated-timestamp>"}
 data files: unchanged
 
 outbound calls: none
@@ -2499,9 +2494,9 @@ response body:
     "acceptanceCriteria": "<ul><li>All fields validated</li></ul>",
     "comments": [],
     "completed": false,
+    "id": 8,
     "createdAt": "<generated-timestamp>",
-    "updatedAt": "<generated-timestamp>",
-    "id": 8
+    "updatedAt": "<generated-timestamp>"
   }
 
 stored data:
@@ -2574,9 +2569,9 @@ response body:
     "acceptanceCriteria": "<ul><li>All fields validated</li></ul>",
     "comments": [],
     "completed": false,
+    "id": 8,
     "createdAt": "<generated-timestamp>",
-    "updatedAt": "<generated-timestamp>",
-    "id": 8
+    "updatedAt": "<generated-timestamp>"
   }
 
 stored data:
@@ -2651,14 +2646,13 @@ response body:
     "acceptanceCriteria": "<ul><li>All fields validated</li></ul>",
     "comments": [],
     "completed": false,
-    "createdAt": "<generated-timestamp>",
-    "updatedAt": "<generated-timestamp>",
     "id": 8,
-    "isAdmin": true
+    "createdAt": "<generated-timestamp>",
+    "updatedAt": "<generated-timestamp>"
   }
 
 stored data:
-  + /planner-tasks[id=8] (at index 6): {"id":8,"boardId":1,"bucketId":4,"title":"Build a React form with validation","status":"Not started","priority":"Medium","startDate":"2026-10-28","dueDate":"2026-11-06","assignee":"miguel.a.torres","labels":[2,4],"checklist":[{"id":1,"text":"Pick a form library","done":false}],"comments":[],"description":"<p>Practice controlled inputs</p>","acceptanceCriteria":"<ul><li>All fields validated</li></ul>","completed":false,"createdAt":"<generated-timestamp>","updatedAt":"<generated-timestamp>","isAdmin":true}
+  + /planner-tasks[id=8] (at index 6): {"id":8,"boardId":1,"bucketId":4,"title":"Build a React form with validation","status":"Not started","priority":"Medium","startDate":"2026-10-28","dueDate":"2026-11-06","assignee":"miguel.a.torres","labels":[2,4],"checklist":[{"id":1,"text":"Pick a form library","done":false}],"comments":[],"description":"<p>Practice controlled inputs</p>","acceptanceCriteria":"<ul><li>All fields validated</li></ul>","completed":false,"createdAt":"<generated-timestamp>","updatedAt":"<generated-timestamp>"}
 data files: unchanged
 
 outbound calls: none
@@ -2727,9 +2721,9 @@ response body:
     "acceptanceCriteria": "<ul><li>All fields validated</li></ul>",
     "comments": [],
     "completed": true,
+    "id": 8,
     "createdAt": "<generated-timestamp>",
-    "updatedAt": "<generated-timestamp>",
-    "id": 8
+    "updatedAt": "<generated-timestamp>"
   }
 
 stored data:
@@ -2958,9 +2952,9 @@ response body:
     "acceptanceCriteria": "<ul><li>All fields validated</li></ul>",
     "comments": [],
     "completed": false,
+    "id": 8,
     "createdAt": "<generated-timestamp>",
-    "updatedAt": "<generated-timestamp>",
-    "id": 8
+    "updatedAt": "<generated-timestamp>"
   }
 
 stored data:
@@ -3033,9 +3027,9 @@ response body:
     "acceptanceCriteria": "<ul><li>All fields validated</li></ul>",
     "comments": [],
     "completed": false,
+    "id": 8,
     "createdAt": "<generated-timestamp>",
-    "updatedAt": "<generated-timestamp>",
-    "id": 8
+    "updatedAt": "<generated-timestamp>"
   }
 
 stored data:
@@ -3108,9 +3102,9 @@ response body:
     "acceptanceCriteria": "<ul><li>All fields validated</li></ul>",
     "comments": [],
     "completed": false,
+    "id": 1,
     "createdAt": "<generated-timestamp>",
-    "updatedAt": "<generated-timestamp>",
-    "id": 1
+    "updatedAt": "<generated-timestamp>"
   }
 
 stored data:

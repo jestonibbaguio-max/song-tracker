@@ -942,13 +942,11 @@ response body:
     "nextRetakeDate": "",
     "secondarySkill": "TBD",
     "secondaryProficiency": "TBD",
-    "retakeDate": "",
-    "isAdmin": true
+    "retakeDate": ""
   }
 
 stored data:
   ~ /competency-records[eid="liza.m.navarro"]/primaryProficiency: "P2" → "P99"
-  + /competency-records[eid="liza.m.navarro"]/isAdmin: true
 data files: unchanged
 
 outbound calls: none

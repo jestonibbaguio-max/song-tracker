@@ -1,8 +1,11 @@
 // Planner boards, buckets, tasks and deletion logs. Each call runs in one
-// read() or write() of the planner store (one load, at most one save). Writes
-// keep storing client fields as sent, with no referential checks: bugs L3, L12,
-// M1, M11 and M12 in docs/found-bugs.md are kept.
+// read() or write() of the planner store (one load, at most one save). Task
+// and deletion-log writes store only their collection's fields, as sent;
+// other fields, and a client's id or timestamps, are dropped (M12, storage
+// part). There are still no referential checks or validation: bugs L3, L12,
+// M1, M11 and the validation part of M12 in docs/found-bugs.md are kept.
 const repository = require('./planner.repository');
+const { pickWritable } = require('../../utils/fields');
 
 // ── Boards ───────────────────────────────────────────────────────────────────
 
@@ -55,14 +58,14 @@ function listTasks(boardId) {
 }
 
 /**
- * body is req.body as parsed. Stores every client field, then the server's id,
- * numeric boardId/bucketId and timestamps. With no body, reading body.boardId
- * throws after the load, as before (bug M1).
+ * body is req.body as parsed. Stores the body's task fields, then the server's
+ * id, numeric boardId/bucketId and timestamps. With no body, reading
+ * body.boardId throws after the load, as before (bug M1).
  */
 function createTask(body) {
   return repository.write((store) => {
     const now = new Date().toISOString();
-    return store.insertTask(body, {
+    return store.insertTask(pickWritable('planner-tasks', body), {
       boardId: Number(body.boardId),
       bucketId: Number(body.bucketId),
       createdAt: now,
@@ -72,13 +75,14 @@ function createTask(body) {
 }
 
 /**
- * Merges body over the stored task (comments and checklists included). null
- * when the id is unknown; the body is only read once the task is found.
+ * Merges the body's task fields over the stored task (comments and checklists
+ * included). null when the id is unknown; the body is only read once the task
+ * is found.
  */
 function updateTask(id, body) {
   return repository.write((store) => {
     if (!store.findTask(id)) return null;
-    const changes = { ...body };
+    const changes = pickWritable('planner-tasks', body);
     if (changes.boardId !== undefined) changes.boardId = Number(changes.boardId);
     if (changes.bucketId !== undefined) changes.bucketId = Number(changes.bucketId);
     return store.updateTask(id, changes, { updatedAt: new Date().toISOString() });
@@ -101,9 +105,9 @@ function listDeletionLogs(eid) {
   });
 }
 
-/** body is req.body as parsed; every field is stored, then the new id and deletedAt. */
+/** body is req.body as parsed; its deletion-log fields are stored, then the new id and deletedAt. */
 function createDeletionLog(body) {
-  return repository.write((store) => store.insertDeletionLog(body, { deletedAt: new Date().toISOString() }));
+  return repository.write((store) => store.insertDeletionLog(pickWritable('deletion-logs', body), { deletedAt: new Date().toISOString() }));
 }
 
 module.exports = {

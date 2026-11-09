@@ -4,6 +4,7 @@
 // competency). Bugs M4, M8, M9 and M11 in docs/found-bugs.md are kept.
 const repository = require('./competency.repository');
 const onboardingRepository = require('../onboarding/onboarding.repository');
+const { pickWritable } = require('../../utils/fields');
 
 /**
  * One row per roster member of the group (default 5), using the saved
@@ -35,12 +36,13 @@ function listRecords(group) {
 }
 
 /**
- * Merges body into the row for eid (exactly as given, not normalised: M9), or
- * appends { eid, ...body }. Returns the row found by eid after saving, which is
+ * Merges the body's competency fields into the row for eid (exactly as given,
+ * not normalised: M9), or appends { eid, ...fields }; other fields are dropped
+ * (M12, storage part). Returns the row found by eid after saving, which is
  * undefined when the body renamed it (M8: the response is then an empty 200).
  */
 function upsertRecord(eid, body) {
-  return repository.write((store) => store.upsertRecord(eid, body));
+  return repository.write((store) => store.upsertRecord(eid, pickWritable('competency-records', body)));
 }
 
 module.exports = { listRecords, upsertRecord };

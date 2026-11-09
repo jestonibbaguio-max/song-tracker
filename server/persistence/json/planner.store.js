@@ -3,8 +3,8 @@
 // Same variable names and expressions as the code the planner service ran
 // before the store interface, so a non-array collection still fails with the
 // pinned TypeError text, e.g. "(db.planner-tasks || []).map is not a function"
-// or "tasks.findIndex is not a function". Tasks and deletion logs keep every
-// client field (bug M12), in the same key order as before.
+// or "tasks.findIndex is not a function". Tasks and deletion logs are stored
+// with the fields the service hands over, in the same key order as before.
 const { createDbStore } = require('./db-store');
 const { nextId } = require('../../utils/ids');
 

@@ -1237,14 +1237,12 @@ response body:
     "month": 10,
     "day": 28,
     "status": "Nope",
-    "location": "Harbor Point Building",
-    "extra": true
+    "location": "Harbor Point Building"
   }
 
 stored data:
   ~ /attendance[id=6]/eid: "liza.m.navarro" → "nobody.here"
   ~ /attendance[id=6]/status: "RTO" → "Nope"
-  + /attendance[id=6]/extra: true
 data files: unchanged
 
 outbound calls: none
@@ -1690,13 +1688,11 @@ access-control-allow-origin: *
 x-powered-by: Express
 response body:
   {
-    "0": "a",
-    "1": "b",
     "id": 12
   }
 
 stored data:
-  + /attendance[id=12] (at index 11): {"0":"a","1":"b","id":12}
+  + /attendance[id=12] (at index 11): {"id":12}
 data files: unchanged
 
 outbound calls: none

@@ -2,7 +2,7 @@
 // the code the attendance service ran before the store interface, so a
 // non-array collection still fails with the pinned TypeError text (e.g.
 // "records.findIndex is not a function"). Records are stored and returned as
-// sent, with every client field (bugs M6 and M12 are kept).
+// the service hands them over (bug M6 is kept).
 const { createDbStore } = require('./db-store');
 const { nextId } = require('../../utils/ids');
 
