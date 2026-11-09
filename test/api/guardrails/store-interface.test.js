@@ -67,23 +67,27 @@ async function sprintsDbStore(t) {
 }
 
 describe('guardrail: store selection', () => {
+  // Phase 4 adds the SQLite stores one feature at a time. Until the last one
+  // lands, a feature without one must still fail clearly, at request time.
   test('PERSISTENCE=sqlite loads the app, and a request to a store without a sqlite implementation fails clearly', async (t) => {
     withEnv(t, { PERSISTENCE: 'sqlite' });
     const api = await startTestServer(t);
-    const res = await api.request('GET', '/api/attendance-options');
+    const res = await api.request('GET', '/api/sprints');
     assert.equal(res.status, 500);
-    assert.match(res.body, /The lookups store has no &quot;sqlite&quot; implementation yet/);
+    assert.match(res.body, /The sprints store has no &quot;sqlite&quot; implementation yet/);
   });
 
-  test('PERSISTENCE=json serves from the JSON store', async (t) => {
-    withEnv(t, { PERSISTENCE: 'json' });
-    const api = await startTestServer(t);
-    const res = await api.request('GET', '/api/attendance-options');
-    assert.equal(res.status, 200);
-    // The stored rows, with ids as numbers ("1" → 1, bug L16).
-    const stored = api.readData('db.json')['attendance-options'].map((o) => ({ ...o, id: Number(o.id) }));
-    assert.deepEqual(res.body, stored);
-  });
+  for (const backend of ['json', 'sqlite']) {
+    test(`PERSISTENCE=${backend} serves from the ${backend} store`, async (t) => {
+      withEnv(t, { PERSISTENCE: backend });
+      const api = await startTestServer(t);
+      const res = await api.request('GET', '/api/attendance-options');
+      assert.equal(res.status, 200);
+      // The rows in the fixture's db.json, with ids as numbers ("1" → 1, bug L16).
+      const stored = api.readData('db.json')['attendance-options'].map((o) => ({ ...o, id: Number(o.id) }));
+      assert.deepEqual(res.body, stored);
+    });
+  }
 });
 
 describe('guardrail: db.json unit of work', { skip: jsonOnly('the db.json store') }, () => {
