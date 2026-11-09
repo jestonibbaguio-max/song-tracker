@@ -145,6 +145,18 @@ response body:
       "secondarySkill": "React Native",
       "secondaryProficiency": "P3",
       "retakeDate": ""
+    },
+    {
+      "name": "nina.g.castro",
+      "clLevel": "",
+      "eid": "nina.g.castro",
+      "primarySkill": "",
+      "primaryProficiency": "N/A",
+      "recentRetakeDate": "",
+      "nextRetakeDate": "",
+      "secondarySkill": "",
+      "secondaryProficiency": "N/A",
+      "retakeDate": ""
     }
   ]
 
@@ -212,6 +224,18 @@ response body:
       "nextRetakeDate": "",
       "secondarySkill": "AEM",
       "secondaryProficiency": "P3",
+      "retakeDate": ""
+    },
+    {
+      "name": "kevin.r.lim",
+      "clLevel": "",
+      "eid": "kevin.r.lim",
+      "primarySkill": "",
+      "primaryProficiency": "N/A",
+      "recentRetakeDate": "",
+      "nextRetakeDate": "",
+      "secondarySkill": "",
+      "secondaryProficiency": "N/A",
       "retakeDate": ""
     }
   ]
@@ -281,6 +305,18 @@ response body:
       "secondarySkill": "AEM",
       "secondaryProficiency": "P3",
       "retakeDate": ""
+    },
+    {
+      "name": "kevin.r.lim",
+      "clLevel": "",
+      "eid": "kevin.r.lim",
+      "primarySkill": "",
+      "primaryProficiency": "N/A",
+      "recentRetakeDate": "",
+      "nextRetakeDate": "",
+      "secondarySkill": "",
+      "secondaryProficiency": "N/A",
+      "retakeDate": ""
     }
   ]
 
@@ -348,6 +384,18 @@ response body:
       "nextRetakeDate": "",
       "secondarySkill": "AEM",
       "secondaryProficiency": "P3",
+      "retakeDate": ""
+    },
+    {
+      "name": "kevin.r.lim",
+      "clLevel": "",
+      "eid": "kevin.r.lim",
+      "primarySkill": "",
+      "primaryProficiency": "N/A",
+      "recentRetakeDate": "",
+      "nextRetakeDate": "",
+      "secondarySkill": "",
+      "secondaryProficiency": "N/A",
       "retakeDate": ""
     }
   ]
@@ -508,6 +556,18 @@ response body:
       "secondarySkill": "",
       "secondaryProficiency": "N/A",
       "retakeDate": ""
+    },
+    {
+      "name": "kevin.r.lim",
+      "clLevel": "",
+      "eid": "kevin.r.lim",
+      "primarySkill": "",
+      "primaryProficiency": "N/A",
+      "recentRetakeDate": "",
+      "nextRetakeDate": "",
+      "secondarySkill": "",
+      "secondaryProficiency": "N/A",
+      "retakeDate": ""
     }
   ]
 
@@ -528,7 +588,20 @@ content-type: application/json; charset=utf-8
 access-control-allow-origin: *
 x-powered-by: Express
 response body:
-  []
+  [
+    {
+      "name": "kevin.r.lim",
+      "clLevel": "",
+      "eid": "kevin.r.lim",
+      "primarySkill": "",
+      "primaryProficiency": "N/A",
+      "recentRetakeDate": "",
+      "nextRetakeDate": "",
+      "secondarySkill": "",
+      "secondaryProficiency": "N/A",
+      "retakeDate": ""
+    }
+  ]
 
 data files:
   custom-onboarding.json: created
