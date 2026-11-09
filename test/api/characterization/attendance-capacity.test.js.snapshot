@@ -1469,12 +1469,12 @@ access-control-allow-origin: *
 x-powered-by: Express
 response body:
   {
+    "id": 12,
     "eid": "liza.m.navarro",
     "year": 2026,
     "month": 11,
     "day": 5,
-    "status": "Present",
-    "id": 12
+    "status": "Present"
   }
 
 stored data:
@@ -1505,13 +1505,13 @@ access-control-allow-origin: *
 x-powered-by: Express
 response body:
   {
+    "id": 12,
     "eid": "jomar.c.pascual",
     "year": 2026,
     "month": 11,
     "day": 5,
     "status": "RTO",
-    "location": "Riverside Tech Tower 2",
-    "id": 12
+    "location": "Riverside Tech Tower 2"
   }
 
 stored data:
@@ -1543,13 +1543,13 @@ access-control-allow-origin: *
 x-powered-by: Express
 response body:
   {
+    "id": 12,
     "eid": "jomar.c.pascual",
     "year": 2026,
     "month": 11,
     "day": 5,
     "status": "RTO",
-    "location": "Riverside Tech Tower 2",
-    "id": 12
+    "location": "Riverside Tech Tower 2"
   }
 
 stored data:
@@ -1579,12 +1579,12 @@ access-control-allow-origin: *
 x-powered-by: Express
 response body:
   {
+    "id": 12,
     "eid": "rafael.t.mendoza",
     "year": 2026,
     "month": 10,
     "day": 27,
-    "status": "Absent",
-    "id": 12
+    "status": "Absent"
   }
 
 stored data:
@@ -1719,13 +1719,13 @@ access-control-allow-origin: *
 x-powered-by: Express
 response body:
   {
+    "id": 12,
     "eid": "nobody.here",
     "year": 2026,
     "month": 11,
     "day": 5,
     "status": "Moon base",
-    "location": "Riverside Tech Tower 2",
-    "id": 12
+    "location": "Riverside Tech Tower 2"
   }
 
 stored data:
@@ -1774,13 +1774,13 @@ access-control-allow-origin: *
 x-powered-by: Express
 response body:
   {
+    "id": 1,
     "eid": "jomar.c.pascual",
     "year": 2026,
     "month": 11,
     "day": 5,
     "status": "RTO",
-    "location": "Riverside Tech Tower 2",
-    "id": 1
+    "location": "Riverside Tech Tower 2"
   }
 
 stored data:

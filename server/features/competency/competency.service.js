@@ -5,7 +5,7 @@
 const repository = require('./competency.repository');
 const onboardingRepository = require('../onboarding/onboarding.repository');
 const { formatOnboardingResource } = require('../onboarding/onboarding.format');
-const { pickWritable } = require('../../utils/fields');
+const { pickWritable, inColumnOrder } = require('../../utils/fields');
 
 /**
  * One row per roster member of the group (default 5), using the saved
@@ -34,7 +34,7 @@ function listRecords(group) {
         secondaryProficiency: 'N/A',
         retakeDate: ''
       };
-      return { name: m.name || m.eid, clLevel: m.clLevel, ...base };
+      return { name: m.name || m.eid, clLevel: m.clLevel, ...inColumnOrder('competency-records', base) };
     });
   });
 }
@@ -47,7 +47,7 @@ function listRecords(group) {
  * for eid after saving.
  */
 function upsertRecord(eid, body) {
-  return repository.write((store) => store.upsertRecord(eid, pickWritable('competency-records', body)));
+  return repository.write((store) => inColumnOrder('competency-records', store.upsertRecord(eid, pickWritable('competency-records', body))));
 }
 
 module.exports = { listRecords, upsertRecord };

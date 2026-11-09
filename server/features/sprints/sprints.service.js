@@ -3,20 +3,21 @@
 // retro POST checks the sprint and appends the retro in the same write().
 // Bugs L3, L4, L6, M1 and M13 in docs/found-bugs.md are kept.
 const repository = require('./sprints.repository');
+const { inColumnOrder, rowsInColumnOrder } = require('../../utils/fields');
 
 const sprintRetroCategories = new Set(['improve', 'didnt-go-well', 'went-well']);
 
 // ── Sprints ──────────────────────────────────────────────────────────────────
 
 function listSprints() {
-  return repository.read((store) => store.listSprints());
+  return repository.read((store) => rowsInColumnOrder('sprints', store.listSprints()));
 }
 
 /** { error } when a field is missing (nothing read or written), otherwise { sprint }. */
 function createSprint({ name, start, end }) {
   if (!name || !start || !end) return { error: 'name, start and end are required' };
   return repository.write((store) => ({
-    sprint: store.insertSprint({ name: String(name).trim(), start: String(start), end: String(end) })
+    sprint: inColumnOrder('sprints', store.insertSprint({ name: String(name).trim(), start: String(start), end: String(end) }))
   }));
 }
 
@@ -33,7 +34,7 @@ function updateSprint(id, readChanges) {
     if (name !== undefined && name !== null) changes.name = String(name).trim();
     if (start !== undefined && start !== null) changes.start = String(start);
     if (end !== undefined && end !== null) changes.end = String(end);
-    return store.updateSprint(id, changes);
+    return inColumnOrder('sprints', store.updateSprint(id, changes));
   });
 }
 
@@ -54,7 +55,7 @@ function listRetros({ sprintId, groupNumber }) {
     if (groupNumber !== undefined) {
       items = items.filter(item => item.groupNumber === Number(groupNumber));
     }
-    return items;
+    return rowsInColumnOrder('sprint-retros', items);
   });
 }
 
@@ -88,7 +89,7 @@ function createRetro(body) {
       text,
       createdAt: new Date().toISOString()
     });
-    return { item };
+    return { item: inColumnOrder('sprint-retros', item) };
   });
 }
 
@@ -102,7 +103,7 @@ function updateRetro(id, body) {
       return { error: 'text is required and must not exceed 500 characters' };
     }
 
-    return { item: store.updateRetro(id, { text }) };
+    return { item: inColumnOrder('sprint-retros', store.updateRetro(id, { text })) };
   });
 }
 

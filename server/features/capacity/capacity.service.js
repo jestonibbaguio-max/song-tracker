@@ -2,13 +2,14 @@
 // capacity store (one load, at most one save).
 // Bugs M1, M9 and M11 in docs/found-bugs.md are kept.
 const repository = require('./capacity.repository');
+const { inColumnOrder, rowsInColumnOrder } = require('../../utils/fields');
 
 /** sprintName is the raw query value; falsy means no filter. */
 function listEntries(sprintName) {
   return repository.read((store) => {
     let entries = store.listEntries();
     if (sprintName) entries = entries.filter(e => e.sprintName === sprintName);
-    return entries;
+    return rowsInColumnOrder('capacity-entries', entries);
   });
 }
 
@@ -26,7 +27,7 @@ function upsertEntry({ sprintName, eid, cadence, admin, holiday }) {
       if (cadence !== undefined) changes.cadence = Number(cadence) || 0;
       if (admin !== undefined) changes.admin = Number(admin) || 0;
       if (holiday !== undefined) changes.holiday = Number(holiday) || 0;
-      return { entry: store.updateEntry(sprintName, eid, changes), created: false };
+      return { entry: inColumnOrder('capacity-entries', store.updateEntry(sprintName, eid, changes)), created: false };
     }
     const entry = store.insertEntry({
       sprintName,
@@ -35,7 +36,7 @@ function upsertEntry({ sprintName, eid, cadence, admin, holiday }) {
       admin: Number(admin) || 0,
       holiday: Number(holiday) || 0
     });
-    return { entry, created: true };
+    return { entry: inColumnOrder('capacity-entries', entry), created: true };
   });
 }
 

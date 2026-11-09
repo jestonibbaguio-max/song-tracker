@@ -2,6 +2,7 @@
 // One load per call, no writes.
 const repository = require('./lookups.repository');
 const { numericId } = require('../../utils/ids');
+const { rowsInColumnOrder } = require('../../utils/fields');
 
 /** A collection that isn't an array is returned as it is, as before. */
 function withNumericIds(rows) {
@@ -10,15 +11,15 @@ function withNumericIds(rows) {
 }
 
 function listAttendanceOptions() {
-  return repository.read((store) => withNumericIds(store.attendanceOptions()));
+  return repository.read((store) => rowsInColumnOrder('attendance-options', withNumericIds(store.attendanceOptions())));
 }
 
 function listOfficeLocations() {
-  return repository.read((store) => withNumericIds(store.officeLocations()));
+  return repository.read((store) => rowsInColumnOrder('office-locations', withNumericIds(store.officeLocations())));
 }
 
 function listPlannerLabels() {
-  return repository.read((store) => withNumericIds(store.plannerLabels()));
+  return repository.read((store) => rowsInColumnOrder('planner-labels', withNumericIds(store.plannerLabels())));
 }
 
 module.exports = { listAttendanceOptions, listOfficeLocations, listPlannerLabels };
