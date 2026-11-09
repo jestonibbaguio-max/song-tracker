@@ -20,6 +20,11 @@ npm start            # Angular dev server only (http://localhost:4200)
 npm run build        # production build → dist/atcp-song-dashboard/browser/
                      # then `npm run api` serves the API + built SPA from :3000
 
+npm run test:api         # API tests (node:test, test/**/*.test.js) on the JSON backend
+npm run test:api:sqlite  # the same with PERSISTENCE=sqlite; skips tests that need stores until Phase 4
+npm run test:api:update  # re-record snapshots (only as the snapshot rule allows)
+node --test test/api/characterization/sprints.test.js  # one file
+
 npx playwright test                                   # all e2e tests (Chromium only)
 npx playwright test tests/poc-howto/poc-howto.spec.ts # one file
 npx playwright test -g "test name"                    # one test by title
@@ -29,6 +34,7 @@ npm run codegen      # Playwright codegen against :4200
 
 - Playwright's `webServer` config starts both `npm start` and `npm run api`, and reuses them if they're already running (except on CI). The specs need the API: the UI only fills in after `/api/onboarding-resources` responds.
 - CI (`.github/workflows/playwright.yml`) runs Playwright on pushes and PRs to `main`.
+- The API tests start a fresh app on a temp copy of `test/fixtures/data/` per test (`test/helpers/test-server.js`). Characterization snapshots record the response and a logical diff of the stores ("stored data", from `test/helpers/store-dump.js`), so they hold on every backend. Tests tagged json-only (`test/helpers/backend.js`) pin the JSON files themselves: BOMs, corrupt files, CSV seeding, id repair, raw diffs, fs calls.
 - `npm test` (Karma/Jasmine) is set up, but there are no `*.spec.ts` unit tests under `src/`. No linter is configured.
 - `npm run json-api` (json-server on `db.json`) is legacy. It reads a different onboarding dataset and doesn't implement the custom endpoints, so use `npm run api`. Both use port 3000, so don't run them together.
 

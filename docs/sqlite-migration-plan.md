@@ -1,6 +1,6 @@
 # SQLite migration plan
 
-**Status:** Phase 0 is done on `feature/sqlite-phase-0`, with review fixes on `feature/sqlite-phase-0-fixes`; the Linux CI check waits for Phase 4 step 6. Phase 1 is done on `feature/sqlite-phase-1`, rebuilt on top of the fixes, with step 0 first (see "Deviations"). Phases 2–8 haven't started. This plan builds on the restructured backend from [server-restructure-plan.md](server-restructure-plan.md), which was merged into `develop` in `07f41a8`. Every phase branches off `develop`, and its PRs target `develop`.
+**Status:** Phase 0 is done on `feature/sqlite-phase-0`, with review fixes on `feature/sqlite-phase-0-fixes`; the Linux CI check waits for Phase 4 step 6. Phase 1 is done on `feature/sqlite-phase-1`, rebuilt on top of the fixes, with step 0 first (see "Deviations"). Phase 2 is done on `feature/sqlite-phase-2`, with steps 3 and 4 before step 2 (see "Deviations"). Phases 3–8 haven't started. This plan builds on the restructured backend from [server-restructure-plan.md](server-restructure-plan.md), which was merged into `develop` in `07f41a8`. Every phase branches off `develop`, and its PRs target `develop`.
 
 **Goal:** move the dashboard data (`db.json` and `custom-onboarding.json`) from whole-file JSON reads and writes to SQLite, using `better-sqlite3`. The HTTP contract stays the same, apart from storage-related bugs fixed on purpose (see "Bug scope"). The JSON backend stays for a while as a fallback that a setting can switch back to. It is then removed completely (Phase 8).
 
@@ -40,7 +40,7 @@ These are verified against `develop` at `07f41a8` (the merge of `feature/backend
   `formatOnboardingResource` reads camelCase first and falls back to snake_case, so the API already returns the camelCase value. The import uses exactly the same rule.
 - **Planner tasks carry fields the UI doesn't know about.** `completedDate` exists on 86 tasks, and holds a date on 59 of them and `""` on 27. `notes` exists on 78 tasks and is `""` on every one of them. Neither field is in `PlannerTask` or anywhere else in `src/`.
 - **`deletion-logs` doesn't exist in the real `db.json`** (the fixtures have 2 rows), and `project-reachouts` exists only in uncommitted edits. Both start empty.
-- **The test suite is green:** 588 tests before Phase 0 and 594 after it, run with `npm run test:api`. The leftover `song-tracker.sqlite-wal`/`-shm` files are gitignored and untracked, and there's no main `.sqlite` file, so they can't be read.
+- **The test suite is green:** 588 tests before Phase 0, 594 after it, 601 after Phase 1 and 620 after Phase 2, run with `npm run test:api`. After Phase 2, `npm run test:api:sqlite` passes the 43 tests that don't need the stores and skips the rest. The leftover `song-tracker.sqlite-wal`/`-shm` files are gitignored and untracked, and there's no main `.sqlite` file, so they can't be read.
 
 ## Target structure
 
@@ -173,9 +173,9 @@ Today's snapshots record the storage side as raw line diffs of the data files. A
    - **`dumpStore` returns canonical rows**, through the same mapper on both backends: numeric ids, merged roster keys (camelCase first), the schema's column set. The fixtures store string ids and snake_case roster rows, so dumping raw JSON rows would give logical diffs that the SQLite backend can't reproduce in Phase 4.
    - **Canonical rows hide JSON-only storage differences.** Examples are M6's `"1"` → `1` and L9's records with both key styles. The json-only tests (step 3) keep raw file diffs for those.
 2. Switch the characterization snapshots from file diffs to logical diffs in **one commit that changes only the storage sections.** A script in the PR checks that every response section is byte-identical, and that each logical diff matches the old file diff.
-   - **Compare structurally, not by re-parsing line diffs.** `jsonDiff` in `test/helpers/characterize.js` (around line 290) already produces a structural diff that matches records by `id`/`eid`, and `characterize()` already calls it (around line 219). The snapshots don't record its output today; the script can run it on each case's before/after files and compare that with the new logical diff.
+   - **Compare structurally, not by re-parsing line diffs.** `jsonDiff` in `test/helpers/characterize.js` produces a structural diff that matches records by `id`/`eid`. Before Phase 2, the snapshots showed its output as each file's "parsed JSON diff", next to the raw text diff. The script runs it on each case's before/after files and compares that with the new logical diff.
 3. Tag the tests that only make sense on JSON files as **json-only**. These cover BOMs, corrupt files, a missing roster and CSV seeding, fractional-id repair, non-array collections, `fs-trace` and the JSON half of `no-read-cache`. They keep pinning the JSON backend until Phase 8.
-4. The harness reads `PERSISTENCE` and skips tests tagged for the other backend. Add `npm run test:api:sqlite`, which sets `PERSISTENCE=sqlite`. It skips everything until Phase 4.
+4. The harness reads `PERSISTENCE` and skips tests tagged for the other backend. Add `npm run test:api:sqlite`, which sets `PERSISTENCE=sqlite`. Until Phase 4 it skips every test that needs the stores.
 5. **Raw-file guarantees for the JSON backend stay covered.** Keep a small json-only test that checks `db.json` is written with 2-space indentation and no trailing newline, and the roster with a trailing newline, because the export script (Phase 5) has to match it.
 
 ### Phase 3: fix the storage bugs, on the JSON backend
@@ -213,6 +213,9 @@ Update [found-bugs.md](found-bugs.md) in each commit, marking the bug as fixed w
    - refuse rows that would break a `UNIQUE` constraint, with a clear error naming the row;
    - print a report: rows per table, dropped rows with their ids, and skipped keys.
 3. **The harness builds the database from the fixtures.** It copies the fixtures, runs the test's `setup(dataDir)` on the JSON (so existing setups keep working), then imports. Setups that break the JSON on purpose belong to json-only tests (Phase 2).
+   - **Turn on the SQLite runs** in `test/helpers/backend.js`: add `'sqlite'` to `BACKENDS_WITH_STORES`, and list the database's files in `STORE_FILES.sqlite`, so the characterization snapshots leave them out of "data files".
+   - **`dumpStore` calls the stores' list operations by name** (`test/helpers/store-dump.js`): `listSprints`, `listRetros`, `listEntries`, `listRecords` (attendance and competency), `attendanceOptions`, `officeLocations`, `plannerLabels`, `listBoards`, `listBuckets`, `listTasks`, `listDeletionLogs`, `listRows` and onboarding's `list`. The SQLite stores need the same operations.
+   - **Known timestamps** still come from the data files before the app loads, i.e. the JSON before the import, so the normaliser keeps working unchanged.
 4. Add `persistence/sqlite/<feature>.store.js` for each feature, in the Phase 1 order, one commit each. Use prepared statements and `ORDER BY id`. Each commit makes that feature's shared tests pass under `npm run test:api:sqlite` **with no snapshot update**.
 5. **Guardrails:**
    - extend `fs-boundary` to `better-sqlite3`;
@@ -255,7 +258,7 @@ Run on SQLite with the fallback available for **[N weeks: the team decides at cu
 
 ### Phase 8: remove the JSON backend
 
-1. Delete `persistence/json/`, the `PERSISTENCE` setting and the store switch in the feature repositories. Delete the json-only tests and their snapshots, `fs-trace` (replaced by `sqlite-trace`), and `npm run test:api:sqlite`, because `test:api` is now SQLite only.
+1. Delete `persistence/json/`, the `PERSISTENCE` setting and the store switch in the feature repositories. Delete the json-only tests and their snapshots, `fs-trace` (replaced by `sqlite-trace`), and `npm run test:api:sqlite`, because `test:api` is now SQLite only. Delete the Phase 2 verification script (`test/tools/verify-storage-snapshots.js`) and the `CHARACTERIZE_STORAGE_REPORT` hook in `characterize.js` too.
 2. Remove `npm run json-api` and the `json-server` references from README and CLAUDE.md.
 3. Mark M3, M15, L8 (the roster part), L9 and L14 as fixed in found-bugs.md.
 4. **Optional clean-ups, now that services no longer have to suit JSON files:**
@@ -310,3 +313,23 @@ Never edit the exported files with PowerShell (`Set-Content`, `Out-File`). After
 - **Onboarding keeps its repeated roster reads.** Its store is `list/append/update/remove` rather than `read/write`, and `remove` is today's load → filter → save. fs-trace pins this.
 - **The store is picked on each call** (`persistence/select-store.js`), not when the module loads. `PERSISTENCE=sqlite` loads the app and fails only on a request. `store-interface.test.js` pins this, along with the `read`/`write` contract.
 - **Two faults in one request may report the other error.** A create now converts its body fields (e.g. `String(name).trim()`, `Number(body.boardId)`) before calling the store's insert, which computes `nextId`. Before, `nextId` ran first. A request that has both a non-array collection and an unconvertible body value (bug L15, or M1 on task POST) now fails on the body instead of with `arr.reduce is not a function`. Either fault on its own gives exactly the same result as before. No test pins the double fault.
+
+### Phase 2
+
+- **Steps 3 and 4 came before step 2.** The snapshot switch has to know which cases are json-only, so the backend switch and the tags landed first (`08deb0c`), with no snapshot change. The order was: tags and `test:api:sqlite`, `dumpStore`, raw copies (below), the switch, then the format guardrail (step 5).
+- **What counts as json-only:**
+  - a case with `jsonOnly: 'reason'`;
+  - a case whose setup edits `db.json`, `custom-onboarding.json` or `custom.csv` directly (`removeFile`, `addBom`, `writeFile`, or a setup wrapped in `jsonOnlySetup()`). A `tasks.json` or fruits-file setup doesn't count, since those stay on JSON;
+  - **tagged characterization cases:** BOMs, corrupt and missing files, CSV seeding, roster id repair, a string id and string `anotherSkills` in the roster, a read-only roster, and non-array collections;
+  - **tagged guardrails:** `fs-trace`, the `db.json` unit of work, the `db.json` and roster halves of `no-read-cache`, two harness tests, and the new `json-format` test.
+  
+  An `editDb` setup that only drops a collection or edits rows runs on every backend.
+- **Five raw copies.** The plan said the json-only tests keep raw file diffs for what canonical rows hide, but no existing json-only test covered M6 or L9. A dry run of the switch found exactly five cases where a store file changes in a way the logical diff can't show:
+  - three attendance PATCHes on string ids, including M6's evidence case;
+  - the two roster cases behind L9.
+  
+  Each got a json-only copy named "… (raw db.json)" or "… (raw custom-onboarding.json)", recorded before the switch with an add-only snapshot diff (`b03fedb`). The verification script fails if an entry with hidden changes has no copy holding its old text.
+- **Canonical rows keep keys outside the schema.** They're placed after the schema's columns rather than dropped. Before Phase 3, the M12 cases store unknown client keys on JSON, and the logical diffs keep showing them, so the M12 fix will show up as those keys leaving "stored data".
+- **`dumpStore` uses the stores' existing list operations.** No store method was added, and no server file changed in Phase 2. See Phase 4 step 3 for what the SQLite stores need.
+- **Snapshot format.** Each entry of a case that runs on every backend gains a "stored data" line or block before "data files". "data files" now lists only `tasks.json` and the fruits file. json-only entries are unchanged.
+- **The `test:api:sqlite` run** passes the 43 tests that don't need the stores (config, fs boundary, fixtures, helpers, canonical-row unit tests) and skips the rest.
