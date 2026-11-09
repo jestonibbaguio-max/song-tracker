@@ -1,6 +1,6 @@
 # SQLite migration plan
 
-**Status:** Phase 0 is done on `feature/sqlite-phase-0`, with review fixes on `feature/sqlite-phase-0-fixes`; the Linux CI check waits for Phase 4 step 6. Phase 1 is done on `feature/sqlite-phase-1`, rebuilt on top of the fixes, with step 0 first (see "Deviations"). Phase 2 is done on `feature/sqlite-phase-2`, with steps 3 and 4 before step 2 (see "Deviations"). Phases 3–8 haven't started. This plan builds on the restructured backend from [server-restructure-plan.md](server-restructure-plan.md), which was merged into `develop` in `07f41a8`. Every phase branches off `develop`, and its PRs target `develop`.
+**Status:** Phase 0 is done on `feature/sqlite-phase-0`, with review fixes on `feature/sqlite-phase-0-fixes`; the Linux CI check waits for Phase 4 step 6. Phase 1 is done on `feature/sqlite-phase-1`, rebuilt on top of the fixes, with step 0 first (see "Deviations"). Phase 2 is done on `feature/sqlite-phase-2`, with steps 3 and 4 before step 2 (see "Deviations"). Phase 3 is done on `feature/sqlite-phase-3` (see "Deviations"). Phases 4–8 haven't started. This plan builds on the restructured backend from [server-restructure-plan.md](server-restructure-plan.md), which was merged into `develop` in `07f41a8`. Every phase branches off `develop`, and its PRs target `develop`.
 
 **Goal:** move the dashboard data (`db.json` and `custom-onboarding.json`) from whole-file JSON reads and writes to SQLite, using `better-sqlite3`. The HTTP contract stays the same, apart from storage-related bugs fixed on purpose (see "Bug scope"). The JSON backend stays for a while as a fallback that a setting can switch back to. It is then removed completely (Phase 8).
 
@@ -40,7 +40,7 @@ These are verified against `develop` at `07f41a8` (the merge of `feature/backend
   `formatOnboardingResource` reads camelCase first and falls back to snake_case, so the API already returns the camelCase value. The import uses exactly the same rule.
 - **Planner tasks carry fields the UI doesn't know about.** `completedDate` exists on 86 tasks, and holds a date on 59 of them and `""` on 27. `notes` exists on 78 tasks and is `""` on every one of them. Neither field is in `PlannerTask` or anywhere else in `src/`.
 - **`deletion-logs` doesn't exist in the real `db.json`** (the fixtures have 2 rows), and `project-reachouts` exists only in uncommitted edits. Both start empty.
-- **The test suite is green:** 588 tests before Phase 0, 594 after it, 601 after Phase 1 and 620 after Phase 2, run with `npm run test:api`. After Phase 2, `npm run test:api:sqlite` passes the 43 tests that don't need the stores and skips the rest. The leftover `song-tracker.sqlite-wal`/`-shm` files are gitignored and untracked, and there's no main `.sqlite` file, so they can't be read.
+- **The test suite is green:** 588 tests before Phase 0, 594 after it, 601 after Phase 1, 620 after Phase 2 and 622 after Phase 3, run with `npm run test:api`. After Phase 2, `npm run test:api:sqlite` passes the 43 tests that don't need the stores and skips the rest. The leftover `song-tracker.sqlite-wal`/`-shm` files are gitignored and untracked, and there's no main `.sqlite` file, so they can't be read.
 
 ## Target structure
 
@@ -216,6 +216,8 @@ Update [found-bugs.md](found-bugs.md) in each commit, marking the bug as fixed w
    - **Turn on the SQLite runs** in `test/helpers/backend.js`: add `'sqlite'` to `BACKENDS_WITH_STORES`, and list the database's files in `STORE_FILES.sqlite`, so the characterization snapshots leave them out of "data files".
    - **`dumpStore` calls the stores' list operations by name** (`test/helpers/store-dump.js`): `listSprints`, `listRetros`, `listEntries`, `listRecords` (attendance and competency), `attendanceOptions`, `officeLocations`, `plannerLabels`, `listBoards`, `listBuckets`, `listTasks`, `listDeletionLogs`, `listRows` and onboarding's `list`. The SQLite stores need the same operations.
    - **Known timestamps** still come from the data files before the app loads, i.e. the JSON before the import, so the normaliser keeps working unchanged.
+   - **Since Phase 3, the services own field lists and response order** (`server/utils/fields.js`): they pick the writable fields before calling a store, and put returned rows in column order. A SQLite store gets only those fields and can return its columns in any order. It must still leave out an optional column that is NULL, and keep a value that's stored as `null`.
+   - **`project_reachouts.group_number` is always written**, as `null` when a reachout has no group (`normalizeReachoutGroup`), and the fixtures and responses carry `"groupNumber": null`. Treat it as a nullable column that's always present, not as an optional one that drops out of responses.
 4. Add `persistence/sqlite/<feature>.store.js` for each feature, in the Phase 1 order, one commit each. Use prepared statements and `ORDER BY id`. Each commit makes that feature's shared tests pass under `npm run test:api:sqlite` **with no snapshot update**.
 5. **Guardrails:**
    - extend `fs-boundary` to `better-sqlite3`;
@@ -295,7 +297,7 @@ Never edit the exported files with PowerShell (`Set-Content`, `Out-File`). After
   - Converting to `String()` before binding fixes that value, but then `1` and `"1"` would collide under `UNIQUE(sprint_name, eid)`.
   - Decide in Phase 4, with a shared test for each case, how every TEXT key that a client can send as a number behaves. Check at least capacity `sprintName`/`eid`, reachout and competency eids, and attendance `status`.
 - **Roster order.** `GET /api/onboarding-resources` already sorts (newest `created_at` first, then highest id). But `GET /api/competency-records` lists group members **in roster file order**, which the real data doesn't keep consistently. The SQLite store gives the competency list the same order as the resources list. The fixtures are in strictly descending id order, so no snapshot changes. On the real data, the order of rows in the myCompetency table may change, which is harmless.
-- **Phase 3 reorders response keys.** The UI never relies on key order, but the snapshots do. The key-order-insensitive comparison is the safeguard; don't skip it.
+- **Phase 3 reorders response keys.** The UI never relies on key order, but the snapshots do. The key-order-insensitive comparison is the safeguard; don't skip it. (Done: the response-shape commit, `e75c870`, changed 30 entries in key order only and none in value.)
 - **Two backends running against each other.** Never run the API on JSON and on SQLite against the same `DATA_DIR` at once, or `npm run json-api` alongside the API. The runbook always stops the server first.
 - **Windows file locks.** An open database blocks deleting the temp directory, and `db:migrate --force` while the server is running. The harness's `close()` hook covers the first; `db:migrate` should fail with a clear message for the second.
 - **Uncommitted local data.** The migration reads the committed JSON. Anyone with UI edits they want to keep must commit them to `develop` before the cutover, or lose them on their next `db:migrate --force`.
@@ -333,3 +335,23 @@ Never edit the exported files with PowerShell (`Set-Content`, `Out-File`). After
 - **`dumpStore` uses the stores' existing list operations.** No store method was added, and no server file changed in Phase 2. See Phase 4 step 3 for what the SQLite stores need.
 - **Snapshot format.** Each entry of a case that runs on every backend gains a "stored data" line or block before "data files". "data files" now lists only `tasks.json` and the fruits file. json-only entries are unchanged.
 - **The `test:api:sqlite` run** passes the 43 tests that don't need the stores (config, fs boundary, fixtures, helpers, canonical-row unit tests) and skips the rest.
+
+### Phase 3
+
+One commit per bug, in the table's order. Each commit's snapshot diff was reviewed with `test/tools/compare-snapshots.js`, which ignores key order. The commit hashes are in [found-bugs.md](found-bugs.md).
+
+- **The fixes live in the services and in `server/utils/fields.js`**, not in separate "canonical row mappers":
+  - `WRITABLE_FIELDS` and `pickWritable()` are the M12 allowlist;
+  - `COLUMN_ORDER` and `inColumnOrder()` are the response shape;
+  - `numericId()` in `server/utils/ids.js` serves M6 and L16.
+
+  These are API field names, so services can use them without seeing storage. Both backends get them through the services.
+- **M8 got two new cases before its fix** (`202ba08`, "Add competency cases for name and clLevel"). The existing case only covered the rename half of M8, not `name`/`clLevel` hiding the roster's values. Both cases were recorded against the unfixed code, with an add-only snapshot diff.
+- **H2: a missing `db.json` still loads as empty.** Only a file that exists but can't be read or parsed is a 500 ("db.json is not valid JSON: …"). Decided with the user: there's nothing to lose when the file is missing.
+- **M6: non-numeric ids stay as they are.** The 36 random attendance ids in the real data aren't turned into `null`; the Phase 4 import drops them (decision 6).
+- **M4 and M5** read the roster through `formatOnboardingResource`. It moved, unchanged, to `onboarding.format.js` in its own commit first.
+  - M4 keeps the `Number(groupNumber) === group` comparison, so `?group=0` still lists members with no group. That's a separate, newly logged bug (**L17**), and it isn't fixed here.
+- **L16 was logged before its fix**, as the plan says. Boards and buckets already returned numeric ids, so the fix covers the lookups and task labels. Task labels are also numbers when written.
+- **The response shape leaves out the roster:** `formatOnboardingResource` already builds every resource in one fixed order (`id`, `name`, `eid`, …).
+- **One assertion changed outside the snapshots.** `store-interface.test.js` compared `GET /api/attendance-options` byte for byte with the stored rows; after L16 it expects the stored rows with numeric ids.
+- **Fifteen cases were renamed** in a separate commit, because their names described the fixed behaviour (e.g. `null start becomes the string "null"`). The suite passed with no snapshot update after the rename, so every entry kept its content.
