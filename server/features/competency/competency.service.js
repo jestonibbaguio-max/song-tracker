@@ -15,7 +15,7 @@ const onboardingRepository = require('../onboarding/onboarding.repository');
 function listRecords(group) {
   return repository.read((store) => {
     const groupNumber = group ? Number(group) : 5;
-    const groupMembers = onboardingRepository.load().filter(m => Number(m.groupNumber) === groupNumber);
+    const groupMembers = onboardingRepository.list().filter(m => Number(m.groupNumber) === groupNumber);
     const records = store.listRecords();
     return groupMembers.map(m => {
       const saved = records.find(r => r.eid === m.eid);
