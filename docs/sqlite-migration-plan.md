@@ -72,6 +72,7 @@ server/
 - **Services never see the storage shape.** No `db[...]`, no arrays loaded from a file, no SQL. They call the store interface only.
 - **The store interface is a unit of work.** `store.read(fn)` and `store.write(fn)` hand `fn` a session object with operations such as `list`, `findById`, `insert`, `update` and `remove`.
   - On JSON, `write` loads the file once and saves it once, and only if `fn` changed something. That keeps today's one-load, one-save pattern, and fs-trace stays green.
+  - **"Changed" means a mutating operation was called, not that the data differs.** Today a no-op `PATCH /api/sprints/1` with `{}` still saves `db.json` (`sprints.service.js:44-45`). A store that compared content before saving would silently stop that write, and fs-trace has no no-op case to catch it (Phase 1 step 0 adds one).
   - On SQLite, `write` wraps `fn` in a `db.transaction()`.
 - **Only `persistence/**` may require `fs` or `better-sqlite3`.** `server/middleware/static.js` stays the one documented exception, and `server/scripts/*` reach both only through `persistence/`.
 - **The server owns server fields.** `id`, `createdAt`, `updatedAt` and `deletedAt` are set by the service with `new Date().toISOString()`, never by SQL `CURRENT_TIMESTAMP`, whose format is different.
@@ -148,6 +149,7 @@ Each phase is one or more PRs into `develop`, and each step within a phase is it
 
 ### Phase 1: store interface on JSON (no behaviour change)
 
+0. **Add a no-op PATCH case to fs-trace**, e.g. `PATCH /api/sprints/1` with `{}`, which today loads `db.json` and saves it unchanged. Record it against the pre-Phase-1 server, so the snapshot diff only adds that entry. Every later Phase 1 commit must keep it green, which pins "changed" as "a mutating operation was called".
 1. Pure move: `persistence/db-file.repository.js` and `persistence/roster-file.repository.js` → `persistence/json/`.
 2. One feature per commit, in the restructure order: lookups → sprints → capacity → attendance → planner → reachouts → competency → onboarding. Each commit adds `persistence/json/<feature>.store.js` with the unit-of-work interface, and rewrites the service against it.
    - Moving `nextId()` into the JSON stores is fine. The SQLite stores don't need it.
