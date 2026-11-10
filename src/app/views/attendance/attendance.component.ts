@@ -16,7 +16,9 @@ export class AttendanceComponent implements OnInit {
   attendanceMonthStr = localStorage.getItem('attendance-month') ?? '2026-07';
   attendanceOptions: string[] = [];
   attendanceEntries: Record<string, Record<number, AttendanceEntry>> = {};
-  rtoModal = { open: false, eid: '', day: 0, year: 0, month: 0 };
+  /** select is the cell's dropdown, so Cancel can put back the value it showed before RTO was picked. */
+  rtoModal: { open: boolean; eid: string; day: number; year: number; month: number; select?: HTMLSelectElement } =
+    { open: false, eid: '', day: 0, year: 0, month: 0 };
   rtoLocationInput = '';
   rtoSummaryDay: number = this.initRtoSummaryDay();
 
@@ -107,11 +109,11 @@ export class AttendanceComponent implements OnInit {
     return map[this.getAttendanceStatus(eid, day)] ?? '';
   }
 
-  onAttendanceCellChange(eid: string, day: number, status: string): void {
+  onAttendanceCellChange(eid: string, day: number, status: string, select?: HTMLSelectElement): void {
     const [year, month] = this.attendanceMonthStr.split('-').map(Number);
     if (status === 'RTO') {
       this.rtoLocationInput = this.attendanceEntries[eid]?.[day]?.location ?? '';
-      this.rtoModal = { open: true, eid, day, year, month };
+      this.rtoModal = { open: true, eid, day, year, month, select };
       return;
     }
     this.persistAttendanceEntry(eid, day, year, month, status);
@@ -119,13 +121,15 @@ export class AttendanceComponent implements OnInit {
 
   confirmRtoLocation(): void {
     const { eid, day, year, month } = this.rtoModal;
-    this.rtoModal = { ...this.rtoModal, open: false };
+    this.rtoModal = { ...this.rtoModal, open: false, select: undefined };
     this.persistAttendanceEntry(eid, day, year, month, 'RTO', this.rtoLocationInput);
   }
 
   cancelRtoModal(): void {
-    this.rtoModal = { ...this.rtoModal, open: false };
-    this.attendanceEntries = { ...this.attendanceEntries };
+    const { eid, day, select } = this.rtoModal;
+    // The bound value never changed, so Angular won't redraw the dropdown; reset it directly
+    if (select) select.value = this.getAttendanceStatus(eid, day);
+    this.rtoModal = { ...this.rtoModal, open: false, select: undefined };
   }
 
   getActiveStatuses(): string[] {
