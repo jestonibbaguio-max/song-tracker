@@ -73,3 +73,17 @@ test('beforeStart can reshape the copied data before the app loads', { skip: jso
   const resources = (await api.request('GET', '/api/onboarding-resources')).body;
   assert.deepEqual(resources.map((r) => r.eid).sort(), ['kevin.r.lim', 'nina.g.castro']);
 });
+
+// The repositories load their stores through require.cache on every call, so
+// a second app would take over the first one's requests (see test-server.js).
+test('refuses to start a second app while one is open', async () => {
+  const first = await startTestServer();
+  try {
+    await assert.rejects(startTestServer(), { message: /^startTestServer: the app on http:\/\/127\.0\.0\.1:\d+ is still open; close\(\) it/ });
+    assert.equal(process.env.DATA_DIR, first.dataDir, 'the refused start leaves DATA_DIR alone');
+  } finally {
+    await first.close();
+  }
+  const second = await startTestServer();
+  await second.close();
+});

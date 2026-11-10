@@ -146,6 +146,8 @@ describeEndpoint('POST /api/capacity-entries', {
     'missing eid': { body: { sprintName: 'Sprint 3', cadence: 4 } },
     'non-numeric cadence on a new entry becomes 0': { body: { sprintName: 'Sprint 3', eid: 'liza.m.navarro', cadence: 'four' } },
     'non-numeric cadence on an existing entry becomes 0': { body: { sprintName: 'Sprint 2', eid: 'liza.m.navarro', cadence: 'four' } },
+    // JSON has no Infinity: 1e999 parses to it, and db.json stores it as null.
+    'infinite cadence (1e999) is stored as null': { rawBody: '{"sprintName": "Sprint 3", "eid": "liza.m.navarro", "cadence": 1e999}' },
     'negative and fractional values are accepted': { body: { sprintName: 'Sprint 3', eid: 'liza.m.navarro', cadence: -2, admin: 0.5 } },
     'eid is not normalised, so a differently-cased eid creates a second entry': {
       body: { sprintName: 'Sprint 2', eid: 'Rafael.T.Mendoza', cadence: 1 },

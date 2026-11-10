@@ -88,6 +88,40 @@ describe('sqlite import', () => {
     assert.equal(fs.existsSync(files.dbPath), false);
   });
 
+  // The duplicate check above fails before the database exists; this one fails
+  // inside the transaction, after rows were already inserted.
+  test('a row that can\'t be stored fails the whole import, and leaves no database files', (t) => {
+    const files = importFiles(t, {
+      db: {
+        sprints: [
+          { id: 1, name: 'Stored first', start: '2026-01-05', end: '2026-01-16' },
+          { id: 2, name: true, start: '2026-01-19', end: '2026-01-30' },
+        ],
+      },
+    });
+    assert.throws(() => files.run(), (error) => {
+      assert.ok(error instanceof ImportError);
+      assert.match(error.message, /^sprints: can't store \{"id":2,"name":true,/);
+      assert.match(error.message, /bug L18/);
+      return true;
+    });
+    for (const suffix of ['', '-wal', '-shm', '-journal']) {
+      assert.equal(fs.existsSync(files.dbPath + suffix), false, `dashboard.sqlite${suffix} is removed`);
+    }
+  });
+
+  test('refuses an id that isn\'t a positive integer, outside attendance', (t) => {
+    for (const id of [0, -3, 1.5, '2.5', 'abc', '', null, undefined]) {
+      const sprint = { name: 'S', start: '2026-01-05', end: '2026-01-16' };
+      if (id !== undefined) sprint.id = id;
+      const files = importFiles(t, { db: { sprints: [sprint] } });
+      assert.throws(() => files.run(), { name: 'Error', message: /^sprints: id .* is not a positive integer, in / }, `sprint id ${JSON.stringify(id)}`);
+      assert.equal(fs.existsSync(files.dbPath), false);
+    }
+    const roster = importFiles(t, { roster: [rosterRecord({ eid: 'no.id', name: 'No Id' })] });
+    assert.throws(() => roster.run(), { message: /^onboarding-resources: id undefined is not a positive integer, in / });
+  });
+
   test('refuses a duplicate capacity (sprintName, eid), but 1 and "1" are different keys', (t) => {
     const entry = (id, sprintName) => ({ id, sprintName, eid: 'a.person', cadence: 1, admin: 0, holiday: 0 });
     const duplicate = importFiles(t, { db: { 'capacity-entries': [entry(1, 'Sprint 1'), entry(2, 'Sprint 1')] } });

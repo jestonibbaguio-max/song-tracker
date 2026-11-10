@@ -5,6 +5,10 @@
 //           read can never change data.
 // write(fn) runs fn(session) in one transaction (db.transaction()): every
 //           change commits together, and if fn throws, none of them do.
+//           It starts with BEGIN IMMEDIATE, which takes the write lock up
+//           front: a write reads before it writes, and with a deferred BEGIN
+//           another connection committing in between would fail it with
+//           SQLITE_BUSY at once, without waiting for busy_timeout.
 //
 // openSession(changed) builds the feature's operations; every operation that
 // modifies data calls changed() first. The statements run against the file on
@@ -20,7 +24,7 @@ function createSqliteStore(openSession) {
   }
 
   function write(fn) {
-    return getDb().transaction(() => fn(openSession(() => {})))();
+    return getDb().transaction(() => fn(openSession(() => {}))).immediate();
   }
 
   return { read, write };

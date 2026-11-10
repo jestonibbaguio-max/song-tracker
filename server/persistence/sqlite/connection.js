@@ -21,10 +21,15 @@ function configure(database) {
   return database;
 }
 
-/** The open connection, opening it (and migrating the schema) on first use. */
+/**
+ * The open connection, opening it (and migrating the schema) on first use.
+ * The database must already exist: opening never creates it, so a missing
+ * file is an error, not an empty database that a later import would refuse
+ * to overwrite. import.js builds it from the JSON files.
+ */
 function getDb() {
   if (!db) {
-    const opened = configure(new Database(sqlitePath, { verbose: traceHook }));
+    const opened = configure(open());
     try {
       migrate(opened);
     } catch (error) {
@@ -35,6 +40,20 @@ function getDb() {
     statements = new Map();
   }
   return db;
+}
+
+/** Opens the existing database file, or throws a clear error when there's none. */
+function open() {
+  try {
+    return new Database(sqlitePath, { fileMustExist: true, verbose: traceHook });
+  } catch (error) {
+    if (error.code !== 'SQLITE_CANTOPEN' && !/directory does not exist/.test(error.message)) throw error;
+    throw new Error(
+      `No SQLite database at ${sqlitePath} (PERSISTENCE=sqlite). ` +
+      'Build it from the JSON files with server/persistence/sqlite/import.js (docs/sqlite-migration-plan.md).',
+      { cause: error },
+    );
+  }
 }
 
 /** A prepared statement for sql on the open connection. */

@@ -170,11 +170,15 @@ CREATE TABLE project_reachouts (
   updated_at   TEXT                    -- optional: POST doesn't set it
 ) STRICT;
 
--- Keyed by eid (rows have no id). Listed in insertion order (rowid). Every
--- other field is optional: a PATCH stores only the fields it was sent, and the
--- GET's default row ('' / 'N/A') is used only when no row is saved.
+-- Keyed by eid (rows have no id). Listed in insertion order, which seq
+-- holds: it isn't an API field, and a new row gets max(seq)+1. As INTEGER
+-- PRIMARY KEY it's the rowid itself, so VACUUM can't renumber it (it can
+-- renumber the implicit rowid of a table without one). Every other field is
+-- optional: a PATCH stores only the fields it was sent, and the GET's default
+-- row ('' / 'N/A') is used only when no row is saved.
 CREATE TABLE competency_records (
-  eid                   TEXT NOT NULL PRIMARY KEY,
+  seq                   INTEGER PRIMARY KEY,
+  eid                   TEXT NOT NULL UNIQUE,
   primary_skill         ANY,
   primary_proficiency   ANY,
   recent_retake_date    ANY,

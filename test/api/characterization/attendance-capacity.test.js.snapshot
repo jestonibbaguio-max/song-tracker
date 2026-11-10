@@ -2016,6 +2016,35 @@ outbound calls: none
 
 `;
 
+exports[`POST /api/capacity-entries > invalid input › infinite cadence (1e999) is stored as null 1`] = `
+
+POST /api/capacity-entries
+credentials: group 5 POC (rafael.t.mendoza, role poc)
+request body (raw):
+  {"sprintName": "Sprint 3", "eid": "liza.m.navarro", "cadence": 1e999}
+
+status: 201
+content-type: application/json; charset=utf-8
+access-control-allow-origin: *
+x-powered-by: Express
+response body:
+  {
+    "id": 6,
+    "sprintName": "Sprint 3",
+    "eid": "liza.m.navarro",
+    "cadence": null,
+    "admin": 0,
+    "holiday": 0
+  }
+
+stored data:
+  + /capacity-entries[id=6] (at index 5): {"id":6,"sprintName":"Sprint 3","eid":"liza.m.navarro","cadence":null,"admin":0,"holiday":0}
+data files: unchanged
+
+outbound calls: none
+
+`;
+
 exports[`POST /api/capacity-entries > invalid input › malformed JSON body 1`] = `
 
 POST /api/capacity-entries

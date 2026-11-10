@@ -19,11 +19,20 @@
 // Tests in one file run sequentially by default; keep it that way. DATA_DIR is
 // process-wide, so running tests concurrently inside a file would race. Separate
 // files run in separate processes and are safe to parallelise.
+//
+// Only one app can be open at a time: close() the previous one before starting
+// the next. The feature repositories load their store on every call, through
+// require.cache, so once a second app has loaded, the first one's requests
+// would reach the second one's stores and data. startTestServer() refuses
+// instead.
 
 const fs = require('node:fs');
 const http = require('node:http');
 const os = require('node:os');
 const path = require('node:path');
+
+/** The base URL of the app startTestServer() has open, or null. */
+let openApp = null;
 
 const FIXTURES_DIR = path.resolve(__dirname, '..', 'fixtures', 'data');
 const SERVER_DIR = path.resolve(__dirname, '..', '..', 'server');
@@ -59,6 +68,9 @@ function normalise(p) {
  *   e.g. to delete custom-onboarding.json and exercise CSV seeding.
  */
 async function startTestServer(t, options = {}) {
+  if (openApp) {
+    throw new Error(`startTestServer: the app on ${openApp} is still open; close() it before starting another (see test/helpers/test-server.js)`);
+  }
   const dataDir = createDataDir();
   const previousDataDir = process.env.DATA_DIR;
   process.env.DATA_DIR = dataDir;
@@ -81,16 +93,21 @@ async function startTestServer(t, options = {}) {
   }
 
   const baseUrl = `http://127.0.0.1:${server.address().port}`;
+  openApp = baseUrl;
   let closed = false;
 
   async function close() {
     if (closed) return;
     closed = true;
-    server.closeAllConnections();
-    await new Promise((resolve) => server.close(resolve));
-    closeDatabase();
-    restoreDataDir(previousDataDir);
-    fs.rmSync(dataDir, { recursive: true, force: true, maxRetries: 3 });
+    try {
+      server.closeAllConnections();
+      await new Promise((resolve) => server.close(resolve));
+      closeDatabase();
+      restoreDataDir(previousDataDir);
+      fs.rmSync(dataDir, { recursive: true, force: true, maxRetries: 3 });
+    } finally {
+      openApp = null;
+    }
   }
 
   /** JSON request helper. Returns { status, headers, body } with body parsed when it is JSON. */

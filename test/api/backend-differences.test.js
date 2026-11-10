@@ -8,7 +8,9 @@
 //   - a boolean, object or array sent for a field SQLite stores as a plain
 //     value is stored as sent on JSON, and refused with a 500 on SQLite;
 //   - a planner task's `completed` is stored as sent on JSON, and as a
-//     boolean (its truthiness) on SQLite.
+//     boolean (its truthiness) on SQLite;
+//   - an integer past SQLite's 64-bit range (a sprint retro's groupNumber of
+//     1e19 or more) is stored on JSON, and refused with a 500 on SQLite.
 //
 // No page of the app sends any of these.
 const { describe, test } = require('node:test');
@@ -61,6 +63,12 @@ const CASES = [
     },
     json: (completed) => assert.equal(completed, 1),
     sqlite: (completed) => assert.equal(completed, true),
+  },
+  {
+    name: 'integer past 64 bits for an INTEGER column (retro groupNumber 1e19)',
+    run: async (api) => api.request('POST', '/api/sprint-retros', { sprintId: 1, groupNumber: 1e19, category: 'went-well', text: 'x' }),
+    json: (res) => assert.equal(ok(res, 201).groupNumber, 1e19),
+    sqlite: (res) => { assert.equal(res.status, 500); assert.match(res.body, /cannot store REAL value in INTEGER column sprint_retros.group_number/); },
   },
 ];
 

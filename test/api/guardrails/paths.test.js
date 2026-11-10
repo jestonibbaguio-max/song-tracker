@@ -17,6 +17,7 @@
 const { describe, test } = require('node:test');
 const assert = require('node:assert/strict');
 const fs = require('node:fs');
+const http = require('node:http');
 const path = require('node:path');
 const express = require('express');
 const { startTestServer, loadFreshApp, createDataDir, SERVER_DIR } = require('../../helpers/test-server');
@@ -225,6 +226,8 @@ describe('guardrail: persistence backend setting', () => {
   test('loading the app with PERSISTENCE=sqlite opens no database until the first query', (t) => {
     const dataDir = createDataDir();
     withEnv(t, { PERSISTENCE: 'sqlite', DATA_DIR: dataDir });
+    const { importJson } = require(path.join(SERVER_DIR, 'persistence', 'sqlite', 'import.js'));
+    importJson({ dataDir, dbPath: path.join(dataDir, 'dashboard.sqlite') });
     const opened = spyOnDatabaseConstructor(t);
     let connection;
     t.after(() => {
@@ -234,7 +237,6 @@ describe('guardrail: persistence backend setting', () => {
 
     loadFreshApp();
     assert.deepEqual(opened, [], 'loading the app must not open the database');
-    assert.deepEqual(fs.readdirSync(dataDir).filter((name) => name.includes('.sqlite')), [], 'loading the app must not create a database file');
 
     connection = require(path.join(SERVER_DIR, 'persistence', 'sqlite', 'connection.js'));
     assert.deepEqual(opened, [], 'loading connection.js must not open the database');
@@ -243,6 +245,36 @@ describe('guardrail: persistence backend setting', () => {
     connection.getDb();
     assert.equal(opened.length, 1, 'the first query opens the database, and later ones reuse it');
     assertSamePath(opened[0], path.join(dataDir, 'dashboard.sqlite'), 'the database file');
+  });
+
+  // An empty database created on the fly would hide the missing data, and a
+  // later import would refuse to overwrite it.
+  test('with PERSISTENCE=sqlite and no database file, requests fail and create none', async (t) => {
+    const dataDir = createDataDir();
+    withEnv(t, { PERSISTENCE: 'sqlite', DATA_DIR: dataDir });
+    const server = http.createServer(loadFreshApp());
+    t.after(async () => {
+      server.closeAllConnections();
+      await new Promise((resolve) => server.close(resolve));
+      fs.rmSync(dataDir, { recursive: true, force: true, maxRetries: 3 });
+    });
+    await new Promise((resolve) => server.listen(0, '127.0.0.1', resolve));
+    const baseUrl = `http://127.0.0.1:${server.address().port}`;
+
+    for (const [method, urlPath, body] of [
+      ['GET', '/api/onboarding-resources'],
+      ['GET', '/api/sprints'],
+      ['POST', '/api/sprints', { name: 'S', start: '2026-01-05', end: '2026-01-16' }],
+    ]) {
+      const res = await fetch(baseUrl + urlPath, {
+        method,
+        headers: body ? { 'Content-Type': 'application/json' } : undefined,
+        body: body ? JSON.stringify(body) : undefined,
+      });
+      assert.equal(res.status, 500, `${method} ${urlPath}`);
+      assert.match(await res.text(), /No SQLite database at /, `${method} ${urlPath}`);
+    }
+    assert.deepEqual(fs.readdirSync(dataDir).filter((name) => name.includes('.sqlite')), [], 'no database file is created');
   });
 });
 

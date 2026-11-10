@@ -14,6 +14,11 @@
 //
 // `optional`: NULL means the row doesn't have the field, so fromColumns()
 // leaves it out. Every other column is always returned, null included.
+//
+// Infinity and -Infinity (e.g. 1e999 in a request body) are stored as they
+// are, and read back as null: db.json can't hold them, and JSON.stringify
+// saved them as null. So a row reads back as the JSON backend would read it
+// (a task's boardId then lists as 0, from Number(null)).
 
 const value = (api, column, optional = false) => ({ api, column, kind: 'value', optional });
 const json = (api, column, optional = false) => ({ api, column, kind: 'json', optional });
@@ -153,7 +158,8 @@ function fromColumns(collection, record) {
   for (const column of columns) {
     const v = record[column.column];
     if (v === null && column.optional) continue;
-    if (v === null || column.kind === 'value') row[column.api] = v;
+    if (v === Infinity || v === -Infinity) row[column.api] = null;
+    else if (v === null || column.kind === 'value') row[column.api] = v;
     else if (column.kind === 'json') row[column.api] = JSON.parse(v);
     else row[column.api] = v === 1;
   }
