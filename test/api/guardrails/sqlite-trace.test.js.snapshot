@@ -1,0 +1,307 @@
+exports[`guardrail: SQL statements per request > db.json routes, in order on one app (each re-reads; one transaction per write) 1`] = `
+
+GET /api/sprints → 200
+  PRAGMA journal_mode = WAL
+  PRAGMA busy_timeout = 5000
+  PRAGMA foreign_keys = OFF
+  PRAGMA user_version
+  SELECT * FROM sprints ORDER BY id
+POST /api/sprints → 201
+  BEGIN
+  INSERT INTO sprints (id, name, start_date, end_date) VALUES (NULL, 'Sprint 4', '2026-11-24', '2026-12-05')
+  COMMIT
+GET /api/sprints (read back) → 200
+  SELECT * FROM sprints ORDER BY id
+PATCH /api/sprints/1 → 200
+  BEGIN
+  SELECT * FROM sprints WHERE id = 1.0
+  SELECT * FROM sprints WHERE id = 1.0
+  UPDATE sprints SET name = 'Sprint 1 (renamed)', start_date = '2026-10-13', end_date = '2026-10-24' WHERE id = 1.0
+  COMMIT
+GET /api/sprints (read back) → 200
+  SELECT * FROM sprints ORDER BY id
+DELETE /api/sprints/3 → 200
+  BEGIN
+  DELETE FROM sprints WHERE id = 3.0
+  COMMIT
+GET /api/sprints (read back) → 200
+  SELECT * FROM sprints ORDER BY id
+GET /api/sprint-retros → 200
+  SELECT * FROM sprint_retros ORDER BY id
+POST /api/sprint-retros → 201
+  BEGIN
+  SELECT * FROM sprints WHERE id = 2.0
+  INSERT INTO sprint_retros (id, sprint_id, group_number, category, text, created_at) VALUES (NULL, 2.0, 5.0, 'went-well', 'Daily pairing on AEM components '/*+23 bytes*/, '<timestamp>')
+  COMMIT
+GET /api/sprints (read back) → 200
+  SELECT * FROM sprints ORDER BY id
+PATCH /api/sprint-retros/2 → 200
+  BEGIN
+  SELECT * FROM sprint_retros WHERE id = 2.0
+  SELECT * FROM sprint_retros WHERE id = 2.0
+  UPDATE sprint_retros SET sprint_id = 1.0, group_number = 5.0, category = 'didnt-go-well', text = 'Author instance setup took three'/*+5 bytes*/, created_at = '2026-10-23T07:03:40.917Z' WHERE id = 2.0
+  COMMIT
+GET /api/sprint-retros (read back) → 200
+  SELECT * FROM sprint_retros ORDER BY id
+DELETE /api/sprint-retros/1 → 200
+  BEGIN
+  DELETE FROM sprint_retros WHERE id = 1.0
+  COMMIT
+GET /api/sprint-retros (read back) → 200
+  SELECT * FROM sprint_retros ORDER BY id
+GET /api/capacity-entries → 200
+  SELECT * FROM capacity_entries ORDER BY id
+POST /api/capacity-entries → 201
+  BEGIN
+  SELECT * FROM capacity_entries WHERE sprint_name = 'Sprint 3' AND eid = 'rafael.t.mendoza'
+  INSERT INTO capacity_entries (id, sprint_name, eid, cadence, admin, holiday) VALUES (NULL, 'Sprint 3', 'rafael.t.mendoza', 4.0, 1.0, 0.0)
+  COMMIT
+GET /api/capacity-entries (read back) → 200
+  SELECT * FROM capacity_entries ORDER BY id
+GET /api/attendance → 200
+  SELECT * FROM attendance ORDER BY id
+POST /api/attendance → 201
+  BEGIN
+  INSERT INTO attendance (id, eid, year, month, day, status, location) VALUES (NULL, 'liza.m.navarro', 2026.0, 11.0, 5.0, 'Present', NULL)
+  COMMIT
+GET /api/attendance (read back) → 200
+  SELECT * FROM attendance ORDER BY id
+PATCH /api/attendance/6 → 200
+  BEGIN
+  SELECT * FROM attendance WHERE id = 6.0
+  UPDATE attendance SET eid = 'liza.m.navarro', year = 2026.0, month = 10.0, day = 28.0, status = 'Absent', location = 'Harbor Point Building' WHERE id = 6.0
+  COMMIT
+GET /api/attendance (read back) → 200
+  SELECT * FROM attendance ORDER BY id
+DELETE /api/attendance/6 → 200
+  BEGIN
+  DELETE FROM attendance WHERE id = 6.0
+  COMMIT
+GET /api/attendance (read back) → 200
+  SELECT * FROM attendance ORDER BY id
+GET /api/attendance-options → 200
+  SELECT * FROM attendance_options ORDER BY id
+GET /api/office-locations → 200
+  SELECT * FROM office_locations ORDER BY id
+GET /api/planner-labels → 200
+  SELECT * FROM planner_labels ORDER BY id
+GET /api/planner-boards → 200
+  SELECT * FROM planner_boards ORDER BY id
+GET /api/planner-buckets → 200
+  SELECT * FROM planner_buckets ORDER BY id
+POST /api/planner-buckets → 201
+  BEGIN
+  INSERT INTO planner_buckets (id, board_id, name, sort_order) VALUES (NULL, 1.0, 'Sprint 1', 0.0)
+  COMMIT
+GET /api/planner-buckets (read back) → 200
+  SELECT * FROM planner_buckets ORDER BY id
+GET /api/planner-tasks → 200
+  SELECT * FROM planner_tasks ORDER BY id
+POST /api/planner-tasks → 201
+  BEGIN
+  INSERT INTO planner_tasks (id, board_id, bucket_id, title, status, priority, start_date, due_date, assignee, labels, checklist, comments, description, acceptance_criteria, completed, completed_date, notes, created_at, updated_at) VALUES (NULL, 1.0, 4.0, 'Build a React form with validati'/*+2 bytes*/, 'Not started', 'Medium', '2026-10-28', '2026-11-06', 'miguel.a.torres', '[2,4]', '[{"id":1,"text":"Pick a form lib'/*+20 bytes*/, '[]', '<p>Practice controlled inputs</p'/*+1 bytes*/, '<ul><li>All fields validated</li'/*+6 bytes*/, 0.0, NULL, NULL, '<timestamp>', '<timestamp>')
+  COMMIT
+GET /api/planner-tasks (read back) → 200
+  SELECT * FROM planner_tasks ORDER BY id
+PATCH /api/planner-tasks/2 → 200
+  BEGIN
+  SELECT * FROM planner_tasks WHERE id = 2.0
+  SELECT * FROM planner_tasks WHERE id = 2.0
+  UPDATE planner_tasks SET board_id = 2.0, bucket_id = 2.0, title = 'Angular signals refresher', status = 'Completed', priority = 'Medium', start_date = '2026-10-27', due_date = '2026-11-04', assignee = 'jomar.c.pascual', labels = '[2,4]', checklist = '[{"id":1,"text":"Finish signals '/*+79 bytes*/, comments = NULL, description = NULL, acceptance_criteria = NULL, completed = 1.0, completed_date = '', notes = '', created_at = '2026-10-27T02:11:08.940Z', updated_at = '<timestamp>' WHERE id = 2.0
+  COMMIT
+GET /api/planner-tasks (read back) → 200
+  SELECT * FROM planner_tasks ORDER BY id
+DELETE /api/planner-tasks/5 → 200
+  BEGIN
+  DELETE FROM planner_tasks WHERE id = 5.0
+  COMMIT
+GET /api/planner-tasks (read back) → 200
+  SELECT * FROM planner_tasks ORDER BY id
+GET /api/deletion-logs → 200
+  SELECT * FROM deletion_logs ORDER BY id
+POST /api/deletion-logs → 201
+  BEGIN
+  INSERT INTO deletion_logs (id, type, task_id, task_title, deleted_by, deleted_by_eid, comment_author, comment_text, comment_created_at, deleted_at) VALUES (NULL, 'task-deletion', 5.0, 'Accessibility audit of the onboa'/*+10 bytes*/, 'Rafael Mendoza', 'rafael.t.mendoza', NULL, NULL, NULL, '<timestamp>')
+  COMMIT
+GET /api/deletion-logs (read back) → 200
+  SELECT * FROM deletion_logs ORDER BY id
+GET /api/project-reachouts → 200
+  SELECT * FROM project_reachouts ORDER BY id
+POST /api/project-reachouts → 201
+  BEGIN
+  INSERT INTO project_reachouts (id, eid, project_name, tech_role, poc_eid, status, details, group_number, created_at, updated_at) VALUES (NULL, 'jomar.c.pascual', 'Harborline Insurance Portal', 'AEM Developer', 'rafael.t.mendoza', 'CV Requested', 'Junior slot, AEM components', 5.0, '<timestamp>', NULL)
+  COMMIT
+GET /api/project-reachouts (read back) → 200
+  SELECT * FROM project_reachouts ORDER BY id
+PATCH /api/project-reachouts/2 → 200
+  BEGIN
+  SELECT * FROM project_reachouts WHERE id = 2.0
+  SELECT * FROM project_reachouts WHERE id = 2.0
+  UPDATE project_reachouts SET eid = 'liza.m.navarro', project_name = 'Harborline Insurance Portal', tech_role = 'Angular Developer', poc_eid = 'rafael.t.mendoza', status = 'Interview Scheduled', details = '', group_number = 5.0, created_at = '2026-11-03T05:50:22.874Z', updated_at = '<timestamp>' WHERE id = 2.0
+  COMMIT
+GET /api/project-reachouts (read back) → 200
+  SELECT * FROM project_reachouts ORDER BY id
+DELETE /api/project-reachouts/4 → 200
+  BEGIN
+  DELETE FROM project_reachouts WHERE id = 4.0
+  COMMIT
+GET /api/project-reachouts (read back) → 200
+  SELECT * FROM project_reachouts ORDER BY id
+GET /api/competency-records?group=5 → 200
+  SELECT * FROM onboarding_resources ORDER BY created_at DESC, id DESC
+  SELECT * FROM competency_records ORDER BY rowid
+PATCH /api/competency-records/liza.m.navarro → 200
+  BEGIN
+  SELECT * FROM competency_records WHERE eid = 'liza.m.navarro'
+  UPDATE competency_records SET primary_skill = 'Angular', primary_proficiency = 'P3', recent_retake_date = '2026-10-22', next_retake_date = '', secondary_skill = 'TBD', secondary_proficiency = 'TBD', retake_date = '' WHERE eid = 'liza.m.navarro'
+  COMMIT
+GET /api/competency-records?group=5 (read back) → 200
+  SELECT * FROM onboarding_resources ORDER BY created_at DESC, id DESC
+  SELECT * FROM competency_records ORDER BY rowid
+
+`;
+
+exports[`guardrail: SQL statements per request > no-op writes still run their write 1`] = `
+
+PATCH /api/sprints/1 (empty body) → 200
+  PRAGMA journal_mode = WAL
+  PRAGMA busy_timeout = 5000
+  PRAGMA foreign_keys = OFF
+  PRAGMA user_version
+  BEGIN
+  SELECT * FROM sprints WHERE id = 1.0
+  SELECT * FROM sprints WHERE id = 1.0
+  UPDATE sprints SET name = 'Sprint 1', start_date = '2026-10-13', end_date = '2026-10-24' WHERE id = 1.0
+  COMMIT
+PATCH /api/sprint-retros/1 (same text) → 200
+  BEGIN
+  SELECT * FROM sprint_retros WHERE id = 1.0
+  SELECT * FROM sprint_retros WHERE id = 1.0
+  UPDATE sprint_retros SET sprint_id = 1.0, group_number = 5.0, category = 'improve', text = 'Pair on AEM environment setup ea'/*+36 bytes*/, created_at = '2026-10-23T07:02:11.408Z' WHERE id = 1.0
+  COMMIT
+POST /api/capacity-entries (existing entry, no values) → 200
+  BEGIN
+  SELECT * FROM capacity_entries WHERE sprint_name = 'Sprint 2' AND eid = 'rafael.t.mendoza'
+  SELECT * FROM capacity_entries WHERE sprint_name = 'Sprint 2' AND eid = 'rafael.t.mendoza'
+  UPDATE capacity_entries SET sprint_name = 'Sprint 2', eid = 'rafael.t.mendoza', cadence = 4.0, admin = 0.0, holiday = 0.0 WHERE id = 1.0
+  COMMIT
+PATCH /api/attendance/5 (empty body) → 200
+  BEGIN
+  SELECT * FROM attendance WHERE id = 5.0
+  UPDATE attendance SET eid = 'rafael.t.mendoza', year = 2026.0, month = 10.0, day = 28.0, status = 'Present', location = NULL WHERE id = 5.0
+  COMMIT
+PATCH /api/competency-records/rafael.t.mendoza (empty body) → 200
+  BEGIN
+  SELECT * FROM competency_records WHERE eid = 'rafael.t.mendoza'
+  UPDATE competency_records SET primary_skill = 'Angular', primary_proficiency = 'P3+', recent_retake_date = '2026-08-20', next_retake_date = '', secondary_skill = 'AEM', secondary_proficiency = 'P3', retake_date = '' WHERE eid = 'rafael.t.mendoza'
+  COMMIT
+
+`;
+
+exports[`guardrail: SQL statements per request > roster, skill options and competency 1`] = `
+
+GET /api/onboarding-resources → 200
+  PRAGMA journal_mode = WAL
+  PRAGMA busy_timeout = 5000
+  PRAGMA foreign_keys = OFF
+  PRAGMA user_version
+  SELECT * FROM onboarding_resources ORDER BY created_at DESC, id DESC
+GET /api/onboarding-resources (again) → 200
+  SELECT * FROM onboarding_resources ORDER BY created_at DESC, id DESC
+GET /api/skill-options → 200
+  SELECT * FROM onboarding_resources ORDER BY created_at DESC, id DESC
+POST /api/onboarding-resources → 201
+  SELECT * FROM onboarding_resources ORDER BY created_at DESC, id DESC
+  BEGIN
+  INSERT INTO onboarding_resources (id, eid, name, hire_date, roll_in_date, project_deployed, deployment_date, project_name, poc, dn, roll_off_date, from_project, cl_level, group_number, primary_skill, primary_years, secondary_skill, secondary_years, another_skills, office_location, created_at, updated_at) VALUES (NULL, 'bea.l.santos', 'Bea Santos', '11/02/2026', '11/09/2026', 'No', '', 'Song Bench', 'andrea.s.bautista', 'No', '', '', '11', 1.0, 'React', '1', '', '', '["TypeScript"]', 'Cebu', '<timestamp>', '<timestamp>')
+  COMMIT
+POST /api/onboarding-resources (invalid date) → 400
+  (no SQL)
+PATCH /api/onboarding-resources/5 → 200
+  SELECT * FROM onboarding_resources ORDER BY created_at DESC, id DESC
+  SELECT * FROM onboarding_resources ORDER BY created_at DESC, id DESC
+  BEGIN
+  SELECT * FROM onboarding_resources WHERE id = 5.0
+  UPDATE onboarding_resources SET eid = 'teresa.villanueva', name = 'Teresa Villanueva', hire_date = '05/09/2022', roll_in_date = '09/14/2026', project_deployed = 'No', deployment_date = '', project_name = 'Song Bench', poc = 'rafael.t.mendoza', dn = 'Yes', roll_off_date = '09/11/2026', from_project = 'Retail Loyalty Platform', cl_level = '9', group_number = 5.0, primary_skill = 'AEM', primary_years = '5', secondary_skill = 'Java', secondary_years = '3', another_skills = '["Sling","HTL","Dispatcher"]', office_location = 'Cebu', created_at = '2026-09-14T01:58:33.460Z', updated_at = '<timestamp>' WHERE id = 5.0
+  COMMIT
+PATCH /api/onboarding-resources/5 (eid changed: appends) → 201
+  SELECT * FROM onboarding_resources ORDER BY created_at DESC, id DESC
+  SELECT * FROM onboarding_resources ORDER BY created_at DESC, id DESC
+  BEGIN
+  INSERT INTO onboarding_resources (id, eid, name, hire_date, roll_in_date, project_deployed, deployment_date, project_name, poc, dn, roll_off_date, from_project, cl_level, group_number, primary_skill, primary_years, secondary_skill, secondary_years, another_skills, office_location, created_at, updated_at) VALUES (NULL, 'teresa.v', 'Teresa Villanueva', '05/09/2022', '09/14/2026', 'No', '', 'Song Bench', 'rafael.t.mendoza', 'Yes', '09/11/2026', 'Retail Loyalty Platform', '9', 5.0, 'AEM', '5', 'Java', '3', '["Sling","HTL","Dispatcher"]', 'Cebu', '<timestamp>', '<timestamp>')
+  COMMIT
+PATCH /api/onboarding-resources/5 (partial body: 400) → 400
+  SELECT * FROM onboarding_resources ORDER BY created_at DESC, id DESC
+PATCH /api/onboarding-resources/999 → 404
+  SELECT * FROM onboarding_resources ORDER BY created_at DESC, id DESC
+DELETE /api/onboarding-resources/5 → 200
+  BEGIN
+  DELETE FROM onboarding_resources WHERE id = 5.0
+  COMMIT
+GET /api/competency-records?group=5 → 200
+  SELECT * FROM onboarding_resources ORDER BY created_at DESC, id DESC
+  SELECT * FROM competency_records ORDER BY rowid
+GET /api/competency-records → 200
+  SELECT * FROM onboarding_resources ORDER BY created_at DESC, id DESC
+  SELECT * FROM competency_records ORDER BY rowid
+PATCH /api/competency-records/liza.m.navarro → 200
+  BEGIN
+  SELECT * FROM competency_records WHERE eid = 'liza.m.navarro'
+  UPDATE competency_records SET primary_skill = 'Angular', primary_proficiency = 'P3', recent_retake_date = '2026-10-22', next_retake_date = '', secondary_skill = 'TBD', secondary_proficiency = 'TBD', retake_date = '' WHERE eid = 'liza.m.navarro'
+  COMMIT
+
+`;
+
+exports[`guardrail: SQL statements per request > routes that answer 400 or 404 1`] = `
+
+PATCH /api/sprints/999 (unknown id, no body) → 404
+  PRAGMA journal_mode = WAL
+  PRAGMA busy_timeout = 5000
+  PRAGMA foreign_keys = OFF
+  PRAGMA user_version
+  BEGIN
+  SELECT * FROM sprints WHERE id = 999.0
+  COMMIT
+POST /api/sprints → 400
+  (no SQL)
+POST /api/sprint-retros → 400
+  BEGIN
+  SELECT * FROM sprints WHERE id = 999.0
+  COMMIT
+PATCH /api/sprint-retros/999 → 404
+  BEGIN
+  SELECT * FROM sprint_retros WHERE id = 999.0
+  COMMIT
+POST /api/capacity-entries → 400
+  (no SQL)
+PATCH /api/attendance/999 → 404
+  BEGIN
+  SELECT * FROM attendance WHERE id = 999.0
+  COMMIT
+POST /api/planner-buckets → 400
+  (no SQL)
+PATCH /api/planner-tasks/999 → 404
+  BEGIN
+  SELECT * FROM planner_tasks WHERE id = 999.0
+  COMMIT
+DELETE /api/project-reachouts/999 → 404
+  BEGIN
+  DELETE FROM project_reachouts WHERE id = 999.0
+  COMMIT
+POST /api/sprints (malformed JSON) → 400
+  (no SQL)
+
+`;
+
+exports[`guardrail: SQL statements per request > routes that touch no stored data 1`] = `
+
+GET /api/health → 200
+  (no SQL)
+GET /api/dashboard → 200
+  (no SQL)
+GET /api/tasks → 200
+  (no SQL)
+GET /api/fruits → 200
+  (no SQL)
+
+`;

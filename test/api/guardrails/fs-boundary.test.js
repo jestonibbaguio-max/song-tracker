@@ -1,4 +1,5 @@
-// Guardrail 4 (docs/server-restructure-plan.md, step 0): only persistence code requires fs.
+// Guardrail 4 (docs/server-restructure-plan.md, step 0): only persistence code requires fs,
+// and (docs/sqlite-migration-plan.md, Phase 4) only persistence code requires better-sqlite3.
 //
 // The target layout allows fs in exactly two places:
 //   - server/persistence/**     (one repository per physical data file)
@@ -60,6 +61,49 @@ function isAllowed(repoPath) {
     || DOCUMENTED_EXCEPTIONS.includes(repoPath)
     || LEGACY_ALLOWLIST.includes(repoPath);
 }
+
+// docs/sqlite-migration-plan.md, Phase 4 step 5: the same rule for the SQLite
+// driver, with no exception at all (static.js only needs fs).
+const SQLITE_MODULE = `['"\`]better-sqlite3['"\`]`;
+const SQLITE_IMPORT = new RegExp(
+  [
+    `\\brequire\\s*\\(\\s*${SQLITE_MODULE}\\s*\\)`,
+    `\\bimport\\s*\\(\\s*${SQLITE_MODULE}\\s*\\)`,
+    `\\bfrom\\s*${SQLITE_MODULE}`,
+    `\\bimport\\s*${SQLITE_MODULE}`,
+  ].join('|'),
+);
+
+describe('guardrail: only persistence code requires better-sqlite3', () => {
+  test('the detector recognises every way of loading better-sqlite3', () => {
+    const hits = [
+      "const Database = require('better-sqlite3');",
+      'const Database = require("better-sqlite3");',
+      'const Database = require( `better-sqlite3` );',
+      "import Database from 'better-sqlite3';",
+      "const { default: Database } = await import('better-sqlite3');",
+    ];
+    const misses = [
+      "const store = require('./sqlite-store');",
+      "const x = require('better-sqlite3-helper');",
+      '// opens the database with better-sqlite3 (persistence/ only)',
+    ];
+    for (const s of hits) assert.ok(SQLITE_IMPORT.test(s), `should detect: ${s}`);
+    for (const s of misses) assert.ok(!SQLITE_IMPORT.test(s), `should not detect: ${s}`);
+  });
+
+  test('no file outside persistence/ requires better-sqlite3', () => {
+    const offenders = serverScripts().map(toRepoPath)
+      .filter((p) => SQLITE_IMPORT.test(fs.readFileSync(path.join(REPO_ROOT, p), 'utf8')))
+      .filter((p) => !ALLOWED_DIRS.some((dir) => p.startsWith(dir)));
+    assert.deepEqual(offenders, [], 'these files require better-sqlite3 but are not in server/persistence/');
+  });
+
+  test('the SQLite backend does require it, so the check above is not vacuous', () => {
+    const users = serverScripts().map(toRepoPath).filter((p) => SQLITE_IMPORT.test(fs.readFileSync(path.join(REPO_ROOT, p), 'utf8')));
+    assert.ok(users.includes('server/persistence/sqlite/connection.js'), `found: ${JSON.stringify(users)}`);
+  });
+});
 
 describe('guardrail: only persistence code requires fs', () => {
   test('the detector recognises every way of loading fs', () => {
