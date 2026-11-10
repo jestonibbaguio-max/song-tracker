@@ -25,7 +25,7 @@ function configure(database) {
  * The open connection, opening it (and migrating the schema) on first use.
  * The database must already exist: opening never creates it, so a missing
  * file is an error, not an empty database that a later import would refuse
- * to overwrite. import.js builds it from the JSON files.
+ * to overwrite. npm run db:migrate builds it from the JSON files (import.js).
  */
 function getDb() {
   if (!db) {
@@ -50,7 +50,7 @@ function open() {
     if (error.code !== 'SQLITE_CANTOPEN' && !/directory does not exist/.test(error.message)) throw error;
     throw new Error(
       `No SQLite database at ${sqlitePath} (PERSISTENCE=sqlite). ` +
-      'Build it from the JSON files with server/persistence/sqlite/import.js (docs/sqlite-migration-plan.md).',
+      'Build it from the JSON files with npm run db:migrate (docs/running-backend.md).',
       { cause: error },
     );
   }
