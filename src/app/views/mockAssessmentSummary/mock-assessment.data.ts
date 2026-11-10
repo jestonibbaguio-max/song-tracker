@@ -136,8 +136,9 @@ export class MockAssessmentComponent {
       passRate: '0%',
       failRate: '0%'
     };
-    this.summary.rows.push(newRow);
-    this.editingIndex = this.summary.rows.length - 1;
+    // Not added to the table yet: onUpdate() appends it on Save (rows[rows.length] = row),
+    // so Cancel leaves the table as it was
+    this.editingIndex = this.summary.rows.length;
     this.editingRow = JSON.parse(JSON.stringify(newRow));
     this.updateEditingRowTotals();
     this.showEditModal = true;
