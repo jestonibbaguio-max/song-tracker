@@ -1,9 +1,14 @@
 // Which storage backend the API tests run against (docs/sqlite-migration-plan.md, Phase 2).
 //
-//   npm run test:api          PERSISTENCE unset, so json (the default)
-//   npm run test:api:sqlite   PERSISTENCE=sqlite
+//   npm run test:api            PERSISTENCE=json (test/tools/test-api.js)
+//   npm run test:api:sqlite     PERSISTENCE=sqlite
+//   npm run test:api:exported   PERSISTENCE=json, on exported fixtures
+//   node --test <file>          PERSISTENCE unset: the server's default
+//                               (DEFAULT_PERSISTENCE in server/config/index.js)
 //
-// The server reads PERSISTENCE when the app loads (server/config/index.js), and
+// The backend is decided once, here, and written back into
+// process.env.PERSISTENCE, so the harness and the app never disagree: the
+// server reads PERSISTENCE when the app loads (server/config/index.js), and
 // startTestServer() loads a fresh app per test, so the whole run uses one backend.
 //
 // Tests are tagged by the backend they make sense on:
@@ -20,11 +25,14 @@
 //
 // Every backend has its stores since Phase 4, so a sqlite run skips only the
 // json-only tests.
+const { DEFAULT_PERSISTENCE } = require('../../server/config');
+
 const BACKENDS = ['json', 'sqlite'];
-const BACKEND = process.env.PERSISTENCE || 'json';
+const BACKEND = process.env.PERSISTENCE || DEFAULT_PERSISTENCE;
 if (!BACKENDS.includes(BACKEND)) {
   throw new Error(`PERSISTENCE must be one of ${BACKENDS.join(', ')}; got "${BACKEND}"`);
 }
+process.env.PERSISTENCE = BACKEND;
 
 /**
  * npm run test:api:exported (Phase 5): the run's data comes from fixtures that

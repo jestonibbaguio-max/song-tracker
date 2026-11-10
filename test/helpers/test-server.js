@@ -30,6 +30,8 @@ const fs = require('node:fs');
 const http = require('node:http');
 const os = require('node:os');
 const path = require('node:path');
+// Settles the run's backend and writes it into process.env.PERSISTENCE.
+const { BACKEND } = require('./backend');
 
 /** The base URL of the app startTestServer() has open, or null. */
 let openApp = null;
@@ -84,7 +86,7 @@ async function startTestServer(t, options = {}) {
   let server;
   try {
     if (options.beforeStart) options.beforeStart(dataDir);
-    if ((process.env.PERSISTENCE || 'json') === 'sqlite') buildDatabase(dataDir);
+    if ((process.env.PERSISTENCE || BACKEND) === 'sqlite') buildDatabase(dataDir);
     const app = loadFreshApp();
     server = http.createServer(app);
     await new Promise((resolve, reject) => {
