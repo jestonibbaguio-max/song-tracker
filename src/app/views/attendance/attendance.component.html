@@ -31,9 +31,9 @@
           @for (day of attendanceDays(); track day) {
             <td class="att-day-col" [class.att-weekend]="isWeekend(day)" [ngClass]="getAttendanceCellClass(resource.eid, day)" [title]="getAttendanceCellTitle(resource.eid, day)">
               @if (!isWeekend(day)) {
-                <select class="att-select"
+                <select #cellSelect class="att-select"
                         [ngModel]="getAttendanceStatus(resource.eid, day)"
-                        (ngModelChange)="onAttendanceCellChange(resource.eid, day, $event)">
+                        (ngModelChange)="onAttendanceCellChange(resource.eid, day, $event, cellSelect)">
                   <option value=""></option>
                   @for (opt of attendanceOptions; track opt) {
                     <option [value]="opt">{{ opt }}</option>
