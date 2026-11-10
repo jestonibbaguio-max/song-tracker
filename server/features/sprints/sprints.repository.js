@@ -5,4 +5,5 @@ const { selectStore } = require('../../persistence/select-store');
 
 module.exports = selectStore('sprints', ['read', 'write'], {
   json: () => require('../../persistence/json/sprints.store'),
+  sqlite: () => require('../../persistence/sqlite/sprints.store'),
 });

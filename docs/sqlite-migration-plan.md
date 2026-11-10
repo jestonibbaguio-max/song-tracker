@@ -1,6 +1,6 @@
 # SQLite migration plan
 
-**Status:** Phase 0 is done on `feature/sqlite-phase-0`, with review fixes on `feature/sqlite-phase-0-fixes`; the Linux CI check waits for Phase 4 step 6. Phase 1 is done on `feature/sqlite-phase-1`, rebuilt on top of the fixes, with step 0 first (see "Deviations"). Phase 2 is done on `feature/sqlite-phase-2`, with steps 3 and 4 before step 2 (see "Deviations"). Phase 3 is done on `feature/sqlite-phase-3` (see "Deviations"). Phases 4–8 haven't started. This plan builds on the restructured backend from [server-restructure-plan.md](server-restructure-plan.md), which was merged into `develop` in `07f41a8`. Every phase branches off `develop`, and its PRs target `develop`.
+**Status:** Phase 0 is done on `feature/sqlite-phase-0`, with review fixes on `feature/sqlite-phase-0-fixes`; the Linux CI check waits for Phase 4 step 6. Phase 1 is done on `feature/sqlite-phase-1`, rebuilt on top of the fixes, with step 0 first (see "Deviations"). Phase 2 is done on `feature/sqlite-phase-2`, with steps 3 and 4 before step 2 (see "Deviations"). Phase 3 is done on `feature/sqlite-phase-3` (see "Deviations"). Phase 4 is done on `feature/sqlite-phase-4` (see "Deviations"). Phases 5–8 haven't started. This plan builds on the restructured backend from [server-restructure-plan.md](server-restructure-plan.md), which was merged into `develop` in `07f41a8`. Every phase branches off `develop`, and its PRs target `develop`.
 
 **Goal:** move the dashboard data (`db.json` and `custom-onboarding.json`) from whole-file JSON reads and writes to SQLite, using `better-sqlite3`. The HTTP contract stays the same, apart from storage-related bugs fixed on purpose (see "Bug scope"). The JSON backend stays for a while as a fallback that a setting can switch back to. It is then removed completely (Phase 8).
 
@@ -40,7 +40,7 @@ These are verified against `develop` at `07f41a8` (the merge of `feature/backend
   `formatOnboardingResource` reads camelCase first and falls back to snake_case, so the API already returns the camelCase value. The import uses exactly the same rule.
 - **Planner tasks carry fields the UI doesn't know about.** `completedDate` exists on 86 tasks, and holds a date on 59 of them and `""` on 27. `notes` exists on 78 tasks and is `""` on every one of them. Neither field is in `PlannerTask` or anywhere else in `src/`.
 - **`deletion-logs` doesn't exist in the real `db.json`** (the fixtures have 2 rows), and `project-reachouts` exists only in uncommitted edits. Both start empty.
-- **The test suite is green:** 588 tests before Phase 0, 594 after it, 601 after Phase 1, 620 after Phase 2 and 622 after Phase 3, run with `npm run test:api`. After Phase 2, `npm run test:api:sqlite` passes the 43 tests that don't need the stores and skips the rest. The leftover `song-tracker.sqlite-wal`/`-shm` files are gitignored and untracked, and there's no main `.sqlite` file, so they can't be read.
+- **The test suite is green:** 588 tests before Phase 0, 594 after it, 601 after Phase 1, 620 after Phase 2 and 622 after Phase 3, run with `npm run test:api`. After Phase 2, `npm run test:api:sqlite` passes the 43 tests that don't need the stores and skips the rest. After Phase 4 (with its review fixes), `test:api` passes 661 and `test:api:sqlite` passes 582, skipping the 74 json-only tests. The leftover `song-tracker.sqlite-wal`/`-shm` files are gitignored and untracked, and there's no main `.sqlite` file, so they can't be read.
 
 ## Target structure
 
@@ -102,6 +102,8 @@ Columns are snake_case, and the stores map them to the camelCase API fields. "Op
 
 Pragmas: `journal_mode = WAL`, `busy_timeout = 5000`, `foreign_keys = OFF` (decision 9). The schema version is kept in `PRAGMA user_version`.
 
+**As built in Phase 4**, the column types, the optional columns and the competency defaults differ from this table. [server/persistence/sqlite/schema.sql](../server/persistence/sqlite/schema.sql) is the reference; the Phase 4 deviations explain why.
+
 **Binding rules for `better-sqlite3`** (all verified on 13.0.3). The stores convert every value before binding it:
 - **Booleans throw.** Binding `true`/`false` fails with `TypeError: SQLite3 can only bind numbers, strings, bigints, buffers, and null`, so `planner_tasks.completed` needs an explicit `0`/`1` on write and `=== 1` on read.
 - **`NaN` binds as NULL**, so the M7 fix has to coerce it explicitly.
@@ -143,7 +145,7 @@ Each phase is one or more PRs into `develop`, and each step within a phase is it
    - after `close()`, the temp directory can be deleted;
    - `NaN` is bound as `NULL`, so the M7 fix has to coerce explicitly.
 
-   **The Linux check waits for Phase 4 step 6.** It can't run before then: the only workflow, `.github/workflows/playwright.yml`, runs only on `main`/`master` and only runs `npx playwright test`, never `npm run test:api`.
+   **The Linux check waits for Phase 4 step 6, which is deferred** until GitHub Actions can run on the repository's account. It can't run before then: the only workflow, `.github/workflows/playwright.yml`, runs only on `main`/`master` and only runs `npx playwright test`, never `npm run test:api`.
 3. Update [CLAUDE.md](../CLAUDE.md):
    - replace "Do not start any SQLite work" with a pointer to this plan;
    - state the snapshot rule (see "The snapshot rule" under Phases);
@@ -229,7 +231,7 @@ Update [found-bugs.md](found-bugs.md) in each commit, marking the bug as fixed w
      - the dead keys;
      - the mixed roster keys, including a record whose two styles disagree (the shape of iverson.c.cabangis: `groupNumber: 5`, `group_number: 6` → 5) and a camelCase record that keeps some fields in snake_case only;
      - `""` versus an absent `completedDate`/`notes`.
-6. CI runs `test:api` and `test:api:sqlite` on every push.
+6. CI runs `test:api` and `test:api:sqlite` on every push. **Deferred** (see "Deviations › Phase 4"): GitHub Actions can't run on the repository's account for now.
 
 Done when: both suites are green, no shared snapshot changed, and the import of `develop`'s real data reports 98 roster rows, 325 attendance rows (36 dropped), and the expected counts everywhere else.
 
@@ -355,3 +357,42 @@ One commit per bug, in the table's order. Each commit's snapshot diff was review
 - **The response shape leaves out the roster:** `formatOnboardingResource` already builds every resource in one fixed order (`id`, `name`, `eid`, …).
 - **One assertion changed outside the snapshots.** `store-interface.test.js` compared `GET /api/attendance-options` byte for byte with the stored rows; after L16 it expects the stored rows with numeric ids.
 - **Fifteen cases were renamed** in a separate commit, because their names described the fixed behaviour (e.g. `null start becomes the string "null"`). The suite passed with no snapshot update after the rename, so every entry kept its content.
+
+### Phase 4
+
+No existing snapshot entry changed. Three new sets of entries were added, each with an add-only diff against `develop`: 10 shared "numbers and text" cases (`f3441ef`, recorded on the JSON code), the 5 `sqlite-trace` entries, and 4 shared "infinite number" cases from the review fixes (recorded on the JSON code before the SQLite fix). The `sqlite-trace` entries, new in this phase, were re-recorded once before merge for the review fixes (`BEGIN IMMEDIATE`, competency `ORDER BY seq`); nothing else in them changed.
+
+- **"Numbers in TEXT columns": decided with the user (2026-11-10).** Every table is `STRICT`.
+  - Columns where a service stores the client's value as sent are `ANY`. Numbers and text keep their type, and `1` and `"1"` stay different, in `UNIQUE(sprint_name, eid)` too, exactly as `===` kept them apart on db.json. That covers attendance, capacity `sprint_name`/`eid`, the planner-task text fields, the deletion logs and the competency fields.
+  - Columns the service converts (`String()`, `Number()`, validated integers) and the read-only lookups have real TEXT/INTEGER/REAL types.
+  - The shared cases in `f3441ef` pin the behaviour on both backends: capacity `1` versus `"1"` in both directions, attendance, task, deletion-log, reachout and competency values.
+- **New bug L18**, also decided with the user: values SQLite can't hold the way db.json does.
+  - A `null` for an optional field reads back as absent.
+  - A boolean, object or array for a plain field is a 500 with a clear message (`tables.js` checks before binding).
+  - A task's `completed` is stored as a boolean.
+  - No page sends any of these. `test/api/backend-differences.test.js` pins each case on both backends (`f3441ef`).
+- **More columns are optional than the Schema table says.** Shared snapshots store rows with only some fields: `{"eid":…}` (competency), `{"id":…,"deletedAt":…}` (deletion log), `{"id":…}` (attendance) and a task from `POST {}`. So every field a client writes through `pickWritable` is an optional column. **Competency has no `''`/`'N/A'` column defaults**: the GET's default row applies only when no row is saved.
+- **Task and bucket `boardId`/`bucketId` are always present but nullable**, like reachout `group_number`, not optional. A non-numeric value (NaN) is stored as NULL. The write that stored it returns `null`, and the list operations return `0` (`Number(null)`), as on db.json; snapshots pin both. These columns are REAL, because `Number()` can give a fraction, as are bucket `sort_order` and capacity `cadence`/`admin`/`holiday`.
+- **`persistence/sqlite/tables.js`** (not in "Target structure") maps every collection's API fields to its columns and converts values both ways. The import and the stores share it, so a value is stored and read back the same way whichever wrote it. `sqlite-store.js` is the unit of work (`read`/`write`, with `write` in `db.transaction()`) plus shared select/insert/update/delete helpers.
+- **Writes return the row they built in JS** (`{ id, ...fields }`, `{ ...stored, ...changes }`), as the JSON stores do; they don't read it back. That keeps NaN → `null` in responses.
+- **Roster rows** are stored merged and returned as the API writes them to the roster file: camelCase fields plus `created_at`/`updated_at`. `list()` orders them `created_at DESC, id DESC`, as "Roster order" under Risks says. The L9 risk (a blanked camelCase field falling back to a stale snake_case value on JSON) didn't come up in any shared case.
+- **Step order: the sqlite runs were turned on in the last store commit**, not in step 3, so both suites stayed green at every commit. Until then, each store was checked with a scoped run, using a temporary `SQLITE_STORES_PREVIEW=1` switch in `backend.js`. In preview, `dumpStore` also skipped collections without a store yet. The onboarding commit (`a41b4dd`) removed both.
+  - `store-interface.test.js`'s "fails clearly" test moved to the next feature without a store in each commit. It's now "every feature store has a json and a sqlite implementation", plus `selectStore`'s clear error.
+- **Harness:** `characterize.js`'s `readTree` leaves the SQLite files out of the data-directory snapshots, because a read can touch `-shm`.
+- **The import** builds only a new database, and refuses an existing file (Phase 6's `--force` will delete it first). It refuses unknown collections and non-array collections, and treats a missing `db.json` as empty, as the JSON backend does. A missing roster is an error.
+  - Develop's real data imports as: 98 roster rows, 13 sprints, 16 retros, 18 capacity entries, 325 attendance rows (36 dropped), 12 attendance options, 2 office locations, 11 labels, 5 boards, 16 buckets, 96 tasks, 0 deletion logs, 0 reachouts, 13 competency rows. The 3 dead keys are skipped.
+- **`sqlite-trace` shows two lookups per PATCH**: the service's `find…` check, then the store's `update…`. The JSON stores make the same two lookups in memory. It's left as is, and is a candidate for the Phase 8 clean-ups, along with onboarding's repeated roster reads.
+- **Step 6 (CI) is deferred.** A workflow running both backends on every push was added and then removed: the repository's GitHub account can't start Actions jobs (it's locked over billing), so each push only produced failure notices. Both suites are run locally instead. The Linux check of `better-sqlite3` (Phase 0 step 2) is still open, until CI can run again.
+- **Review fixes before merge** (a read-only review of the branch against this phase, in one commit):
+  - **Opening never creates the database.** `connection.js` opens with `fileMustExist`, so with no `dashboard.sqlite` every request is a 500 naming the missing file, instead of an empty database that answers `200 []`, takes writes, and makes a later import refuse to build over it. That matters for Phase 5 (exporting with no database) and Phase 6 (`db:migrate --if-missing`). `paths.test.js` pins it; its lazy-open test now builds a database first.
+  - **Writes start with `BEGIN IMMEDIATE`** (`.immediate()`). A write reads before it writes, and with a deferred `BEGIN` another connection committing in between fails it with `SQLITE_BUSY` at once, without waiting for `busy_timeout`. Only a second connection (a second server on the same `DATA_DIR`, a database browser) can cause that, but after merge `sqlite-trace` freezes the statements until Phase 8.
+  - **Competency rows have a `seq INTEGER PRIMARY KEY`** (not an API field), with `eid TEXT NOT NULL UNIQUE`, and list `ORDER BY seq`. The table's order was the implicit rowid, which `VACUUM` may renumber; `seq` is the rowid itself, so it can't. Phase 5's export writes rows in this order. A new test pins the insertion order on both backends (no response shows it, because GET joins by eid).
+  - **A stored `Infinity`/`-Infinity` reads back as `null`** (`tables.js` `fromColumns`), as db.json holds it after `JSON.stringify`. Before, `1e999` in a body listed a task's or bucket's `boardId`/`bucketId` as `null` on SQLite but `0` on JSON. A capacity `cadence` case shows the columns that already matched. Not a found-bugs entry: the SQLite store was wrong, and now matches JSON.
+  - **A retro `groupNumber` of `1e19` or more is a 500 on SQLite** (past SQLite's 64-bit integers; it passes the service's integer check). Added to L18 with the user, and pinned per backend in `backend-differences.test.js`.
+  - **The harness allows one open app at a time.** The feature repositories load their store through `require.cache` on every call (since Phase 1), so once a second app has loaded, the first app's requests reach the second app's stores and data, on JSON as well as SQLite. `startTestServer()` now refuses to start while another app is open. Phase 5's round-trip tests must close one app before starting the next.
+  - **New tests:** the SQLite unit of work (a `read()` session runs no write; `write()` is one transaction; a throw or a failing statement rolls back everything), and two import cases (a row that fails inside the transaction leaves no database files; ids that aren't positive integers are refused).
+  - **The import differs from the JSON backend's reads in three ways**, none of which occur in the real data or the fixtures:
+    - a roster record with a missing or non-integer id is refused, where the JSON backend repairs it (`ensureRecordIds`). The JSON backend rewrites the roster on every GET (L8), so a file the app has run on already has repaired ids;
+    - a reachout `groupNumber` stored as `"3"` imports as `3` (an INTEGER column, as the service writes it);
+    - a task with no `boardId` key lists `boardId` as `0` on SQLite (NULL), where JSON gives `null` (`Number(undefined)` is NaN). The service always writes the key.
+  - **Not done in this phase:** `formatReport()` is printed by `db:migrate` (Phase 6); until then, the real-data counts above are checked by hand, because tests never read `server/data`. `better-sqlite3`'s `verbose` hook stays on for every connection, so `sqlite-trace` can attach a tracer at any time; with none set it does nothing, at the cost of one call per statement.

@@ -17,9 +17,10 @@
 const { describe, test } = require('node:test');
 const assert = require('node:assert/strict');
 const fs = require('node:fs');
+const http = require('node:http');
 const path = require('node:path');
 const express = require('express');
-const { startTestServer, loadFreshApp, SERVER_DIR } = require('../../helpers/test-server');
+const { startTestServer, loadFreshApp, createDataDir, SERVER_DIR } = require('../../helpers/test-server');
 const { backendSkip } = require('../../helpers/backend');
 
 const REPO_ROOT = path.resolve(SERVER_DIR, '..');
@@ -218,13 +219,84 @@ describe('guardrail: persistence backend setting', () => {
     assertSamePath(freshConfig().sqlitePath, path.join(dataDir, 'dashboard.sqlite'), 'config.sqlitePath');
   });
 
-  test('loading the app with PERSISTENCE=sqlite creates no database file', async (t) => {
-    withEnv(t, { PERSISTENCE: 'sqlite' });
-    const api = await startTestServer(t);
-    assert.deepEqual(
-      fs.readdirSync(api.dataDir).filter((name) => name.includes('.sqlite')),
-      [],
-      'the database must be opened lazily, on first use, never when a module loads',
-    );
+  // Phase 4 replaced "loading the app with PERSISTENCE=sqlite creates no
+  // database file": the harness now builds dashboard.sqlite before the app
+  // loads, so the file's absence no longer says anything. The rule itself is
+  // that nothing opens the database until the first query.
+  test('loading the app with PERSISTENCE=sqlite opens no database until the first query', (t) => {
+    const dataDir = createDataDir();
+    withEnv(t, { PERSISTENCE: 'sqlite', DATA_DIR: dataDir });
+    const { importJson } = require(path.join(SERVER_DIR, 'persistence', 'sqlite', 'import.js'));
+    importJson({ dataDir, dbPath: path.join(dataDir, 'dashboard.sqlite') });
+    const opened = spyOnDatabaseConstructor(t);
+    let connection;
+    t.after(() => {
+      if (connection) connection.close();
+      fs.rmSync(dataDir, { recursive: true, force: true, maxRetries: 3 });
+    });
+
+    loadFreshApp();
+    assert.deepEqual(opened, [], 'loading the app must not open the database');
+
+    connection = require(path.join(SERVER_DIR, 'persistence', 'sqlite', 'connection.js'));
+    assert.deepEqual(opened, [], 'loading connection.js must not open the database');
+
+    connection.getDb();
+    connection.getDb();
+    assert.equal(opened.length, 1, 'the first query opens the database, and later ones reuse it');
+    assertSamePath(opened[0], path.join(dataDir, 'dashboard.sqlite'), 'the database file');
+  });
+
+  // An empty database created on the fly would hide the missing data, and a
+  // later import would refuse to overwrite it.
+  test('with PERSISTENCE=sqlite and no database file, requests fail and create none', async (t) => {
+    const dataDir = createDataDir();
+    withEnv(t, { PERSISTENCE: 'sqlite', DATA_DIR: dataDir });
+    const server = http.createServer(loadFreshApp());
+    t.after(async () => {
+      server.closeAllConnections();
+      await new Promise((resolve) => server.close(resolve));
+      fs.rmSync(dataDir, { recursive: true, force: true, maxRetries: 3 });
+    });
+    await new Promise((resolve) => server.listen(0, '127.0.0.1', resolve));
+    const baseUrl = `http://127.0.0.1:${server.address().port}`;
+
+    for (const [method, urlPath, body] of [
+      ['GET', '/api/onboarding-resources'],
+      ['GET', '/api/sprints'],
+      ['POST', '/api/sprints', { name: 'S', start: '2026-01-05', end: '2026-01-16' }],
+    ]) {
+      const res = await fetch(baseUrl + urlPath, {
+        method,
+        headers: body ? { 'Content-Type': 'application/json' } : undefined,
+        body: body ? JSON.stringify(body) : undefined,
+      });
+      assert.equal(res.status, 500, `${method} ${urlPath}`);
+      assert.match(await res.text(), /No SQLite database at /, `${method} ${urlPath}`);
+    }
+    assert.deepEqual(fs.readdirSync(dataDir).filter((name) => name.includes('.sqlite')), [], 'no database file is created');
   });
 });
+
+/**
+ * Record the path of every better-sqlite3 Database opened while the test runs,
+ * by swapping the cached module's export for a recording subclass. server/
+ * modules are reloaded by loadFreshApp(), but better-sqlite3 stays cached, so
+ * they get the recording one.
+ */
+function spyOnDatabaseConstructor(t) {
+  const id = require.resolve('better-sqlite3');
+  require(id);
+  const cached = require.cache[id];
+  const Original = cached.exports;
+  const opened = [];
+  class Recording extends Original {
+    constructor(filename, ...rest) {
+      opened.push(filename);
+      super(filename, ...rest);
+    }
+  }
+  cached.exports = Recording;
+  t.after(() => { cached.exports = Original; });
+  return opened;
+}

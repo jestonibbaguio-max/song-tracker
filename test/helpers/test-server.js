@@ -1,7 +1,8 @@
 // Test harness for the Express API.
 //
 // Every call to startTestServer() copies test/fixtures/data/ into a brand-new
-// temp directory, points DATA_DIR at it, loads a fresh instance of server/app.js
+// temp directory, points DATA_DIR at it (with PERSISTENCE=sqlite, also builds
+// dashboard.sqlite there from the JSON), loads a fresh instance of server/app.js
 // and listens on a random localhost port. Pass the node:test context (`t`) and
 // cleanup (close server, restore DATA_DIR, delete the temp dir) runs automatically
 // when the test finishes.
@@ -18,11 +19,20 @@
 // Tests in one file run sequentially by default; keep it that way. DATA_DIR is
 // process-wide, so running tests concurrently inside a file would race. Separate
 // files run in separate processes and are safe to parallelise.
+//
+// Only one app can be open at a time: close() the previous one before starting
+// the next. The feature repositories load their store on every call, through
+// require.cache, so once a second app has loaded, the first one's requests
+// would reach the second one's stores and data. startTestServer() refuses
+// instead.
 
 const fs = require('node:fs');
 const http = require('node:http');
 const os = require('node:os');
 const path = require('node:path');
+
+/** The base URL of the app startTestServer() has open, or null. */
+let openApp = null;
 
 const FIXTURES_DIR = path.resolve(__dirname, '..', 'fixtures', 'data');
 const SERVER_DIR = path.resolve(__dirname, '..', '..', 'server');
@@ -58,6 +68,9 @@ function normalise(p) {
  *   e.g. to delete custom-onboarding.json and exercise CSV seeding.
  */
 async function startTestServer(t, options = {}) {
+  if (openApp) {
+    throw new Error(`startTestServer: the app on ${openApp} is still open; close() it before starting another (see test/helpers/test-server.js)`);
+  }
   const dataDir = createDataDir();
   const previousDataDir = process.env.DATA_DIR;
   process.env.DATA_DIR = dataDir;
@@ -65,6 +78,7 @@ async function startTestServer(t, options = {}) {
   let server;
   try {
     if (options.beforeStart) options.beforeStart(dataDir);
+    if ((process.env.PERSISTENCE || 'json') === 'sqlite') buildDatabase(dataDir);
     const app = loadFreshApp();
     server = http.createServer(app);
     await new Promise((resolve, reject) => {
@@ -72,21 +86,28 @@ async function startTestServer(t, options = {}) {
       server.listen(0, '127.0.0.1', resolve);
     });
   } catch (error) {
+    closeDatabase();
     restoreDataDir(previousDataDir);
     fs.rmSync(dataDir, { recursive: true, force: true, maxRetries: 3 });
     throw error;
   }
 
   const baseUrl = `http://127.0.0.1:${server.address().port}`;
+  openApp = baseUrl;
   let closed = false;
 
   async function close() {
     if (closed) return;
     closed = true;
-    server.closeAllConnections();
-    await new Promise((resolve) => server.close(resolve));
-    restoreDataDir(previousDataDir);
-    fs.rmSync(dataDir, { recursive: true, force: true, maxRetries: 3 });
+    try {
+      server.closeAllConnections();
+      await new Promise((resolve) => server.close(resolve));
+      closeDatabase();
+      restoreDataDir(previousDataDir);
+      fs.rmSync(dataDir, { recursive: true, force: true, maxRetries: 3 });
+    } finally {
+      openApp = null;
+    }
   }
 
   /** JSON request helper. Returns { status, headers, body } with body parsed when it is JSON. */
@@ -109,6 +130,37 @@ async function startTestServer(t, options = {}) {
   if (t && typeof t.after === 'function') t.after(close);
 
   return { baseUrl, dataDir, request, readData, close };
+}
+
+/**
+ * PERSISTENCE=sqlite: build <dataDir>/dashboard.sqlite from the JSON files,
+ * after the test's setup has edited them (docs/sqlite-migration-plan.md,
+ * Phase 4 step 3). Setups keep working on the JSON; one that breaks the JSON
+ * on purpose belongs to a json-only test. The import is the server's own
+ * (persistence/sqlite/import.js); loadFreshApp() drops it from the module cache
+ * again, with the rest of server/.
+ */
+function buildDatabase(dataDir) {
+  const { importJson } = require(path.join(SERVER_DIR, 'persistence', 'sqlite', 'import.js'));
+  importJson({ dataDir, dbPath: path.join(dataDir, 'dashboard.sqlite') });
+}
+
+/**
+ * Close the SQLite connection the running app opened, if any, so its temp
+ * directory can be deleted (Windows refuses to delete an open file). The
+ * connection module is the one in the same module cache as the app; it's only
+ * closed if the app loaded it, so a JSON run never loads better-sqlite3.
+ */
+function closeDatabase() {
+  const connection = require.cache[SQLITE_CONNECTION] || require.cache[findCachedId(SQLITE_CONNECTION)];
+  if (connection) connection.exports.close();
+}
+
+const SQLITE_CONNECTION = path.join(SERVER_DIR, 'persistence', 'sqlite', 'connection.js');
+
+function findCachedId(file) {
+  const wanted = normalise(file);
+  return Object.keys(require.cache).find((id) => normalise(id) === wanted);
 }
 
 function restoreDataDir(previous) {

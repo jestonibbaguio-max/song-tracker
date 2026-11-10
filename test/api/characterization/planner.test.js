@@ -57,6 +57,10 @@ describeEndpoint('POST /api/planner-buckets', {
     'boardId 0': { body: { boardId: 0, name: 'Sprint 1' } },
     'whitespace-only name is stored as empty': { body: { boardId: 1, name: '   ' } },
     'non-numeric boardId is stored as null': { body: { boardId: 'abc', name: 'Sprint 1' } },
+    // JSON has no Infinity: 1e999 parses to it, and db.json stores it as null.
+    'infinite boardId and order (1e999) are stored as null; the list shows boardId 0': {
+      rawBody: '{"boardId": 1e999, "name": "Sprint 9", "order": 1e999}',
+    },
     'duplicate bucket name on the same board is accepted': { body: { boardId: 2, name: 'Sprint 2', order: 1 } },
     'no body': {},
     'malformed JSON body': MALFORMED_JSON,
@@ -111,6 +115,9 @@ describeEndpoint('POST /api/planner-tasks', {
   },
   invalid: {
     'empty object: boardId and bucketId stored as null': { body: {} },
+    'infinite boardId and bucketId (1e999, -1e999) are stored as null; the list shows 0': {
+      rawBody: '{"title": "Infinite", "boardId": 1e999, "bucketId": -1e999}',
+    },
     'no title, status or assignee is accepted': { body: { boardId: 1, bucketId: 4 } },
     'client id is overwritten; unknown fields dropped': { body: { ...newTask, id: 1, isAdmin: true } },
     'completed flag contradicting status is accepted': { body: { ...newTask, status: 'Not started', completed: true } },
@@ -157,6 +164,11 @@ describeEndpoint('PATCH /api/planner-tasks/:id', {
       body: { id: 99, createdAt: '2020-01-01T00:00:00.000Z', isAdmin: true },
     },
     'empty body still bumps updatedAt': { path: '/api/planner-tasks/2', body: {} },
+    'numbers and text are stored as sent: numeric title, text labels, fractional boardId': {
+      path: '/api/planner-tasks/2',
+      body: { title: 42, priority: 1, labels: ['2', 'x'], boardId: 1.5 },
+    },
+    'infinite boardId (1e999) is stored as null; the list shows 0': { path: '/api/planner-tasks/2', rawBody: '{"boardId": 1e999}' },
     'no body': { path: '/api/planner-tasks/2' },
     'malformed JSON body': { path: '/api/planner-tasks/2', ...MALFORMED_JSON },
   },
@@ -226,6 +238,7 @@ describeEndpoint('POST /api/deletion-logs', {
     'empty object is stored with an id and deletedAt': { body: {} },
     'unknown type is accepted; unknown fields dropped': { body: { ...taskDeletionLog, type: 'anything', extra: 1 } },
     'client id and deletedAt are overwritten': { body: { ...taskDeletionLog, id: 1, deletedAt: '2020-01-01T00:00:00.000Z' } },
+    'text taskId and numeric deletedByEid are stored as sent': { body: { ...taskDeletionLog, taskId: '5', deletedByEid: 77 } },
     'no body': {},
     'malformed JSON body': MALFORMED_JSON,
   },
