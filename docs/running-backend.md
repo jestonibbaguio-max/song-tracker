@@ -33,7 +33,7 @@ You **don't** need Visual Studio Build Tools, Python, or node-gyp. The one nativ
 
 ## 2. Install
 
-The server has **no `package.json` of its own**. Its runtime dependencies, `express@^5.2.1`, `cors@^2.8.6` and `better-sqlite3@13.0.3` (pinned exactly; installed for the [SQLite migration](sqlite-migration-plan.md), but no server code uses it yet), are in the root `package.json` together with the Angular app, so install from the repo root:
+The server has **no `package.json` of its own**. Its runtime dependencies, `express@^5.2.1`, `cors@^2.8.6` and `better-sqlite3@13.0.3` (pinned exactly; the SQLite backend of the [SQLite migration](sqlite-migration-plan.md), used with `PERSISTENCE=sqlite`), are in the root `package.json` together with the Angular app, so install from the repo root:
 
 ```bash
 cd song-tracker
@@ -92,7 +92,7 @@ Without a build, `/` returns a 404, but the API still works.
 |---|---|---|---|
 | `PORT` | No | `3000` | Port the API listens on |
 | `DATA_DIR` | No | `server/data` | Folder that holds the data files. A relative path resolves against the working directory. The API tests point it at a temp copy |
-| `PERSISTENCE` | No | `json` | Storage backend, `json` or `sqlite`. With `sqlite` the server starts, but every route that reads or writes stored data returns 500 until the SQLite stores exist (see the [migration plan](sqlite-migration-plan.md), Phase 4). Only `/api/health`, `/api/dashboard`, `/api/tasks` and `/api/fruits` keep working. Any other value stops the server from starting |
+| `PERSISTENCE` | No | `json` | Storage backend, `json` or `sqlite`. With `sqlite` the dashboard data comes from `DATA_DIR/dashboard.sqlite`, which must already exist: without it, every route that reads or writes stored data returns 500 naming the missing file. Nothing builds it for `npm run api` until `npm run db:migrate` arrives (the [migration plan](sqlite-migration-plan.md), Phase 6). `/api/tasks` and `/api/fruits` stay on their JSON files either way. Any other value stops the server from starting |
 
 All three are read once, in `server/config/index.js`. There's no `.env` loading, no config file, no secrets, and no API keys.
 
@@ -132,7 +132,61 @@ Dashboard content (`/api/dashboard`, which includes the sidebar nav) isn't store
 - **Run only one writer at a time.** `npm run json-api` (json-server) also writes `db.json` on port 3000. Running it alongside the Express server means lost writes, or an `EADDRINUSE` crash.
 - **The server is reachable from your network.** It listens on all interfaces, even though the log line says `127.0.0.1`, with no auth and CORS open to every origin. Be careful on shared networks.
 
-## 6. Quick troubleshooting
+## 6. Falling back to the JSON backend
+
+The [SQLite migration](sqlite-migration-plan.md) keeps the JSON backend as a temporary fallback (decision 7) until Phase 8 removes it. To fall back, you write the SQLite data out as JSON files and start the server on them with `PERSISTENCE=json`. The default is `json` until the cutover (Phase 6), so until then this only applies to a server you run with `PERSISTENCE=sqlite`.
+
+### Switch to JSON
+
+1. **Stop the server** (`Ctrl+C`). Never run the API on JSON and on SQLite against the same `DATA_DIR` at once, or `npm run json-api` alongside either.
+2. **Export:**
+
+   ```bash
+   npm run db:export                           # DATA_DIR/dashboard.sqlite → DATA_DIR/db.json + custom-onboarding.json
+   npm run db:export -- --out ../json-copy     # or into another folder (relative to the repo root)
+   ```
+
+   It prints the rows per collection, the files it wrote and the backups it made. Before it replaces a file, it copies it to `<file>.bak-<timestamp>` next to it (these are gitignored in `server/data`). If there's no `dashboard.sqlite`, or the file is empty, it stops with exit code 1 and writes nothing.
+3. **Start on JSON:**
+
+   ```bash
+   PERSISTENCE=json npm run api                # Git Bash / macOS / Linux
+   $env:PERSISTENCE = 'json'; npm run api      # PowerShell
+   set PERSISTENCE=json && npm run api         # cmd.exe
+   ```
+
+4. **Check it:** `curl http://localhost:3000/api/health` returns `{"ok":true}`, and `curl http://localhost:3000/api/sprints` lists the same sprints as before the switch.
+
+### Switch back to SQLite
+
+Anything written while you were on JSON is only in the JSON files, so rebuild the database from them:
+
+1. Stop the server.
+2. `npm run db:migrate -- --force` rebuilds `dashboard.sqlite` from `DATA_DIR`'s JSON files. **`db:migrate` comes in Phase 6.** Until then, move the old `dashboard.sqlite` (and any `-wal`/`-shm` next to it) out of the way, because the import refuses to build over an existing database, and run:
+
+   ```bash
+   node -e "require('./server/persistence/sqlite/import.js').importJson({ dataDir: 'server/data', dbPath: 'server/data/dashboard.sqlite' })"
+   ```
+
+3. Start the server on SQLite again: `npm run api` after the cutover, or `PERSISTENCE=sqlite npm run api` before it. In PowerShell, `Remove-Item Env:PERSISTENCE` clears a value you set earlier in the session.
+
+### What the exported files look like
+
+They hold the same data the SQLite backend serves (every GET returns the same body on both backends), but they aren't the files you started from:
+
+- `db.json` has all 13 collections, in a fixed order, with empty ones written as `[]`. The dead keys `onboarding-resources`, `dashboard` and `$schema` are gone, because the import never copied them into SQLite.
+- Every id is a number (the committed `db.json` has some `"1"`-style ids). The 36 attendance rows with random json-server ids are gone; the import dropped them.
+- Every roster record has its camelCase fields in one order, plus `created_at`/`updated_at`, newest first. Legacy snake_case and mixed records are rewritten that way. As a result, the order of members on the myCompetency page can change, which is harmless.
+- So after a fallback, `git diff server/data` is large. Don't commit it by accident.
+- A few values can't make the round trip, because the SQLite backend never held them the way `db.json` did (bug L18 in [found-bugs.md](found-bugs.md)). They come out the way SQLite reads them: a `null` sent for an optional field is missing, a task's `completed` is a boolean, and an `Infinity` (e.g. `1e999` in a request) is `null`. No page sends any of these, and neither the fixtures nor `develop`'s data has any, so the round-trip tests can't catch them.
+
+### Undoing an export
+
+The backups are the files exactly as they were. To go back to them, stop the server and copy each `<file>.bak-<timestamp>` over `<file>`, in your editor, file manager or with Node (`node -e "require('fs').copyFileSync('server/data/db.json.bak-…', 'server/data/db.json')"`). Delete the backups once you don't need them.
+
+**Never edit the exported files with PowerShell** (`Set-Content`, `Out-File`, `ConvertTo-Json`). A BOM no longer wipes data, but every `db.json` route then returns 500 until the file is fixed.
+
+## 7. Quick troubleshooting
 
 | Symptom | Likely cause |
 |---|---|
@@ -142,3 +196,7 @@ Dashboard content (`/api/dashboard`, which includes the sidebar nav) isn't store
 | Resources list is full of `Unknown` | `custom-onboarding.json` was deleted and reseeded from the CSV. Run `git checkout -- server/data/custom-onboarding.json` |
 | UI on :4200 loads but has no data | The API isn't running on **3000** specifically (see the `PORT` warning above) |
 | GET `/api/something-new` returns HTML | That route doesn't exist. The SPA catch-all serves `index.html` whenever `dist/` has been built, and returns a 404 when it hasn't |
+| `db:export failed: No SQLite database at …` | There's no `dashboard.sqlite` in `DATA_DIR`: it was never built, or `DATA_DIR` points somewhere else. Nothing was written |
+| `db:export failed: … has no dashboard schema` | `dashboard.sqlite` exists but is empty. Nothing was written |
+| `db:export failed: ….bak-… already exists` | A backup with the same timestamp is already there. Nothing was overwritten; run the export again |
+| Every route returns 500 `No SQLite database at …` | The server runs with `PERSISTENCE=sqlite` but there's no `dashboard.sqlite` in `DATA_DIR`. See "Switch back to SQLite" above |
