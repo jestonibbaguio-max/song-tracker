@@ -1,4 +1,14 @@
 import { defineConfig, devices } from '@playwright/test';
+import * as os from 'node:os';
+import * as nodePath from 'node:path';
+
+/**
+ * The e2e API's own data folder (docs/sqlite-migration-plan.md, Phase 6). Its
+ * webServer command fills it with a fresh copy of server/data's JSON seed
+ * (test/tools/e2e-data.js), and `npm run api` builds dashboard.sqlite there,
+ * so nothing a spec saves reaches the developer's own database.
+ */
+const E2E_DATA_DIR = nodePath.join(os.tmpdir(), 'song-tracker-e2e-data');
 
 /**
  * Read environment variables from file.
@@ -81,9 +91,14 @@ export default defineConfig({
       // The app fetches onboarding resources and office locations from this API.
       // Without it the UI never populates and every spec fails on an opaque
       // locator timeout rather than anything that points at the API.
-      command: 'npm run api',
+      // It runs on E2E_DATA_DIR, never on server/data. It is never reused:
+      // an API already on :3000 (e.g. your own `npm run api`) would take the
+      // specs' writes into your database, so Playwright stops with "port
+      // already used" instead. Stop it and run the specs again.
+      command: 'node test/tools/e2e-data.js && npm run api',
       url: 'http://localhost:3000/api/onboarding-resources',
-      reuseExistingServer: !process.env.CI,
+      env: { DATA_DIR: E2E_DATA_DIR },
+      reuseExistingServer: false,
     },
   ],
 });

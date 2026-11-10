@@ -1,6 +1,6 @@
 import { test, expect, Page, APIRequestContext } from '@playwright/test';
 
-// The specs talk to the real API (and so to the real server/data/db.json), so every
+// The specs talk to the real API (which runs on its own copy of server/data; see playwright.config.ts), so every
 // reachout created here, through the UI or the API, is deleted in afterEach.
 const API = 'http://localhost:3000';
 const GROUP = '5';

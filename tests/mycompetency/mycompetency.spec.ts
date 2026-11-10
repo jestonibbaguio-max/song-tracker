@@ -1,6 +1,6 @@
 import { test, expect, Page, APIRequestContext } from '@playwright/test';
 
-// The specs talk to the real API (and so to the real server/data/db.json), so every
+// The specs talk to the real API (which runs on its own copy of server/data; see playwright.config.ts), so every
 // record touched here is restored in afterEach. See CLAUDE.md "Gotchas".
 const API = 'http://localhost:3000';
 const GROUP = '5'; // the view's default group
