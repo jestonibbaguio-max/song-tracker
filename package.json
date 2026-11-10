@@ -13,6 +13,7 @@
     "test:api": "node --test \"test/**/*.test.js\"",
     "test:api:update": "node --test --test-update-snapshots \"test/**/*.test.js\"",
     "test:api:sqlite": "node test/tools/test-api.js sqlite",
+    "test:api:exported": "node test/tools/test-api.js json --exported",
     "dev": "concurrently -n api,web -c blue,green \"node server/server.js\" \"ng serve\"",
     "codegen": "playwright codegen http://localhost:4200"
   },

@@ -37,10 +37,16 @@ let openApp = null;
 const FIXTURES_DIR = path.resolve(__dirname, '..', 'fixtures', 'data');
 const SERVER_DIR = path.resolve(__dirname, '..', '..', 'server');
 
-/** Copy the fixture dataset into a new, empty temp directory and return its path. */
+/**
+ * Copy the fixture dataset into a new, empty temp directory and return its path.
+ * With TEST_FIXTURES_DIR set (npm run test:api:exported), the dataset comes
+ * from there instead: the fixtures after a round trip through SQLite
+ * (test/helpers/exported-fixtures.js). FIXTURES_DIR itself always names the
+ * committed fixtures.
+ */
 function createDataDir() {
   const dataDir = fs.mkdtempSync(path.join(os.tmpdir(), 'song-tracker-data-'));
-  fs.cpSync(FIXTURES_DIR, dataDir, { recursive: true });
+  fs.cpSync(process.env.TEST_FIXTURES_DIR || FIXTURES_DIR, dataDir, { recursive: true });
   return dataDir;
 }
 
