@@ -68,7 +68,7 @@ async function getRecord(request: APIRequestContext, eid: string) {
 
 async function patchRecord(request: APIRequestContext, eid: string, fields: Partial<Fields>) {
   const res = await request.patch(`${API}/api/competency-records/${eid}`, { data: fields });
-  expect(res.ok()).toBeTruthy();
+  expect(res.ok(), `PATCH ${eid} → ${res.status()} ${(await res.text()).slice(0, 300)}`).toBeTruthy();
 }
 
 // ---------- UI ----------
