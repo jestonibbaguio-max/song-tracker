@@ -9,15 +9,15 @@ This is a snapshot of `server/` and of how the Angular app talks to it, taken fr
 | Area | What's actually there |
 |---|---|
 | Framework | **Express 5** (`express@^5.2.1`), plain CommonJS JavaScript, no TypeScript, no build step |
-| Entry point | [server/server.js](../server/server.js), started by `npm run api` (`node server/server.js`) or `npm run dev` (API + `ng serve` via `concurrently`) |
-| Dependencies | `express`, `cors` and `better-sqlite3` (pinned at `13.0.3`; installed for the [SQLite migration](sqlite-migration-plan.md), but no server code uses it yet). The server has no `package.json` of its own; all three come from the root one |
+| Entry point | [server/server.js](../server/server.js), started by `npm run api` (`db:migrate --if-missing`, then `node server/server.js`) or `npm run dev` (the same, then API + `ng serve` via `concurrently`) |
+| Dependencies | `express`, `cors` and `better-sqlite3` (pinned at `13.0.3`; used only under [server/persistence/sqlite/](../server/persistence/sqlite/)). The server has no `package.json` of its own; all three come from the root one |
 | Route organisation | One Express router per feature in [server/features/](../server/features/) (routes → controller → service → repository), mounted in [server/app.js](../server/app.js), which only composes the app. Each dashboard feature's repository picks a store for `PERSISTENCE` ([select-store.js](../server/persistence/select-store.js)), and services use it through `read(fn)`/`write(fn)` ([json/db-store.js](../server/persistence/json/db-store.js)) |
-| Persistence | Flat JSON files read and written synchronously with `fs` on every request, only from [server/persistence/](../server/persistence/): one file repository per data file in `persistence/json/` (plus tasks and fruits), and one store per feature on top. No ORM, and no code uses a database driver yet |
-| Database | **None in use yet.** The move to SQLite (`better-sqlite3`, installed but not used) is planned in [sqlite-migration-plan.md](sqlite-migration-plan.md) |
+| Persistence | Only from [server/persistence/](../server/persistence/): one store per feature in `persistence/sqlite/` (the default) and in `persistence/json/` (the fallback, on one file repository per data file). Legacy tasks and fruits stay on their own JSON file repositories. No ORM |
+| Database | **SQLite** (`DATA_DIR/dashboard.sqlite`, gitignored), built from the committed JSON seed by `npm run db:migrate`; see §5 and [sqlite-migration-plan.md](sqlite-migration-plan.md) |
 | Auth | None. Every endpoint is public |
 | External services | None: no email, payments, object storage, queues, or third-party APIs |
 | Background jobs | None on the server. The only periodic work is a client-side 2.5 s poll in the Planner capacity view |
-| Config | Three env vars: `PORT` (default `3000`), `DATA_DIR` (default `server/data`) and `PERSISTENCE` (default `json`) |
+| Config | Three env vars: `PORT` (default `3000`), `DATA_DIR` (default `server/data`) and `PERSISTENCE` (default `sqlite`) |
 
 ---
 
@@ -109,7 +109,20 @@ Each of these routes loads all of `db.json` (~185 KB), changes one collection, a
 
 ## 5. Data and persistence layer
 
-There's no ORM and no database. "Persistence" means synchronous `fs.readFileSync` / `fs.writeFileSync` of whole JSON files.
+Since the cutover (Phase 6 of [sqlite-migration-plan.md](sqlite-migration-plan.md)), the dashboard data lives in **SQLite by default**, and the JSON files are the seed and the fallback. There's no ORM.
+
+| Backend | Where the data lives | How it's used |
+|---|---|---|
+| `sqlite` (default) | `DATA_DIR/dashboard.sqlite` (`server/data/dashboard.sqlite`), gitignored, one per developer | `better-sqlite3`, synchronous, through `persistence/sqlite/<feature>.store.js`. Opened on the first query (`persistence/sqlite/connection.js`); with no file, every route that uses a store returns 500 "No SQLite database at …" |
+| `json` (fallback until Phase 8) | `db.json` and `custom-onboarding.json` in `DATA_DIR` | Synchronous `fs.readFileSync` / `fs.writeFileSync` of whole files, through `persistence/json/<feature>.store.js` and the two file repositories below |
+
+The database's lifecycle:
+
+- **Build:** `npm run db:migrate` builds it from `DATA_DIR`'s `db.json` and `custom-onboarding.json` (the committed seed) with `persistence/sqlite/import.js`, and prints the rows per table. It refuses to overwrite an existing database. `npm run api` and `npm run dev` run `db:migrate --if-missing` first, so a fresh clone builds it on the first start.
+- **Reset:** `npm run db:migrate -- --force` rebuilds it from the JSON, discarding every change made in the app. It builds the new database first, and refuses while another process (a running server) has the old one open.
+- **Back up / fall back:** `npm run db:export [-- --out <dir>]` writes it out as `db.json` + `custom-onboarding.json`, backing up the files it replaces to `*.bak-<timestamp>`. The fallback runbook is [running-backend.md](running-backend.md) §6.
+
+The JSON files:
 
 | File | Owner | Contents |
 |---|---|---|
@@ -124,8 +137,9 @@ Things to know about this layer:
 
 - **Two copies of onboarding data.** `db.json` has its own `onboarding-resources` collection (81 records) that Express never reads. Express uses `custom-onboarding.json` (98 records). Running `npm run json-api` (json-server on `db.json`) therefore shows different resources than `npm run api`.
 - **Mixed key styles.** Records in `custom-onboarding.json` are a mix of camelCase (created through the API) and snake_case (seeded from the CSV). The read paths cope with both using `a || a_snake` fallbacks.
-- **Concurrency.** A single Node process is safe in practice because the I/O is synchronous and requests can't interleave. Running two writers against the same file (for example json-server and Express, both on port 3000, which the README warns about) would lose writes. Every request also re-parses the entire file.
-- **SQLite is planned, not live.** See [sqlite-migration-plan.md](sqlite-migration-plan.md). The old, never-used `server/schema.sql` was deleted at the start of that plan.
+- **Concurrency.** A single Node process is safe in practice because the I/O is synchronous and requests can't interleave. On JSON, running two writers against the same file (for example json-server and Express, both on port 3000, which the README warns about) would lose writes, and every request re-parses the entire file. On SQLite, each write is one transaction (`BEGIN IMMEDIATE`) with a 5 s busy timeout.
+- **The committed JSON is the seed.** On the default backend, UI edits go to the local database only, so the files in git change only when someone edits the seed on purpose, or writes them through the fallback (`PERSISTENCE=json`, `db:export`) or json-server.
+- **The SQLite schema** is [server/persistence/sqlite/schema.sql](../server/persistence/sqlite/schema.sql). The old, never-used `server/schema.sql` was deleted at the start of the migration.
 
 ---
 
@@ -135,7 +149,7 @@ Things to know about this layer:
 |---|---|---|---|
 | `PORT` | [config/index.js](../server/config/index.js) | `3000` | API listen port |
 | `DATA_DIR` | [config/index.js](../server/config/index.js) | `server/data` | Folder that holds the data files; the API tests point it at a temp copy |
-| `PERSISTENCE` | [config/index.js](../server/config/index.js) | `json` | Storage backend, `json` or `sqlite`. Read on every request by [select-store.js](../server/persistence/select-store.js); with `sqlite`, every route that uses a store returns 500 until the SQLite stores exist ([sqlite-migration-plan.md](sqlite-migration-plan.md), Phase 4). Health, dashboard, legacy tasks and fruits don't use a store. Any other value throws when config loads |
+| `PERSISTENCE` | [config/index.js](../server/config/index.js) | `sqlite` | Storage backend, `sqlite` or `json` (the fallback until Phase 8 of [sqlite-migration-plan.md](sqlite-migration-plan.md)). Read on every request by [select-store.js](../server/persistence/select-store.js). With `sqlite` and no `DATA_DIR/dashboard.sqlite`, every route that uses a store returns 500 until `npm run db:migrate` builds it. Health, dashboard, legacy tasks and fruits don't use a store. Any other value throws when config loads |
 | `CI` | [playwright.config.ts](../playwright.config.ts) | – | Turns off `reuseExistingServer` for Playwright's webServers |
 
 The server has no `.env` loading and no secrets. [server/config/index.js](../server/config/index.js) resolves `PORT`, `DATA_DIR` (default `server/data`; a relative value resolves against the working directory) and every data-file path once, when it loads.
@@ -256,6 +270,6 @@ These are things I saw while reading. None of them have been changed.
 3. **Changing an EID through PATCH duplicates the resource.** The old record stays, which `updateResource` in [onboarding.service.js](../server/features/onboarding/onboarding.service.js) does on purpose and the README documents. It's still surprising.
 4. **The attendance location sticks around.** When a cell changes from `RTO` to another status, the client sends `{ status }` without `location` (`undefined` is dropped from JSON), and the server merges, so the old `location` stays on the stored record.
 5. **Unknown `/api` GETs return `index.html` with 200** because of the SPA catch-all (§3).
-6. **There are three persistence stories.** JSON files are what's live, SQLite is planned ([sqlite-migration-plan.md](sqlite-migration-plan.md)), and json-server on `db.json` is still in `package.json`. The README both recommends `npm run json-api` (Option A) and says "Do NOT use json-server".
+6. **There are three persistence stories.** SQLite is what's live, the JSON files are its seed and a fallback until Phase 8 of [sqlite-migration-plan.md](sqlite-migration-plan.md), and json-server on `db.json` is still in `package.json` (it writes the seed, not the live data). The README both recommends `npm run json-api` (Option A) and says "Do NOT use json-server".
 7. **`db.json` has dead collections** (`onboarding-resources`, `dashboard`) that diverge from what Express serves.
 8. **Planner tasks embed comments and checklists**, so every modal save rewrites the whole task, and two users editing comments at once overwrite each other.

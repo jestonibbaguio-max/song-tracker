@@ -14,17 +14,22 @@ Further reading:
 
 ```bash
 npm install
-npm run dev          # API (:3000) + ng serve (:4200) together, via concurrently (Node 22+)
-npm run api          # Express API only: node server/server.js
+npm run dev          # db:migrate --if-missing, then API (:3000) + ng serve (:4200) together, via concurrently (Node 22+)
+npm run api          # db:migrate --if-missing, then the Express API only: node server/server.js
 npm start            # Angular dev server only (http://localhost:4200)
 npm run build        # production build → dist/atcp-song-dashboard/browser/
                      # then `npm run api` serves the API + built SPA from :3000
 
-npm run test:api         # API tests (node:test, test/**/*.test.js) on the JSON backend
+npm run db:migrate              # build DATA_DIR/dashboard.sqlite from the JSON seed; refuses if it exists
+npm run db:migrate -- --force   # rebuild it from the JSON (discards your local edits); stop the server first
+npm run db:export               # write it out as db.json + custom-onboarding.json (backup, or the JSON fallback)
+
+npm run test:api         # API tests (node:test, test/**/*.test.js) on the JSON backend (PERSISTENCE=json, until Phase 8)
 npm run test:api:sqlite  # the same with PERSISTENCE=sqlite (builds dashboard.sqlite per test); skips json-only tests
 npm run test:api:exported  # the same on JSON, with fixtures exported through SQLite (the fallback); skips json-only tests
-npm run test:api:update  # re-record snapshots (only as the snapshot rule allows)
-node --test test/api/characterization/sprints.test.js  # one file
+npm run test:api:update  # re-record snapshots, on json (only as the snapshot rule allows)
+node --test test/api/characterization/sprints.test.js  # one file, on the server's default (sqlite)
+PERSISTENCE=json node --test test/api/guardrails/fs-trace.test.js  # one file on json
 
 npx playwright test                                   # all e2e tests (Chromium only)
 npx playwright test tests/poc-howto/poc-howto.spec.ts # one file
@@ -33,11 +38,14 @@ npx playwright show-report
 npm run codegen      # Playwright codegen against :4200
 ```
 
-- Playwright's `webServer` config starts both `npm start` and `npm run api`, and reuses them if they're already running (except on CI). The specs need the API: the UI only fills in after `/api/onboarding-resources` responds.
+- Playwright's `webServer` config starts both `npm start` and `npm run api`. The specs need the API: the UI only fills in after `/api/onboarding-resources` responds.
+  - `ng serve` is reused if it's already running (except on CI).
+  - **The API is never reused.** It runs on its own data, `<os tmp>/song-tracker-e2e-data`: `test/tools/e2e-data.js` copies `server/data`'s JSON seed there before each run, and `npm run api` builds the database. If something is already on :3000 (e.g. your own `npm run api`), Playwright stops with "is already used". Stop it and run the specs again; that keeps e2e writes out of your database.
+- `npm run test:api:update` runs on json on purpose: `--test-update-snapshots` rewrites each snapshot file from the tests that ran, so a skipped test's entries would be lost. A file where every test is skipped (e.g. `sqlite-trace` on json) is left alone.
 - CI (`.github/workflows/playwright.yml`) runs Playwright on pushes and PRs to `main`.
 - The API tests start a fresh app on a temp copy of `test/fixtures/data/` per test (`test/helpers/test-server.js`). Characterization snapshots record the response and a logical diff of the stores ("stored data", from `test/helpers/store-dump.js`), so they hold on every backend. Tests tagged json-only (`test/helpers/backend.js`) pin the JSON files themselves: BOMs, corrupt files, CSV seeding, id repair, raw diffs, fs calls.
 - `npm test` (Karma/Jasmine) is set up, but there are no `*.spec.ts` unit tests under `src/`. No linter is configured.
-- `npm run json-api` (json-server on `db.json`) is legacy. It reads a different onboarding dataset and doesn't implement the custom endpoints, so use `npm run api`. Both use port 3000, so don't run them together.
+- `npm run json-api` (json-server on `db.json`) is legacy. It reads a different onboarding dataset and doesn't implement the custom endpoints, so use `npm run api`. It writes the committed `db.json`, not the live SQLite data. Both use port 3000, so don't run them together.
 
 ## Architecture
 
@@ -65,19 +73,22 @@ npm run codegen      # Playwright codegen against :4200
 
 ### Backend (`server/`)
 
-- `server.js` only calls `listen()`, and `app.js` only composes the app. Each feature lives in `server/features/<name>/` as `*.routes.js` → `*.controller.js` → `*.service.js` → `*.repository.js`. Routers use full paths and are mounted without a prefix. For the dashboard features, `*.repository.js` only picks a store for `config.PERSISTENCE` (`server/persistence/select-store.js`). Services call that store through `read(fn)` / `write(fn)`, whose session operations live in `server/persistence/json/<feature>.store.js`. Onboarding's store has `list/append/update/remove` instead. Services never touch `db` objects or files. Legacy tasks and fruits still use their file repositories directly. Only `server/persistence/**` reads or writes data files. A guardrail test checks that only those files (plus `server/middleware/static.js`, whose `/test` mount serves `test_bwd/` straight from DATA_DIR) `require` `fs`, and another snapshots the exact fs calls each request makes. `server/config/index.js` resolves `DATA_DIR`, `PORT` and every path once, on load. Shared helpers are in `server/utils/`. That includes `fields.js`, which holds each collection's writable fields (services store only those) and column order (services return rows in it). The only cross-feature call is competency → onboarding's repository. Middleware runs in this order: `cors()`, `express.json()`, the feature routers, then `server/middleware/static.js` (the `/test` static mount, the static `dist/` mount, then a `GET /.*/` catch-all that returns `index.html`). Because of that catch-all, **a GET to an `/api` path that doesn't exist returns HTML with status 200**, not a 404.
-- **Persistence means synchronous whole-file JSON reads and writes on every request.** There's no database or ORM:
+- `server.js` only calls `listen()`, and `app.js` only composes the app. Each feature lives in `server/features/<name>/` as `*.routes.js` → `*.controller.js` → `*.service.js` → `*.repository.js`. Routers use full paths and are mounted without a prefix. For the dashboard features, `*.repository.js` only picks a store for `config.PERSISTENCE` (`server/persistence/select-store.js`). Services call that store through `read(fn)` / `write(fn)`, whose session operations live in `server/persistence/sqlite/<feature>.store.js` (the default) and `server/persistence/json/<feature>.store.js` (the fallback). Onboarding's store has `list/append/update/remove` instead. Services never touch `db` objects or files. Legacy tasks and fruits still use their file repositories directly. Only `server/persistence/**` reads or writes data files. A guardrail test checks that only those files (plus `server/middleware/static.js`, whose `/test` mount serves `test_bwd/` straight from DATA_DIR) `require` `fs`, and another snapshots the exact fs calls each request makes. `server/config/index.js` resolves `DATA_DIR`, `PORT` and every path once, on load. Shared helpers are in `server/utils/`. That includes `fields.js`, which holds each collection's writable fields (services store only those) and column order (services return rows in it). The only cross-feature call is competency → onboarding's repository. Middleware runs in this order: `cors()`, `express.json()`, the feature routers, then `server/middleware/static.js` (the `/test` static mount, the static `dist/` mount, then a `GET /.*/` catch-all that returns `index.html`). Because of that catch-all, **a GET to an `/api` path that doesn't exist returns HTML with status 200**, not a 404.
+- **The dashboard data lives in SQLite by default** (since Phase 6): `DATA_DIR/dashboard.sqlite` (`better-sqlite3`, pinned, synchronous), through `server/persistence/sqlite/<feature>.store.js`. There's no ORM.
+  - The file is gitignored and local to each developer. `npm run db:migrate` builds it from the committed JSON (`db.json` + `custom-onboarding.json`, now only the seed) with `server/persistence/sqlite/import.js`. `npm run api` and `npm run dev` run `db:migrate --if-missing` first, so a fresh clone builds it on the first start. `npm run db:migrate -- --force` rebuilds it, discarding local edits. It refuses while another process (a running server) has the database open.
+  - `npm run db:export [-- --out <dir>]` (`server/persistence/sqlite/export.js`) writes it back out as `db.json` + `custom-onboarding.json`, backing up the files it replaces. That's the backup and the JSON fallback; the runbook is in [docs/running-backend.md](docs/running-backend.md) §6.
+  - With no database, every route that uses a store returns 500 "No SQLite database at …".
+- **`PERSISTENCE=json` is the fallback until Phase 8**: synchronous whole-file JSON reads and writes on every request, on the files below. `npm run test:api` still runs on it.
   - `server/data/custom-onboarding.json` is the source of truth for onboarding resources, via `server/persistence/json/roster-file.repository.js`. If it's missing, it's seeded from `custom.csv`. Records mix camelCase and snake_case keys, so read with fallbacks (`r.groupNumber ?? r.group_number`), as the existing code does.
   - `server/data/db.json` holds everything else (sprints, sprint-retros, capacity-entries, attendance, planner-*, deletion-logs, project-reachouts, competency-records) through `server/persistence/json/db-file.repository.js` (`loadDb()`/`saveDb()`). Its own `onboarding-resources` and `dashboard` keys are stale and unused.
-  - IDs are generated as `max(id)+1` (`nextId()` in `server/utils/ids.js`; the fruits test bench has its own rule in its repository). Never assign string or GUID IDs.
+  - IDs are generated as `max(id)+1` (`nextId()` in `server/utils/ids.js`; the fruits test bench has its own rule in its repository; SQLite's `INTEGER PRIMARY KEY` does the same). Never assign string or GUID IDs.
   - `/api/competency-records` gets group membership from `custom-onboarding.json` and joins it with the `db.json` rows.
-- `PERSISTENCE=sqlite` serves the dashboard data from `DATA_DIR/dashboard.sqlite` (`better-sqlite3`, pinned), through `server/persistence/sqlite/<feature>.store.js`. Nothing builds that file for `npm run api` yet (`npm run db:migrate` comes in Phase 6); the tests build it with `server/persistence/sqlite/import.js`. The default is still `json`. `npm run db:export [-- --out <dir>]` (`server/persistence/sqlite/export.js`) writes it back out as `db.json` + `custom-onboarding.json` for the fallback, backing up the files it replaces; the runbook is in [docs/running-backend.md](docs/running-backend.md) §6.
-- The server reads three env vars, all in `server/config/index.js`: `PORT` (default 3000), `DATA_DIR` (default `server/data`) and `PERSISTENCE` (`json` or `sqlite`, default `json`; any other value throws on load). Express also reads `NODE_ENV`. There's no auth, and CORS is open to all origins.
+- The server reads three env vars, all in `server/config/index.js`: `PORT` (default 3000), `DATA_DIR` (default `server/data`) and `PERSISTENCE` (`sqlite` or `json`, default `sqlite`; any other value throws on load). Express also reads `NODE_ENV`. There's no auth, and CORS is open to all origins.
 - `/api/fruits` and `/test/` are a self-contained test bench (`data/test_bwd/`) that the Angular app doesn't use.
 
 ## SQLite migration
 
-The backend is being moved from JSON files to SQLite (`better-sqlite3`), following [docs/sqlite-migration-plan.md](docs/sqlite-migration-plan.md). Its "Decisions" table is settled; don't reopen it. Do SQLite work only as a phase of that plan, in the plan's order.
+The backend is being moved from JSON files to SQLite (`better-sqlite3`), following [docs/sqlite-migration-plan.md](docs/sqlite-migration-plan.md). Its "Decisions" table is settled; don't reopen it. Do SQLite work only as a phase of that plan, in the plan's order. Phases 0–6 are done: SQLite is the default, and JSON is the fallback until Phase 8 removes it.
 
 ## Persistence rules
 - Never read or write the real data directory in tests; always use DATA_DIR pointing to a temp copy.
@@ -97,6 +108,8 @@ The backend is being moved from JSON files to SQLite (`better-sqlite3`), followi
 
 ## Gotchas
 
-- **Never write the JSON data files with PowerShell** (`ConvertTo-Json`, `Set-Content`, `Out-File`). They add a UTF-8 BOM, `JSON.parse` fails, and every `db.json` route then returns a 500 ("db.json is not valid JSON") until the file is fixed. (Before Phase 3's H2 fix it silently loaded as `{}`, and the next write wiped every other collection.) Use Node (`fs.writeFileSync(p, JSON.stringify(db, null, 2), 'utf8')`) or the Edit tool.
-- When the app runs against `npm run api`, every save goes to the real files in `server/data/`, which are committed to git. The same applies to any e2e spec that saves through a real endpoint. Check `git diff server/data` before committing.
+- **Never write the JSON data files with PowerShell** (`ConvertTo-Json`, `Set-Content`, `Out-File`). They add a UTF-8 BOM, `JSON.parse` fails, and every `db.json` route then returns a 500 ("db.json is not valid JSON") until the file is fixed; `db:migrate` refuses them too. (Before Phase 3's H2 fix it silently loaded as `{}`, and the next write wiped every other collection.) Use Node (`fs.writeFileSync(p, JSON.stringify(db, null, 2), 'utf8')`) or the Edit tool.
+- **UI edits stay local.** On the default SQLite backend, every save goes to your own `server/data/dashboard.sqlite` (gitignored), never to the committed JSON. The committed `db.json` and `custom-onboarding.json` are only the seed that `db:migrate` builds from; changing the shared data means editing them and committing, and each developer then runs `npm run db:migrate -- --force`.
+- **`git diff server/data` still matters on the JSON side.** `PERSISTENCE=json` (the fallback), `npm run db:export` (whose backups `*.bak-*` are gitignored) and `npm run json-api` (json-server) all write the committed JSON files, not your live database. After a fallback, the diff is large; don't commit it by accident.
+- **E2E runs never touch your data**: the Playwright API runs on a fresh copy of the seed in `<os tmp>/song-tracker-e2e-data`, and stops with "is already used" if your own API is on :3000.
 - Onboarding dates go over the wire as `MM/DD/YYYY`. Sprint dates use `YYYY-MM-DD`. The server normalises EIDs by lower-casing them and removing everything from `@` onwards.
