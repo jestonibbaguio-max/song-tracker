@@ -15,11 +15,12 @@ const PORT = Number(process.env.PORT || 3000);
 // Which backend stores the dashboard data: 'json' (db.json and the roster file
 // below) or 'sqlite' (sqlitePath). Override with the PERSISTENCE env var; unset
 // or empty means DEFAULT_PERSISTENCE, which the API tests' harness follows too
-// (test/helpers/backend.js). The default stays 'json' until the cutover
-// (docs/sqlite-migration-plan.md, Phase 6).
+// (test/helpers/backend.js). The default is 'sqlite' since the cutover
+// (docs/sqlite-migration-plan.md, Phase 6); 'json' is the fallback until
+// Phase 8 removes it.
 // An unknown value throws here, so a typo can't silently pick a backend.
 const PERSISTENCE_BACKENDS = ['json', 'sqlite'];
-const DEFAULT_PERSISTENCE = 'json';
+const DEFAULT_PERSISTENCE = 'sqlite';
 const PERSISTENCE = process.env.PERSISTENCE || DEFAULT_PERSISTENCE;
 if (!PERSISTENCE_BACKENDS.includes(PERSISTENCE)) {
   throw new Error(`PERSISTENCE must be one of ${PERSISTENCE_BACKENDS.join(', ')}; got "${PERSISTENCE}"`);

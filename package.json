@@ -4,7 +4,7 @@
   "scripts": {
     "ng": "ng",
     "start": "ng serve",
-    "api": "node server/server.js",
+    "api": "node server/scripts/db-migrate.js --if-missing && node server/server.js",
     "db:migrate": "node server/scripts/db-migrate.js",
     "db:export": "node server/scripts/db-export.js",
     "json-api": "npx json-server server/data/db.json --port 3000",
@@ -15,7 +15,7 @@
     "test:api:update": "node test/tools/test-api.js json --test-update-snapshots",
     "test:api:sqlite": "node test/tools/test-api.js sqlite",
     "test:api:exported": "node test/tools/test-api.js json --exported",
-    "dev": "concurrently -n api,web -c blue,green \"node server/server.js\" \"ng serve\"",
+    "dev": "node server/scripts/db-migrate.js --if-missing && concurrently -n api,web -c blue,green \"node server/server.js\" \"ng serve\"",
     "codegen": "playwright codegen http://localhost:4200"
   },
   "private": true,

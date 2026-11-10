@@ -192,13 +192,19 @@ describe('guardrail: persistence backend setting', () => {
     return require(CONFIG_MODULE);
   }
 
-  test('PERSISTENCE defaults to json', (t) => {
+  // Phase 6 (the cutover) made sqlite the default; json is the fallback.
+  test('PERSISTENCE defaults to sqlite', (t) => {
     withEnv(t, { PERSISTENCE: undefined });
-    assert.equal(freshConfig().PERSISTENCE, 'json');
+    assert.equal(freshConfig().PERSISTENCE, 'sqlite');
   });
 
-  test('an empty PERSISTENCE also means json', (t) => {
+  test('an empty PERSISTENCE also means sqlite', (t) => {
     withEnv(t, { PERSISTENCE: '' });
+    assert.equal(freshConfig().PERSISTENCE, 'sqlite');
+  });
+
+  test('PERSISTENCE=json is accepted', (t) => {
+    withEnv(t, { PERSISTENCE: 'json' });
     assert.equal(freshConfig().PERSISTENCE, 'json');
   });
 
