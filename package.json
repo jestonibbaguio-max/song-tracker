@@ -5,6 +5,7 @@
     "ng": "ng",
     "start": "ng serve",
     "api": "node server/server.js",
+    "db:export": "node server/scripts/db-export.js",
     "json-api": "npx json-server server/data/db.json --port 3000",
     "build": "ng build",
     "watch": "ng build --watch --configuration development",

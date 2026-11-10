@@ -18,6 +18,8 @@ server/data/*.sqlite
 server/data/*.sqlite-shm
 server/data/*.sqlite-wal
 server/data/*.sqlite-journal
+# npm run db:export backs up the files it replaces (docs/running-backend.md)
+server/data/*.bak-*
 
 # IDEs and editors
 .idea/
