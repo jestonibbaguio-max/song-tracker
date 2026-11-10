@@ -1,6 +1,6 @@
 # SQLite migration plan
 
-**Status:** Phase 0 is done on `feature/sqlite-phase-0`, with review fixes on `feature/sqlite-phase-0-fixes`; the Linux CI check waits for Phase 4 step 6. Phase 1 is done on `feature/sqlite-phase-1`, rebuilt on top of the fixes, with step 0 first (see "Deviations"). Phase 2 is done on `feature/sqlite-phase-2`, with steps 3 and 4 before step 2 (see "Deviations"). Phase 3 is done on `feature/sqlite-phase-3` (see "Deviations"). Phase 4 is done on `feature/sqlite-phase-4` (see "Deviations"). Phases 5–8 haven't started. This plan builds on the restructured backend from [server-restructure-plan.md](server-restructure-plan.md), which was merged into `develop` in `07f41a8`. Every phase branches off `develop`, and its PRs target `develop`.
+**Status:** Phase 0 is done on `feature/sqlite-phase-0`, with review fixes on `feature/sqlite-phase-0-fixes`; the Linux CI check waits for Phase 4 step 6. Phase 1 is done on `feature/sqlite-phase-1`, rebuilt on top of the fixes, with step 0 first (see "Deviations"). Phase 2 is done on `feature/sqlite-phase-2`, with steps 3 and 4 before step 2 (see "Deviations"). Phase 3 is done on `feature/sqlite-phase-3` (see "Deviations"). Phase 4 is done on `feature/sqlite-phase-4` (see "Deviations"). Phase 5 is done on `feature/sqlite-phase-5` (see "Deviations"). Phases 6–8 haven't started. This plan builds on the restructured backend from [server-restructure-plan.md](server-restructure-plan.md), which was merged into `develop` in `07f41a8`. Every phase branches off `develop`, and its PRs target `develop`.
 
 **Goal:** move the dashboard data (`db.json` and `custom-onboarding.json`) from whole-file JSON reads and writes to SQLite, using `better-sqlite3`. The HTTP contract stays the same, apart from storage-related bugs fixed on purpose (see "Bug scope"). The JSON backend stays for a while as a fallback that a setting can switch back to. It is then removed completely (Phase 8).
 
@@ -40,7 +40,7 @@ These are verified against `develop` at `07f41a8` (the merge of `feature/backend
   `formatOnboardingResource` reads camelCase first and falls back to snake_case, so the API already returns the camelCase value. The import uses exactly the same rule.
 - **Planner tasks carry fields the UI doesn't know about.** `completedDate` exists on 86 tasks, and holds a date on 59 of them and `""` on 27. `notes` exists on 78 tasks and is `""` on every one of them. Neither field is in `PlannerTask` or anywhere else in `src/`.
 - **`deletion-logs` doesn't exist in the real `db.json`** (the fixtures have 2 rows), and `project-reachouts` exists only in uncommitted edits. Both start empty.
-- **The test suite is green:** 588 tests before Phase 0, 594 after it, 601 after Phase 1, 620 after Phase 2 and 622 after Phase 3, run with `npm run test:api`. After Phase 2, `npm run test:api:sqlite` passes the 43 tests that don't need the stores and skips the rest. After Phase 4 (with its review fixes), `test:api` passes 661 and `test:api:sqlite` passes 582, skipping the 74 json-only tests. The leftover `song-tracker.sqlite-wal`/`-shm` files are gitignored and untracked, and there's no main `.sqlite` file, so they can't be read.
+- **The test suite is green:** 588 tests before Phase 0, 594 after it, 601 after Phase 1, 620 after Phase 2 and 622 after Phase 3, run with `npm run test:api`. After Phase 2, `npm run test:api:sqlite` passes the 43 tests that don't need the stores and skips the rest. After Phase 4 (with its review fixes), `test:api` passes 661 and `test:api:sqlite` passes 582, skipping the 74 json-only tests. After Phase 5, `test:api` passes 677 (skipping the 2 sqlite-only round trips), `test:api:sqlite` passes 599 (skipping the 74 json-only tests and the json round trip), and `test:api:exported` passes 580 (skipping 77: those 75 and the 2 sqlite-only round trips). The leftover `song-tracker.sqlite-wal`/`-shm` files are gitignored and untracked, and there's no main `.sqlite` file, so they can't be read.
 
 ## Target structure
 
@@ -396,3 +396,30 @@ No existing snapshot entry changed. Three new sets of entries were added, each w
     - a reachout `groupNumber` stored as `"3"` imports as `3` (an INTEGER column, as the service writes it);
     - a task with no `boardId` key lists `boardId` as `0` on SQLite (NULL), where JSON gives `null` (`Number(undefined)` is NaN). The service always writes the key.
   - **Not done in this phase:** `formatReport()` is printed by `db:migrate` (Phase 6); until then, the real-data counts above are checked by hand, because tests never read `server/data`. `better-sqlite3`'s `verbose` hook stays on for every connection, so `sqlite-trace` can attach a tracer at any time; with none set it does nothing, at the cost of one call per statement.
+
+### Phase 5
+
+No snapshot entry changed and none was added. The export runs outside requests, on its own connection, so `sqlite-trace` is untouched.
+
+- **`exportJson({ dbPath, outDir })` opens its own connection** at the path it's given, as `importJson` does, not `connection.js`'s. It needs no `config`, so the tests and the CLI pass their own paths.
+  - A missing file is refused (`fileMustExist`) before anything in `outDir` is touched, and so are a file at `user_version` 0 (e.g. an empty file) and a file that isn't a database. The version is checked before `configure()`, because switching an empty file to WAL would write to it.
+  - Otherwise the export runs `migrate()`, as the server does when it opens the database.
+- **The roster keeps `created_at`/`updated_at` in snake_case.** "Canonical camelCase" covers every other field. The JSON service sorts the resources on `a.created_at`, and the API writes both keys that way. Records come out in the order the API writes them (`name, eid, … officeLocation, id, created_at, updated_at`), so a record the API wrote exports byte-identical. 15 of `develop`'s 98 records are; the rest are snake_case or mixed (L9).
+- **db.json's fixed key order is the fixtures' order**, which is also `develop`'s order without the dead keys. All 13 collections are written, empty ones as `[]`. **The dead keys are dropped** (decided with the user, 2026-11-10): the import never stored them (decision 5).
+- **Rows are the stored values**, read with `fromColumns()`, not through the list operations' `Number()` mapping. So a task's NULL `boardId` exports as `null`, the way db.json held the NaN.
+- **Writing:** every table is read in one transaction and both files are formatted before any file is touched. Then the existing files are backed up (`COPYFILE_EXCL`, so an existing backup with the same name stops the export), and each new file is written to `<file>.tmp-<timestamp>` and renamed over its target. `outDir` is created if it's missing. The backups are gitignored (`server/data/*.bak-*`).
+- **The shared suite on exported fixtures is its own script, `npm run test:api:exported`** (decided with the user).
+  - `test/tools/test-api.js json --exported` builds the fixtures' round trip (`test/helpers/exported-fixtures.js`: copy, import, export over the copy) and points `TEST_FIXTURES_DIR` at it. `createDataDir()` copies from there; `FIXTURES_DIR` still names the committed fixtures.
+  - The json-only tests are skipped in that run: they pin the committed files themselves (string ids, snake_case roster records, BOMs).
+- **Round-trip tests** (`test/api/sqlite-roundtrip.test.js`):
+  - on sqlite: fixtures → export → import gives the same `dumpStore()`, and so does a round trip after writes through the API (a task with `""` and one with no `completedDate`/`notes`, capacity `1` and `"1"`, a new competency eid, a new resource, a deleted sprint);
+  - on json: the JSON stores read the exported fixtures as the same data as the fixtures;
+  - on any backend: exporting what was exported gives the same bytes.
+
+  A deliberately broken export (competency rows ordered by eid) failed three of these tests.
+- **Real data, checked by hand** in a temp directory with `develop`'s files (tests never read `server/data`):
+  - import → export → import leaves every table identical, row for row;
+  - every GET route returns byte-identical bodies from a SQLite server and from a JSON server on the exported files;
+  - compared with a JSON server on the original files, the only differences are attendance (the 36 dropped rows, decision 6) and the order of competency members (Risks, "Roster order").
+- **Not round-trippable, and not worked around:** the L18 values (a `null` sent for an optional field reads back as absent, a task's `completed` as a boolean) and stored infinities (`null`). Neither the fixtures nor the real data has any, so the round-trip tests can't catch them. The runbook says so.
+- **The runbook** is [running-backend.md](running-backend.md) §6. Until Phase 6 adds `db:migrate`, its "switch back" step calls `import.js` directly. Two lines of that file that had been stale since Phase 4 were fixed (§2, and §4's `PERSISTENCE` row).

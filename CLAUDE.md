@@ -22,6 +22,7 @@ npm run build        # production build → dist/atcp-song-dashboard/browser/
 
 npm run test:api         # API tests (node:test, test/**/*.test.js) on the JSON backend
 npm run test:api:sqlite  # the same with PERSISTENCE=sqlite (builds dashboard.sqlite per test); skips json-only tests
+npm run test:api:exported  # the same on JSON, with fixtures exported through SQLite (the fallback); skips json-only tests
 npm run test:api:update  # re-record snapshots (only as the snapshot rule allows)
 node --test test/api/characterization/sprints.test.js  # one file
 
@@ -70,7 +71,7 @@ npm run codegen      # Playwright codegen against :4200
   - `server/data/db.json` holds everything else (sprints, sprint-retros, capacity-entries, attendance, planner-*, deletion-logs, project-reachouts, competency-records) through `server/persistence/json/db-file.repository.js` (`loadDb()`/`saveDb()`). Its own `onboarding-resources` and `dashboard` keys are stale and unused.
   - IDs are generated as `max(id)+1` (`nextId()` in `server/utils/ids.js`; the fruits test bench has its own rule in its repository). Never assign string or GUID IDs.
   - `/api/competency-records` gets group membership from `custom-onboarding.json` and joins it with the `db.json` rows.
-- `PERSISTENCE=sqlite` serves the dashboard data from `DATA_DIR/dashboard.sqlite` (`better-sqlite3`, pinned), through `server/persistence/sqlite/<feature>.store.js`. Nothing builds that file for `npm run api` yet (`npm run db:migrate` comes in Phase 6); the tests build it with `server/persistence/sqlite/import.js`. The default is still `json`.
+- `PERSISTENCE=sqlite` serves the dashboard data from `DATA_DIR/dashboard.sqlite` (`better-sqlite3`, pinned), through `server/persistence/sqlite/<feature>.store.js`. Nothing builds that file for `npm run api` yet (`npm run db:migrate` comes in Phase 6); the tests build it with `server/persistence/sqlite/import.js`. The default is still `json`. `npm run db:export [-- --out <dir>]` (`server/persistence/sqlite/export.js`) writes it back out as `db.json` + `custom-onboarding.json` for the fallback, backing up the files it replaces; the runbook is in [docs/running-backend.md](docs/running-backend.md) §6.
 - The server reads three env vars, all in `server/config/index.js`: `PORT` (default 3000), `DATA_DIR` (default `server/data`) and `PERSISTENCE` (`json` or `sqlite`, default `json`; any other value throws on load). Express also reads `NODE_ENV`. There's no auth, and CORS is open to all origins.
 - `/api/fruits` and `/test/` are a self-contained test bench (`data/test_bwd/`) that the Angular app doesn't use.
 

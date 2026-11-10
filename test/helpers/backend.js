@@ -26,6 +26,15 @@ if (!BACKENDS.includes(BACKEND)) {
   throw new Error(`PERSISTENCE must be one of ${BACKENDS.join(', ')}; got "${BACKEND}"`);
 }
 
+/**
+ * npm run test:api:exported (Phase 5): the run's data comes from fixtures that
+ * went through SQLite and back (test/helpers/exported-fixtures.js). The
+ * json-only tests pin the committed fixture files byte for byte (string ids,
+ * snake_case roster records, BOMs and so on), so they're skipped; every
+ * shared test must pass unchanged.
+ */
+const EXPORTED_FIXTURES = Boolean(process.env.TEST_FIXTURES_DIR);
+
 /** Backends that have stores the tests can run against: every backend since Phase 4. */
 const BACKENDS_WITH_STORES = ['json', 'sqlite'];
 
@@ -51,6 +60,7 @@ const isSqliteFile = (relativePath) => /\.sqlite(?:-wal|-shm|-journal)?$/.test(r
 function backendSkip(onlyOn, reason) {
   if (!BACKENDS_WITH_STORES.includes(BACKEND)) return `the ${BACKEND} stores don't exist yet (docs/sqlite-migration-plan.md, Phase 4)`;
   if (onlyOn && onlyOn !== BACKEND) return `${onlyOn}-only${reason ? `: ${reason}` : ''}`;
+  if (onlyOn === 'json' && EXPORTED_FIXTURES) return `json-only${reason ? ` (${reason})` : ''}: pins the committed fixture files, not exported ones`;
   return false;
 }
 
@@ -61,4 +71,4 @@ function isStoreFile(relativePath) {
   return (STORE_FILES[BACKEND] || []).includes(relativePath);
 }
 
-module.exports = { BACKEND, BACKENDS, backendSkip, jsonOnly, isStoreFile, isSqliteFile, STORE_FILES };
+module.exports = { BACKEND, BACKENDS, EXPORTED_FIXTURES, backendSkip, jsonOnly, isStoreFile, isSqliteFile, STORE_FILES };
