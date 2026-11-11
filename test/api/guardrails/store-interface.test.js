@@ -111,8 +111,8 @@ async function sqliteSprintsStore(t) {
 }
 
 // Competency rows have no id: GET joins them by eid, so no response shows
-// their order, but the stores keep it (db.json's array order; on SQLite, the
-// seq column) and the Phase 5 export writes them in it.
+// their order, but the store keeps it (the seq column), as db.json's array
+// order did.
 describe('guardrail: competency rows keep their insertion order', () => {
   test('new eids are appended, and updating a row doesn\'t move it', async (t) => {
     const api = await startTestServer(t);
