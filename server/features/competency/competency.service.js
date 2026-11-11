@@ -1,28 +1,22 @@
 // myCompetency records: saved competency rows joined with group membership
-// from the roster. This is the only cross-feature call: competency ->
-// onboarding's repository, one direction only (onboarding must never require
-// competency). Bugs M9 and M11 in docs/found-bugs.md are kept.
+// from the roster. The competency store does the join in one query
+// (listGroupRecords) since Phase 8 of docs/sqlite-migration-plan.md; before,
+// this service read onboarding's repository, the only cross-feature call.
+// Bugs M9, M11 and L17 in docs/found-bugs.md are kept.
 const repository = require('./competency.repository');
-const onboardingRepository = require('../onboarding/onboarding.repository');
-const { formatOnboardingResource } = require('../onboarding/onboarding.format');
 const { pickWritable, inColumnOrder } = require('../../utils/fields');
 
 /**
  * One row per roster member of the group (default 5), using the saved
  * competency row or an empty default, in roster order (newest created_at
- * first, then highest id). group is the raw query value. Members are
- * read the way GET /api/onboarding-resources reads them (camelCase first, then
- * snake_case), so a legacy snake_case member is in its group too (M4).
+ * first, then highest id). group is the raw query value; the store matches
+ * it as Number(groupNumber) === Number(group) did, so a member with no group
+ * is in group 0 (L17).
  */
 function listRecords(group) {
   return repository.read((store) => {
     const groupNumber = group ? Number(group) : 5;
-    const groupMembers = onboardingRepository.list()
-      .map(formatOnboardingResource)
-      .filter(m => Number(m.groupNumber) === groupNumber);
-    const records = store.listRecords();
-    return groupMembers.map(m => {
-      const saved = records.find(r => r.eid === m.eid);
+    return store.listGroupRecords(groupNumber).map(({ member: m, saved }) => {
       const base = saved || {
         eid: m.eid,
         primarySkill: '',

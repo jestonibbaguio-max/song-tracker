@@ -5,23 +5,17 @@ GET /api/competency-records?group=5 → 200
   PRAGMA busy_timeout = 5000
   PRAGMA foreign_keys = OFF
   PRAGMA user_version
-  SELECT * FROM onboarding_resources ORDER BY created_at DESC, id DESC
-  SELECT * FROM competency_records ORDER BY seq
+  SELECT r.eid AS member_eid, r.name AS member_name, r.cl_level AS member_cl_level, c.* FROM onboarding_resources r LEFT JOIN competency_records c ON c.eid = r.eid WHERE IFNULL(r.group_number, 0) = 5.0 ORDER BY r.created_at DESC, r.id DESC
 GET /api/competency-records?group=1 → 200
-  SELECT * FROM onboarding_resources ORDER BY created_at DESC, id DESC
-  SELECT * FROM competency_records ORDER BY seq
+  SELECT r.eid AS member_eid, r.name AS member_name, r.cl_level AS member_cl_level, c.* FROM onboarding_resources r LEFT JOIN competency_records c ON c.eid = r.eid WHERE IFNULL(r.group_number, 0) = 1.0 ORDER BY r.created_at DESC, r.id DESC
 GET /api/competency-records?group=0 (members with no group (L17)) → 200
-  SELECT * FROM onboarding_resources ORDER BY created_at DESC, id DESC
-  SELECT * FROM competency_records ORDER BY seq
+  SELECT r.eid AS member_eid, r.name AS member_name, r.cl_level AS member_cl_level, c.* FROM onboarding_resources r LEFT JOIN competency_records c ON c.eid = r.eid WHERE IFNULL(r.group_number, 0) = 0.0 ORDER BY r.created_at DESC, r.id DESC
 GET /api/competency-records?group=3 (no members) → 200
-  SELECT * FROM onboarding_resources ORDER BY created_at DESC, id DESC
-  SELECT * FROM competency_records ORDER BY seq
+  SELECT r.eid AS member_eid, r.name AS member_name, r.cl_level AS member_cl_level, c.* FROM onboarding_resources r LEFT JOIN competency_records c ON c.eid = r.eid WHERE IFNULL(r.group_number, 0) = 3.0 ORDER BY r.created_at DESC, r.id DESC
 GET /api/competency-records?group=abc → 200
-  SELECT * FROM onboarding_resources ORDER BY created_at DESC, id DESC
-  SELECT * FROM competency_records ORDER BY seq
+  SELECT r.eid AS member_eid, r.name AS member_name, r.cl_level AS member_cl_level, c.* FROM onboarding_resources r LEFT JOIN competency_records c ON c.eid = r.eid WHERE IFNULL(r.group_number, 0) = NULL ORDER BY r.created_at DESC, r.id DESC
 GET /api/competency-records?group= (empty: group 5) → 200
-  SELECT * FROM onboarding_resources ORDER BY created_at DESC, id DESC
-  SELECT * FROM competency_records ORDER BY seq
+  SELECT r.eid AS member_eid, r.name AS member_name, r.cl_level AS member_cl_level, c.* FROM onboarding_resources r LEFT JOIN competency_records c ON c.eid = r.eid WHERE IFNULL(r.group_number, 0) = 5.0 ORDER BY r.created_at DESC, r.id DESC
 
 `;
 
@@ -175,16 +169,14 @@ DELETE /api/project-reachouts/4 → 200
 GET /api/project-reachouts (read back) → 200
   SELECT * FROM project_reachouts ORDER BY id
 GET /api/competency-records?group=5 → 200
-  SELECT * FROM onboarding_resources ORDER BY created_at DESC, id DESC
-  SELECT * FROM competency_records ORDER BY seq
+  SELECT r.eid AS member_eid, r.name AS member_name, r.cl_level AS member_cl_level, c.* FROM onboarding_resources r LEFT JOIN competency_records c ON c.eid = r.eid WHERE IFNULL(r.group_number, 0) = 5.0 ORDER BY r.created_at DESC, r.id DESC
 PATCH /api/competency-records/liza.m.navarro → 200
   BEGIN IMMEDIATE
   SELECT * FROM competency_records WHERE eid = 'liza.m.navarro'
   UPDATE competency_records SET primary_skill = 'Angular', primary_proficiency = 'P3', recent_retake_date = '2026-10-22', next_retake_date = '', secondary_skill = 'TBD', secondary_proficiency = 'TBD', retake_date = '' WHERE eid = 'liza.m.navarro'
   COMMIT
 GET /api/competency-records?group=5 (read back) → 200
-  SELECT * FROM onboarding_resources ORDER BY created_at DESC, id DESC
-  SELECT * FROM competency_records ORDER BY seq
+  SELECT r.eid AS member_eid, r.name AS member_name, r.cl_level AS member_cl_level, c.* FROM onboarding_resources r LEFT JOIN competency_records c ON c.eid = r.eid WHERE IFNULL(r.group_number, 0) = 5.0 ORDER BY r.created_at DESC, r.id DESC
 
 `;
 
@@ -288,11 +280,9 @@ DELETE /api/onboarding-resources/5 → 200
   DELETE FROM onboarding_resources WHERE id = 5.0
   COMMIT
 GET /api/competency-records?group=5 → 200
-  SELECT * FROM onboarding_resources ORDER BY created_at DESC, id DESC
-  SELECT * FROM competency_records ORDER BY seq
+  SELECT r.eid AS member_eid, r.name AS member_name, r.cl_level AS member_cl_level, c.* FROM onboarding_resources r LEFT JOIN competency_records c ON c.eid = r.eid WHERE IFNULL(r.group_number, 0) = 5.0 ORDER BY r.created_at DESC, r.id DESC
 GET /api/competency-records → 200
-  SELECT * FROM onboarding_resources ORDER BY created_at DESC, id DESC
-  SELECT * FROM competency_records ORDER BY seq
+  SELECT r.eid AS member_eid, r.name AS member_name, r.cl_level AS member_cl_level, c.* FROM onboarding_resources r LEFT JOIN competency_records c ON c.eid = r.eid WHERE IFNULL(r.group_number, 0) = 5.0 ORDER BY r.created_at DESC, r.id DESC
 PATCH /api/competency-records/liza.m.navarro → 200
   BEGIN IMMEDIATE
   SELECT * FROM competency_records WHERE eid = 'liza.m.navarro'
