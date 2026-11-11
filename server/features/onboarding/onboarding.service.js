@@ -1,6 +1,6 @@
 // Onboarding resources and skill options, through the onboarding store
-// (list/append/update/remove; each call queries the table again). The
-// try/catch boundaries are exactly as before. Bugs H4, L5, L10 and M10 in
+// (list/findById/findByEid/append/update/remove; each call queries the table
+// again). The try/catch boundaries are exactly as before. Bugs H4, L5, L10 and M10 in
 // docs/found-bugs.md are kept.
 const repository = require('./onboarding.repository');
 const { normalizeEid } = require('../../utils/eid');
@@ -164,8 +164,8 @@ function listResources() {
 /**
  * Creates a resource, or upserts the one with the same eid. Validation runs
  * first, with no roster read. The try/catch covers exactly what it did before:
- * the read, the mapping, the update or append (each reads again and saves) and
- * the formatting, so any failure there is the JSON 500.
+ * the lookup by eid, the mapping, the update or append and the formatting, so
+ * any failure there is the JSON 500.
  */
 function createResource(body) {
   const payload = normalizeOnboardingPayload(body);
@@ -176,9 +176,8 @@ function createResource(body) {
   }
 
   try {
-    const records = repository.list();
+    const existing = repository.findByEid(payload.eid);
     const storagePayload = mapPayloadToStorage(payload);
-    const existing = records.find((record) => record.eid === payload.eid);
 
     if (existing) {
       const resource = repository.update(existing.id, storagePayload);
@@ -193,13 +192,14 @@ function createResource(body) {
 }
 
 /**
- * Full replace of a resource (bug H4). The first roster read is OUTSIDE the
- * try/catch, as before, so an unreadable roster is an uncaught 500 here, and it
- * matches ids strictly (record.id === id). Dates are optional. A changed eid
- * appends a new record (201) and leaves the old one.
+ * Full replace of a resource (bug H4). The lookup by id is OUTSIDE the
+ * try/catch, as before, so a failing read is an uncaught 500 here; a
+ * non-numeric or fractional id matches nothing. Dates are optional. A changed
+ * eid appends a new record (201) and leaves the old one; an eid another record
+ * has is a 409.
  */
 function updateResource(id, body) {
-  const existing = repository.list().find((record) => record.id === id);
+  const existing = repository.findById(id);
 
   if (!existing) {
     return { notFound: true };
@@ -213,8 +213,8 @@ function updateResource(id, body) {
   }
 
   try {
-    const records = repository.list();
-    if (records.some((record) => Number(record.id) !== id && record.eid === payload.eid)) {
+    const holder = repository.findByEid(payload.eid);
+    if (holder && holder.id !== id) {
       return { conflict: 'eid already exists' };
     }
     const storagePayload = mapPayloadToStorage(payload);

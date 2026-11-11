@@ -205,18 +205,18 @@ POST /api/onboarding-resources (existing eid: upserts) → 200
   PRAGMA busy_timeout = 5000
   PRAGMA foreign_keys = OFF
   PRAGMA user_version
-  SELECT * FROM onboarding_resources ORDER BY created_at DESC, id DESC
+  SELECT * FROM onboarding_resources WHERE eid = 'teresa.villanueva'
   BEGIN IMMEDIATE
   SELECT * FROM onboarding_resources WHERE id = 5.0
   UPDATE onboarding_resources SET eid = 'teresa.villanueva', name = 'Teresa Villanueva', hire_date = '05/09/2022', roll_in_date = '09/14/2026', project_deployed = 'No', deployment_date = '', project_name = 'Song Bench', poc = 'rafael.t.mendoza', dn = 'Yes', roll_off_date = '09/11/2026', from_project = 'Retail Loyalty Platform', cl_level = '9', group_number = 5.0, primary_skill = 'AEM', primary_years = '5', secondary_skill = 'Java', secondary_years = '3', another_skills = '["Sling","HTL","Dispatcher"]', office_location = 'Cebu', created_at = '2026-09-14T01:58:33.460Z', updated_at = '<timestamp>' WHERE id = 5.0
   COMMIT
 PATCH /api/onboarding-resources/5 (eid of another record: 409) → 409
-  SELECT * FROM onboarding_resources ORDER BY created_at DESC, id DESC
-  SELECT * FROM onboarding_resources ORDER BY created_at DESC, id DESC
+  SELECT * FROM onboarding_resources WHERE id = 5.0
+  SELECT * FROM onboarding_resources WHERE eid = 'rafael.t.mendoza'
 PATCH /api/onboarding-resources/abc (non-numeric id: 404) → 404
-  SELECT * FROM onboarding_resources ORDER BY created_at DESC, id DESC
+  SELECT * FROM onboarding_resources WHERE id = NULL
 PATCH /api/onboarding-resources/5.5 (fractional id: 404) → 404
-  SELECT * FROM onboarding_resources ORDER BY created_at DESC, id DESC
+  SELECT * FROM onboarding_resources WHERE id = 5.5
 
 `;
 
@@ -233,29 +233,29 @@ GET /api/onboarding-resources (again) → 200
 GET /api/skill-options → 200
   SELECT * FROM onboarding_resources ORDER BY created_at DESC, id DESC
 POST /api/onboarding-resources → 201
-  SELECT * FROM onboarding_resources ORDER BY created_at DESC, id DESC
+  SELECT * FROM onboarding_resources WHERE eid = 'bea.l.santos'
   BEGIN IMMEDIATE
   INSERT INTO onboarding_resources (id, eid, name, hire_date, roll_in_date, project_deployed, deployment_date, project_name, poc, dn, roll_off_date, from_project, cl_level, group_number, primary_skill, primary_years, secondary_skill, secondary_years, another_skills, office_location, created_at, updated_at) VALUES (NULL, 'bea.l.santos', 'Bea Santos', '11/02/2026', '11/09/2026', 'No', '', 'Song Bench', 'andrea.s.bautista', 'No', '', '', '11', 1.0, 'React', '1', '', '', '["TypeScript"]', 'Cebu', '<timestamp>', '<timestamp>')
   COMMIT
 POST /api/onboarding-resources (invalid date) → 400
   (no SQL)
 PATCH /api/onboarding-resources/5 → 200
-  SELECT * FROM onboarding_resources ORDER BY created_at DESC, id DESC
-  SELECT * FROM onboarding_resources ORDER BY created_at DESC, id DESC
+  SELECT * FROM onboarding_resources WHERE id = 5.0
+  SELECT * FROM onboarding_resources WHERE eid = 'teresa.villanueva'
   BEGIN IMMEDIATE
   SELECT * FROM onboarding_resources WHERE id = 5.0
   UPDATE onboarding_resources SET eid = 'teresa.villanueva', name = 'Teresa Villanueva', hire_date = '05/09/2022', roll_in_date = '09/14/2026', project_deployed = 'No', deployment_date = '', project_name = 'Song Bench', poc = 'rafael.t.mendoza', dn = 'Yes', roll_off_date = '09/11/2026', from_project = 'Retail Loyalty Platform', cl_level = '9', group_number = 5.0, primary_skill = 'AEM', primary_years = '5', secondary_skill = 'Java', secondary_years = '3', another_skills = '["Sling","HTL","Dispatcher"]', office_location = 'Cebu', created_at = '2026-09-14T01:58:33.460Z', updated_at = '<timestamp>' WHERE id = 5.0
   COMMIT
 PATCH /api/onboarding-resources/5 (eid changed: appends) → 201
-  SELECT * FROM onboarding_resources ORDER BY created_at DESC, id DESC
-  SELECT * FROM onboarding_resources ORDER BY created_at DESC, id DESC
+  SELECT * FROM onboarding_resources WHERE id = 5.0
+  SELECT * FROM onboarding_resources WHERE eid = 'teresa.v'
   BEGIN IMMEDIATE
   INSERT INTO onboarding_resources (id, eid, name, hire_date, roll_in_date, project_deployed, deployment_date, project_name, poc, dn, roll_off_date, from_project, cl_level, group_number, primary_skill, primary_years, secondary_skill, secondary_years, another_skills, office_location, created_at, updated_at) VALUES (NULL, 'teresa.v', 'Teresa Villanueva', '05/09/2022', '09/14/2026', 'No', '', 'Song Bench', 'rafael.t.mendoza', 'Yes', '09/11/2026', 'Retail Loyalty Platform', '9', 5.0, 'AEM', '5', 'Java', '3', '["Sling","HTL","Dispatcher"]', 'Cebu', '<timestamp>', '<timestamp>')
   COMMIT
 PATCH /api/onboarding-resources/5 (partial body: 400) → 400
-  SELECT * FROM onboarding_resources ORDER BY created_at DESC, id DESC
+  SELECT * FROM onboarding_resources WHERE id = 5.0
 PATCH /api/onboarding-resources/999 → 404
-  SELECT * FROM onboarding_resources ORDER BY created_at DESC, id DESC
+  SELECT * FROM onboarding_resources WHERE id = 999.0
 DELETE /api/onboarding-resources/5 → 200
   BEGIN IMMEDIATE
   DELETE FROM onboarding_resources WHERE id = 5.0
