@@ -28,8 +28,7 @@ function normalizeReachoutPayload(body) {
 /** group is the raw query value; falsy means no filter. Ids come back numeric. */
 function listReachouts(group) {
   return repository.read((store) => {
-    let rows = store.listRows();
-    if (group) rows = rows.filter(r => String(r.groupNumber) === String(group));
+    const rows = store.listRows(group ? { group: String(group) } : {});
     return rowsInColumnOrder('project-reachouts', rows.map(r => ({ ...r, id: Number(r.id) })));
   });
 }

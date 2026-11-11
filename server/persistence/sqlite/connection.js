@@ -30,6 +30,7 @@ function configure(database) {
 function getDb() {
   if (!db) {
     const opened = configure(open());
+    opened.function('js_number', { deterministic: true }, jsNumber);
     try {
       migrate(opened);
     } catch (error) {
@@ -40,6 +41,22 @@ function getDb() {
     statements = new Map();
   }
   return db;
+}
+
+/**
+ * SQL js_number(value): a stored value as JavaScript's Number() saw it when
+ * the services filtered listed rows in JS (docs/sqlite-migration-plan.md,
+ * Phase 8 clean-ups), so a WHERE clause matches the same rows. Text converts
+ * the way Number() converts it ("2026", " 11 ", "0x7EA", "" → 0). NULL (a
+ * missing field: Number(undefined) is NaN) and anything else NaN give NULL,
+ * which matches nothing. An infinity counts as 0: the stores read it back as
+ * null (tables.js), and Number(null) is 0.
+ */
+function jsNumber(value) {
+  if (value === null) return null;
+  if (value === Infinity || value === -Infinity) return 0;
+  const number = Number(value);
+  return Number.isNaN(number) ? null : number;
 }
 
 /** Opens the existing database file, or throws a clear error when there's none. */

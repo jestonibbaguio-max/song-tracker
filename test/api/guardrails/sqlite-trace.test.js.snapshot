@@ -187,29 +187,29 @@ GET /api/attendance?year=2026&month=11 → 200
   PRAGMA busy_timeout = 5000
   PRAGMA foreign_keys = OFF
   PRAGMA user_version
-  SELECT * FROM attendance ORDER BY id
+  SELECT * FROM attendance WHERE js_number(year) = 2026.0 AND js_number(month) = 11.0 ORDER BY id
 GET /api/attendance?month=10 → 200
-  SELECT * FROM attendance ORDER BY id
+  SELECT * FROM attendance WHERE js_number(month) = 10.0 ORDER BY id
 GET /api/capacity-entries?sprintName=Sprint%202 → 200
-  SELECT * FROM capacity_entries ORDER BY id
+  SELECT * FROM capacity_entries WHERE sprint_name = 'Sprint 2' ORDER BY id
 GET /api/planner-boards?groupNumber=5 → 200
-  SELECT * FROM planner_boards ORDER BY id
+  SELECT * FROM planner_boards WHERE group_number = 5.0 ORDER BY id
 GET /api/planner-buckets?boardId=2 → 200
-  SELECT * FROM planner_buckets ORDER BY id
+  SELECT * FROM planner_buckets WHERE CASE WHEN board_id IS NULL OR abs(board_id) = 9e999 THEN 0 ELSE board_id END = 2.0 ORDER BY id
 GET /api/planner-tasks?boardId=1 → 200
-  SELECT * FROM planner_tasks ORDER BY id
+  SELECT * FROM planner_tasks WHERE CASE WHEN board_id IS NULL OR abs(board_id) = 9e999 THEN 0 ELSE board_id END = 1.0 ORDER BY id
 GET /api/deletion-logs?eid=rafael.t.mendoza → 200
-  SELECT * FROM deletion_logs ORDER BY id
+  SELECT * FROM deletion_logs WHERE deleted_by_eid = 'rafael.t.mendoza' ORDER BY id
 GET /api/project-reachouts?group=5 → 200
-  SELECT * FROM project_reachouts ORDER BY id
+  SELECT * FROM project_reachouts WHERE IFNULL(CAST(group_number AS TEXT), 'null') = '5' ORDER BY id
 GET /api/sprint-retros?sprintId=1&groupNumber=5 → 200
-  SELECT * FROM sprint_retros ORDER BY id
+  SELECT * FROM sprint_retros WHERE sprint_id = 1.0 AND group_number = 5.0 ORDER BY id
 GET /api/sprint-retros?groupNumber=1 → 200
-  SELECT * FROM sprint_retros ORDER BY id
+  SELECT * FROM sprint_retros WHERE group_number = 1.0 ORDER BY id
 GET /api/planner-tasks?boardId=abc (non-numeric: matches nothing) → 200
-  SELECT * FROM planner_tasks ORDER BY id
+  SELECT * FROM planner_tasks WHERE CASE WHEN board_id IS NULL OR abs(board_id) = 9e999 THEN 0 ELSE board_id END = NULL ORDER BY id
 GET /api/deletion-logs?eid=a&eid=b (repeated: matches nothing) → 200
-  SELECT * FROM deletion_logs ORDER BY id
+  SELECT * FROM deletion_logs WHERE deleted_by_eid = NULL ORDER BY id
 
 `;
 

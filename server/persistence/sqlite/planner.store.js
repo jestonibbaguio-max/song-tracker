@@ -3,21 +3,27 @@
 // did before Phase 8, so a task or bucket stored with a null boardId lists
 // with boardId 0, while the write that stored it returned null.
 const { numericId } = require('../../utils/ids');
-const { createSqliteStore, selectAll, selectOne, insertRow, updateRow, deleteRow } = require('./sqlite-store');
+const { createSqliteStore, selectAll, selectWhere, selectOne, insertRow, updateRow, deleteRow } = require('./sqlite-store');
+
+// board_id as the list operations return it: Number() of the stored value,
+// where NULL (a NaN written by the service) and an infinity (read back as
+// null) both list as 0. Filters compare this, so ?boardId=0 matches them, as
+// the JS filter on the listed rows did.
+const LISTED_BOARD_ID = 'CASE WHEN board_id IS NULL OR abs(board_id) = 9e999 THEN 0 ELSE board_id END';
 
 module.exports = createSqliteStore((changed) => ({
   // ── Boards ─────────────────────────────────────────────────────────────────
 
-  /** Every board, with id and groupNumber as numbers. */
-  listBoards() {
-    return selectAll('planner-boards').map(b => ({ ...b, id: Number(b.id), groupNumber: Number(b.groupNumber) }));
+  /** Every board, or those of one groupNumber (when it isn't undefined), with id and groupNumber as numbers. */
+  listBoards({ groupNumber } = {}) {
+    return selectWhere('planner-boards', groupNumber === undefined ? [] : [['group_number', groupNumber]]).map(b => ({ ...b, id: Number(b.id), groupNumber: Number(b.groupNumber) }));
   },
 
   // ── Buckets ────────────────────────────────────────────────────────────────
 
-  /** Every bucket, with id and boardId as numbers. */
-  listBuckets() {
-    return selectAll('planner-buckets').map(b => ({ ...b, id: Number(b.id), boardId: Number(b.boardId) }));
+  /** Every bucket, or those of one boardId (when it isn't undefined), with id and boardId as numbers. */
+  listBuckets({ boardId } = {}) {
+    return selectWhere('planner-buckets', boardId === undefined ? [] : [[LISTED_BOARD_ID, boardId]]).map(b => ({ ...b, id: Number(b.id), boardId: Number(b.boardId) }));
   },
 
   /** Stores { id, ...fields } with the next id and returns it. */
@@ -28,9 +34,9 @@ module.exports = createSqliteStore((changed) => ({
 
   // ── Tasks ──────────────────────────────────────────────────────────────────
 
-  /** Every task, with id, boardId, bucketId and the label ids as numbers. */
-  listTasks() {
-    return selectAll('planner-tasks').map(t => ({
+  /** Every task, or those of one boardId (when it isn't undefined), with id, boardId, bucketId and the label ids as numbers. */
+  listTasks({ boardId } = {}) {
+    return selectWhere('planner-tasks', boardId === undefined ? [] : [[LISTED_BOARD_ID, boardId]]).map(t => ({
       ...t,
       id: Number(t.id),
       boardId: Number(t.boardId),
@@ -69,9 +75,13 @@ module.exports = createSqliteStore((changed) => ({
 
   // ── Deletion logs ──────────────────────────────────────────────────────────
 
-  /** Every deletion log (no filtering). */
-  listDeletionLogs() {
-    return selectAll('deletion-logs');
+  /**
+   * Every deletion log, or only those whose deletedByEid is exactly
+   * deletedByEid (when it isn't undefined): same value and type, as ===
+   * did; null matches nothing.
+   */
+  listDeletionLogs({ deletedByEid } = {}) {
+    return selectWhere('deletion-logs', deletedByEid === undefined ? [] : [['deleted_by_eid', deletedByEid]]);
   },
 
   /** Stores { ...body, id, ...serverFields } with the next id and returns it. */

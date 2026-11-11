@@ -1,11 +1,15 @@
 // The project_reachouts table. group_number is always written, null when the
 // reachout has no group.
-const { createSqliteStore, selectAll, selectOne, insertRow, updateRow, deleteRow } = require('./sqlite-store');
+const { createSqliteStore, selectWhere, selectOne, insertRow, updateRow, deleteRow } = require('./sqlite-store');
 
 module.exports = createSqliteStore((changed) => ({
-  /** Every row (no filtering). */
-  listRows() {
-    return selectAll('project-reachouts');
+  /**
+   * Every row, or only those whose groupNumber reads as the text group (when
+   * it isn't undefined), as String(groupNumber) did: a row with no group
+   * reads as "null".
+   */
+  listRows({ group } = {}) {
+    return selectWhere('project-reachouts', group === undefined ? [] : [["IFNULL(CAST(group_number AS TEXT), 'null')", group]]);
   },
 
   /** A copy of the stored row, or null. */

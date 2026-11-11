@@ -19,11 +19,7 @@ function withNumericLabels(fields) {
 /** groupNumber is the raw query value (undefined when absent). */
 function listBoards(groupNumber) {
   return repository.read((store) => {
-    let boards = store.listBoards();
-    if (groupNumber !== undefined) {
-      const gn = Number(groupNumber);
-      boards = boards.filter(b => b.groupNumber === gn);
-    }
+    const boards = store.listBoards(groupNumber === undefined ? {} : { groupNumber: Number(groupNumber) });
     return rowsInColumnOrder('planner-boards', boards);
   });
 }
@@ -33,11 +29,7 @@ function listBoards(groupNumber) {
 /** boardId is the raw query value (undefined when absent). */
 function listBuckets(boardId) {
   return repository.read((store) => {
-    let buckets = store.listBuckets();
-    if (boardId !== undefined) {
-      const bid = Number(boardId);
-      buckets = buckets.filter(b => b.boardId === bid);
-    }
+    const buckets = store.listBuckets(boardId === undefined ? {} : { boardId: Number(boardId) });
     return rowsInColumnOrder('planner-buckets', buckets);
   });
 }
@@ -55,11 +47,7 @@ function createBucket({ boardId, name, order }) {
 /** boardId is the raw query value (undefined when absent). */
 function listTasks(boardId) {
   return repository.read((store) => {
-    let tasks = store.listTasks();
-    if (boardId !== undefined) {
-      const bid = Number(boardId);
-      tasks = tasks.filter(t => t.boardId === bid);
-    }
+    const tasks = store.listTasks(boardId === undefined ? {} : { boardId: Number(boardId) });
     return rowsInColumnOrder('planner-tasks', tasks);
   });
 }
@@ -103,11 +91,14 @@ function deleteTask(id) {
 
 // ── Deletion logs ────────────────────────────────────────────────────────────
 
-/** eid is the raw query value; falsy means no filter. */
+/**
+ * eid is the raw query value; falsy means no filter. A log matches when its
+ * deletedByEid === the query value; a repeated parameter (an array) matches
+ * nothing, so it's passed as null.
+ */
 function listDeletionLogs(eid) {
   return repository.read((store) => {
-    let logs = store.listDeletionLogs();
-    if (eid) logs = logs.filter(l => l.deletedByEid === eid);
+    const logs = store.listDeletionLogs(eid ? { deletedByEid: typeof eid === 'string' ? eid : null } : {});
     return rowsInColumnOrder('deletion-logs', logs);
   });
 }

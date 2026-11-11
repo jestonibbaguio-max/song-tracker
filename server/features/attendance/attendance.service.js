@@ -9,16 +9,17 @@ const { pickWritable, inColumnOrder, rowsInColumnOrder } = require('../../utils/
 const { numericId } = require('../../utils/ids');
 
 /**
- * year and month are the raw query values; falsy means no filter. Ids come
- * back as numbers, as POST and PATCH return them. A collection that isn't an
- * array is returned as it is, as before.
+ * year and month are the raw query values; falsy means no filter. A record
+ * matches when Number() of its stored value equals Number() of the query
+ * value; the store does the comparison in SQL (attendance.store.js). Ids come
+ * back as numbers, as POST and PATCH return them.
  */
 function listRecords({ year, month }) {
   return repository.read((store) => {
-    let records = store.listRecords();
-    if (year) records = records.filter(r => Number(r.year) === Number(year));
-    if (month) records = records.filter(r => Number(r.month) === Number(month));
-    if (!Array.isArray(records)) return records;
+    const records = store.listRecords({
+      year: year ? Number(year) : undefined,
+      month: month ? Number(month) : undefined,
+    });
     return rowsInColumnOrder('attendance', records.map(r => ('id' in r ? { ...r, id: numericId(r.id) } : r)));
   });
 }

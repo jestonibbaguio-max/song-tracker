@@ -1,11 +1,20 @@
 // The attendance table. Records are stored as the service hands them over:
 // every field is optional, and kept with its type.
-const { createSqliteStore, selectAll, selectOne, insertRow, updateRow, deleteRow } = require('./sqlite-store');
+const { createSqliteStore, selectWhere, selectOne, insertRow, updateRow, deleteRow } = require('./sqlite-store');
 
 module.exports = createSqliteStore((changed) => ({
-  /** Every record (no filtering). */
-  listRecords() {
-    return selectAll('attendance');
+  /**
+   * Every record, or only those whose year and month are the given numbers
+   * (each filter applies when it isn't undefined). A stored value matches as
+   * Number() of it did when the service filtered in JS: js_number()
+   * (connection.js) converts text such as "2026" or "0x7EA", a missing field
+   * matches nothing, and an infinite one (read back as null) counts as 0.
+   */
+  listRecords({ year, month } = {}) {
+    const conditions = [];
+    if (year !== undefined) conditions.push(['js_number(year)', year]);
+    if (month !== undefined) conditions.push(['js_number(month)', month]);
+    return selectWhere('attendance', conditions);
   },
 
   /** Stores { ...body, id } with the next id and returns it. */

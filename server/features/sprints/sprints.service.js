@@ -48,13 +48,10 @@ function deleteSprint(id) {
 /** sprintId and groupNumber are the raw query values (undefined when absent). */
 function listRetros({ sprintId, groupNumber }) {
   return repository.read((store) => {
-    let items = store.listRetros();
-    if (sprintId !== undefined) {
-      items = items.filter(item => item.sprintId === Number(sprintId));
-    }
-    if (groupNumber !== undefined) {
-      items = items.filter(item => item.groupNumber === Number(groupNumber));
-    }
+    const items = store.listRetros({
+      sprintId: sprintId === undefined ? undefined : Number(sprintId),
+      groupNumber: groupNumber === undefined ? undefined : Number(groupNumber),
+    });
     return rowsInColumnOrder('sprint-retros', items);
   });
 }

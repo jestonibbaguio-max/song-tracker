@@ -1,6 +1,6 @@
 // The sprints and sprint_retros tables. Writes return the row they stored,
 // built in JS, as the JSON store did before Phase 8.
-const { createSqliteStore, selectAll, selectOne, insertRow, updateRow, deleteRow } = require('./sqlite-store');
+const { createSqliteStore, selectAll, selectWhere, selectOne, insertRow, updateRow, deleteRow } = require('./sqlite-store');
 
 module.exports = createSqliteStore((changed) => ({
   // ── Sprints ────────────────────────────────────────────────────────────────
@@ -43,9 +43,12 @@ module.exports = createSqliteStore((changed) => ({
 
   // ── Sprint retrospectives ──────────────────────────────────────────────────
 
-  /** Every retro, with id, sprintId and groupNumber as numbers. */
-  listRetros() {
-    return selectAll('sprint-retros');
+  /** Every retro, or those of one sprintId and/or groupNumber (each when it isn't undefined). */
+  listRetros({ sprintId, groupNumber } = {}) {
+    const conditions = [];
+    if (sprintId !== undefined) conditions.push(['sprint_id', sprintId]);
+    if (groupNumber !== undefined) conditions.push(['group_number', groupNumber]);
+    return selectWhere('sprint-retros', conditions);
   },
 
   /** A copy of the retro, or null. */
