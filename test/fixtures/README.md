@@ -2,7 +2,7 @@
 
 `data/` is a small, fictional copy of `server/data/`. It uses the same files, the same collections and the same field shapes, including the quirks in the real data. None of the people, EIDs, task text or timestamps come from real records. The values shared with the real data are reference and enum values that the code depends on: statuses, attendance options, group names, the `Story Point N` labels the burndown parses, skills and cities.
 
-The harness (`test/helpers/test-server.js`) copies `data/` to a fresh temp directory for every test and points `DATA_DIR` at it, so tests can write freely. Run the tests with `npm run test:api`. `test/fixtures-integrity.test.js` fails if an edit here breaks a cross-reference.
+The harness (`test/helpers/test-server.js`) copies `data/` to a fresh temp directory for every test and points `DATA_DIR` at it, then builds `dashboard.sqlite` there from the copy's JSON, as `npm run db:migrate` does, so tests can write freely. A test's `setup` edits the JSON before the build. Run the tests with `npm run test:api`. `test/fixtures-integrity.test.js` fails if an edit here breaks a cross-reference.
 
 ## Files
 
@@ -10,7 +10,6 @@ The harness (`test/helpers/test-server.js`) copies `data/` to a fresh temp direc
 |---|---|---|
 | `data/custom-onboarding.json` | roster | 9 people, newest first, as the server writes it |
 | `data/db.json` | everything else | Every collection the server reads or writes, including `project-reachouts` and `deletion-logs`, which the real file doesn't have yet. It leaves out the stale `dashboard`/`onboarding-resources`/`$schema` keys that the server ignores |
-| `data/custom.csv` | seed for the roster | Uses the `EID,GROUP,Primary Skill` layout that `server/persistence/json/roster-file.repository.js` expects. The real `server/data/custom.csv` has drifted to a different layout, so seeding from it is broken |
 | `data/test_bwd/db.json` | fruits test bench | 3 fruits. There's no `index.html`, so `/test/` returns 404 under the harness |
 
 `tasks.json` is left out on purpose. The server creates it on the first `GET /api/tasks`, the same as it does with the real data.
@@ -28,8 +27,8 @@ The app has no user accounts or auth roles. A person's "role" comes from domain 
 | 7 | `jomar.c.pascual` | 5 | 11 | Junior new joiner. AEM P1 (**misses** the junior minimum). Has a reachout with a retired status (`On hold`) | camelCase |
 | 8 | `liza.m.navarro` | 5 | 12 | Junior new joiner. Angular P2 (meets the junior minimum) | camelCase |
 | 9 | `paolo.d.ramos` | – | 12 | Brand-new joiner, **no group** (`groupNumber: null`), no skills or POC yet | camelCase |
-| 2 | `nina.g.castro` | 1 | – | Legacy CSV-seeded record. Its `name` equals its EID | **snake_case** |
-| 1 | `kevin.r.lim` | 5 | – | Legacy CSV-seeded record. Has no competency row, so it should get a default row | **snake_case** |
+| 2 | `nina.g.castro` | 1 | – | Legacy record, as the CSV seeding (removed in Phase 8) wrote it. Its `name` equals its EID | **snake_case** |
+| 1 | `kevin.r.lim` | 5 | – | Legacy record, as the CSV seeding (removed in Phase 8) wrote it. Has no competency row, so it should get a default row | **snake_case** |
 
 `external.candidate` appears only in a reachout (`groupNumber: null`). It stands for someone who isn't on the roster.
 

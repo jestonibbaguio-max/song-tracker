@@ -93,15 +93,14 @@ song-tracker/
 │   ├── app.js                    # Composes middleware, feature routers and static serving
 │   ├── config/index.js           # PORT, DATA_DIR and every data-file path
 │   ├── features/<name>/          # routes → controller → service → repository, one folder per feature
-│   ├── persistence/              # The only code that reads/writes data: sqlite/ (default) and json/ (fallback) stores
-│   ├── scripts/                  # db-migrate.js (npm run db:migrate), db-export.js (npm run db:export)
+│   ├── persistence/              # The only code that reads/writes data: sqlite/ (the stores, schema, import), tasks and fruits files
+│   ├── scripts/                  # db-migrate.js (npm run db:migrate)
 │   ├── middleware/static.js      # /test mount, dist/ static files, index.html fallback
-│   ├── utils/                    # nextId, normalizeEid, date and field normalisers
+│   ├── utils/                    # numericId, normalizeEid, date and field normalisers
 │   └── data/
 │       ├── dashboard.sqlite      # Your local database (gitignored; built by npm run db:migrate)
 │       ├── db.json               # Seed: sprints, attendance, planner, capacity, reachouts, competency…
 │       ├── custom-onboarding.json  # Seed: the onboarding roster
-│       ├── custom.csv            # Old roster source (only used by the JSON fallback, if the roster file is missing)
 │       └── custom.xlsx           # Source Excel file (reference only)
 ├── public/                       # Static assets (favicon)
 ├── dist/                         # Production build output (generated)
@@ -183,11 +182,11 @@ If port 3000 is already in use (`EADDRINUSE`), another API is still running, som
 - **Your edits stay on your machine.** Everything you save in the app goes into `server/data/dashboard.sqlite`, which is gitignored. Nobody else sees it, and `git diff` stays clean.
 - **The committed JSON is only the seed.** `server/data/db.json` and `server/data/custom-onboarding.json` are what new databases are built from. Your database doesn't change when they change.
 - **Reset your data, or pick up a newer seed after pulling:** stop the API, then run `npm run db:migrate -- --force`. It rebuilds the database from the JSON and discards your local edits. It refuses while a server still has the database open.
-- **Back up your data:** `npm run db:export -- --out <folder>` writes it out as JSON files.
+- **Back up your data:** stop the API, then copy `server/data/dashboard.sqlite` together with `dashboard.sqlite-wal` if there is one.
 - **Change the shared data:** edit the JSON seed files in your editor or with Node, never with PowerShell (it adds a byte-order mark that breaks them), and commit them. Everyone then runs `npm run db:migrate -- --force`.
 - **E2E tests use their own copy:** `npx playwright test` starts its own API on a fresh copy of the seed. Stop your own API first, or Playwright stops with "port 3000 … is already used".
 
-More detail, including the temporary JSON fallback, is in [docs/running-backend.md](docs/running-backend.md) §5–6.
+More detail is in [docs/running-backend.md](docs/running-backend.md) §5.
 
 ---
 
@@ -338,8 +337,8 @@ Dates are stored and returned in **MM/DD/YYYY** format. The server normalizes an
 ### Dashboard data (`server/persistence/sqlite/`)
 
 - Stored in `server/data/dashboard.sqlite` (gitignored), one store per feature; the schema is `server/persistence/sqlite/schema.sql`
-- Built from the JSON seed by `npm run db:migrate` (`server/persistence/sqlite/import.js`), and written back out as JSON by `npm run db:export`
-- The old JSON-file backend (`server/persistence/json/`) stays as a temporary fallback, chosen with `PERSISTENCE=json`, until it's removed (see [docs/sqlite-migration-plan.md](docs/sqlite-migration-plan.md))
+- Built from the JSON seed by `npm run db:migrate` (`server/persistence/sqlite/import.js`); the API never reads or writes the seed
+- The JSON-file backend it replaced was removed in Phase 8 of [docs/sqlite-migration-plan.md](docs/sqlite-migration-plan.md)
 
 ### Dashboard store (`server/features/dashboard/dashboard.service.js`)
 
