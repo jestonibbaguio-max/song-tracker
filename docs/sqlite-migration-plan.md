@@ -1,6 +1,6 @@
 # SQLite migration plan
 
-**Status:** Phase 0 is done on `feature/sqlite-phase-0`, with review fixes on `feature/sqlite-phase-0-fixes`; the Linux CI check waits for Phase 4 step 6. Phase 1 is done on `feature/sqlite-phase-1`, rebuilt on top of the fixes, with step 0 first (see "Deviations"). Phase 2 is done on `feature/sqlite-phase-2`, with steps 3 and 4 before step 2 (see "Deviations"). Phase 3 is done on `feature/sqlite-phase-3` (see "Deviations"). Phase 4 is done on `feature/sqlite-phase-4` (see "Deviations"). Phase 5 is done on `feature/sqlite-phase-5` (see "Deviations"). Phases 6–8 haven't started. This plan builds on the restructured backend from [server-restructure-plan.md](server-restructure-plan.md), which was merged into `develop` in `07f41a8`. Every phase branches off `develop`, and its PRs target `develop`.
+**Status:** Phase 0 is done on `feature/sqlite-phase-0`, with review fixes on `feature/sqlite-phase-0-fixes`; the Linux CI check waits for Phase 4 step 6. Phase 1 is done on `feature/sqlite-phase-1`, rebuilt on top of the fixes, with step 0 first (see "Deviations"). Phase 2 is done on `feature/sqlite-phase-2`, with steps 3 and 4 before step 2 (see "Deviations"). Phase 3 is done on `feature/sqlite-phase-3` (see "Deviations"). Phase 4 is done on `feature/sqlite-phase-4` (see "Deviations"). Phase 5 is done on `feature/sqlite-phase-5` (see "Deviations"). Phase 6 (the cutover) is done on `feature/sqlite-phase-6` (see "Deviations"): SQLite is the default. Phase 7, a soak of 1–2 days, starts when it's merged; Phase 8 hasn't started. This plan builds on the restructured backend from [server-restructure-plan.md](server-restructure-plan.md), which was merged into `develop` in `07f41a8`. Every phase branches off `develop`, and its PRs target `develop`.
 
 **Goal:** move the dashboard data (`db.json` and `custom-onboarding.json`) from whole-file JSON reads and writes to SQLite, using `better-sqlite3`. The HTTP contract stays the same, apart from storage-related bugs fixed on purpose (see "Bug scope"). The JSON backend stays for a while as a fallback that a setting can switch back to. It is then removed completely (Phase 8).
 
@@ -40,7 +40,7 @@ These are verified against `develop` at `07f41a8` (the merge of `feature/backend
   `formatOnboardingResource` reads camelCase first and falls back to snake_case, so the API already returns the camelCase value. The import uses exactly the same rule.
 - **Planner tasks carry fields the UI doesn't know about.** `completedDate` exists on 86 tasks, and holds a date on 59 of them and `""` on 27. `notes` exists on 78 tasks and is `""` on every one of them. Neither field is in `PlannerTask` or anywhere else in `src/`.
 - **`deletion-logs` doesn't exist in the real `db.json`** (the fixtures have 2 rows), and `project-reachouts` exists only in uncommitted edits. Both start empty.
-- **The test suite is green:** 588 tests before Phase 0, 594 after it, 601 after Phase 1, 620 after Phase 2 and 622 after Phase 3, run with `npm run test:api`. After Phase 2, `npm run test:api:sqlite` passes the 43 tests that don't need the stores and skips the rest. After Phase 4 (with its review fixes), `test:api` passes 661 and `test:api:sqlite` passes 582, skipping the 74 json-only tests. After Phase 5, `test:api` passes 677 (skipping the 2 sqlite-only round trips), `test:api:sqlite` passes 599 (skipping the 74 json-only tests and the json round trip), and `test:api:exported` passes 580 (skipping 77: those 75 and the 2 sqlite-only round trips). The leftover `song-tracker.sqlite-wal`/`-shm` files are gitignored and untracked, and there's no main `.sqlite` file, so they can't be read.
+- **The test suite is green:** 588 tests before Phase 0, 594 after it, 601 after Phase 1, 620 after Phase 2 and 622 after Phase 3, run with `npm run test:api`. After Phase 2, `npm run test:api:sqlite` passes the 43 tests that don't need the stores and skips the rest. After Phase 4 (with its review fixes), `test:api` passes 661 and `test:api:sqlite` passes 582, skipping the 74 json-only tests. After Phase 5, `test:api` passes 677 (skipping the 2 sqlite-only round trips), `test:api:sqlite` passes 599 (skipping the 74 json-only tests and the json round trip), and `test:api:exported` passes 580 (skipping 77: those 75 and the 2 sqlite-only round trips). The leftover `song-tracker.sqlite-wal`/`-shm` files are gitignored and untracked, and there's no main `.sqlite` file, so they can't be read. After Phase 6, `test:api` (now explicitly json) passes 689, `test:api:sqlite` 611 and `test:api:exported` 592, each with one more skip than above (3, 76 and 78) on a machine where `dist/` isn't built (see "Deviations › Phase 6").
 
 ## Target structure
 
@@ -258,7 +258,7 @@ Done when: both suites are green, no shared snapshot changed, and the import of 
 
 ### Phase 7: soak period
 
-Run on SQLite with the fallback available for **[N weeks: the team decides at cutover]**. Fall back only through the runbook. Phase 8 can start when the period has passed with no fallback, or when every fallback has been followed by a successful switch back with `db:migrate --force`.
+Run on SQLite with the fallback available for **1–2 days** (decided at cutover, 2026-11-11). Fall back only through the runbook. Phase 8 can start when the period has passed with no fallback, or when every fallback has been followed by a successful switch back with `db:migrate --force`.
 
 ### Phase 8: remove the JSON backend
 
@@ -293,6 +293,7 @@ Never edit the exported files with PowerShell (`Set-Content`, `Out-File`). After
 ## Risks
 
 - **Native dependency.** `better-sqlite3` 13 bundles Node-API binaries for darwin, linux, linuxmusl and win32, each on x64 and arm64, so normal Node upgrades don't need a rebuild. It requires Node ≥ 22, which matches the README.
+  - **Install with npm 12** (found in Phase 6). npm 10 and 11 ignore the package's `"gypfile": false` when they install from the lockfile (`npm ci`, or `npm install` into an empty `node_modules`) and run `node-gyp rebuild`, which fails without Visual Studio's C++ build tools. Phase 0's check only covered `npm install better-sqlite3@13.0.3`, which reads the full registry manifest and honours the setting. The docs say `npx npm@12 ci`. See "Deviations › Phase 6".
   - **On any other platform (e.g. 32-bit Windows), nothing compiles automatically.** There's no install script, so `npm ci` succeeds. `lib/binding.js` then falls back to `build/Release/better_sqlite3.node`, so the **first `new Database()` fails** until someone runs `npm run build-release` inside `node_modules/better-sqlite3`, which needs node-gyp and a C++ toolchain.
 - **Numbers in TEXT columns (verify in Phase 4).** Capacity matches `(sprintName, eid)` with `===`, so on JSON a `sprintName` of `1` and one of `"1"` are two separate rows, and `1` comes back as a number.
   - better-sqlite3 binds JS numbers as REAL, so a TEXT `sprint_name` stores `1` as `"1.0"` (verified). The two rows stay separate, but the response changes from `1` to `"1.0"`.
@@ -423,3 +424,41 @@ No snapshot entry changed and none was added. The export runs outside requests, 
   - compared with a JSON server on the original files, the only differences are attendance (the 36 dropped rows, decision 6) and the order of competency members (Risks, "Roster order").
 - **Not round-trippable, and not worked around:** the L18 values (a `null` sent for an optional field reads back as absent, a task's `completed` as a boolean) and stored infinities (`null`). Neither the fixtures nor the real data has any, so the round-trip tests can't catch them. The runbook says so.
 - **The runbook** is [running-backend.md](running-backend.md) §6. Until Phase 6 adds `db:migrate`, its "switch back" step calls `import.js` directly. Two lines of that file that had been stale since Phase 4 were fixed (§2, and §4's `PERSISTENCE` row).
+
+### Phase 6
+
+No snapshot entry changed and none was added; `sqlite-trace` is untouched. The new tests are plain assertions: `test/api/db-migrate.test.js` (12 cases, on every backend) and one `paths.test.js` case (`PERSISTENCE=json is accepted`).
+
+- **Step order: `db:migrate` came before the default flip**, so `npm run api` worked at every commit. The commits were:
+  1. the test harness picks its backend explicitly;
+  2. `db:migrate`;
+  3. the default flip, with `api`/`dev` running `db:migrate --if-missing` (plan steps 1 and 2);
+  4. Playwright;
+  5. the docs.
+- **The test harness (decided with the user, 2026-11-11).**
+  - `config.DEFAULT_PERSISTENCE` is the one default. `test/helpers/backend.js` takes an unset `PERSISTENCE` from it and writes the result back into `process.env`, so the harness and the app can't disagree, and a bare `node --test <file>` now runs on SQLite, like the app.
+  - `npm run test:api` and `test:api:update` name json explicitly (`test/tools/test-api.js json`) until Phase 8.
+  - **Snapshot updates must run on json.** `--test-update-snapshots` rewrites each snapshot file from the tests that ran, so a skipped test's entries are dropped (checked with a scratch test). A file in which every test is skipped isn't rewritten, so `sqlite-trace` survives a json update. An update on sqlite would drop the json-only entries of the mixed characterization files.
+- **`db:migrate` lives in `persistence/sqlite/import.js`** (`buildDatabase`, `databaseExists`), next to `importJson`. `server/scripts/db-migrate.js` has no `fs` or `better-sqlite3`. Exit codes: 0 built or skipped, 1 failed (nothing changed), 2 bad arguments (including `--force` with `--if-missing`).
+- **`--force` builds before it deletes.** The plan says "`--force` deletes and rebuilds it". Instead, the new database is built at `<dbPath>.tmp-<timestamp>` first, so JSON the import refuses (a BOM, an unknown collection) leaves the old database untouched. Only then are the old files deleted and the new one renamed into place.
+- **The in-use check** (Risks, "Windows file locks"): before deleting, `--force` opens the old database with no busy wait and runs `PRAGMA journal_mode = DELETE`. Leaving WAL needs every other connection closed, so this fails at once with `SQLITE_BUSY` while a server holds it, even an idle one. It then exits 1 with "… is open in another process (is the API server running?) …; nothing was changed".
+  - This was checked on Windows with a second process, with a real `npm run api` on a temp copy, and in the tests.
+  - On Windows, deleting an open file fails too (`EBUSY`, also reported clearly). On Linux and macOS it would succeed, and the server would keep writing to the deleted file; the check prevents that.
+  - A file that isn't a database at all doesn't block `--force`.
+- **Stray `-wal`/`-shm` files without a database** block a plain build and `--if-missing` (SQLite would read a stale `-wal` into the new file). `--force` deletes them. The plan doesn't mention them.
+- **The missing-database 500 now says "Build it from the JSON files with npm run db:migrate"** instead of naming `import.js`. No snapshot holds that text; `paths.test.js` matches only its `No SQLite database at` prefix.
+- **Playwright: no `globalSetup` (decided with the user).** Playwright 1.63 starts its webServers before `globalSetup` (`createGlobalSetupTasks`), so a globalSetup can't prepare the API's `DATA_DIR`.
+  - The API webServer's command is `node test/tools/e2e-data.js && npm run api`, with `env: { DATA_DIR: <os tmp>/song-tracker-e2e-data }`.
+  - `e2e-data.js` empties that folder and copies `server/data` into it without databases, backups or temp files. It refuses any `DATA_DIR` that isn't strictly inside the OS temp directory. `npm run api`'s `--if-missing` then builds the database: the fresh-clone path.
+  - The folder stays after a run, because the server holds it open until Playwright stops it; the next run empties it.
+- **The API webServer is never reused** (`reuseExistingServer: false`, decided with the user). With reuse, a developer's own API on :3000 would have taken the specs' writes. Playwright now stops with "… is already used" instead (checked against a running API: no spec ran). `ng serve` is still reused.
+- **E2E, checked locally.** `npx playwright test` (Chromium) passed all 78 specs against the e2e API on its own data. The developer's `server/data/dashboard.sqlite` kept its timestamp, and `git status server/data` stayed clean; the run's writes went to the temp copy's `-wal`. Playwright stops its API by killing it, so the temp folder keeps a `-wal`/`-shm`; the next run's `e2e-data.js` wipes the folder first. Earlier, with the developer's own API on :3000, Playwright stopped with "is already used" before any spec ran.
+- **The five e2e spec headers** that said the specs write to the real `db.json` were corrected (comments only).
+- **Baseline counts include a `dist/` skip.** `a built dist/ asset is served byte-for-byte` skips when `dist/` isn't built, as it wasn't on this machine. The baselines were therefore 676/3, 598/76 and 579/78, and the Phase 5 counts above assume a built `dist/`.
+- **A clean clone only installs with npm 12.** A fresh-clone check of the new README found that `npm ci` and `npm install` fail with npm 10.9.8 (bundled with Node 22), 10.9.10 and 11.21.2.
+  - npm's lockfile installs ignore `better-sqlite3`'s `"gypfile": false`: arborist's `rebuild.js` reads `gypfile` from the lockfile entry, which never stores it. They then run `node-gyp rebuild`, which needs Visual Studio's C++ tools.
+  - npm 12.2.2 installs it with nothing compiled. It also passes the clean clone's `npm run api` (database built on first start), `ng serve`, a headless browser load, and `npm run test:api:sqlite`.
+  - Phase 0 step 2's "no install script, … no compiler" holds only for `npm install <pkg>`, which uses the registry manifest. Developers who already have `node_modules`, or the C++ tools (as the `run-npm-install*.cmd` scripts assume), weren't affected.
+  - **The fix is docs only, decided with the user:** install with `npx npm@12 ci`. No dependency, `engines` or `.npmrc` change.
+- **Phase 7's soak period is 1–2 days**, decided with the user at cutover (2026-11-11).
+- **Real data, checked by hand** in a temp copy of `develop`'s JSON. `db:migrate` reports 98 roster rows, 13 sprints, 16 retros, 18 capacity entries, 325 attendance rows (36 dropped), 12 attendance options, 2 office locations, 11 labels, 5 boards, 16 buckets, 96 tasks, 0 deletion logs, 0 reachouts and 13 competency rows, with the 3 dead keys skipped. `--if-missing` is a no-op, and a second plain run refuses. `--force` refuses while `npm run api` runs and succeeds after it stops, cleaning up the killed server's `-wal`/`-shm`. A fresh `npm run api` with `PERSISTENCE` unset builds the database and serves it.

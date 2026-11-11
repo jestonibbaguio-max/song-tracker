@@ -1,6 +1,10 @@
 #!/usr/bin/env node
-// Runs the API tests against one storage backend: npm run test:api:sqlite,
-// npm run test:api:exported.
+// Runs the API tests against one storage backend: npm run test:api (json),
+// npm run test:api:update (json), npm run test:api:sqlite, npm run
+// test:api:exported. test:api names json explicitly, because the server's
+// default became sqlite in Phase 6 and the JSON suite stays until Phase 8.
+// Snapshot updates run on json: node's --test-update-snapshots rewrites each
+// snapshot file from the tests that ran, so a skipped test's entries are lost.
 //
 //   node test/tools/test-api.js <json|sqlite> [--exported] [extra node --test flags]
 //

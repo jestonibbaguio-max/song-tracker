@@ -1,7 +1,9 @@
 // JSON files → a new SQLite database (docs/sqlite-migration-plan.md, Phase 4
-// step 2). Used by the test harness, and by `npm run db:migrate` from Phase 6.
+// step 2). Used by the test harness, and by `npm run db:migrate` (Phase 6)
+// through buildDatabase() at the end of this file.
 //
 //   importJson({ dataDir, dbPath }) → report
+//   buildDatabase({ dataDir, dbPath, force }) → report + { replaced }
 //
 // Reads <dataDir>/db.json and <dataDir>/custom-onboarding.json and fills a new
 // database at dbPath in one transaction. Nothing is written if any row is
@@ -175,6 +177,94 @@ function importJson({ dataDir, dbPath }) {
   }
 }
 
+// ── npm run db:migrate (Phase 6) ─────────────────────────────────────────────
+// server/scripts/db-migrate.js reaches the files only through these.
+
+/** The database's -wal/-shm files, which SQLite keeps next to it. */
+const SIDE_SUFFIXES = ['-wal', '-shm'];
+
+const fileStamp = (date) => date.toISOString().replace(/[:.]/g, '-');
+
+/** Whether the database file itself exists. */
+function databaseExists(dbPath) {
+  return fs.existsSync(dbPath);
+}
+
+/**
+ * Refuses to go on while another connection (e.g. a running server) has the
+ * database open. Leaving WAL mode needs every other connection closed, so
+ * with no busy wait it fails at once with SQLITE_BUSY when one is open, even
+ * an idle one, on every platform. (On Windows deleting an open file fails too,
+ * but on Linux and macOS it would succeed, and the server would carry on
+ * writing to the deleted file.) A file SQLite can't read as a database at all
+ * can't be open as one, so it doesn't stop a rebuild.
+ */
+function assertNotInUse(dbPath) {
+  let probe;
+  try {
+    probe = new Database(dbPath, { fileMustExist: true, timeout: 0 });
+    probe.pragma('journal_mode = DELETE');
+  } catch (error) {
+    if (/^SQLITE_(?:BUSY|LOCKED)/.test(error.code || '')) {
+      throw new ImportError(`${dbPath} is open in another process (is the API server running?). Stop it and try again; nothing was changed`);
+    }
+  } finally {
+    if (probe && probe.open) probe.close();
+  }
+}
+
+/** Deletes the database and its -wal/-shm files, the database first. */
+function removeDatabase(files) {
+  for (const file of files) {
+    try {
+      fs.rmSync(file, { force: true });
+    } catch (error) {
+      if (!['EBUSY', 'EPERM', 'EACCES'].includes(error.code)) throw error;
+      throw new ImportError(`can't delete ${file}: it is open in another process (is the API server running?). Stop it and run npm run db:migrate -- --force again`, { cause: error });
+    }
+  }
+}
+
+/**
+ * npm run db:migrate: builds dbPath from dataDir's JSON files with importJson.
+ *
+ * Without force, an existing database is refused, and so are -wal/-shm files
+ * left without one (SQLite would read a stale -wal into the new database).
+ *
+ * With force, the new database is built next to the old one first
+ * (<dbPath>.tmp-<timestamp>), so JSON the import refuses leaves the old one
+ * untouched. Then, if no other process has the old one open, it is deleted
+ * with its -wal/-shm files, and the new one is renamed into place.
+ *
+ * @param {{ dataDir: string, dbPath: string, force?: boolean, now?: Date }} options
+ * @returns the import's report, plus `replaced`: whether an old database (or
+ *   leftover -wal/-shm files) was replaced
+ */
+function buildDatabase({ dataDir, dbPath, force = false, now = new Date() }) {
+  const existing = [dbPath, ...SIDE_SUFFIXES.map((suffix) => dbPath + suffix)].filter((file) => fs.existsSync(file));
+  if (!force) {
+    if (existing.includes(dbPath)) {
+      throw new ImportError(`${dbPath} already exists; nothing was changed. npm run db:migrate -- --force rebuilds it from the JSON files, discarding every change made in it since`);
+    }
+    if (existing.length) {
+      throw new ImportError(`${existing.map((file) => path.basename(file)).join(' and ')} in ${path.dirname(dbPath)} belong to no database; nothing was changed. npm run db:migrate -- --force deletes them and builds it`);
+    }
+    return { ...importJson({ dataDir, dbPath }), replaced: false };
+  }
+
+  const tempPath = `${dbPath}.tmp-${fileStamp(now)}`;
+  const report = importJson({ dataDir, dbPath: tempPath });
+  try {
+    if (existing.includes(dbPath)) assertNotInUse(dbPath);
+    removeDatabase(existing);
+    fs.renameSync(tempPath, dbPath);
+  } catch (error) {
+    for (const file of [tempPath, ...SIDE_SUFFIXES.map((suffix) => tempPath + suffix)]) fs.rmSync(file, { force: true });
+    throw error;
+  }
+  return { ...report, replaced: existing.length > 0 };
+}
+
 /** The report as lines of text. */
 function formatReport({ tables, dropped, skippedKeys }) {
   const lines = ['Rows per table:'];
@@ -188,4 +278,4 @@ function formatReport({ tables, dropped, skippedKeys }) {
   return lines;
 }
 
-module.exports = { importJson, formatReport, ImportError, DEAD_KEYS, DB_COLLECTIONS };
+module.exports = { importJson, buildDatabase, databaseExists, formatReport, ImportError, DEAD_KEYS, DB_COLLECTIONS };
