@@ -9,7 +9,7 @@ For what the API does (routes, middleware, payloads), see [backend-overview.md](
 ## TL;DR
 
 ```bash
-npm ci                 # from the repo root, not from server/
+npx npm@12 ci          # from the repo root, not from server/; npm 12, see §1
 npm run api            # first run: "Built …/dashboard.sqlite …", then "API running on http://127.0.0.1:3000"
 curl http://localhost:3000/api/health   # → {"ok":true}
 ```
@@ -23,9 +23,9 @@ That's all you need. There are no env vars to set and no build step for the serv
 | Requirement | Version | Why |
 |---|---|---|
 | Node.js | **22 LTS recommended** (Express 5 needs ≥ 18) | The README standardises on 22, because `npm run dev` (concurrently 10) and Playwright need it |
-| npm | Whatever ships with Node 22 (10.x) | The lockfile is npm's |
+| npm | **12 for installing** (`npx npm@12 ci`); the bundled 10.x for everything else | npm 10 and 11 try to compile `better-sqlite3` when they install from the lockfile (below) |
 
-You **don't** need Visual Studio Build Tools, Python, or node-gyp. The one native dependency, `better-sqlite3` 13, ships prebuilt binaries for Windows, macOS and Linux (x64 and arm64) inside its npm package, so `npm ci` compiles nothing. Ignore the `run-npm-install.cmd` / `run-npm-install2.cmd` scripts in the root:
+You **don't** need Visual Studio Build Tools, Python, or node-gyp, **as long as you install with npm 12**. The one native dependency, `better-sqlite3` 13, ships prebuilt binaries for Windows, macOS and Linux (x64 and arm64) inside its npm package and sets `"gypfile": false`. npm 10 and 11 ignore that setting when they install from `package-lock.json` (`npm ci`, or `npm install` into an empty `node_modules`) and run `node-gyp rebuild`, which fails with "You need to install the latest version of Visual Studio" unless the C++ build tools are installed. npm 12 honours it and compiles nothing. Checked on 2026-11-11 from a clean clone: npm 10.9.8, 10.9.10 and 11.21.2 fail, npm 12.2.2 installs in about a minute. Ignore the `run-npm-install.cmd` / `run-npm-install2.cmd` scripts in the root:
 - they delete `node_modules` and `package-lock.json`;
 - they require Visual Studio Build Tools at a fixed path;
 - they point npm at another developer's `node-gyp` (`C:\Users\michael.bobis\…`);
@@ -37,10 +37,10 @@ The server has **no `package.json` of its own**. Its runtime dependencies, `expr
 
 ```bash
 cd song-tracker
-npm ci          # exact versions from package-lock.json; use `npm install` if you're changing deps
+npx npm@12 ci   # exact versions from package-lock.json, installed with npm 12 (no global change)
 ```
 
-This installs the Angular toolchain too. No smaller install for just the server is set up.
+This installs the Angular toolchain too. No smaller install for just the server is set up. To use npm 12 for every install instead, upgrade once with `npm install -g npm@12`, then `npm ci`.
 
 ## 3. Start
 
@@ -210,7 +210,8 @@ The backups are the files exactly as they were. To go back to them, stop the ser
 
 | Symptom | Likely cause |
 |---|---|
-| `Error: Cannot find module 'express'` | You haven't run `npm ci` in the repo root yet, or you're running from a directory that can't see the root `node_modules` |
+| `Error: Cannot find module 'express'` | You haven't installed yet (`npx npm@12 ci` in the repo root), or you're running from a directory that can't see the root `node_modules` |
+| Install fails: `gyp ERR! find VS … You need to install the latest version of Visual Studio` (path `node_modules\better-sqlite3`) | You installed with npm 10 or 11, which try to compile `better-sqlite3` (§1). Run `npx npm@12 ci` instead; no Visual Studio needed |
 | `EADDRINUSE :::3000` | Another process (often json-server, or a previous `npm run api`) is on 3000 |
 | Every `db.json` endpoint returns 500 "db.json is not valid JSON" | `db.json` is invalid JSON, most likely because of a BOM. Run `node -e "JSON.parse(require('fs').readFileSync('server/data/db.json','utf8'))"` to see the parse error |
 | Resources list is full of `Unknown` | `custom-onboarding.json` was deleted and reseeded from the CSV. Run `git checkout -- server/data/custom-onboarding.json` |

@@ -9,7 +9,7 @@ An internal resource management and onboarding tracking dashboard for the Accent
 You need **Node.js 22**. From the repo root (the `song-tracker` folder):
 
 ```bash
-npm install
+npx npm@12 ci      # install with npm 12 (see Prerequisites for why)
 npm run dev        # the API on port 3000 and the Angular dev server on port 4200, together
 ```
 
@@ -120,16 +120,18 @@ You need two processes: the Angular frontend and the Express API. `npm run dev` 
 
 - Node.js **v22 or newer** (22 LTS recommended)
   - The SQLite driver (`better-sqlite3` 13) and `npm run dev` (via `concurrently` 10) need Node 22, so use it for everything.
-  - `better-sqlite3` ships prebuilt binaries for Windows, macOS and Linux (x64 and arm64), so `npm install` compiles nothing. Ignore the `run-npm-install*.cmd` scripts in the root.
-- npm 8 or newer (ships with Node 22)
+  - `better-sqlite3` ships prebuilt binaries for Windows, macOS and Linux (x64 and arm64), so an npm 12 install compiles nothing. Ignore the `run-npm-install*.cmd` scripts in the root.
+- **npm 12 for installing.** Run `npx npm@12 ci`, which uses npm 12 for that one command without changing your global npm, or upgrade once with `npm install -g npm@12` and then run `npm ci`. npm 10 and 11 (npm 10 ships with Node 22) ignore `better-sqlite3`'s `"gypfile": false` when they install from the lockfile, and try to compile it with `node-gyp`, which fails without Visual Studio's C++ build tools. npm 12 doesn't, and uses the prebuilt binary the package ships. Every other command (`npm run …`) works with the npm that ships with Node 22.
 - No global Angular CLI is needed; the npm scripts use the project's local Angular CLI 19.2.x
 
 ### Step 1 — Install dependencies
 
 ```bash
 cd song-tracker
-npm install
+npx npm@12 ci      # or, with npm 12 installed globally: npm ci
 ```
+
+If the install fails with `gyp ERR! … You need to install the latest version of Visual Studio`, it ran with npm 10 or 11. Run it again with npm 12 as above. You don't need Visual Studio.
 
 ---
 
@@ -211,6 +213,8 @@ npm run api
 ```
 
 Output goes to `dist/atcp-song-dashboard/browser/`. In production mode, Express serves both the API and the Angular SPA from a single process on port 3000.
+
+> **Known issue:** `npm run build` currently fails Angular's bundle budget (bug M16 in [docs/found-bugs.md](docs/found-bugs.md)). `npm run dev` and `npm start` aren't affected.
 
 ---
 

@@ -13,7 +13,7 @@ Further reading:
 ## Commands
 
 ```bash
-npm install
+npx npm@12 ci        # install with npm 12: npm 10/11 try to compile better-sqlite3 from a lockfile install (no VS tools → fails)
 npm run dev          # db:migrate --if-missing, then API (:3000) + ng serve (:4200) together, via concurrently (Node 22+)
 npm run api          # db:migrate --if-missing, then the Express API only: node server/server.js
 npm start            # Angular dev server only (http://localhost:4200)
