@@ -146,6 +146,24 @@ describe('guardrail: SQL statements per request', () => {
     ]);
   });
 
+  // Added in Phase 8 before the list filters moved into SQL WHERE clauses.
+  test('filtered lists', async (t) => {
+    await scenario(t, [
+      get('/api/attendance?year=2026&month=11'),
+      get('/api/attendance?month=10'),
+      get('/api/capacity-entries?sprintName=Sprint%202'),
+      get('/api/planner-boards?groupNumber=5'),
+      get('/api/planner-buckets?boardId=2'),
+      get('/api/planner-tasks?boardId=1'),
+      get('/api/deletion-logs?eid=rafael.t.mendoza'),
+      get('/api/project-reachouts?group=5'),
+      get('/api/sprint-retros?sprintId=1&groupNumber=5'),
+      get('/api/sprint-retros?groupNumber=1'),
+      get('/api/planner-tasks?boardId=abc', 'non-numeric: matches nothing'),
+      get('/api/deletion-logs?eid=a&eid=b', 'repeated: matches nothing'),
+    ]);
+  });
+
   test('no-op writes still run their write', async (t) => {
     await scenario(t, [
       { method: 'PATCH', path: '/api/sprints/1', body: {}, label: 'empty body' },

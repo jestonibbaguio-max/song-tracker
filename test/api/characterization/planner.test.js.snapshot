@@ -214,6 +214,38 @@ outbound calls: none
 
 `;
 
+exports[`GET /api/deletion-logs > invalid input › a numeric deletedByEid is not matched by the same text 1`] = `
+
+GET /api/deletion-logs?eid=12
+credentials: group 5 POC (rafael.t.mendoza, role poc)
+
+status: 200
+content-type: application/json; charset=utf-8
+access-control-allow-origin: *
+x-powered-by: Express
+response body:
+  [
+    {
+      "id": 2,
+      "type": "comment-deletion",
+      "taskId": 3,
+      "taskTitle": "PoC: Attendance export to CSV",
+      "deletedBy": "Rafael Mendoza",
+      "deletedByEid": "12",
+      "commentAuthor": "Jomar Pascual",
+      "commentText": "Posted on the wrong task, sorry",
+      "commentCreatedAt": "2026-11-03T02:01:18.902Z",
+      "deletedAt": "2026-11-03T02:05:40.017Z"
+    }
+  ]
+
+stored data: unchanged
+data files: unchanged
+
+outbound calls: none
+
+`;
+
 exports[`GET /api/deletion-logs > invalid input › eid filter is not normalised (case, @domain) 1`] = `
 
 GET /api/deletion-logs?eid=Rafael.T.Mendoza%40accenture.com
@@ -256,6 +288,25 @@ response body:
   </body>
   </html>
   
+
+stored data: unchanged
+data files: unchanged
+
+outbound calls: none
+
+`;
+
+exports[`GET /api/deletion-logs > invalid input › repeated eid matches nothing 1`] = `
+
+GET /api/deletion-logs?eid=rafael.t.mendoza&eid=liza.m.navarro
+credentials: group 5 POC (rafael.t.mendoza, role poc)
+
+status: 200
+content-type: application/json; charset=utf-8
+access-control-allow-origin: *
+x-powered-by: Express
+response body:
+  []
 
 stored data: unchanged
 data files: unchanged
@@ -397,6 +448,32 @@ outbound calls: none
 
 `;
 
+exports[`GET /api/planner-boards > invalid input › groupNumber=5.0 matches group 5 1`] = `
+
+GET /api/planner-boards?groupNumber=5.0
+credentials: group 5 POC (rafael.t.mendoza, role poc)
+
+status: 200
+content-type: application/json; charset=utf-8
+access-control-allow-origin: *
+x-powered-by: Express
+response body:
+  [
+    {
+      "id": 2,
+      "groupNumber": 5,
+      "name": "Group 5 - AEM/Angular",
+      "description": "AEM and Angular workstream for bench resources"
+    }
+  ]
+
+stored data: unchanged
+data files: unchanged
+
+outbound calls: none
+
+`;
+
 exports[`GET /api/planner-boards > invalid input › malformed JSON body 1`] = `
 
 GET /api/planner-boards
@@ -431,6 +508,25 @@ outbound calls: none
 exports[`GET /api/planner-boards > invalid input › non-numeric groupNumber matches nothing 1`] = `
 
 GET /api/planner-boards?groupNumber=abc
+credentials: group 5 POC (rafael.t.mendoza, role poc)
+
+status: 200
+content-type: application/json; charset=utf-8
+access-control-allow-origin: *
+x-powered-by: Express
+response body:
+  []
+
+stored data: unchanged
+data files: unchanged
+
+outbound calls: none
+
+`;
+
+exports[`GET /api/planner-boards > invalid input › repeated groupNumber matches nothing 1`] = `
+
+GET /api/planner-boards?groupNumber=5&groupNumber=1
 credentials: group 5 POC (rafael.t.mendoza, role poc)
 
 status: 200
@@ -581,6 +677,76 @@ response body:
       "boardId": 1,
       "name": "Sprint 3",
       "order": 1
+    }
+  ]
+
+stored data: unchanged
+data files: unchanged
+
+outbound calls: none
+
+`;
+
+exports[`GET /api/planner-buckets > invalid input › boardId=0 lists buckets with no board or an infinite one 1`] = `
+
+GET /api/planner-buckets?boardId=0
+credentials: group 5 POC (rafael.t.mendoza, role poc)
+
+status: 200
+content-type: application/json; charset=utf-8
+access-control-allow-origin: *
+x-powered-by: Express
+response body:
+  [
+    {
+      "id": 4,
+      "boardId": 0,
+      "name": "Sprint 2",
+      "order": 0
+    },
+    {
+      "id": 5,
+      "boardId": 0,
+      "name": "Sprint 3",
+      "order": 1
+    }
+  ]
+
+stored data: unchanged
+data files: unchanged
+
+outbound calls: none
+
+`;
+
+exports[`GET /api/planner-buckets > invalid input › boardId=2.0 matches board 2 1`] = `
+
+GET /api/planner-buckets?boardId=2.0
+credentials: group 5 POC (rafael.t.mendoza, role poc)
+
+status: 200
+content-type: application/json; charset=utf-8
+access-control-allow-origin: *
+x-powered-by: Express
+response body:
+  [
+    {
+      "id": 1,
+      "boardId": 2,
+      "name": "Sprint 1",
+      "order": 0
+    },
+    {
+      "id": 2,
+      "boardId": 2,
+      "name": "Sprint 2",
+      "order": 1
+    },
+    {
+      "id": 3,
+      "boardId": 2,
+      "name": "Sprint 3",
+      "order": 2
     }
   ]
 
@@ -1130,6 +1296,75 @@ outbound calls: none
 
 `;
 
+exports[`GET /api/planner-tasks > invalid input › boardId=0 lists tasks with no board or an infinite one 1`] = `
+
+GET /api/planner-tasks?boardId=0
+credentials: group 5 POC (rafael.t.mendoza, role poc)
+
+status: 200
+content-type: application/json; charset=utf-8
+access-control-allow-origin: *
+x-powered-by: Express
+response body:
+  [
+    {
+      "id": 6,
+      "boardId": 0,
+      "bucketId": 4,
+      "title": "React Testing Library deep dive",
+      "status": "Completed",
+      "priority": "Medium",
+      "startDate": "2026-10-27",
+      "dueDate": "2026-10-30",
+      "assignee": "nina.g.castro",
+      "labels": [
+        2,
+        3
+      ],
+      "checklist": [
+        {
+          "id": 1,
+          "text": "Write tests for a form component",
+          "done": true
+        }
+      ],
+      "completed": true,
+      "completedDate": "2026-10-30",
+      "notes": "",
+      "createdAt": "2026-10-27T01:58:20.733Z",
+      "updatedAt": "2026-10-30T07:26:44.019Z"
+    },
+    {
+      "id": 7,
+      "boardId": 0,
+      "bucketId": 5,
+      "title": "Fix date picker timezone bug",
+      "status": "Not started",
+      "priority": "Medium",
+      "startDate": "2026-11-10",
+      "dueDate": "2026-11-13",
+      "assignee": "andrea.s.bautista",
+      "labels": [
+        6,
+        4
+      ],
+      "checklist": [],
+      "comments": [],
+      "description": "Dates picked late in the day are saved as the next day.",
+      "acceptanceCriteria": "",
+      "completed": false,
+      "createdAt": "2026-11-06T02:15:49.601Z",
+      "updatedAt": "2026-11-06T02:15:49.601Z"
+    }
+  ]
+
+stored data: unchanged
+data files: unchanged
+
+outbound calls: none
+
+`;
+
 exports[`GET /api/planner-tasks > invalid input › malformed JSON body 1`] = `
 
 GET /api/planner-tasks
@@ -1164,6 +1399,25 @@ outbound calls: none
 exports[`GET /api/planner-tasks > invalid input › non-numeric boardId matches nothing 1`] = `
 
 GET /api/planner-tasks?boardId=abc
+credentials: group 5 POC (rafael.t.mendoza, role poc)
+
+status: 200
+content-type: application/json; charset=utf-8
+access-control-allow-origin: *
+x-powered-by: Express
+response body:
+  []
+
+stored data: unchanged
+data files: unchanged
+
+outbound calls: none
+
+`;
+
+exports[`GET /api/planner-tasks > invalid input › repeated boardId matches nothing 1`] = `
+
+GET /api/planner-tasks?boardId=1&boardId=2
 credentials: group 5 POC (rafael.t.mendoza, role poc)
 
 status: 200

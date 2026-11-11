@@ -549,13 +549,19 @@ function describeEndpoint(route, spec) {
 
 // ── Setup helpers for cases ──────────────────────────────────────────────────
 
+/**
+ * A value editDb writes as the number literal 1e999, which JSON.parse (and
+ * so the import) reads as Infinity. JSON.stringify can't write Infinity.
+ */
+const INFINITY = '__1e999__';
+
 /** Edit db.json in the temp DATA_DIR, writing it back in the server's own format. */
 function editDb(fn) {
   return (dataDir) => {
     const file = path.join(dataDir, 'db.json');
     const db = JSON.parse(fs.readFileSync(file, 'utf8'));
     fn(db);
-    fs.writeFileSync(file, JSON.stringify(db, null, 2), 'utf8');
+    fs.writeFileSync(file, JSON.stringify(db, null, 2).split(`"${INFINITY}"`).join('1e999'), 'utf8');
   };
 }
 
@@ -575,6 +581,7 @@ module.exports = {
   CREDENTIALS,
   MALFORMED_JSON,
   ROSTER_IS_A_TABLE,
+  INFINITY,
   editDb,
   removeFile,
   writeFile,

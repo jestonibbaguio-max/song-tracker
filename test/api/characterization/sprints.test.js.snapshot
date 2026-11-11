@@ -379,6 +379,50 @@ outbound calls: none
 
 `;
 
+exports[`GET /api/sprint-retros > invalid input › groupNumber=5.0 matches group 5 1`] = `
+
+GET /api/sprint-retros?groupNumber=5.0
+credentials: group 5 POC (rafael.t.mendoza, role poc)
+
+status: 200
+content-type: application/json; charset=utf-8
+access-control-allow-origin: *
+x-powered-by: Express
+response body:
+  [
+    {
+      "id": 1,
+      "sprintId": 1,
+      "groupNumber": 5,
+      "category": "improve",
+      "text": "Pair on AEM environment setup earlier so blockers surface on day one",
+      "createdAt": "2026-10-23T07:02:11.408Z"
+    },
+    {
+      "id": 2,
+      "sprintId": 1,
+      "groupNumber": 5,
+      "category": "didnt-go-well",
+      "text": "Local author instance setup took most of the first week",
+      "createdAt": "2026-10-23T07:03:40.917Z"
+    },
+    {
+      "id": 4,
+      "sprintId": 1,
+      "groupNumber": 5,
+      "category": "went-well",
+      "text": "Daily knowledge-share sessions kept the new joiners unblocked",
+      "createdAt": "2026-10-23T07:05:02.233Z"
+    }
+  ]
+
+stored data: unchanged
+data files: unchanged
+
+outbound calls: none
+
+`;
+
 exports[`GET /api/sprint-retros > invalid input › malformed JSON body 1`] = `
 
 GET /api/sprint-retros
@@ -421,6 +465,69 @@ access-control-allow-origin: *
 x-powered-by: Express
 response body:
   []
+
+stored data: unchanged
+data files: unchanged
+
+outbound calls: none
+
+`;
+
+exports[`GET /api/sprint-retros > invalid input › repeated sprintId matches nothing 1`] = `
+
+GET /api/sprint-retros?sprintId=1&sprintId=2
+credentials: group 5 POC (rafael.t.mendoza, role poc)
+
+status: 200
+content-type: application/json; charset=utf-8
+access-control-allow-origin: *
+x-powered-by: Express
+response body:
+  []
+
+stored data: unchanged
+data files: unchanged
+
+outbound calls: none
+
+`;
+
+exports[`GET /api/sprint-retros > invalid input › sprintId=1.0 matches sprint 1 1`] = `
+
+GET /api/sprint-retros?sprintId=1.0
+credentials: group 5 POC (rafael.t.mendoza, role poc)
+
+status: 200
+content-type: application/json; charset=utf-8
+access-control-allow-origin: *
+x-powered-by: Express
+response body:
+  [
+    {
+      "id": 1,
+      "sprintId": 1,
+      "groupNumber": 5,
+      "category": "improve",
+      "text": "Pair on AEM environment setup earlier so blockers surface on day one",
+      "createdAt": "2026-10-23T07:02:11.408Z"
+    },
+    {
+      "id": 2,
+      "sprintId": 1,
+      "groupNumber": 5,
+      "category": "didnt-go-well",
+      "text": "Local author instance setup took most of the first week",
+      "createdAt": "2026-10-23T07:03:40.917Z"
+    },
+    {
+      "id": 4,
+      "sprintId": 1,
+      "groupNumber": 5,
+      "category": "went-well",
+      "text": "Daily knowledge-share sessions kept the new joiners unblocked",
+      "createdAt": "2026-10-23T07:05:02.233Z"
+    }
+  ]
 
 stored data: unchanged
 data files: unchanged

@@ -2,7 +2,7 @@
 // capacity entries (all in db.json).
 // These pin down current behaviour, bugs included. See docs/found-bugs.md.
 const {
-  describeEndpoint, MALFORMED_JSON, editDb,
+  describeEndpoint, MALFORMED_JSON, editDb, INFINITY,
 } = require('../../helpers/characterize');
 
 const dropCollection = (name) => editDb((db) => { delete db[name]; });
@@ -29,6 +29,23 @@ describeEndpoint('GET /api/attendance', {
     'filters by year and month (as the planner capacity panel sends it)': { path: '/api/attendance?year=2026&month=11' },
   },
   invalid: {
+    // Added in Phase 8 before the list filters moved into SQL WHERE clauses.
+    'year and month match as numbers, whatever type they are stored as': {
+      setup: editDb((db) => {
+        db['attendance'].find((r) => String(r.id) === '9').year = '2026';
+        db['attendance'].find((r) => String(r.id) === '10').year = '0x7EA';
+        db['attendance'].find((r) => String(r.id) === '11').month = ' 11 ';
+      }),
+      path: '/api/attendance?year=2026&month=11',
+    },
+    'year=0 matches an empty and an infinite year, not a missing one': {
+      setup: editDb((db) => {
+        db['attendance'].find((r) => String(r.id) === '9').year = '';
+        delete db['attendance'].find((r) => String(r.id) === '10').year;
+        db['attendance'].find((r) => String(r.id) === '11').year = INFINITY;
+      }),
+      path: '/api/attendance?year=0',
+    },
     'non-numeric month matches nothing': { path: '/api/attendance?year=2026&month=abc' },
     'empty year is ignored': { path: '/api/attendance?year=&month=10' },
     'repeated month parameter': { path: '/api/attendance?month=10&month=11' },
@@ -108,6 +125,15 @@ describeEndpoint('GET /api/capacity-entries', {
     'filters by sprintName (as the planner sends it)': { path: '/api/capacity-entries?sprintName=Sprint%202' },
   },
   invalid: {
+    // Added in Phase 8 before the list filters moved into SQL WHERE clauses.
+    'a numeric sprintName is not matched by the same text': {
+      setup: editDb((db) => {
+        db['capacity-entries'].push({ id: 6, sprintName: 1, eid: 'liza.m.navarro', cadence: 1, admin: 0, holiday: 0 });
+        db['capacity-entries'].push({ id: 7, sprintName: '1', eid: 'liza.m.navarro', cadence: 2, admin: 0, holiday: 0 });
+      }),
+      path: '/api/capacity-entries?sprintName=1',
+    },
+    'repeated sprintName matches nothing': { path: '/api/capacity-entries?sprintName=Sprint%202&sprintName=Sprint%203' },
     'empty sprintName returns everything': { path: '/api/capacity-entries?sprintName=' },
     'sprintName match is case-sensitive': { path: '/api/capacity-entries?sprintName=sprint%202' },
     'malformed JSON body': MALFORMED_JSON,

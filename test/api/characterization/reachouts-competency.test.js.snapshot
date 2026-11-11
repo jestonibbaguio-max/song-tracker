@@ -1108,6 +1108,25 @@ outbound calls: none
 
 `;
 
+exports[`GET /api/project-reachouts > invalid input › group matches as text: 05 matches nothing 1`] = `
+
+GET /api/project-reachouts?group=05
+credentials: group 5 POC (rafael.t.mendoza, role poc)
+
+status: 200
+content-type: application/json; charset=utf-8
+access-control-allow-origin: *
+x-powered-by: Express
+response body:
+  []
+
+stored data: unchanged
+data files: unchanged
+
+outbound calls: none
+
+`;
+
 exports[`GET /api/project-reachouts > invalid input › group=null matches the reachout stored with a null group 1`] = `
 
 GET /api/project-reachouts?group=null
@@ -1173,6 +1192,25 @@ outbound calls: none
 exports[`GET /api/project-reachouts > invalid input › non-numeric group matches nothing 1`] = `
 
 GET /api/project-reachouts?group=abc
+credentials: group 5 POC (rafael.t.mendoza, role poc)
+
+status: 200
+content-type: application/json; charset=utf-8
+access-control-allow-origin: *
+x-powered-by: Express
+response body:
+  []
+
+stored data: unchanged
+data files: unchanged
+
+outbound calls: none
+
+`;
+
+exports[`GET /api/project-reachouts > invalid input › repeated group matches nothing 1`] = `
+
+GET /api/project-reachouts?group=5&group=1
 credentials: group 5 POC (rafael.t.mendoza, role poc)
 
 status: 200

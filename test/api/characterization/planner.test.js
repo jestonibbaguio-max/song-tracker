@@ -1,7 +1,7 @@
 // Characterization tests: planner labels, boards, buckets, tasks and deletion logs.
 // These pin down current behaviour, bugs included. See docs/found-bugs.md.
 const {
-  describeEndpoint, MALFORMED_JSON, editDb,
+  describeEndpoint, MALFORMED_JSON, editDb, INFINITY,
 } = require('../../helpers/characterize');
 
 const dropCollection = (name) => editDb((db) => { delete db[name]; });
@@ -20,6 +20,9 @@ describeEndpoint('GET /api/planner-boards', {
     'filters by groupNumber': { path: '/api/planner-boards?groupNumber=5' },
   },
   invalid: {
+    // Added in Phase 8 before the list filters moved into SQL WHERE clauses.
+    'groupNumber=5.0 matches group 5': { path: '/api/planner-boards?groupNumber=5.0' },
+    'repeated groupNumber matches nothing': { path: '/api/planner-boards?groupNumber=5&groupNumber=1' },
     'non-numeric groupNumber matches nothing': { path: '/api/planner-boards?groupNumber=abc' },
     'empty groupNumber matches nothing': { path: '/api/planner-boards?groupNumber=' },
     'malformed JSON body': MALFORMED_JSON,
@@ -38,6 +41,15 @@ describeEndpoint('GET /api/planner-buckets', {
     'lists every bucket with ids coerced to numbers': {},
   },
   invalid: {
+    // Added in Phase 8 before the list filters moved into SQL WHERE clauses.
+    'boardId=0 lists buckets with no board or an infinite one': {
+      setup: editDb((db) => {
+        db['planner-buckets'].find((r) => String(r.id) === '4').boardId = null;
+        db['planner-buckets'].find((r) => String(r.id) === '5').boardId = INFINITY;
+      }),
+      path: '/api/planner-buckets?boardId=0',
+    },
+    'boardId=2.0 matches board 2': { path: '/api/planner-buckets?boardId=2.0' },
     'non-numeric boardId matches nothing': { path: '/api/planner-buckets?boardId=abc' },
     'malformed JSON body': MALFORMED_JSON,
   },
@@ -99,6 +111,15 @@ describeEndpoint('GET /api/planner-tasks', {
     'lists every task with ids coerced to numbers': {},
   },
   invalid: {
+    // Added in Phase 8 before the list filters moved into SQL WHERE clauses.
+    'boardId=0 lists tasks with no board or an infinite one': {
+      setup: editDb((db) => {
+        db['planner-tasks'].find((r) => String(r.id) === '6').boardId = null;
+        db['planner-tasks'].find((r) => String(r.id) === '7').boardId = INFINITY;
+      }),
+      path: '/api/planner-tasks?boardId=0',
+    },
+    'repeated boardId matches nothing': { path: '/api/planner-tasks?boardId=1&boardId=2' },
     'non-numeric boardId matches nothing': { path: '/api/planner-tasks?boardId=abc' },
     'malformed JSON body': MALFORMED_JSON,
   },
@@ -209,6 +230,15 @@ describeEndpoint('GET /api/deletion-logs', {
     'filters by deletedByEid': { path: '/api/deletion-logs?eid=rafael.t.mendoza' },
   },
   invalid: {
+    // Added in Phase 8 before the list filters moved into SQL WHERE clauses.
+    'a numeric deletedByEid is not matched by the same text': {
+      setup: editDb((db) => {
+        db['deletion-logs'].find((r) => String(r.id) === '1').deletedByEid = 12;
+        db['deletion-logs'].find((r) => String(r.id) === '2').deletedByEid = '12';
+      }),
+      path: '/api/deletion-logs?eid=12',
+    },
+    'repeated eid matches nothing': { path: '/api/deletion-logs?eid=rafael.t.mendoza&eid=liza.m.navarro' },
     'eid filter is not normalised (case, @domain)': { path: '/api/deletion-logs?eid=Rafael.T.Mendoza%40accenture.com' },
     'malformed JSON body': MALFORMED_JSON,
   },

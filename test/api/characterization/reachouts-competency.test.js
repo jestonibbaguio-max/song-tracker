@@ -35,6 +35,9 @@ describeEndpoint('GET /api/project-reachouts', {
     'filters by group': { path: '/api/project-reachouts?group=5' },
   },
   invalid: {
+    // Added in Phase 8 before the list filters moved into SQL WHERE clauses.
+    'group matches as text: 05 matches nothing': { path: '/api/project-reachouts?group=05' },
+    'repeated group matches nothing': { path: '/api/project-reachouts?group=5&group=1' },
     'non-numeric group matches nothing': { path: '/api/project-reachouts?group=abc' },
     'group=null matches the reachout stored with a null group': { path: '/api/project-reachouts?group=null' },
     'malformed JSON body': MALFORMED_JSON,

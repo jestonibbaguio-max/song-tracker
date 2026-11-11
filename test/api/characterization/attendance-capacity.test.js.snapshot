@@ -444,6 +444,88 @@ outbound calls: none
 
 `;
 
+exports[`GET /api/attendance > invalid input › year and month match as numbers, whatever type they are stored as 1`] = `
+
+GET /api/attendance?year=2026&month=11
+credentials: group 5 POC (rafael.t.mendoza, role poc)
+
+status: 200
+content-type: application/json; charset=utf-8
+access-control-allow-origin: *
+x-powered-by: Express
+response body:
+  [
+    {
+      "id": 9,
+      "eid": "teresa.villanueva",
+      "year": "2026",
+      "month": 11,
+      "day": 3,
+      "status": "RTO",
+      "location": "Riverside Tech Tower 2"
+    },
+    {
+      "id": 10,
+      "eid": "liza.m.navarro",
+      "year": "0x7EA",
+      "month": 11,
+      "day": 3,
+      "status": "Present"
+    },
+    {
+      "id": 11,
+      "eid": "kevin.r.lim",
+      "year": 2026,
+      "month": " 11 ",
+      "day": 4,
+      "status": "Present"
+    }
+  ]
+
+stored data: unchanged
+data files: unchanged
+
+outbound calls: none
+
+`;
+
+exports[`GET /api/attendance > invalid input › year=0 matches an empty and an infinite year, not a missing one 1`] = `
+
+GET /api/attendance?year=0
+credentials: group 5 POC (rafael.t.mendoza, role poc)
+
+status: 200
+content-type: application/json; charset=utf-8
+access-control-allow-origin: *
+x-powered-by: Express
+response body:
+  [
+    {
+      "id": 9,
+      "eid": "teresa.villanueva",
+      "year": "",
+      "month": 11,
+      "day": 3,
+      "status": "RTO",
+      "location": "Riverside Tech Tower 2"
+    },
+    {
+      "id": 11,
+      "eid": "kevin.r.lim",
+      "year": null,
+      "month": 11,
+      "day": 4,
+      "status": "Present"
+    }
+  ]
+
+stored data: unchanged
+data files: unchanged
+
+outbound calls: none
+
+`;
+
 exports[`GET /api/attendance > no auth 1`] = `
 
 GET /api/attendance
@@ -756,6 +838,34 @@ outbound calls: none
 
 `;
 
+exports[`GET /api/capacity-entries > invalid input › a numeric sprintName is not matched by the same text 1`] = `
+
+GET /api/capacity-entries?sprintName=1
+credentials: group 5 POC (rafael.t.mendoza, role poc)
+
+status: 200
+content-type: application/json; charset=utf-8
+access-control-allow-origin: *
+x-powered-by: Express
+response body:
+  [
+    {
+      "id": 7,
+      "sprintName": "1",
+      "eid": "liza.m.navarro",
+      "cadence": 2,
+      "admin": 0,
+      "holiday": 0
+    }
+  ]
+
+stored data: unchanged
+data files: unchanged
+
+outbound calls: none
+
+`;
+
 exports[`GET /api/capacity-entries > invalid input › empty sprintName returns everything 1`] = `
 
 GET /api/capacity-entries?sprintName=
@@ -839,6 +949,25 @@ response body:
   </body>
   </html>
   
+
+stored data: unchanged
+data files: unchanged
+
+outbound calls: none
+
+`;
+
+exports[`GET /api/capacity-entries > invalid input › repeated sprintName matches nothing 1`] = `
+
+GET /api/capacity-entries?sprintName=Sprint%202&sprintName=Sprint%203
+credentials: group 5 POC (rafael.t.mendoza, role poc)
+
+status: 200
+content-type: application/json; charset=utf-8
+access-control-allow-origin: *
+x-powered-by: Express
+response body:
+  []
 
 stored data: unchanged
 data files: unchanged

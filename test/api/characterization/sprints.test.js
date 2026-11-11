@@ -84,6 +84,10 @@ describeEndpoint('GET /api/sprint-retros', {
     'filters by sprintId and groupNumber': { path: '/api/sprint-retros?sprintId=2&groupNumber=1' },
   },
   invalid: {
+    // Added in Phase 8 before the list filters moved into SQL WHERE clauses.
+    'sprintId=1.0 matches sprint 1': { path: '/api/sprint-retros?sprintId=1.0' },
+    'groupNumber=5.0 matches group 5': { path: '/api/sprint-retros?groupNumber=5.0' },
+    'repeated sprintId matches nothing': { path: '/api/sprint-retros?sprintId=1&sprintId=2' },
     'non-numeric sprintId': { path: '/api/sprint-retros?sprintId=abc' },
     'empty groupNumber': { path: '/api/sprint-retros?groupNumber=' },
     'malformed JSON body': MALFORMED_JSON,
