@@ -1,26 +1,23 @@
 # ATCP Song Dashboard
 
-An internal resource management and onboarding tracking dashboard for the Accenture Song practice bench. Built with Angular 19 (standalone components) on the frontend and supports two interchangeable API backends: a custom Node.js/Express server or json-server for lightweight local development.
+An internal resource management and onboarding tracking dashboard for the Accenture Song practice bench. Built with Angular 19 (standalone components) on the frontend and a Node.js/Express API that keeps its data in a local SQLite database.
 
 ---
 
 ## How to Run (Quick Start)
 
-Open **two terminals** inside the `atcpsongdashboard` folder:
+You need **Node.js 22**. From the repo root (the `song-tracker` folder):
 
 ```bash
-# Terminal 1 — API server (port 3000)
-node server/server.js
-```
-
-```bash
-# Terminal 2 — Angular dev server (port 4200)
-npx ng serve
+npm install
+npm run dev        # the API on port 3000 and the Angular dev server on port 4200, together
 ```
 
 Then open **http://localhost:4200** in your browser.
 
-> **Note:** Do NOT use `json-server`. The app requires its own Express server (`server/server.js`).
+The first start builds your own local database, `server/data/dashboard.sqlite`, from the JSON files committed in `server/data/`, and prints the rows it loaded. Later starts reuse it. See [Your data](#your-data) for what that means for your edits.
+
+> **Start the API with `npm run api` or `npm run dev`, not `node server/server.js`.** Running `server.js` directly skips the database build, so on a fresh clone every data route returns 500 and the UI stays empty. Don't use `npm run json-api` (json-server) either; see [Legacy: json-server](#legacy-json-server).
 
 ---
 
@@ -73,7 +70,7 @@ rates are read-only in the edit dialog.
 | Backend runtime | Node.js | 22 LTS or newer (see Prerequisites) |
 | Backend framework | Express | 5.2.1 |
 | Language | TypeScript (frontend) / JavaScript (backend) | 5.7.x |
-| Data persistence | JSON files (file-based, no database) | — |
+| Data persistence | SQLite via `better-sqlite3`, built from committed JSON seed files | 13.0.3 |
 | Test runner | Karma + Jasmine | — |
 
 ---
@@ -81,7 +78,7 @@ rates are read-only in the edit dialog.
 ## Project Structure
 
 ```
-atcpsongdashboard/
+song-tracker/
 ├── src/                          # Angular frontend source
 │   ├── app/
 │   │   ├── app.component.ts      # Root component — all app logic and state
@@ -96,12 +93,15 @@ atcpsongdashboard/
 │   ├── app.js                    # Composes middleware, feature routers and static serving
 │   ├── config/index.js           # PORT, DATA_DIR and every data-file path
 │   ├── features/<name>/          # routes → controller → service → repository, one folder per feature
-│   ├── persistence/              # The only code that reads/writes data files (one repository per file)
+│   ├── persistence/              # The only code that reads/writes data: sqlite/ (default) and json/ (fallback) stores
+│   ├── scripts/                  # db-migrate.js (npm run db:migrate), db-export.js (npm run db:export)
 │   ├── middleware/static.js      # /test mount, dist/ static files, index.html fallback
 │   ├── utils/                    # nextId, normalizeEid, date and field normalisers
 │   └── data/
-│       ├── custom.csv            # Seed data — initial resource roster
-│       ├── custom-onboarding.json  # Runtime-persisted onboarding records
+│       ├── dashboard.sqlite      # Your local database (gitignored; built by npm run db:migrate)
+│       ├── db.json               # Seed: sprints, attendance, planner, capacity, reachouts, competency…
+│       ├── custom-onboarding.json  # Seed: the onboarding roster
+│       ├── custom.csv            # Old roster source (only used by the JSON fallback, if the roster file is missing)
 │       └── custom.xlsx           # Source Excel file (reference only)
 ├── public/                       # Static assets (favicon)
 ├── dist/                         # Production build output (generated)
@@ -114,20 +114,20 @@ atcpsongdashboard/
 
 ## How to Run the App
 
-The app has **three separate service runners**. You need to start at least two of them together: the Angular frontend and one API backend.
+You need two processes: the Angular frontend and the Express API. `npm run dev` starts both.
 
 ### Prerequisites
 
 - Node.js **v22 or newer** (22 LTS recommended)
-  - `npm run dev` (via `concurrently` 10) and the Playwright e2e tests require Node 22+ and 20+ respectively.
-  - Angular 19.2 alone supports `^18.19.1 || ^20.11.1 || >=22.0.0`, so `npm start` and `npm run api` run separately also work on Node 18.19.1+, but Node 22 covers every script.
+  - The SQLite driver (`better-sqlite3` 13) and `npm run dev` (via `concurrently` 10) need Node 22, so use it for everything.
+  - `better-sqlite3` ships prebuilt binaries for Windows, macOS and Linux (x64 and arm64), so `npm install` compiles nothing. Ignore the `run-npm-install*.cmd` scripts in the root.
 - npm 8 or newer (ships with Node 22)
 - No global Angular CLI is needed; the npm scripts use the project's local Angular CLI 19.2.x
 
 ### Step 1 — Install dependencies
 
 ```bash
-cd atcpsongdashboard
+cd song-tracker
 npm install
 ```
 
@@ -137,51 +137,32 @@ npm install
 
 | Command | What it starts | Port | When to use |
 |---|---|---|---|
-| `npm start` | Angular dev server (frontend) | 4200 | Always — this is the browser app |
-| `npm run api` | Express API (custom Node.js server) | 3000 | When you need full backend logic (EID upsert, CSV seeding) |
-| `npm run json-api` | json-server (flat JSON REST API) | 3000 | **Recommended for local dev** — simpler, no Node.js server needed |
+| `npm run dev` | The API and the Angular dev server together | 3000 + 4200 | Day-to-day work |
+| `npm start` | Angular dev server (frontend) only | 4200 | With `npm run api` in a second terminal |
+| `npm run api` | Express API only (builds the database first if it's missing) | 3000 | With `npm start`, or on its own for API work |
+| `npm run json-api` | json-server (legacy) | 3000 | **Not for dashboard work**; see [Legacy: json-server](#legacy-json-server) |
 
-> **Important:** `npm run api` and `npm run json-api` both use port 3000. Never run both at the same time.
-
----
-
-### Option A — json-server + Angular (recommended for local dev)
-
-Open **two terminals** in the `atcpsongdashboard` directory:
-
-```bash
-# Terminal 1 — Start the json-server API (port 3000)
-npm run json-api
-```
-
-```bash
-# Terminal 2 — Start the Angular frontend (port 4200)
-npm start
-```
-
-Then open [http://localhost:4200](http://localhost:4200) in your browser.
-
-**How it works:** json-server reads `server/data/db.json` and exposes it as a full REST API with `GET`, `POST`, `PUT`, `PATCH`, and `DELETE` automatically. All reads and writes go directly to that JSON file. No Node.js server code runs.
+> **Important:** only one thing can use port 3000. Stop one API before starting another.
 
 ---
 
-### Option B — Express API + Angular (full backend)
+### Two terminals instead of `npm run dev`
 
-Open **two terminals** in the `atcpsongdashboard` directory:
+Open **two terminals** in the `song-tracker` folder:
 
 ```bash
-# Terminal 1 — Start the Express API (port 3000)
+# Terminal 1 — the Express API (port 3000)
 npm run api
 ```
 
 ```bash
-# Terminal 2 — Start the Angular frontend (port 4200)
+# Terminal 2 — the Angular frontend (port 4200)
 npm start
 ```
 
 Then open [http://localhost:4200](http://localhost:4200) in your browser.
 
-**How it works:** The Express server (`server/server.js`) handles all API routes, seeds data from `server/data/custom.csv` on first run, and persists records to `server/data/custom-onboarding.json`. Use this when you need the custom upsert logic or are testing backend changes.
+**How it works:** the Express server (`server/server.js`) handles every API route and keeps the dashboard data in `server/data/dashboard.sqlite`. `npm run api` first runs `npm run db:migrate -- --if-missing`, which builds that database from the committed JSON when there's none and does nothing otherwise.
 
 ---
 
@@ -189,39 +170,47 @@ Then open [http://localhost:4200](http://localhost:4200) in your browser.
 
 After starting, you should see:
 
-- **json-server terminal:** `JSON Server started on PORT :3000`
-- **Express terminal:** `Server listening on port 3000`
-- **Angular terminal:** `Application bundle generation complete. Server is listening on localhost:4200`
+- **API:** on the first start, `Built …dashboard.sqlite from the JSON files in …` and the rows per table; on later starts, `… already exists; nothing to do (--if-missing)`. Then `API running on http://127.0.0.1:3000`.
+- **Angular:** `Application bundle generation complete. Server is listening on localhost:4200`
 
-If port 3000 is already in use, stop the process holding it before starting another API server.
+If port 3000 is already in use (`EADDRINUSE`), another API is still running, sometimes left over from a closed terminal. Stop it first: in PowerShell, `Get-NetTCPConnection -LocalPort 3000 -State Listen` shows its process id, and `Stop-Process -Id <id> -Force` stops it.
 
 ---
 
-### Data files used by each backend
+### Your data
 
-| Backend | Data source | Records persisted to |
-|---|---|---|
-| json-server (`npm run json-api`) | `server/data/db.json` | Same file — json-server writes back directly |
-| Express (`npm run api`) | `server/data/custom-onboarding.json` (seeded from `custom.csv`) | `server/data/custom-onboarding.json` |
+- **Your edits stay on your machine.** Everything you save in the app goes into `server/data/dashboard.sqlite`, which is gitignored. Nobody else sees it, and `git diff` stays clean.
+- **The committed JSON is only the seed.** `server/data/db.json` and `server/data/custom-onboarding.json` are what new databases are built from. Your database doesn't change when they change.
+- **Reset your data, or pick up a newer seed after pulling:** stop the API, then run `npm run db:migrate -- --force`. It rebuilds the database from the JSON and discards your local edits. It refuses while a server still has the database open.
+- **Back up your data:** `npm run db:export -- --out <folder>` writes it out as JSON files.
+- **Change the shared data:** edit the JSON seed files in your editor or with Node, never with PowerShell (it adds a byte-order mark that breaks them), and commit them. Everyone then runs `npm run db:migrate -- --force`.
+- **E2E tests use their own copy:** `npx playwright test` starts its own API on a fresh copy of the seed. Stop your own API first, or Playwright stops with "port 3000 … is already used".
 
-The two backends use **separate data files**. Onboarding records added via json-server will not appear when you switch to Express, and vice versa.
+More detail, including the temporary JSON fallback, is in [docs/running-backend.md](docs/running-backend.md) §5–6.
+
+### Legacy: json-server
+
+`npm run json-api` serves `server/data/db.json` through json-server. It's left over from early development and will be removed. It doesn't implement the dashboard's own endpoints, it reads an old copy of the onboarding roster, and it writes the committed seed file rather than your database. Use `npm run api` instead.
 
 ---
 
 ### Run tests
 
 ```bash
-npm test
+npm run test:api       # API tests (node:test), each on a temp copy of the test fixtures
+npx playwright test    # end-to-end tests in Chromium; stop your own API on :3000 first
 ```
+
+`npm test` (Karma/Jasmine) is set up, but there are no unit tests under `src/` yet. CLAUDE.md lists every test command.
 
 ### Build for production
 
 ```bash
 npm run build
-node server/server.js
+npm run api
 ```
 
-Output goes to `dist/atcp-song-dashboard/browser/`. In production mode, Express serves both the API and the Angular SPA from a single process on port 3000. json-server is for local development only.
+Output goes to `dist/atcp-song-dashboard/browser/`. In production mode, Express serves both the API and the Angular SPA from a single process on port 3000.
 
 ---
 
@@ -241,17 +230,16 @@ The Express server (`server/server.js`) exposes a REST API with the following re
 
 - Returns static dashboard content (currently hardcoded in `server/features/dashboard/dashboard.service.js`)
 - Manages onboarding resource records via CRUD endpoints
-- Seeds initial data from `server/data/custom.csv` on first run
-- Persists onboarding records to `server/data/custom-onboarding.json`
+- Stores every dashboard record (roster, sprints, attendance, planner, capacity, reachouts, competency) in the local SQLite database `server/data/dashboard.sqlite`
 - Serves the built Angular SPA as static files in production
 
 ### Data flow
 
 ```
-Browser (Angular)  <-->  HTTP (JSON)  <-->  Express API  <-->  JSON files on disk
+Browser (Angular)  <-->  HTTP (JSON)  <-->  Express API  <-->  SQLite (server/data/dashboard.sqlite)
 ```
 
-On first startup, if `custom-onboarding.json` does not exist, `server/persistence/json/roster-file.repository.js` parses `custom.csv` and writes the JSON file. Subsequent reads and writes go directly to the JSON file.
+`npm run db:migrate` (run by `npm run api` and `npm run dev` when the database is missing) builds the database from the committed JSON seed, `server/data/db.json` and `server/data/custom-onboarding.json`. After that, every read and write goes to the database.
 
 ---
 
@@ -348,11 +336,11 @@ Dates are stored and returned in **MM/DD/YYYY** format. The server normalizes an
 
 ## Data Layer
 
-### Onboarding store (`server/persistence/json/roster-file.repository.js`)
+### Dashboard data (`server/persistence/sqlite/`)
 
-- Persists records to `server/data/custom-onboarding.json`
-- On first run (JSON file absent): bootstraps from `server/data/custom.csv` using a hand-written CSV parser that handles quoted fields and doubled-quote escaping
-- Subsequent reads/writes go directly to the JSON file; the CSV is not re-read after initialization
+- Stored in `server/data/dashboard.sqlite` (gitignored), one store per feature; the schema is `server/persistence/sqlite/schema.sql`
+- Built from the JSON seed by `npm run db:migrate` (`server/persistence/sqlite/import.js`), and written back out as JSON by `npm run db:export`
+- The old JSON-file backend (`server/persistence/json/`) stays as a temporary fallback, chosen with `PERSISTENCE=json`, until it's removed (see [docs/sqlite-migration-plan.md](docs/sqlite-migration-plan.md))
 
 ### Dashboard store (`server/features/dashboard/dashboard.service.js`)
 
@@ -407,8 +395,9 @@ CSS Grid is used throughout:
 Run two processes concurrently:
 
 ```bash
+npm run dev    # both of these, in one terminal
 npm start      # Angular dev server — http://localhost:4200
-npm run api    # Express API — http://localhost:3000
+npm run api    # Express API — http://localhost:3000 (builds the database first if it's missing)
 ```
 
 CORS is enabled on the Express server for cross-origin development requests.
@@ -419,7 +408,7 @@ Build the Angular app and serve everything from the Express server:
 
 ```bash
 npm run build
-node server/server.js
+npm run api
 ```
 
 The Express server detects the built output at `dist/atcp-song-dashboard/browser/` and serves it as static files. A wildcard catch-all route returns `index.html` for all non-API paths, enabling Angular's client-side view switching.
@@ -449,5 +438,5 @@ Configured in `angular.json`:
 
 - **DSR (Daily Status Report) charts** — 12 chart types designed and mocked up; not yet implemented in code.
 - **Daily Attendance charts** — 2 attendance visualization mockups; not yet implemented.
-- **SQLite database** — planned in [docs/sqlite-migration-plan.md](docs/sqlite-migration-plan.md), to replace the current JSON file store.
+- **Remove the JSON fallback** — the move to SQLite is done ([docs/sqlite-migration-plan.md](docs/sqlite-migration-plan.md)); its last phase removes the old JSON-file backend and json-server.
 - **Additional sidebar views** — Initiatives, Reports, Resource Tracking, POC How-To, Announcements, and Settings are present in the nav but not yet wired to views.
