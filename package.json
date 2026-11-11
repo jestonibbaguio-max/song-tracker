@@ -7,7 +7,6 @@
     "api": "node server/scripts/db-migrate.js --if-missing && node server/server.js",
     "db:migrate": "node server/scripts/db-migrate.js",
     "db:export": "node server/scripts/db-export.js",
-    "json-api": "npx json-server server/data/db.json --port 3000",
     "build": "ng build",
     "watch": "ng build --watch --configuration development",
     "test": "ng test",

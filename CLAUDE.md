@@ -8,7 +8,7 @@ Further reading:
 - [docs/backend-overview.md](docs/backend-overview.md) covers the full route list, middleware order, and every frontend→API call with its payload.
 - [docs/sqlite-migration-plan.md](docs/sqlite-migration-plan.md) is the plan for moving the backend to SQLite. See "SQLite migration" below.
 - [DASHBOARD_POLICIES.md](DASHBOARD_POLICIES.md) has the business rules (CL ranks, proficiency minimums, row colours, planner rules, reachout statuses). Read the relevant section before changing feature behaviour.
-- Parts of `README.md` are out of date. Its Architecture section says the app is a single component, and it both recommends and forbids json-server. Where the README and the code disagree, trust the code.
+- Parts of `README.md` are out of date. Its Architecture section says the app is a single component. Where the README and the code disagree, trust the code.
 
 ## Commands
 
@@ -45,7 +45,6 @@ npm run codegen      # Playwright codegen against :4200
 - CI (`.github/workflows/playwright.yml`) runs Playwright on pushes and PRs to `main`.
 - The API tests start a fresh app on a temp copy of `test/fixtures/data/` per test (`test/helpers/test-server.js`). Characterization snapshots record the response and a logical diff of the stores ("stored data", from `test/helpers/store-dump.js`), so they hold on every backend. Tests tagged json-only (`test/helpers/backend.js`) pin the JSON files themselves: BOMs, corrupt files, CSV seeding, id repair, raw diffs, fs calls.
 - `npm test` (Karma/Jasmine) is set up, but there are no `*.spec.ts` unit tests under `src/`. No linter is configured.
-- `npm run json-api` (json-server on `db.json`) is legacy. It reads a different onboarding dataset and doesn't implement the custom endpoints, so use `npm run api`. It writes the committed `db.json`, not the live SQLite data. Both use port 3000, so don't run them together.
 
 ## Architecture
 
@@ -110,6 +109,6 @@ The backend is being moved from JSON files to SQLite (`better-sqlite3`), followi
 
 - **Never write the JSON data files with PowerShell** (`ConvertTo-Json`, `Set-Content`, `Out-File`). They add a UTF-8 BOM, `JSON.parse` fails, and every `db.json` route then returns a 500 ("db.json is not valid JSON") until the file is fixed; `db:migrate` refuses them too. (Before Phase 3's H2 fix it silently loaded as `{}`, and the next write wiped every other collection.) Use Node (`fs.writeFileSync(p, JSON.stringify(db, null, 2), 'utf8')`) or the Edit tool.
 - **UI edits stay local.** On the default SQLite backend, every save goes to your own `server/data/dashboard.sqlite` (gitignored), never to the committed JSON. The committed `db.json` and `custom-onboarding.json` are only the seed that `db:migrate` builds from; changing the shared data means editing them and committing, and each developer then runs `npm run db:migrate -- --force`.
-- **`git diff server/data` still matters on the JSON side.** `PERSISTENCE=json` (the fallback), `npm run db:export` (whose backups `*.bak-*` are gitignored) and `npm run json-api` (json-server) all write the committed JSON files, not your live database. After a fallback, the diff is large; don't commit it by accident.
+- **`git diff server/data` still matters on the JSON side.** `PERSISTENCE=json` (the fallback) and `npm run db:export` (whose backups `*.bak-*` are gitignored) both write the committed JSON files, not your live database. After a fallback, the diff is large; don't commit it by accident.
 - **E2E runs never touch your data**: the Playwright API runs on a fresh copy of the seed in `<os tmp>/song-tracker-e2e-data`, and stops with "is already used" if your own API is on :3000.
 - Onboarding dates go over the wire as `MM/DD/YYYY`. Sprint dates use `YYYY-MM-DD`. The server normalises EIDs by lower-casing them and removing everything from `@` onwards.

@@ -17,7 +17,7 @@ Then open **http://localhost:4200** in your browser.
 
 The first start builds your own local database, `server/data/dashboard.sqlite`, from the JSON files committed in `server/data/`, and prints the rows it loaded. Later starts reuse it. See [Your data](#your-data) for what that means for your edits.
 
-> **Start the API with `npm run api` or `npm run dev`, not `node server/server.js`.** Running `server.js` directly skips the database build, so on a fresh clone every data route returns 500 and the UI stays empty. Don't use `npm run json-api` (json-server) either; see [Legacy: json-server](#legacy-json-server).
+> **Start the API with `npm run api` or `npm run dev`, not `node server/server.js`.** Running `server.js` directly skips the database build, so on a fresh clone every data route returns 500 and the UI stays empty.
 
 ---
 
@@ -142,7 +142,6 @@ If the install fails with `gyp ERR! … You need to install the latest version o
 | `npm run dev` | The API and the Angular dev server together | 3000 + 4200 | Day-to-day work |
 | `npm start` | Angular dev server (frontend) only | 4200 | With `npm run api` in a second terminal |
 | `npm run api` | Express API only (builds the database first if it's missing) | 3000 | With `npm start`, or on its own for API work |
-| `npm run json-api` | json-server (legacy) | 3000 | **Not for dashboard work**; see [Legacy: json-server](#legacy-json-server) |
 
 > **Important:** only one thing can use port 3000. Stop one API before starting another.
 
@@ -189,10 +188,6 @@ If port 3000 is already in use (`EADDRINUSE`), another API is still running, som
 - **E2E tests use their own copy:** `npx playwright test` starts its own API on a fresh copy of the seed. Stop your own API first, or Playwright stops with "port 3000 … is already used".
 
 More detail, including the temporary JSON fallback, is in [docs/running-backend.md](docs/running-backend.md) §5–6.
-
-### Legacy: json-server
-
-`npm run json-api` serves `server/data/db.json` through json-server. It's left over from early development and will be removed. It doesn't implement the dashboard's own endpoints, it reads an old copy of the onboarding roster, and it writes the committed seed file rather than your database. Use `npm run api` instead.
 
 ---
 
@@ -442,5 +437,4 @@ Configured in `angular.json`:
 
 - **DSR (Daily Status Report) charts** — 12 chart types designed and mocked up; not yet implemented in code.
 - **Daily Attendance charts** — 2 attendance visualization mockups; not yet implemented.
-- **Remove the JSON fallback** — the move to SQLite is done ([docs/sqlite-migration-plan.md](docs/sqlite-migration-plan.md)); its last phase removes the old JSON-file backend and json-server.
 - **Additional sidebar views** — Initiatives, Reports, Resource Tracking, POC How-To, Announcements, and Settings are present in the nav but not yet wired to views.
