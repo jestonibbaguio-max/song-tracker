@@ -160,6 +160,7 @@ describeEndpoint('PATCH /api/onboarding-resources/:id', {
   notFound: {
     'unknown id': { path: '/api/onboarding-resources/999', body: teresaEdited },
     'non-numeric id': { path: '/api/onboarding-resources/abc', body: teresaEdited },
+    'fractional id matches no record': { path: '/api/onboarding-resources/5.5', body: teresaEdited },
     'unknown id with an invalid body (404 wins over 400)': { path: '/api/onboarding-resources/999', body: {} },
   },
 });

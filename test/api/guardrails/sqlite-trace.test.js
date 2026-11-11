@@ -123,6 +123,17 @@ describe('guardrail: SQL statements per request', () => {
     ]);
   });
 
+  // Added in Phase 8 before the onboarding clean-up (targeted queries), so its
+  // trace diff shows the lookups by id and by eid that replace full reads.
+  test('onboarding lookups by id and by eid', async (t) => {
+    await scenario(t, [
+      { method: 'POST', path: '/api/onboarding-resources', body: teresaEdited, label: 'existing eid: upserts' },
+      { method: 'PATCH', path: '/api/onboarding-resources/5', body: { ...teresaEdited, eid: 'rafael.t.mendoza' }, label: 'eid of another record: 409' },
+      { method: 'PATCH', path: '/api/onboarding-resources/abc', body: teresaEdited, label: 'non-numeric id: 404' },
+      { method: 'PATCH', path: '/api/onboarding-resources/5.5', body: teresaEdited, label: 'fractional id: 404' },
+    ]);
+  });
+
   test('no-op writes still run their write', async (t) => {
     await scenario(t, [
       { method: 'PATCH', path: '/api/sprints/1', body: {}, label: 'empty body' },

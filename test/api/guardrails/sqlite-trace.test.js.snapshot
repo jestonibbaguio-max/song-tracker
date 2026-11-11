@@ -198,6 +198,28 @@ PATCH /api/competency-records/rafael.t.mendoza (empty body) → 200
 
 `;
 
+exports[`guardrail: SQL statements per request > onboarding lookups by id and by eid 1`] = `
+
+POST /api/onboarding-resources (existing eid: upserts) → 200
+  PRAGMA journal_mode = WAL
+  PRAGMA busy_timeout = 5000
+  PRAGMA foreign_keys = OFF
+  PRAGMA user_version
+  SELECT * FROM onboarding_resources ORDER BY created_at DESC, id DESC
+  BEGIN IMMEDIATE
+  SELECT * FROM onboarding_resources WHERE id = 5.0
+  UPDATE onboarding_resources SET eid = 'teresa.villanueva', name = 'Teresa Villanueva', hire_date = '05/09/2022', roll_in_date = '09/14/2026', project_deployed = 'No', deployment_date = '', project_name = 'Song Bench', poc = 'rafael.t.mendoza', dn = 'Yes', roll_off_date = '09/11/2026', from_project = 'Retail Loyalty Platform', cl_level = '9', group_number = 5.0, primary_skill = 'AEM', primary_years = '5', secondary_skill = 'Java', secondary_years = '3', another_skills = '["Sling","HTL","Dispatcher"]', office_location = 'Cebu', created_at = '2026-09-14T01:58:33.460Z', updated_at = '<timestamp>' WHERE id = 5.0
+  COMMIT
+PATCH /api/onboarding-resources/5 (eid of another record: 409) → 409
+  SELECT * FROM onboarding_resources ORDER BY created_at DESC, id DESC
+  SELECT * FROM onboarding_resources ORDER BY created_at DESC, id DESC
+PATCH /api/onboarding-resources/abc (non-numeric id: 404) → 404
+  SELECT * FROM onboarding_resources ORDER BY created_at DESC, id DESC
+PATCH /api/onboarding-resources/5.5 (fractional id: 404) → 404
+  SELECT * FROM onboarding_resources ORDER BY created_at DESC, id DESC
+
+`;
+
 exports[`guardrail: SQL statements per request > roster, skill options and competency 1`] = `
 
 GET /api/onboarding-resources → 200

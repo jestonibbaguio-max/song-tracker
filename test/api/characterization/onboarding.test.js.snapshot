@@ -1064,6 +1064,53 @@ request body:
 
 `;
 
+exports[`PATCH /api/onboarding-resources/:id > not found › fractional id matches no record 1`] = `
+
+PATCH /api/onboarding-resources/5.5
+credentials: group 5 POC (rafael.t.mendoza, role poc)
+request body:
+  {
+    "name": "Teresa Villanueva",
+    "eid": "teresa.villanueva",
+    "hireDate": "05/09/2022",
+    "rollInDate": "09/14/2026",
+    "projectDeployed": "No",
+    "deploymentDate": "",
+    "projectName": "Song Bench",
+    "poc": "rafael.t.mendoza",
+    "dn": "Yes",
+    "rollOffDate": "09/11/2026",
+    "fromProject": "Retail Loyalty Platform",
+    "clLevel": "9",
+    "groupNumber": "5",
+    "primarySkill": "AEM",
+    "primaryYears": "5",
+    "secondarySkill": "Java",
+    "secondaryYears": "3",
+    "anotherSkills": [
+      "Sling",
+      "HTL",
+      "Dispatcher"
+    ],
+    "officeLocation": "Cebu"
+  }
+
+status: 404
+content-type: application/json; charset=utf-8
+access-control-allow-origin: *
+x-powered-by: Express
+response body:
+  {
+    "error": "resource not found"
+  }
+
+stored data: unchanged
+data files: unchanged
+
+outbound calls: none
+
+`;
+
 exports[`PATCH /api/onboarding-resources/:id > not found › non-numeric id 1`] = `
 
 PATCH /api/onboarding-resources/abc
