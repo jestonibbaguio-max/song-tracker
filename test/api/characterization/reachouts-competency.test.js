@@ -1,7 +1,7 @@
 // Characterization tests: /api/project-reachouts and /api/competency-records.
 // These pin down current behaviour, bugs included. See docs/found-bugs.md.
 const {
-  describeEndpoint, MALFORMED_JSON, editDb, removeFile,
+  describeEndpoint, MALFORMED_JSON, editDb,
 } = require('../../helpers/characterize');
 
 const dropCollection = (name) => editDb((db) => { delete db[name]; });
@@ -111,10 +111,6 @@ describeEndpoint('GET /api/competency-records', {
     'group with no members': { path: '/api/competency-records?group=3' },
     'competency-records collection missing: every member gets a default row': {
       setup: dropCollection('competency-records'),
-      path: '/api/competency-records?group=5',
-    },
-    'custom-onboarding.json missing: reseeded from custom.csv': {
-      setup: removeFile('custom-onboarding.json'),
       path: '/api/competency-records?group=5',
     },
   },

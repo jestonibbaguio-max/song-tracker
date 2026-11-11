@@ -1,8 +1,5 @@
-// Next id for db.json collections: max(id)+1, where non-numeric ids count as 0.
-// NOT for the fruits test bench, which has its own rule (persistence/fruits-file.repository.js).
-function nextId(arr) {
-  return (arr.reduce((m, r) => Math.max(m, Number(r.id) || 0), 0)) + 1;
-}
+// Id helpers. New ids come from SQLite (INTEGER PRIMARY KEY: max(id)+1); the
+// fruits test bench has its own rule (persistence/fruits-file.repository.js).
 
 /**
  * A stored id as the API returns it: a numeric string ("1") becomes a number;
@@ -15,4 +12,4 @@ function numericId(id) {
   return Number.isFinite(n) ? n : id;
 }
 
-module.exports = { nextId, numericId };
+module.exports = { numericId };

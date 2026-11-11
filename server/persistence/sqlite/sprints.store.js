@@ -1,6 +1,5 @@
-// The sprints and sprint_retros tables (the SQLite counterpart of
-// persistence/json/sprints.store.js): the same operations, returning the same
-// rows. Writes return the row they stored, built in JS as the JSON store does.
+// The sprints and sprint_retros tables. Writes return the row they stored,
+// built in JS, as the JSON store did before Phase 8.
 const { createSqliteStore, selectAll, selectOne, insertRow, updateRow, deleteRow } = require('./sqlite-store');
 
 module.exports = createSqliteStore((changed) => ({

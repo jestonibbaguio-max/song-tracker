@@ -11,10 +11,8 @@
     "build": "ng build",
     "watch": "ng build --watch --configuration development",
     "test": "ng test",
-    "test:api": "node test/tools/test-api.js json",
-    "test:api:update": "node test/tools/test-api.js json --test-update-snapshots",
-    "test:api:sqlite": "node test/tools/test-api.js sqlite",
-    "test:api:exported": "node test/tools/test-api.js json --exported",
+    "test:api": "node test/tools/test-api.js",
+    "test:api:update": "node test/tools/test-api.js --test-update-snapshots",
     "dev": "node server/scripts/db-migrate.js --if-missing && concurrently -n api,web -c blue,green \"node server/server.js\" \"ng serve\"",
     "codegen": "playwright codegen http://localhost:4200"
   },

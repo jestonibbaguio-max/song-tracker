@@ -1,6 +1,5 @@
-// The project_reachouts table (the SQLite counterpart of
-// persistence/json/reachouts.store.js). group_number is always written, null
-// when the reachout has no group.
+// The project_reachouts table. group_number is always written, null when the
+// reachout has no group.
 const { createSqliteStore, selectAll, selectOne, insertRow, updateRow, deleteRow } = require('./sqlite-store');
 
 module.exports = createSqliteStore((changed) => ({

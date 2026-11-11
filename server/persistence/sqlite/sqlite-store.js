@@ -1,5 +1,5 @@
-// The unit of work for the SQLite feature stores, the counterpart of
-// persistence/json/db-store.js (docs/sqlite-migration-plan.md, layer rules).
+// The unit of work for the SQLite feature stores
+// (docs/sqlite-migration-plan.md, layer rules).
 //
 // read(fn)  calls fn(session). A session's mutating operation throws, so a
 //           read can never change data.

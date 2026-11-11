@@ -582,52 +582,6 @@ credentials: none
 
 `;
 
-exports[`GET /api/sprints > not found › db.json missing 1`] = `
-
-GET /api/sprints
-credentials: group 5 POC (rafael.t.mendoza, role poc)
-
-status: 200
-content-type: application/json; charset=utf-8
-access-control-allow-origin: *
-x-powered-by: Express
-response body:
-  []
-
-data files: unchanged
-
-outbound calls: none
-
-`;
-
-exports[`GET /api/sprints > not found › db.json starts with a UTF-8 BOM 1`] = `
-
-GET /api/sprints
-credentials: group 5 POC (rafael.t.mendoza, role poc)
-
-status: 500
-content-type: text/html; charset=utf-8
-access-control-allow-origin: *
-x-powered-by: Express
-response body:
-  <!DOCTYPE html>
-  <html lang="en">
-  <head>
-  <meta charset="utf-8">
-  <title>Error</title>
-  </head>
-  <body>
-  <pre>Error: db.json is not valid JSON: Unexpected token &#39;﻿&#39;, &quot;﻿{<br> &nbsp;&quot;capa&quot;... is not valid JSON<br> &nbsp; &nbsp;at <stack trace removed></pre>
-  </body>
-  </html>
-  
-
-data files: unchanged
-
-outbound calls: none
-
-`;
-
 exports[`GET /api/sprints > not found › sprints collection missing 1`] = `
 
 GET /api/sprints
@@ -1997,40 +1951,6 @@ request body:
   }
 
 => identical to the happy path (creates a sprint (as the planner sends it)): same status, body, data-file changes and outbound calls
-
-`;
-
-exports[`POST /api/sprints > not found › db.json starts with a UTF-8 BOM 1`] = `
-
-POST /api/sprints
-credentials: group 5 POC (rafael.t.mendoza, role poc)
-request body:
-  {
-    "name": "Sprint 4",
-    "start": "2026-11-24",
-    "end": "2026-12-05"
-  }
-
-status: 500
-content-type: text/html; charset=utf-8
-access-control-allow-origin: *
-x-powered-by: Express
-response body:
-  <!DOCTYPE html>
-  <html lang="en">
-  <head>
-  <meta charset="utf-8">
-  <title>Error</title>
-  </head>
-  <body>
-  <pre>Error: db.json is not valid JSON: Unexpected token &#39;﻿&#39;, &quot;﻿{<br> &nbsp;&quot;capa&quot;... is not valid JSON<br> &nbsp; &nbsp;at <stack trace removed></pre>
-  </body>
-  </html>
-  
-
-data files: unchanged
-
-outbound calls: none
 
 `;
 

@@ -1,6 +1,5 @@
-// The attendance table (the SQLite counterpart of
-// persistence/json/attendance.store.js). Records are stored as the service
-// hands them over: every field is optional, and kept with its type.
+// The attendance table. Records are stored as the service hands them over:
+// every field is optional, and kept with its type.
 const { createSqliteStore, selectAll, selectOne, insertRow, updateRow, deleteRow } = require('./sqlite-store');
 
 module.exports = createSqliteStore((changed) => ({

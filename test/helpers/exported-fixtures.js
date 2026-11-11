@@ -5,8 +5,7 @@
 // directory holds what the fixtures do, with db.json and the roster as
 // `npm run db:export` writes them.
 //
-// Used by sqlite-roundtrip.test.js and by `npm run test:api:exported`, which
-// runs the suite with PERSISTENCE=json on these files (test/tools/test-api.js).
+// Used by sqlite-roundtrip.test.js.
 const fs = require('node:fs');
 const os = require('node:os');
 const path = require('node:path');

@@ -1,20 +1,20 @@
-// Characterization cases for data shapes the other files don't reach:
-//   - a db.json collection that is an object instead of an array. Several
-//     routes then crash with a TypeError whose message V8 builds from the
-//     source expression, e.g. "(db.sprints || []).map is not a function",
-//     so these pin both the status and the exact message in the error page.
-//   - the same for the fruits test bench's file
-//   - fruits whose ids are not numbers: the fruits next-id rule
-//     (Math.max over Number(id)) differs from nextId() in server/utils/ids.js
-// The snapshot was recorded against the pre-refactor server (c54e754).
+// Characterization cases for data shapes the other files don't reach, in the
+// fruits test bench's file (it stays on JSON):
+//   - fruits is an object instead of an array. Several routes then crash with
+//     a TypeError whose message V8 builds from the source expression, so these
+//     pin both the status and the exact message in the error page.
+//   - fruits whose ids are not numbers: the fruits next-id rule (Math.max over
+//     Number(id)).
+// The snapshot was recorded against the pre-refactor server (c54e754). Its
+// db.json cases (a collection that isn't an array) pinned the JSON backend and
+// were deleted with it (docs/sqlite-migration-plan.md, Phase 8).
 const { describe, test } = require('node:test');
 const fs = require('node:fs');
 const path = require('node:path');
-const { runCase, snapshot, caseSkip, CREDENTIALS, editDb } = require('../../helpers/characterize');
-const { DB_ROUTES } = require('../../helpers/sample-requests');
+const { runCase, snapshot, CREDENTIALS } = require('../../helpers/characterize');
 
 function caseTest(name, method, routePath, kase) {
-  test(name, { skip: caseSkip(kase) }, async (t) => {
+  test(name, async (t) => {
     snapshot(t, await runCase(method, routePath, kase, CREDENTIALS.poc));
   });
 }
@@ -26,17 +26,6 @@ const editFruitsDb = (fn) => (dataDir) => {
   fn(db);
   fs.writeFileSync(file, JSON.stringify(db, null, 2), 'utf8');
 };
-
-describe('data shapes › db.json collection is an object, not an array', () => {
-  for (const r of DB_ROUTES) {
-    const name = `${r.method} ${r.path}: "${r.collection}" is {"a":1}${r.note ? ` (${r.note})` : ''}`;
-    caseTest(name, r.method, r.path, {
-      setup: editDb((db) => { db[r.collection] = { a: 1 }; }),
-      jsonOnly: 'a db.json collection that is not an array',
-      ...(r.body !== undefined ? { body: r.body } : {}),
-    });
-  }
-});
 
 describe('data shapes › fruits file', () => {
   const notArray = editFruitsDb((db) => { db.fruits = { a: 1 }; });

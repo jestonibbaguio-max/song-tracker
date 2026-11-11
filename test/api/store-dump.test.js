@@ -6,8 +6,6 @@ const fs = require('node:fs');
 const path = require('node:path');
 const { startTestServer, FIXTURES_DIR } = require('../helpers/test-server');
 const { dumpStore, canonicalRow, COLLECTIONS } = require('../helpers/store-dump');
-const { backendSkip } = require('../helpers/backend');
-const { jsonOnlyReason, removeFile, addBom, writeFile, editDb, steps, jsonOnlySetup } = require('../helpers/characterize');
 
 const fixtureDb = JSON.parse(fs.readFileSync(path.join(FIXTURES_DIR, 'db.json'), 'utf8'));
 const fixtureRoster = JSON.parse(fs.readFileSync(path.join(FIXTURES_DIR, 'custom-onboarding.json'), 'utf8'));
@@ -51,7 +49,7 @@ describe('canonical rows', () => {
 });
 
 describe('dumpStore', () => {
-  test('dumps every collection of the fixtures, through the stores, in a fixed order', { skip: backendSkip() }, async (t) => {
+  test('dumps every collection of the fixtures, through the stores, in a fixed order', async (t) => {
     await startTestServer(t);
     const dump = dumpStore();
     assert.deepEqual(Object.keys(dump), COLLECTIONS.map((c) => c.name));
@@ -61,13 +59,13 @@ describe('dumpStore', () => {
     }
   });
 
-  test('roster rows are what GET /api/onboarding-resources returns', { skip: backendSkip() }, async (t) => {
+  test('roster rows are what GET /api/onboarding-resources returns', async (t) => {
     const api = await startTestServer(t);
     const res = await api.request('GET', '/api/onboarding-resources');
     assert.deepEqual(dumpStore()['onboarding-resources'], res.body);
   });
 
-  test('rows of collections the API lists unfiltered are what their GET returns, ids aside', { skip: backendSkip() }, async (t) => {
+  test('rows of collections the API lists unfiltered are what their GET returns, ids aside', async (t) => {
     const api = await startTestServer(t);
     const dump = dumpStore();
     const sameButIds = (rows) => rows.map((r) => ({ ...r, id: Number(r.id) }));
@@ -80,7 +78,7 @@ describe('dumpStore', () => {
     }
   });
 
-  test('sees a write made through the API, and changes no data file itself', { skip: backendSkip() }, async (t) => {
+  test('sees a write made through the API, and changes no data file itself', async (t) => {
     const api = await startTestServer(t);
     await api.request('POST', '/api/sprints', { name: 'Sprint 4', start: '2026-11-24', end: '2026-12-05' });
     const files = () => fs.readdirSync(api.dataDir).map((f) => [f, fs.statSync(path.join(api.dataDir, f)).mtimeMs]);
@@ -91,21 +89,3 @@ describe('dumpStore', () => {
   });
 });
 
-describe('json-only cases', () => {
-  test('a setup that edits a JSON store file makes its case json-only', () => {
-    assert.equal(jsonOnlyReason({ setup: removeFile('db.json') }), 'removes db.json');
-    assert.equal(jsonOnlyReason({ setup: addBom('custom-onboarding.json') }), 'adds a BOM to custom-onboarding.json');
-    assert.equal(jsonOnlyReason({ setup: writeFile('custom.csv', '') }), 'writes custom.csv');
-    assert.equal(jsonOnlyReason({ setup: steps(editDb(() => {}), removeFile('db.json')) }), 'removes db.json');
-    assert.equal(jsonOnlyReason({ setup: jsonOnlySetup('a reason', () => {}) }), 'a reason');
-    assert.equal(jsonOnlyReason({ jsonOnly: 'explicit' }), 'explicit');
-  });
-
-  test('other setups run on every backend', () => {
-    for (const setup of [removeFile('tasks.json'), writeFile('test_bwd/db.json', '{}'), editDb(() => {}),
-      steps(editDb(() => {}), removeFile('tasks.json'))]) {
-      assert.equal(jsonOnlyReason({ setup }), undefined);
-    }
-    assert.equal(jsonOnlyReason({}), undefined);
-  });
-});

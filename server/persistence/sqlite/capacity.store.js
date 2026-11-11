@@ -1,6 +1,5 @@
-// The capacity_entries table (the SQLite counterpart of
-// persistence/json/capacity.store.js). An entry is found by (sprintName, eid)
-// compared by value and type, as === does on db.json: sprint_name and eid are
+// The capacity_entries table. An entry is found by (sprintName, eid)
+// compared by value and type, as === did on db.json: sprint_name and eid are
 // ANY columns, so 1 and "1" are different keys (decision of 2026-11-10).
 const { prepare } = require('./connection');
 const { spec, fromColumns, bindValue } = require('./tables');

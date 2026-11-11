@@ -1,5 +1,5 @@
 // Planner boards, buckets, tasks and deletion logs. Each call runs in one
-// read() or write() of the planner store (one load, at most one save). Task
+// read() or write() of the planner store (one read session, or one transaction). Task
 // and deletion-log writes store only their collection's fields, as sent;
 // other fields, and a client's id or timestamps, are dropped (M12, storage
 // part). There are still no referential checks or validation: bugs L3, L12,

@@ -1,8 +1,4 @@
-// The attendance store for the configured backend (docs/sqlite-migration-plan.md).
-// read(fn) / write(fn) hand fn a session; see persistence/json/attendance.store.js.
-const { selectStore } = require('../../persistence/select-store');
-
-module.exports = selectStore('attendance', ['read', 'write'], {
-  json: () => require('../../persistence/json/attendance.store'),
-  sqlite: () => require('../../persistence/sqlite/attendance.store'),
-});
+// The attendance store: persistence/sqlite/attendance.store.js. SQLite is the
+// only backend since Phase 8 (docs/sqlite-migration-plan.md).
+// read(fn) / write(fn) hand fn a session; see the store for its operations.
+module.exports = require('../../persistence/sqlite/attendance.store');

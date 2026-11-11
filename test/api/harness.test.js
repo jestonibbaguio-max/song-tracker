@@ -4,11 +4,26 @@ const fs = require('node:fs');
 const os = require('node:os');
 const path = require('node:path');
 const { startTestServer } = require('../helpers/test-server');
-const { backendSkip, jsonOnly } = require('../helpers/backend');
 
 const REPO_DATA_DIR = path.resolve(__dirname, '..', '..', 'server', 'data');
 
-test('serves the fixture dataset, not the real data', { skip: backendSkip() }, async (t) => {
+/** Every file under dir with its size and modification time, to see that nothing touched it. */
+function statTree(dir) {
+  const out = {};
+  (function walk(d) {
+    for (const entry of fs.readdirSync(d, { withFileTypes: true })) {
+      const full = path.join(d, entry.name);
+      if (entry.isDirectory()) walk(full);
+      else {
+        const { size, mtimeMs } = fs.statSync(full);
+        out[path.relative(dir, full)] = { size, mtimeMs };
+      }
+    }
+  })(dir);
+  return out;
+}
+
+test('serves the fixture dataset, not the real data', async (t) => {
   const api = await startTestServer(t);
 
   const resources = await api.request('GET', '/api/onboarding-resources');
@@ -27,28 +42,35 @@ test('points DATA_DIR at a fresh temp copy of the fixtures', async (t) => {
   assert.ok(path.resolve(api.dataDir).startsWith(path.resolve(os.tmpdir())));
   assert.notEqual(path.resolve(api.dataDir), REPO_DATA_DIR);
   assert.ok(fs.existsSync(path.join(api.dataDir, 'db.json')));
+  assert.ok(fs.existsSync(path.join(api.dataDir, 'dashboard.sqlite')), 'the database is built from the seed in the temp copy');
 });
 
-test('writes land in the temp DATA_DIR and never touch server/data', { skip: jsonOnly('reads db.json') }, async (t) => {
+// Phase 8 ported this from the JSON backend, where it compared server/data's
+// db.json before and after. On SQLite a write lands in the temp copy's
+// database, and no file under server/data (the seed, or a developer's own
+// dashboard.sqlite) changes.
+test('writes land in the temp DATA_DIR and never touch server/data', async (t) => {
   const api = await startTestServer(t);
-  const repoDbBefore = fs.readFileSync(path.join(REPO_DATA_DIR, 'db.json'), 'utf8');
+  const repoBefore = statTree(REPO_DATA_DIR);
+  const seedBefore = fs.readFileSync(path.join(api.dataDir, 'db.json'), 'utf8');
 
   const created = await api.request('POST', '/api/sprints', { name: 'Harness Sprint', start: '2026-11-24', end: '2026-12-05' });
   assert.equal(created.status, 201);
   assert.equal(created.body.id, 4);
 
-  assert.ok(api.readData('db.json').sprints.some((s) => s.name === 'Harness Sprint'));
-  assert.equal(fs.readFileSync(path.join(REPO_DATA_DIR, 'db.json'), 'utf8'), repoDbBefore);
+  assert.ok((await api.request('GET', '/api/sprints')).body.some((s) => s.name === 'Harness Sprint'));
+  assert.equal(fs.readFileSync(path.join(api.dataDir, 'db.json'), 'utf8'), seedBefore, 'the seed in the temp copy is never written');
+  assert.deepEqual(statTree(REPO_DATA_DIR), repoBefore);
 });
 
-test('a mutation in one test…', { skip: backendSkip() }, async (t) => {
+test('a mutation in one test…', async (t) => {
   const api = await startTestServer(t);
   const res = await api.request('DELETE', '/api/project-reachouts/1');
   assert.equal(res.status, 200);
   assert.equal((await api.request('GET', '/api/project-reachouts')).body.length, 4);
 });
 
-test('…is not visible in the next one', { skip: backendSkip() }, async (t) => {
+test('…is not visible in the next one', async (t) => {
   const api = await startTestServer(t);
   const reachouts = (await api.request('GET', '/api/project-reachouts')).body;
   assert.equal(reachouts.length, 5);
@@ -64,18 +86,24 @@ test('close() removes the temp dir and restores DATA_DIR', async () => {
   assert.equal(process.env.DATA_DIR, before);
 });
 
-test('beforeStart can reshape the copied data before the app loads', { skip: jsonOnly('seeds the roster from custom.csv') }, async (t) => {
+// Phase 8 ported this from the JSON backend, where it deleted the roster to
+// exercise CSV seeding. The database is built after beforeStart, from the seed
+// as beforeStart left it.
+test('beforeStart can reshape the copied data before the app loads', async (t) => {
   const api = await startTestServer(t, {
-    beforeStart: (dataDir) => fs.rmSync(path.join(dataDir, 'custom-onboarding.json')),
+    beforeStart: (dataDir) => {
+      const file = path.join(dataDir, 'custom-onboarding.json');
+      const records = JSON.parse(fs.readFileSync(file, 'utf8')).filter((r) => r.eid === 'kevin.r.lim' || r.eid === 'nina.g.castro');
+      fs.writeFileSync(file, `${JSON.stringify(records, null, 2)}\n`, 'utf8');
+    },
   });
 
-  // With the JSON gone, the onboarding store reseeds from the fixture custom.csv.
   const resources = (await api.request('GET', '/api/onboarding-resources')).body;
   assert.deepEqual(resources.map((r) => r.eid).sort(), ['kevin.r.lim', 'nina.g.castro']);
 });
 
-// The repositories load their stores through require.cache on every call, so
-// a second app would take over the first one's requests (see test-server.js).
+// A second app would share the first one's module cache and process-wide
+// DATA_DIR (see test-server.js).
 test('refuses to start a second app while one is open', async () => {
   const first = await startTestServer();
   try {

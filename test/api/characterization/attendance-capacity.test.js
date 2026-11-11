@@ -73,28 +73,12 @@ describeEndpoint('PATCH /api/attendance/:id', {
       path: '/api/attendance/1',
       body: { status: 'Absent' },
     },
-    // The same request, pinning db.json itself: the stored id "1" is rewritten
-    // as the number 1 (bug M6), which the logical diff of the stores can't show.
-    'RTO cell changed to Absent keeps its stale location; string id becomes a number (raw db.json)': {
-      path: '/api/attendance/1',
-      body: { status: 'Absent' },
-      jsonOnly: 'the string id in db.json is rewritten as a number (M6)',
-    },
     'changes an RTO location': { path: '/api/attendance/1', body: { status: 'RTO', location: 'Harbor Point Building B' } },
-    'changes an RTO location (raw db.json)': {
-      path: '/api/attendance/1', body: { status: 'RTO', location: 'Harbor Point Building B' },
-      jsonOnly: 'the string id in db.json is rewritten as a number (M6)',
-    },
   },
   invalid: {
     'any status and eid are merged, unknown fields dropped; id cannot be changed': { path: '/api/attendance/6', body: { status: 'Nope', eid: 'nobody.here', id: 99, extra: true } },
     'empty body still rewrites the record': { path: '/api/attendance/2', body: {} },
     'numeric status and eid are stored as numbers': { path: '/api/attendance/6', body: { status: 3, eid: 12 } },
-    // The same request, pinning db.json itself: the stored id "2" is rewritten
-    // as the number 2 (bug M6), which the logical diff of the stores can't show.
-    'empty body still rewrites the record (raw db.json)': {
-      path: '/api/attendance/2', body: {}, jsonOnly: 'the string id in db.json is rewritten as a number (M6)',
-    },
     'no body': { path: '/api/attendance/6' },
     'malformed JSON body': { path: '/api/attendance/6', ...MALFORMED_JSON },
   },

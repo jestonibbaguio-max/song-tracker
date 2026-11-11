@@ -1,9 +1,9 @@
 // Test harness for the Express API.
 //
 // Every call to startTestServer() copies test/fixtures/data/ into a brand-new
-// temp directory, points DATA_DIR at it (with PERSISTENCE=sqlite, also builds
-// dashboard.sqlite there from the JSON), loads a fresh instance of server/app.js
-// and listens on a random localhost port. Pass the node:test context (`t`) and
+// temp directory, points DATA_DIR at it, builds dashboard.sqlite there from the
+// JSON seed, loads a fresh instance of server/app.js and listens on a random
+// localhost port. Pass the node:test context (`t`) and
 // cleanup (close server, restore DATA_DIR, delete the temp dir) runs automatically
 // when the test finishes.
 //
@@ -21,17 +21,14 @@
 // files run in separate processes and are safe to parallelise.
 //
 // Only one app can be open at a time: close() the previous one before starting
-// the next. The feature repositories load their store on every call, through
-// require.cache, so once a second app has loaded, the first one's requests
-// would reach the second one's stores and data. startTestServer() refuses
-// instead.
+// the next. Both apps would share the module cache's other copies of server/
+// (store-dump.js reads the last one loaded), and DATA_DIR is process-wide.
+// startTestServer() refuses instead.
 
 const fs = require('node:fs');
 const http = require('node:http');
 const os = require('node:os');
 const path = require('node:path');
-// Settles the run's backend and writes it into process.env.PERSISTENCE.
-const { BACKEND } = require('./backend');
 
 /** The base URL of the app startTestServer() has open, or null. */
 let openApp = null;
@@ -39,16 +36,10 @@ let openApp = null;
 const FIXTURES_DIR = path.resolve(__dirname, '..', 'fixtures', 'data');
 const SERVER_DIR = path.resolve(__dirname, '..', '..', 'server');
 
-/**
- * Copy the fixture dataset into a new, empty temp directory and return its path.
- * With TEST_FIXTURES_DIR set (npm run test:api:exported), the dataset comes
- * from there instead: the fixtures after a round trip through SQLite
- * (test/helpers/exported-fixtures.js). FIXTURES_DIR itself always names the
- * committed fixtures.
- */
+/** Copy the fixture dataset into a new, empty temp directory and return its path. */
 function createDataDir() {
   const dataDir = fs.mkdtempSync(path.join(os.tmpdir(), 'song-tracker-data-'));
-  fs.cpSync(process.env.TEST_FIXTURES_DIR || FIXTURES_DIR, dataDir, { recursive: true });
+  fs.cpSync(FIXTURES_DIR, dataDir, { recursive: true });
   return dataDir;
 }
 
@@ -72,8 +63,8 @@ function normalise(p) {
 /**
  * @param {import('node:test').TestContext} [t]  registers cleanup via t.after()
  * @param {{ beforeStart?: (dataDir: string) => void }} [options]
- *   beforeStart runs after the fixtures are copied and before the app loads,
- *   e.g. to delete custom-onboarding.json and exercise CSV seeding.
+ *   beforeStart runs after the fixtures are copied and before the database is
+ *   built and the app loads, e.g. to edit the JSON seed the database is built from.
  */
 async function startTestServer(t, options = {}) {
   if (openApp) {
@@ -86,7 +77,7 @@ async function startTestServer(t, options = {}) {
   let server;
   try {
     if (options.beforeStart) options.beforeStart(dataDir);
-    if ((process.env.PERSISTENCE || BACKEND) === 'sqlite') buildDatabase(dataDir);
+    buildDatabase(dataDir);
     const app = loadFreshApp();
     server = http.createServer(app);
     await new Promise((resolve, reject) => {
@@ -141,12 +132,10 @@ async function startTestServer(t, options = {}) {
 }
 
 /**
- * PERSISTENCE=sqlite: build <dataDir>/dashboard.sqlite from the JSON files,
- * after the test's setup has edited them (docs/sqlite-migration-plan.md,
- * Phase 4 step 3). Setups keep working on the JSON; one that breaks the JSON
- * on purpose belongs to a json-only test. The import is the server's own
- * (persistence/sqlite/import.js); loadFreshApp() drops it from the module cache
- * again, with the rest of server/.
+ * Build <dataDir>/dashboard.sqlite from the JSON seed, after the test's setup
+ * has edited it (docs/sqlite-migration-plan.md, Phase 4 step 3). The import is
+ * the server's own (persistence/sqlite/import.js); loadFreshApp() drops it from
+ * the module cache again, with the rest of server/.
  */
 function buildDatabase(dataDir) {
   const { importJson } = require(path.join(SERVER_DIR, 'persistence', 'sqlite', 'import.js'));
@@ -157,7 +146,7 @@ function buildDatabase(dataDir) {
  * Close the SQLite connection the running app opened, if any, so its temp
  * directory can be deleted (Windows refuses to delete an open file). The
  * connection module is the one in the same module cache as the app; it's only
- * closed if the app loaded it, so a JSON run never loads better-sqlite3.
+ * closed if the app loaded it.
  */
 function closeDatabase() {
   const connection = require.cache[SQLITE_CONNECTION] || require.cache[findCachedId(SQLITE_CONNECTION)];

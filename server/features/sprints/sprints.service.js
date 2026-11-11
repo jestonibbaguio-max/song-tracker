@@ -1,6 +1,6 @@
 // Sprints and sprint retrospectives. Each call runs in one read() or write()
-// of the sprints store, so db.json is loaded once and saved at most once; a
-// retro POST checks the sprint and appends the retro in the same write().
+// of the sprints store (one read session, or one transaction); a retro POST
+// checks the sprint and appends the retro in the same write().
 // Bugs L3, L4, L6, M1 and M13 in docs/found-bugs.md are kept.
 const repository = require('./sprints.repository');
 const { inColumnOrder, rowsInColumnOrder } = require('../../utils/fields');

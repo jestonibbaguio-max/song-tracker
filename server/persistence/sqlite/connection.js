@@ -1,4 +1,4 @@
-// The SQLite database behind PERSISTENCE=sqlite (docs/sqlite-migration-plan.md).
+// The SQLite database that holds the dashboard data (docs/sqlite-migration-plan.md).
 //
 // Loading this module opens nothing: the database is opened on the first
 // getDb() call, i.e. by the first query, and stays open until close(). Opening
@@ -49,7 +49,7 @@ function open() {
   } catch (error) {
     if (error.code !== 'SQLITE_CANTOPEN' && !/directory does not exist/.test(error.message)) throw error;
     throw new Error(
-      `No SQLite database at ${sqlitePath} (PERSISTENCE=sqlite). ` +
+      `No SQLite database at ${sqlitePath}. ` +
       'Build it from the JSON files with npm run db:migrate (docs/running-backend.md).',
       { cause: error },
     );

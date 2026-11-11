@@ -1,5 +1,5 @@
 // Project reachouts. Each call runs in one read() or write() of the reachouts
-// store (one load, at most one save). Bugs M11 and L11 in docs/found-bugs.md
+// store (one read session, or one transaction). Bugs M11 and L11 in docs/found-bugs.md
 // are kept (no roster check; changing a reachout's eid keeps its old groupNumber).
 const repository = require('./reachouts.repository');
 const { normalizeEid } = require('../../utils/eid');

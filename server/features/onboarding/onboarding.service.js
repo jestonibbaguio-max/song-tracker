@@ -1,7 +1,6 @@
 // Onboarding resources and skill options, through the onboarding store
-// (list/append/update/remove; each call reads the roster again). The number and
-// order of roster reads and writes per request are exactly as before, and so
-// are the try/catch boundaries. Bugs H4, L5, L9, L10, M3, M10 and M15 in
+// (list/append/update/remove; each call queries the table again). The
+// try/catch boundaries are exactly as before. Bugs H4, L5, L10 and M10 in
 // docs/found-bugs.md are kept.
 const repository = require('./onboarding.repository');
 const { normalizeEid } = require('../../utils/eid');

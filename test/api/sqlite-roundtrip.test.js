@@ -1,11 +1,9 @@
 // Round trips through the SQLite export (docs/sqlite-migration-plan.md, Phase 5
-// step 2). The export is the fallback to the JSON backend, so the data it
-// writes has to come back unchanged, both into SQLite and through the JSON
-// stores. dumpStore() reads every collection through the running app's stores
-// as canonical rows (test/helpers/store-dump.js), so equal dumps mean equal data.
-//
-// The rest of the proof is `npm run test:api:exported`: the whole shared suite
-// with PERSISTENCE=json on exported fixtures, with no snapshot change.
+// step 2): the data the export writes has to come back unchanged into SQLite.
+// dumpStore() reads every collection through the running app's stores as
+// canonical rows (test/helpers/store-dump.js), so equal dumps mean equal data.
+// (The JSON half, and `npm run test:api:exported`, went with the JSON backend
+// in Phase 8.)
 //
 // Only one app can be open at a time (test/helpers/test-server.js), so each
 // test closes its first app before starting the second.
@@ -16,7 +14,6 @@ const os = require('node:os');
 const path = require('node:path');
 const { startTestServer, SERVER_DIR, FIXTURES_DIR } = require('../helpers/test-server');
 const { dumpStore } = require('../helpers/store-dump');
-const { backendSkip } = require('../helpers/backend');
 const { createExportedFixtures } = require('../helpers/exported-fixtures');
 const { newJoiner } = require('../helpers/sample-requests');
 
@@ -58,7 +55,7 @@ async function send(api, method, urlPath, body) {
 }
 
 describe('round trip through the export', () => {
-  test('sqlite: import → export → import gives the same data', { skip: backendSkip('sqlite', 'exports the SQLite database') }, async (t) => {
+  test('sqlite: import → export → import gives the same data', async (t) => {
     const first = await startTestServer(t);
     const before = dumpStore();
     const outDir = exportRunningApp(t, first);
@@ -68,7 +65,7 @@ describe('round trip through the export', () => {
     assert.deepEqual(dumpStore(), before);
   });
 
-  test('sqlite: rows written through the API come back the same, in the same order', { skip: backendSkip('sqlite', 'exports the SQLite database') }, async (t) => {
+  test('sqlite: rows written through the API come back the same, in the same order', async (t) => {
     const first = await startTestServer(t);
     await send(first, 'POST', '/api/planner-tasks', { ...plannerTask, completedDate: '', notes: '' });
     await send(first, 'POST', '/api/planner-tasks', { ...plannerTask, title: 'No completedDate or notes' });
@@ -85,17 +82,6 @@ describe('round trip through the export', () => {
     await first.close();
 
     await startTestServer(t, { beforeStart: useStoreFiles(outDir) });
-    assert.deepEqual(dumpStore(), before);
-  });
-
-  test('json: the JSON backend reads the exported fixtures as the same data', { skip: backendSkip('json', 'reads the exported files through the JSON stores') }, async (t) => {
-    const first = await startTestServer(t);
-    const before = dumpStore();
-    await first.close();
-
-    const exported = createExportedFixtures();
-    t.after(() => fs.rmSync(exported, { recursive: true, force: true, maxRetries: 3 }));
-    await startTestServer(t, { beforeStart: useStoreFiles(exported) });
     assert.deepEqual(dumpStore(), before);
   });
 

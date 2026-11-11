@@ -1,6 +1,5 @@
-// The competency_records table, keyed by eid (the SQLite counterpart of
-// persistence/json/competency.store.js). Rows are listed in insertion order
-// (the seq column, see schema.sql), as they were appended to db.json.
+// The competency_records table, keyed by eid. Rows are listed in insertion
+// order (the seq column, see schema.sql), as they were appended to db.json.
 const { createSqliteStore, selectAll, selectOne, insertRow, updateRow } = require('./sqlite-store');
 
 module.exports = createSqliteStore((changed) => ({

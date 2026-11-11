@@ -1,7 +1,8 @@
 // Guardrail (docs/sqlite-migration-plan.md, Phase 4 step 5): the SQL each
-// request runs, on the SQLite backend.
+// request runs.
 //
-// The counterpart of fs-trace for the database: the characterization snapshots
+// It replaced fs-trace, which pinned the JSON backend's file calls, in Phase 8.
+// The characterization snapshots
 // pin what a request returns and what ends up stored, but not how. A query per
 // row (N+1), a write outside a transaction, a second transaction where one
 // should do, or a cached result instead of a query all leave those snapshots
@@ -13,14 +14,13 @@
 // The statements are better-sqlite3's expanded SQL, with the bound values in
 // place. Timestamps the server generates are replaced with <timestamp>.
 //
-// Phase 8's clean-ups (targeted queries, WHERE filters, a JOIN) will change
-// these snapshots on purpose; that's the one place they may change.
+// Phase 8's clean-ups (targeted queries, WHERE filters, a JOIN) change these
+// snapshots on purpose, as reviewed updates; nothing else may.
 const { describe, test } = require('node:test');
 const fs = require('node:fs');
 const path = require('node:path');
 const { startTestServer, SERVER_DIR, FIXTURES_DIR } = require('../../helpers/test-server');
 const { DB_ROUTES, newJoiner, teresaEdited } = require('../../helpers/sample-requests');
-const { backendSkip } = require('../../helpers/backend');
 
 process.env.NODE_ENV = 'test';
 
@@ -80,10 +80,10 @@ async function scenario(t, requests) {
 
 const get = (p, label) => ({ method: 'GET', path: p, label });
 
-describe('guardrail: SQL statements per request', { skip: backendSkip('sqlite', 'traces the SQLite backend') }, () => {
+describe('guardrail: SQL statements per request', () => {
   test('db.json routes, in order on one app (each re-reads; one transaction per write)', async (t) => {
     const requests = [];
-    for (const r of DB_ROUTES.filter((x) => !x.note)) {
+    for (const r of DB_ROUTES) {
       requests.push(r);
       if (r.method !== 'GET') requests.push(get(DB_ROUTES.find((x) => x.method === 'GET' && x.collection === r.collection).path, 'read back'));
     }

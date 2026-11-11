@@ -5,7 +5,7 @@
 //
 // Reads every table of the database at dbPath and writes <outDir>/db.json and
 // <outDir>/custom-onboarding.json in the JSON backend's own format, so
-// PERSISTENCE=json reads them as the same data, and import.js builds the same
+// the JSON backend read them as the same data, and import.js builds the same
 // database from them again. The rules:
 //   - the database must exist and have the dashboard schema: a missing file or
 //     an empty one (PRAGMA user_version 0) is refused before anything in

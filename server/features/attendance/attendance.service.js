@@ -1,5 +1,5 @@
 // Attendance cells. Each call runs in one read() or write() of the attendance
-// store (one load, at most one save). Writes store the body's attendance
+// store (one read session, or one transaction). Writes store the body's attendance
 // fields (eid, year, month, day, status, location) as sent, merged over the
 // stored row on PATCH; other fields are dropped (M12, storage part). Ids are
 // returned as numbers (M6, id type). The missing validation (M12) and the

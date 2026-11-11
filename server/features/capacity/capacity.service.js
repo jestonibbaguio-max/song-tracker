@@ -1,5 +1,5 @@
 // Sprint capacity entries. Each call runs in one read() or write() of the
-// capacity store (one load, at most one save).
+// capacity store (one read session, or one transaction).
 // Bugs M1, M9 and M11 in docs/found-bugs.md are kept.
 const repository = require('./capacity.repository');
 const { inColumnOrder, rowsInColumnOrder } = require('../../utils/fields');

@@ -1,7 +1,6 @@
-// The planner tables: boards, buckets, tasks and deletion logs (the SQLite
-// counterpart of persistence/json/planner.store.js). Same operations, same
-// rows. The list operations make boardId/bucketId numbers with Number(), as
-// the JSON store does, so a task or bucket stored with a null boardId lists
+// The planner tables: boards, buckets, tasks and deletion logs. The list
+// operations make boardId/bucketId numbers with Number(), as the JSON store
+// did before Phase 8, so a task or bucket stored with a null boardId lists
 // with boardId 0, while the write that stored it returned null.
 const { numericId } = require('../../utils/ids');
 const { createSqliteStore, selectAll, selectOne, insertRow, updateRow, deleteRow } = require('./sqlite-store');

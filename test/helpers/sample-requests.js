@@ -1,7 +1,7 @@
 // Valid request bodies for every API route, against the fixture data in
-// test/fixtures/data/. Shared by the fs-trace guardrail and the data-shape
-// characterization cases. Each body is in the shape the Angular app sends
-// (copied from the characterization files that pin each route).
+// test/fixtures/data/. Used by the sqlite-trace guardrail and the round-trip
+// tests. Each body is in the shape the Angular app sends (copied from the
+// characterization files that pin each route).
 
 const sprint = { name: 'Sprint 4', start: '2026-11-24', end: '2026-12-05' };
 const retro = { sprintId: 2, groupNumber: 5, category: 'went-well', text: 'Daily pairing on AEM components kept everyone unblocked' };
@@ -40,8 +40,9 @@ const teresaEdited = {
 };
 
 /**
- * Every db.json route with a request that reaches its handler's main path, and
- * the db.json collection it reads first.
+ * Every route of the dashboard stores (the collections that came from db.json)
+ * with a request that reaches its handler's main path, and the collection it
+ * reads first.
  */
 const DB_ROUTES = [
   { collection: 'sprints', method: 'GET', path: '/api/sprints' },
@@ -50,7 +51,6 @@ const DB_ROUTES = [
   { collection: 'sprints', method: 'DELETE', path: '/api/sprints/3' },
   { collection: 'sprint-retros', method: 'GET', path: '/api/sprint-retros' },
   { collection: 'sprints', method: 'POST', path: '/api/sprint-retros', body: retro },
-  { collection: 'sprint-retros', method: 'POST', path: '/api/sprint-retros', body: retro, note: 'sprints valid, retros not an array' },
   { collection: 'sprint-retros', method: 'PATCH', path: '/api/sprint-retros/2', body: { text: 'Author instance setup took three days' } },
   { collection: 'sprint-retros', method: 'DELETE', path: '/api/sprint-retros/1' },
   { collection: 'capacity-entries', method: 'GET', path: '/api/capacity-entries' },

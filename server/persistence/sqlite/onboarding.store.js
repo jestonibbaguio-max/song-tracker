@@ -1,6 +1,5 @@
-// The onboarding_resources table (the SQLite counterpart of
-// persistence/json/onboarding.store.js): list(), append(record),
-// update(id, payload) and remove(id), each one a fresh query.
+// The onboarding_resources table: list(), append(record), update(id, payload)
+// and remove(id), each one a fresh query.
 //
 // Records come back in the shape the API writes them to the roster file:
 // camelCase fields plus created_at/updated_at, so the service's sort and

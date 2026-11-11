@@ -21,7 +21,6 @@ const http = require('node:http');
 const path = require('node:path');
 const express = require('express');
 const { startTestServer, loadFreshApp, createDataDir, SERVER_DIR } = require('../../helpers/test-server');
-const { backendSkip } = require('../../helpers/backend');
 
 const REPO_ROOT = path.resolve(SERVER_DIR, '..');
 const REAL_DATA_DIR = path.join(REPO_ROOT, 'server', 'data');
@@ -102,7 +101,7 @@ describe('guardrail: real paths', () => {
     assertSamePath(spies.staticRoots[1], REAL_BROWSER_DIR, 'dist static root with DATA_DIR unset');
   });
 
-  test('a relative DATA_DIR resolves against the working directory', { skip: backendSkip() }, async (t) => {
+  test('a relative DATA_DIR resolves against the working directory', async (t) => {
     const spies = spyOnStaticServing(t);
     let relative;
     const api = await startTestServer(t, {
@@ -169,7 +168,8 @@ describe('guardrail: real paths', () => {
   });
 });
 
-// docs/sqlite-migration-plan.md, Phase 0: the PERSISTENCE setting and the SQLite path.
+// docs/sqlite-migration-plan.md, Phase 0: the SQLite path. The PERSISTENCE
+// setting it added was removed in Phase 8, with the JSON backend.
 describe('guardrail: persistence backend setting', () => {
   /** Set (or, with undefined, unset) env vars for this test only. */
   function withEnv(t, vars) {
@@ -192,31 +192,19 @@ describe('guardrail: persistence backend setting', () => {
     return require(CONFIG_MODULE);
   }
 
-  // Phase 6 (the cutover) made sqlite the default; json is the fallback.
-  test('PERSISTENCE defaults to sqlite', (t) => {
-    withEnv(t, { PERSISTENCE: undefined });
-    assert.equal(freshConfig().PERSISTENCE, 'sqlite');
-  });
-
-  test('an empty PERSISTENCE also means sqlite', (t) => {
-    withEnv(t, { PERSISTENCE: '' });
-    assert.equal(freshConfig().PERSISTENCE, 'sqlite');
-  });
-
-  test('PERSISTENCE=json is accepted', (t) => {
-    withEnv(t, { PERSISTENCE: 'json' });
-    assert.equal(freshConfig().PERSISTENCE, 'json');
-  });
-
-  test('PERSISTENCE=sqlite is accepted', (t) => {
-    withEnv(t, { PERSISTENCE: 'sqlite' });
-    assert.equal(freshConfig().PERSISTENCE, 'sqlite');
-  });
-
-  test('an unknown PERSISTENCE value stops the app from loading', (t) => {
-    withEnv(t, { PERSISTENCE: 'SQLite' });
-    assert.throws(() => loadFreshApp(), { message: 'PERSISTENCE must be one of json, sqlite; got "SQLite"' });
-  });
+  // Phase 8 removed the setting (decided with the user, 2026-11-11): a value
+  // left over from the JSON fallback, or one the old check refused, is
+  // ignored, and the app serves the database as usual.
+  for (const value of ['json', 'SQLite']) {
+    test(`a leftover PERSISTENCE=${value} is ignored`, async (t) => {
+      withEnv(t, { PERSISTENCE: value });
+      const api = await startTestServer(t);
+      assert.equal('PERSISTENCE' in require(CONFIG_MODULE), false, 'config has no PERSISTENCE setting');
+      const sprints = await api.request('GET', '/api/sprints');
+      assert.equal(sprints.status, 200);
+      assert.deepEqual(sprints.body.map((s) => s.name), ['Sprint 1', 'Sprint 2', 'Sprint 3']);
+    });
+  }
 
   test('sqlitePath is <DATA_DIR>/dashboard.sqlite', (t) => {
     const dataDir = fs.mkdtempSync(path.join(require('node:os').tmpdir(), 'song-tracker-config-'));
@@ -229,9 +217,9 @@ describe('guardrail: persistence backend setting', () => {
   // database file": the harness now builds dashboard.sqlite before the app
   // loads, so the file's absence no longer says anything. The rule itself is
   // that nothing opens the database until the first query.
-  test('loading the app with PERSISTENCE=sqlite opens no database until the first query', (t) => {
+  test('loading the app opens no database until the first query', (t) => {
     const dataDir = createDataDir();
-    withEnv(t, { PERSISTENCE: 'sqlite', DATA_DIR: dataDir });
+    withEnv(t, { DATA_DIR: dataDir });
     const { importJson } = require(path.join(SERVER_DIR, 'persistence', 'sqlite', 'import.js'));
     importJson({ dataDir, dbPath: path.join(dataDir, 'dashboard.sqlite') });
     const opened = spyOnDatabaseConstructor(t);
@@ -255,9 +243,9 @@ describe('guardrail: persistence backend setting', () => {
 
   // An empty database created on the fly would hide the missing data, and a
   // later import would refuse to overwrite it.
-  test('with PERSISTENCE=sqlite and no database file, requests fail and create none', async (t) => {
+  test('with no database file, requests fail and create none', async (t) => {
     const dataDir = createDataDir();
-    withEnv(t, { PERSISTENCE: 'sqlite', DATA_DIR: dataDir });
+    withEnv(t, { DATA_DIR: dataDir });
     const server = http.createServer(loadFreshApp());
     t.after(async () => {
       server.closeAllConnections();

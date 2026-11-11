@@ -9,9 +9,8 @@ const { pickWritable, inColumnOrder } = require('../../utils/fields');
 
 /**
  * One row per roster member of the group (default 5), using the saved
- * competency row or an empty default. Reads db.json FIRST (read() loads it
- * before calling back), then the roster, as before (the roster read can itself
- * write: id back-fill, CSV seeding). group is the raw query value. Members are
+ * competency row or an empty default, in roster order (newest created_at
+ * first, then highest id). group is the raw query value. Members are
  * read the way GET /api/onboarding-resources reads them (camelCase first, then
  * snake_case), so a legacy snake_case member is in its group too (M4).
  */
