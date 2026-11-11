@@ -6,6 +6,16 @@ const {
 
 const dropCollection = (name) => editDb((db) => { delete db[name]; });
 
+/** Edit the roster seed (custom-onboarding.json) before the database is built from it. */
+const editRoster = (fn) => (dataDir) => {
+  const fs = require('node:fs');
+  const file = require('node:path').join(dataDir, 'custom-onboarding.json');
+  const records = JSON.parse(fs.readFileSync(file, 'utf8'));
+  fn(records);
+  fs.writeFileSync(file, `${JSON.stringify(records, null, 2)}
+`, 'utf8');
+};
+
 // ── Project reachouts ────────────────────────────────────────────────────────
 
 // What the reachouts dialog sends when creating one.
@@ -105,6 +115,24 @@ describeEndpoint('GET /api/competency-records', {
     "name and clLevel sent in a PATCH don't replace the roster values (bug M8)": {
       path: '/api/competency-records?group=5',
       before: [{ method: 'PATCH', path: '/api/competency-records/liza.m.navarro', body: { name: 'Hidden Name', clLevel: '1' } }],
+    },
+    // Added in Phase 8 before the competency clean-up (one SQL JOIN), to pin
+    // how the group value and the join behave.
+    'empty group defaults to 5': { path: '/api/competency-records?group=' },
+    'fractional group matches nothing': { path: '/api/competency-records?group=5.5' },
+    'group past the number range matches nothing': { path: '/api/competency-records?group=1e999' },
+    'repeated group matches nothing': { path: '/api/competency-records?group=5&group=1' },
+    'a member with an empty name is listed under their eid': {
+      setup: editRoster((records) => { records.find((r) => r.eid === 'liza.m.navarro').name = ''; }),
+      path: '/api/competency-records?group=5',
+    },
+    'a saved row with only some fields is listed as saved, without the default fields': {
+      path: '/api/competency-records?group=5',
+      before: [{ method: 'PATCH', path: '/api/competency-records/kevin.r.lim', body: { primarySkill: 'AEM' } }],
+    },
+    'a row saved under a differently-cased eid is not joined (bug M9)': {
+      path: '/api/competency-records?group=5',
+      before: [{ method: 'PATCH', path: '/api/competency-records/Liza.M.Navarro', body: { primaryProficiency: 'P1' } }],
     },
   },
   notFound: {

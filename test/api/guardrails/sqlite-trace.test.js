@@ -134,6 +134,18 @@ describe('guardrail: SQL statements per request', () => {
     ]);
   });
 
+  // Added in Phase 8 before the competency clean-up (one SQL JOIN).
+  test('competency groups', async (t) => {
+    await scenario(t, [
+      get('/api/competency-records?group=5'),
+      get('/api/competency-records?group=1'),
+      get('/api/competency-records?group=0', 'members with no group (L17)'),
+      get('/api/competency-records?group=3', 'no members'),
+      get('/api/competency-records?group=abc'),
+      get('/api/competency-records?group=', 'empty: group 5'),
+    ]);
+  });
+
   test('no-op writes still run their write', async (t) => {
     await scenario(t, [
       { method: 'PATCH', path: '/api/sprints/1', body: {}, label: 'empty body' },

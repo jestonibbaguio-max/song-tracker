@@ -1,3 +1,30 @@
+exports[`guardrail: SQL statements per request > competency groups 1`] = `
+
+GET /api/competency-records?group=5 → 200
+  PRAGMA journal_mode = WAL
+  PRAGMA busy_timeout = 5000
+  PRAGMA foreign_keys = OFF
+  PRAGMA user_version
+  SELECT * FROM onboarding_resources ORDER BY created_at DESC, id DESC
+  SELECT * FROM competency_records ORDER BY seq
+GET /api/competency-records?group=1 → 200
+  SELECT * FROM onboarding_resources ORDER BY created_at DESC, id DESC
+  SELECT * FROM competency_records ORDER BY seq
+GET /api/competency-records?group=0 (members with no group (L17)) → 200
+  SELECT * FROM onboarding_resources ORDER BY created_at DESC, id DESC
+  SELECT * FROM competency_records ORDER BY seq
+GET /api/competency-records?group=3 (no members) → 200
+  SELECT * FROM onboarding_resources ORDER BY created_at DESC, id DESC
+  SELECT * FROM competency_records ORDER BY seq
+GET /api/competency-records?group=abc → 200
+  SELECT * FROM onboarding_resources ORDER BY created_at DESC, id DESC
+  SELECT * FROM competency_records ORDER BY seq
+GET /api/competency-records?group= (empty: group 5) → 200
+  SELECT * FROM onboarding_resources ORDER BY created_at DESC, id DESC
+  SELECT * FROM competency_records ORDER BY seq
+
+`;
+
 exports[`guardrail: SQL statements per request > db.json routes, in order on one app (each re-reads; one transaction per write) 1`] = `
 
 GET /api/sprints → 200
