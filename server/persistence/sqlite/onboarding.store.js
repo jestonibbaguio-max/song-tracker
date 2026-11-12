@@ -1,6 +1,5 @@
-// The onboarding_resources table (the SQLite counterpart of
-// persistence/json/onboarding.store.js): list(), append(record),
-// update(id, payload) and remove(id), each one a fresh query.
+// The onboarding_resources table: list(), findById(id), findByEid(eid),
+// append(record), update(id, payload) and remove(id), each one a fresh query.
 //
 // Records come back in the shape the API writes them to the roster file:
 // camelCase fields plus created_at/updated_at, so the service's sort and
@@ -16,6 +15,21 @@ const store = createSqliteStore(() => ({}));
 /** Every stored record. */
 function list() {
   return store.read(() => selectAll('onboarding-resources', 'created_at DESC, id DESC'));
+}
+
+/**
+ * The record with this id, or null. The id is compared as SQL compares
+ * numbers, which matches `record.id === id` for the number the controller
+ * passes: NaN binds as NULL and a fractional id matches no integer id
+ * (docs/sqlite-migration-plan.md, Phase 8 clean-ups).
+ */
+function findById(id) {
+  return store.read(() => selectOne('onboarding-resources', 'id', id));
+}
+
+/** The record with this eid (unique), or null. */
+function findByEid(eid) {
+  return store.read(() => selectOne('onboarding-resources', 'eid', eid));
 }
 
 /** Appends the record with the next id and fresh created_at/updated_at; returns it. */
@@ -44,4 +58,4 @@ function remove(id) {
   return store.write(() => deleteRow('onboarding-resources', 'id', id));
 }
 
-module.exports = { list, append, update, remove };
+module.exports = { list, findById, findByEid, append, update, remove };

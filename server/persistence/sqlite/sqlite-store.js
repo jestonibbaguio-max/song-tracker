@@ -1,5 +1,5 @@
-// The unit of work for the SQLite feature stores, the counterpart of
-// persistence/json/db-store.js (docs/sqlite-migration-plan.md, layer rules).
+// The unit of work for the SQLite feature stores
+// (docs/sqlite-migration-plan.md, layer rules).
 //
 // read(fn)  calls fn(session). A session's mutating operation throws, so a
 //           read can never change data.
@@ -36,6 +36,19 @@ function selectAll(collection, orderBy = 'id') {
     .map((record) => fromColumns(collection, record));
 }
 
+/**
+ * The rows where every condition holds, as API fields, ordered by `orderBy`.
+ * A condition is [expression, value]: `expression = ?` with value bound. With
+ * no condition it's selectAll(), the same statement.
+ */
+function selectWhere(collection, conditions, orderBy = 'id') {
+  if (!conditions.length) return selectAll(collection, orderBy);
+  const where = conditions.map(([expression]) => `${expression} = ?`).join(' AND ');
+  return prepare(`SELECT * FROM ${spec(collection).table} WHERE ${where} ORDER BY ${orderBy}`)
+    .all(...conditions.map(([, value]) => value))
+    .map((record) => fromColumns(collection, record));
+}
+
 /** The row with this key as API fields, or null. */
 function selectOne(collection, key, value) {
   const record = prepare(`SELECT * FROM ${spec(collection).table} WHERE ${key} = ?`).get(value);
@@ -60,4 +73,4 @@ function deleteRow(collection, key, value) {
   return prepare(`DELETE FROM ${spec(collection).table} WHERE ${key} = ?`).run(value).changes > 0;
 }
 
-module.exports = { createSqliteStore, selectAll, selectOne, insertRow, updateRow, deleteRow };
+module.exports = { createSqliteStore, selectAll, selectWhere, selectOne, insertRow, updateRow, deleteRow };

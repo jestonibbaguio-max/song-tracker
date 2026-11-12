@@ -1,15 +1,18 @@
 // Sprint capacity entries. Each call runs in one read() or write() of the
-// capacity store (one load, at most one save).
+// capacity store (one read session, or one transaction).
 // Bugs M1, M9 and M11 in docs/found-bugs.md are kept.
 const repository = require('./capacity.repository');
 const { inColumnOrder, rowsInColumnOrder } = require('../../utils/fields');
 
-/** sprintName is the raw query value; falsy means no filter. */
+/**
+ * sprintName is the raw query value; falsy means no filter. An entry matches
+ * when its sprintName === the query value; a repeated parameter (an array)
+ * matches nothing, so it's passed as null.
+ */
 function listEntries(sprintName) {
   return repository.read((store) => {
-    let entries = store.listEntries();
-    if (sprintName) entries = entries.filter(e => e.sprintName === sprintName);
-    return rowsInColumnOrder('capacity-entries', entries);
+    const filter = sprintName ? { sprintName: typeof sprintName === 'string' ? sprintName : null } : {};
+    return rowsInColumnOrder('capacity-entries', store.listEntries(filter));
   });
 }
 

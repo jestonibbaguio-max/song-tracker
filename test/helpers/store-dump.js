@@ -3,10 +3,11 @@
 //
 // The characterization snapshots record the storage side of a request as a
 // logical diff of two dumps: rows added, changed and removed per collection.
-// A dump has to come out the same on every backend, so it never looks at a
-// file. It reads each collection through the store the running app picked
-// (features/<name>/<name>.repository.js, which follows config.PERSISTENCE),
-// then passes every row through canonicalRow():
+// A dump never looks at the database file. It reads each collection through
+// the running app's store (features/<name>/<name>.repository.js), then passes
+// every row through canonicalRow(). That mapping was built in Phase 2 so the
+// JSON and SQLite backends dumped the same rows; since Phase 8 only SQLite
+// remains, and its rows only need the roster's created_at/updated_at renamed:
 //
 //   - Ids are numbers. A numeric-string id ("1") becomes 1, and so do the ids
 //     in a planner task's `labels`. Any other id is left as it is.
@@ -19,14 +20,8 @@
 //     then any other key the row has, in stored order. A field the row doesn't
 //     have is left out; a stored null or "" is kept.
 //
-// The canonical form hides storage details that only the JSON files have,
-// such as a string id turning into a number (M6) or a roster record keeping
-// both key styles (L9). The json-only tests keep raw file diffs for those.
-//
-// dumpStore must not change any data. On the JSON backend the roster store's
-// list() rewrites custom-onboarding.json when it has to repair ids or seed the
-// file from custom.csv; cases that set up those states are json-only and are
-// never dumped.
+// dumpStore must not change any data (characterize.js checks that no file in
+// DATA_DIR changes while it runs).
 const path = require('node:path');
 const { SERVER_DIR } = require('./test-server');
 

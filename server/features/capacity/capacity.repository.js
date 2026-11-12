@@ -1,8 +1,4 @@
-// The capacity store for the configured backend (docs/sqlite-migration-plan.md).
-// read(fn) / write(fn) hand fn a session; see persistence/json/capacity.store.js.
-const { selectStore } = require('../../persistence/select-store');
-
-module.exports = selectStore('capacity', ['read', 'write'], {
-  json: () => require('../../persistence/json/capacity.store'),
-  sqlite: () => require('../../persistence/sqlite/capacity.store'),
-});
+// The capacity store: persistence/sqlite/capacity.store.js. SQLite is the
+// only backend since Phase 8 (docs/sqlite-migration-plan.md).
+// read(fn) / write(fn) hand fn a session; see the store for its operations.
+module.exports = require('../../persistence/sqlite/capacity.store');

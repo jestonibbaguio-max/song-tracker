@@ -1,25 +1,35 @@
 // Guardrail 4 (docs/server-restructure-plan.md, step 0): only persistence code requires fs,
 // and (docs/sqlite-migration-plan.md, Phase 4) only persistence code requires better-sqlite3.
 //
-// The target layout allows fs in exactly two places:
-//   - server/persistence/**     (one repository per physical data file)
-//   - server/middleware/static.js, the documented exception: express.static and
-//     res.sendFile read from disk ("The one fs exception" in the plan)
-//
-// LEGACY_ALLOWLIST holds the files that require fs today, before the refactor.
-// It may only shrink: when a migration step moves the last fs call out of one of
-// these files, the "still needs it" test fails until the entry is deleted here.
-// Never add to it.
+// Since Phase 8 removed the JSON backend, the allowed files are listed one by one:
+//   fs:
+//     - the two JSON files that stay (decision 10 of the plan): the legacy
+//       tasks.json repository and the fruits test bench's repository;
+//     - the SQLite import (reads the JSON seed, builds and replaces the
+//       database file) and the schema migrations (read schema.sql);
+//     - server/middleware/static.js, the documented exception: express.static
+//       and res.sendFile read from disk ("The one fs exception" in the
+//       restructure plan).
+//   better-sqlite3: the server's connection and the import.
+// Every entry must still exist and still need it, so the lists only shrink
+// when code stops needing them. Adding a file here is a design decision.
 const { describe, test } = require('node:test');
 const assert = require('node:assert/strict');
 const fs = require('node:fs');
 const path = require('node:path');
 const { SERVER_DIR } = require('../../helpers/test-server');
 
-const LEGACY_ALLOWLIST = [
+const FS_ALLOWED = [
+  'server/persistence/tasks-file.repository.js',
+  'server/persistence/fruits-file.repository.js',
+  'server/persistence/sqlite/import.js',
+  'server/persistence/sqlite/migrations.js',
 ];
 const DOCUMENTED_EXCEPTIONS = ['server/middleware/static.js'];
-const ALLOWED_DIRS = ['server/persistence/'];
+const SQLITE_ALLOWED = [
+  'server/persistence/sqlite/connection.js',
+  'server/persistence/sqlite/import.js',
+];
 
 const FS_MODULES = ['fs', 'fs/promises', 'fs-extra', 'graceful-fs'];
 const FS_MODULE = `['"\`](?:node:)?(?:${FS_MODULES.map((m) => m.replace('/', '\\/')).join('|')})['"\`]`;
@@ -57,13 +67,13 @@ function requiresFs(file) {
 }
 
 function isAllowed(repoPath) {
-  return ALLOWED_DIRS.some((dir) => repoPath.startsWith(dir))
-    || DOCUMENTED_EXCEPTIONS.includes(repoPath)
-    || LEGACY_ALLOWLIST.includes(repoPath);
+  return FS_ALLOWED.includes(repoPath) || DOCUMENTED_EXCEPTIONS.includes(repoPath);
 }
 
+const requiresSqlite = (repoPath) => SQLITE_IMPORT.test(fs.readFileSync(path.join(REPO_ROOT, repoPath), 'utf8'));
+
 // docs/sqlite-migration-plan.md, Phase 4 step 5: the same rule for the SQLite
-// driver, with no exception at all (static.js only needs fs).
+// driver, with no documented exception (static.js only needs fs).
 const SQLITE_MODULE = `['"\`]better-sqlite3['"\`]`;
 const SQLITE_IMPORT = new RegExp(
   [
@@ -92,16 +102,16 @@ describe('guardrail: only persistence code requires better-sqlite3', () => {
     for (const s of misses) assert.ok(!SQLITE_IMPORT.test(s), `should not detect: ${s}`);
   });
 
-  test('no file outside persistence/ requires better-sqlite3', () => {
-    const offenders = serverScripts().map(toRepoPath)
-      .filter((p) => SQLITE_IMPORT.test(fs.readFileSync(path.join(REPO_ROOT, p), 'utf8')))
-      .filter((p) => !ALLOWED_DIRS.some((dir) => p.startsWith(dir)));
-    assert.deepEqual(offenders, [], 'these files require better-sqlite3 but are not in server/persistence/');
+  test('only the listed files require better-sqlite3', () => {
+    const offenders = serverScripts().map(toRepoPath).filter(requiresSqlite).filter((p) => !SQLITE_ALLOWED.includes(p));
+    assert.deepEqual(offenders, [], 'these files require better-sqlite3 but are not in SQLITE_ALLOWED');
   });
 
-  test('the SQLite backend does require it, so the check above is not vacuous', () => {
-    const users = serverScripts().map(toRepoPath).filter((p) => SQLITE_IMPORT.test(fs.readFileSync(path.join(REPO_ROOT, p), 'utf8')));
-    assert.ok(users.includes('server/persistence/sqlite/connection.js'), `found: ${JSON.stringify(users)}`);
+  test('every SQLITE_ALLOWED entry still exists and still requires it (the list only shrinks)', () => {
+    for (const entry of SQLITE_ALLOWED) {
+      assert.ok(fs.existsSync(path.join(REPO_ROOT, entry)), `${entry} no longer exists: delete it from SQLITE_ALLOWED`);
+      assert.ok(requiresSqlite(entry), `${entry} no longer requires better-sqlite3: delete it from SQLITE_ALLOWED`);
+    }
   });
 });
 
@@ -132,18 +142,20 @@ describe('guardrail: only persistence code requires fs', () => {
     for (const s of misses) assert.ok(!FS_IMPORT.test(s), `should not detect: ${s}`);
   });
 
-  test('no file outside persistence/ (and the documented exception) requires fs', () => {
+  test('only the listed files (and the documented exception) require fs', () => {
     const scripts = serverScripts();
     assert.ok(scripts.length > 0, 'found no scripts under server/');
     const offenders = scripts.map(toRepoPath).filter((p) => requiresFs(path.join(REPO_ROOT, p)) && !isAllowed(p));
-    assert.deepEqual(offenders, [], 'these files require fs but are not repositories in server/persistence/');
+    assert.deepEqual(offenders, [], 'these files require fs but are not in FS_ALLOWED');
   });
 
-  test('every legacy allowlist entry still exists and still needs fs (the list only shrinks)', () => {
-    for (const entry of LEGACY_ALLOWLIST) {
+  test('every FS_ALLOWED entry still exists and still needs fs (the list only shrinks)', () => {
+    for (const entry of FS_ALLOWED) {
       const abs = path.join(REPO_ROOT, entry);
-      assert.ok(fs.existsSync(abs), `${entry} no longer exists: delete it from LEGACY_ALLOWLIST`);
-      assert.ok(requiresFs(abs), `${entry} no longer requires fs: delete it from LEGACY_ALLOWLIST`);
+      assert.ok(fs.existsSync(abs), `${entry} no longer exists: delete it from FS_ALLOWED`);
+      assert.ok(requiresFs(abs), `${entry} no longer requires fs: delete it from FS_ALLOWED`);
     }
+    // static.js may read from disk (it doesn't require fs today; Express does the reads).
+    for (const entry of DOCUMENTED_EXCEPTIONS) assert.ok(fs.existsSync(path.join(REPO_ROOT, entry)), `${entry} no longer exists`);
   });
 });

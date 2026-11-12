@@ -18,7 +18,7 @@ server/data/*.sqlite
 server/data/*.sqlite-shm
 server/data/*.sqlite-wal
 server/data/*.sqlite-journal
-# npm run db:export backs up the files it replaces (docs/running-backend.md)
+# Backups that npm run db:export made until Phase 8 removed it (docs/sqlite-migration-plan.md)
 server/data/*.bak-*
 
 # IDEs and editors

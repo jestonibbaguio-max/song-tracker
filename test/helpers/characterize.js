@@ -6,19 +6,17 @@
 //   - the response status, a few headers, and the body
 //   - "stored data": a logical diff of the stores (rows added, changed and
 //     removed per collection), from a dump before and after the request
-//     (store-dump.js). It reads through the stores, so it comes out the same
-//     on every backend (docs/sqlite-migration-plan.md, Phase 2).
+//     (store-dump.js). It reads through the stores, never the database file
+//     (docs/sqlite-migration-plan.md, Phase 2).
 //   - "data files": every other file in DATA_DIR that changed (tasks.json and
 //     the fruits test bench, which stay on JSON): an exact line diff of the
-//     raw text and a structural diff of the parsed JSON
+//     raw text and a structural diff of the parsed JSON. The JSON seed is in
+//     DATA_DIR too, but nothing writes it once the database is built.
 //   - every outbound network call the process attempted (see outbound-recorder)
 //
-// A json-only case (see backend.js) has no "stored data" section: its "data
-// files" section covers every file, db.json and custom-onboarding.json
-// included, because what it pins is how those files look on disk. A case is
-// json-only when it sets `jsonOnly: 'reason'`, or when its setup edits a JSON
-// store file directly (removeFile, addBom and writeFile on db.json,
-// custom-onboarding.json or custom.csv, or a setup wrapped in jsonOnlySetup()).
+// A case's setup edits the copied files before the app loads. The harness
+// builds dashboard.sqlite from the JSON seed after the setup has run, so a
+// setup that edits db.json or custom-onboarding.json changes the database.
 //
 // Normalised so snapshots are stable across runs and machines:
 //   - ISO timestamps that weren't in the data or the request AND fall inside
@@ -44,7 +42,6 @@ const path = require('node:path');
 const { isDeepStrictEqual } = require('node:util');
 const { startTestServer } = require('./test-server');
 const outbound = require('./outbound-recorder');
-const { backendSkip, isStoreFile, isSqliteFile } = require('./backend');
 const { dumpStore } = require('./store-dump');
 
 // Express reads NODE_ENV when the app is created. Pin it so snapshots don't
@@ -90,29 +87,15 @@ function notApplicable(reason) {
   return { [NA]: reason };
 }
 
-// ── Backends ─────────────────────────────────────────────────────────────────
+/**
+ * The reason for the roster routes' "not found" category. Its cases were a
+ * missing or corrupt custom-onboarding.json and custom.csv, which pinned the
+ * JSON backend and went with it (docs/sqlite-migration-plan.md, Phase 8).
+ */
+const ROSTER_IS_A_TABLE = 'the roster is a database table since Phase 8: no roster file can be missing';
 
-const JSON_ONLY = Symbol('json-only');
-
-/** The files behind the JSON stores. A setup that edits them directly makes its case json-only. */
-const JSON_STORE_INPUTS = ['db.json', 'custom-onboarding.json', 'custom.csv'];
-
-/** Tag a setup function as json-only, with the reason. */
-function jsonOnlySetup(reason, setup) {
-  setup[JSON_ONLY] = reason;
-  return setup;
-}
-
-/** Why a case is json-only, or undefined when it runs on every backend. */
-function jsonOnlyReason(kase) {
-  return kase.jsonOnly || (kase.setup && kase.setup[JSON_ONLY]) || undefined;
-}
-
-/** The node:test `skip` option for a case. */
-function caseSkip(kase) {
-  const reason = jsonOnlyReason(kase);
-  return backendSkip(reason ? 'json' : undefined, reason);
-}
+/** A SQLite database file (or its -wal/-shm/-journal file). */
+const isSqliteFile = (relativePath) => /\.sqlite(?:-wal|-shm|-journal)?$/.test(relativePath);
 
 // ── Running one case ─────────────────────────────────────────────────────────
 
@@ -145,14 +128,13 @@ async function runCase(method, defaultPath, kase, credentials) {
     const requestPath = kase.path ?? defaultPath;
     for (const s of JSON.stringify(kase.body ?? kase.rawBody ?? '').match(ISO_TIMESTAMP) || []) knownTimestamps.add(s);
 
-    const jsonOnly = Boolean(jsonOnlyReason(kase));
     const filesBefore = readTree(api.dataDir);
-    const storeBefore = jsonOnly ? null : dumpUnchanged(api.dataDir, filesBefore);
+    const storeBefore = dumpUnchanged(api.dataDir, filesBefore);
     outbound.reset();
     const res = await send(api.baseUrl, method, requestPath, kase, credentials.headers);
     runWindow.end = Date.now();
     const filesAfter = readTree(api.dataDir);
-    const storeAfter = jsonOnly ? null : dumpUnchanged(api.dataDir, filesAfter);
+    const storeAfter = dumpUnchanged(api.dataDir, filesAfter);
 
     const outcome = {
       request: {
@@ -163,18 +145,11 @@ async function runCase(method, defaultPath, kase, credentials) {
         ...('rawBody' in kase ? { rawBody: kase.rawBody } : {}),
       },
       response: normaliseCatchAll(res),
-      ...(jsonOnly
-        ? { dataFiles: diffTrees(filesBefore, filesAfter) }
-        : {
-          storedData: jsonDiff(storeBefore, storeAfter),
-          dataFiles: diffTrees(filesBefore, filesAfter, (file) => !isStoreFile(file)),
-        }),
+      storedData: jsonDiff(storeBefore, storeAfter),
+      dataFiles: diffTrees(filesBefore, filesAfter),
       outboundCalls: outbound.recordedCalls(),
     };
-    const ctx = { knownTimestamps, dataDir: api.dataDir, runWindow };
-    const normalised = normalise(outcome, ctx);
-    if (STORAGE_REPORT && !jsonOnly) reports.set(normalised, storageReport(filesBefore, filesAfter, ctx));
-    return normalised;
+    return normalise(outcome, { knownTimestamps, dataDir: api.dataDir, runWindow });
   } finally {
     await api.close();
   }
@@ -184,36 +159,8 @@ async function runCase(method, defaultPath, kase, credentials) {
 function dumpUnchanged(dataDir, tree) {
   const dump = dumpStore();
   const changed = diffTrees(tree, readTree(dataDir)).map((f) => f.file);
-  assert.deepEqual(changed, [], 'dumping the stores changed data files; a case that needs this state is json-only');
+  assert.deepEqual(changed, [], 'dumping the stores changed data files');
   return dump;
-}
-
-// ── Storage report (for test/tools/verify-storage-snapshots.js) ──────────────
-//
-// With CHARACTERIZE_STORAGE_REPORT=<file>, every case that runs on every
-// backend also appends one JSON line to <file>: the test's name, its
-// normalised "stored data" ops, the store files' parsed JSON before and after,
-// and the storage section as the snapshots rendered it before Phase 2 (raw
-// diffs of every file). The verification script compares that with the old
-// snapshots and the new ones. Reports never affect a snapshot.
-
-const STORAGE_REPORT = process.env.CHARACTERIZE_STORAGE_REPORT || '';
-const reports = new WeakMap();
-
-function storageReport(filesBefore, filesAfter, ctx) {
-  const parsed = (tree) => Object.fromEntries([...tree].filter(([file]) => isStoreFile(file))
-    .map(([file, buf]) => [file, parseOrError(buf.toString('utf8'))]));
-  return normalise({
-    storeFiles: { before: parsed(filesBefore), after: parsed(filesAfter) },
-    legacyStorageText: renderDataFiles(diffTrees(filesBefore, filesAfter)).join('\n'),
-  }, ctx);
-}
-
-function writeReport(t, outcome) {
-  const report = reports.get(outcome);
-  if (!report) return;
-  const line = JSON.stringify({ name: t.fullName, storedData: outcome.storedData, ...report });
-  fs.appendFileSync(STORAGE_REPORT, line + '\n', 'utf8');
 }
 
 // node:http rather than fetch, because fetch refuses to send a body with GET
@@ -542,7 +489,6 @@ function renderJsonOp(d) {
 }
 
 function snapshot(t, outcome) {
-  if (STORAGE_REPORT) writeReport(t, outcome);
   t.assert.snapshot(outcome, { serializers: [render] });
 }
 
@@ -570,14 +516,14 @@ function describeEndpoint(route, spec) {
     assert.ok(happyEntries.length, `${route} needs at least one happy-path case`);
 
     for (const [name, kase] of happyEntries) {
-      test(`happy path › ${name}`, { skip: caseSkip(kase) }, async (t) => {
+      test(`happy path › ${name}`, async (t) => {
         snapshot(t, await runCase(method, defaultPath, kase, CREDENTIALS.poc));
       });
     }
 
     const [baseName, baseCase] = happyEntries[0];
     for (const [category, credentials] of [['no auth', CREDENTIALS.none], ['wrong role', CREDENTIALS.wrongRole]]) {
-      test(category, { skip: caseSkip(baseCase) }, async (t) => {
+      test(category, async (t) => {
         const happy = await runCase(method, defaultPath, baseCase, CREDENTIALS.poc);
         const probe = await runCase(method, defaultPath, baseCase, credentials);
         const { request: _a, ...happyRest } = happy;
@@ -593,7 +539,7 @@ function describeEndpoint(route, spec) {
       }
       assert.ok(cases && Object.keys(cases).length, `${route} needs "${category}" cases or notApplicable()`);
       for (const [name, kase] of Object.entries(cases)) {
-        test(`${category} › ${name}`, { skip: caseSkip(kase) }, async (t) => {
+        test(`${category} › ${name}`, async (t) => {
           snapshot(t, await runCase(method, defaultPath, kase, CREDENTIALS.poc));
         });
       }
@@ -603,42 +549,28 @@ function describeEndpoint(route, spec) {
 
 // ── Setup helpers for cases ──────────────────────────────────────────────────
 
+/**
+ * A value editDb writes as the number literal 1e999, which JSON.parse (and
+ * so the import) reads as Infinity. JSON.stringify can't write Infinity.
+ */
+const INFINITY = '__1e999__';
+
 /** Edit db.json in the temp DATA_DIR, writing it back in the server's own format. */
 function editDb(fn) {
   return (dataDir) => {
     const file = path.join(dataDir, 'db.json');
     const db = JSON.parse(fs.readFileSync(file, 'utf8'));
     fn(db);
-    fs.writeFileSync(file, JSON.stringify(db, null, 2), 'utf8');
+    fs.writeFileSync(file, JSON.stringify(db, null, 2).split(`"${INFINITY}"`).join('1e999'), 'utf8');
   };
 }
 
-/** A setup that edits a file directly: json-only when the file is one of the JSON stores' files. */
-function fileSetup(relativePath, what, setup) {
-  return JSON_STORE_INPUTS.includes(relativePath) ? jsonOnlySetup(`${what} ${relativePath}`, setup) : setup;
-}
-
 function removeFile(relativePath) {
-  return fileSetup(relativePath, 'removes', (dataDir) => fs.rmSync(path.join(dataDir, relativePath)));
-}
-
-/** Prepend a UTF-8 BOM, which is what PowerShell's Set-Content/Out-File adds (see CLAUDE.md). */
-function addBom(relativePath) {
-  return fileSetup(relativePath, 'adds a BOM to', (dataDir) => {
-    const file = path.join(dataDir, relativePath);
-    fs.writeFileSync(file, '﻿' + fs.readFileSync(file, 'utf8'), 'utf8');
-  });
+  return (dataDir) => fs.rmSync(path.join(dataDir, relativePath));
 }
 
 function writeFile(relativePath, content) {
-  return fileSetup(relativePath, 'writes', (dataDir) => fs.writeFileSync(path.join(dataDir, relativePath), content, 'utf8'));
-}
-
-/** Run setups in order. The result is json-only when any of them is. */
-function steps(...fns) {
-  const combined = (dataDir) => fns.forEach((fn) => fn(dataDir));
-  const reasons = [...new Set(fns.map((fn) => fn[JSON_ONLY]).filter(Boolean))];
-  return reasons.length ? jsonOnlySetup(reasons.join(', '), combined) : combined;
+  return (dataDir) => fs.writeFileSync(path.join(dataDir, relativePath), content, 'utf8');
 }
 
 module.exports = {
@@ -646,16 +578,13 @@ module.exports = {
   notApplicable,
   runCase,
   snapshot,
-  caseSkip,
-  jsonOnlyReason,
-  jsonOnlySetup,
   CREDENTIALS,
   MALFORMED_JSON,
+  ROSTER_IS_A_TABLE,
+  INFINITY,
   editDb,
   removeFile,
-  addBom,
   writeFile,
-  steps,
   // exported for the helper's own tests
   unifiedDiff,
   jsonDiff,

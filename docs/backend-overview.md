@@ -11,13 +11,13 @@ This is a snapshot of `server/` and of how the Angular app talks to it, taken fr
 | Framework | **Express 5** (`express@^5.2.1`), plain CommonJS JavaScript, no TypeScript, no build step |
 | Entry point | [server/server.js](../server/server.js), started by `npm run api` (`db:migrate --if-missing`, then `node server/server.js`) or `npm run dev` (the same, then API + `ng serve` via `concurrently`) |
 | Dependencies | `express`, `cors` and `better-sqlite3` (pinned at `13.0.3`; used only under [server/persistence/sqlite/](../server/persistence/sqlite/)). The server has no `package.json` of its own; all three come from the root one |
-| Route organisation | One Express router per feature in [server/features/](../server/features/) (routes → controller → service → repository), mounted in [server/app.js](../server/app.js), which only composes the app. Each dashboard feature's repository picks a store for `PERSISTENCE` ([select-store.js](../server/persistence/select-store.js)), and services use it through `read(fn)`/`write(fn)` ([json/db-store.js](../server/persistence/json/db-store.js)) |
-| Persistence | Only from [server/persistence/](../server/persistence/): one store per feature in `persistence/sqlite/` (the default) and in `persistence/json/` (the fallback, on one file repository per data file). Legacy tasks and fruits stay on their own JSON file repositories. No ORM |
+| Route organisation | One Express router per feature in [server/features/](../server/features/) (routes → controller → service → repository), mounted in [server/app.js](../server/app.js), which only composes the app. Each dashboard feature's repository exports its SQLite store, and services use it through `read(fn)`/`write(fn)` ([sqlite-store.js](../server/persistence/sqlite/sqlite-store.js)) |
+| Persistence | Only from [server/persistence/](../server/persistence/): one store per feature in `persistence/sqlite/`. Legacy tasks and fruits stay on their own JSON file repositories. No ORM |
 | Database | **SQLite** (`DATA_DIR/dashboard.sqlite`, gitignored), built from the committed JSON seed by `npm run db:migrate`; see §5 and [sqlite-migration-plan.md](sqlite-migration-plan.md) |
 | Auth | None. Every endpoint is public |
 | External services | None: no email, payments, object storage, queues, or third-party APIs |
 | Background jobs | None on the server. The only periodic work is a client-side 2.5 s poll in the Planner capacity view |
-| Config | Three env vars: `PORT` (default `3000`), `DATA_DIR` (default `server/data`) and `PERSISTENCE` (default `sqlite`) |
+| Config | Two env vars: `PORT` (default `3000`) and `DATA_DIR` (default `server/data`) |
 
 ---
 
@@ -48,7 +48,7 @@ Express runs these in registration order:
 | 5 | `express.static(dist/atcp-song-dashboard/browser)` | [middleware/static.js](../server/middleware/static.js) | Serves the built Angular app, but only if `ng build` has been run |
 | 6 | `app.get(/.*/)` SPA fallback | [middleware/static.js](../server/middleware/static.js) | Any GET that nothing above matched gets `index.html` (regex form because Express 5 dropped `*`) |
 
-There's **no error-handling middleware** and no request logging, rate limiting, compression, or security headers. Express 5's built-in handler turns sync throws (for example, corrupt JSON in `custom-onboarding.json`) into a generic 500.
+There's **no error-handling middleware** and no request logging, rate limiting, compression, or security headers. Express 5's built-in handler turns sync throws (for example, a missing database, or a body that can't be stored, bug L18) into a generic 500.
 
 > ⚠️ Because of #6, a GET to an `/api/...` path that doesn't exist returns **200 with the Angular `index.html`** instead of a 404. Any frontend code that calls an endpoint that hasn't been built yet (e.g. `/api/trainings-progress/:eid`) will get HTML back and fail to parse it, rather than fail clearly.
 
@@ -68,9 +68,9 @@ All routes take and return JSON. "Store" is the file the route reads and writes 
 | POST | `/api/tasks` | `data/tasks.json` | `{ title, status? }` → 201. `title` is required |
 | PATCH | `/api/tasks/:id` | `data/tasks.json` | `{ title?, status? }`. 400 if either is an empty string, 404 if the id doesn't exist |
 | DELETE | `/api/tasks/:id` | `data/tasks.json` | `{ deleted: boolean }` (always 200) |
-| GET | `/api/skill-options` | `custom-onboarding.json` | Sorted, de-duplicated list of skills from every roster record (camelCase or snake_case keys) |
+| GET | `/api/skill-options` | roster (`onboarding_resources`) | Sorted, de-duplicated list of skills from every roster record |
 
-### Onboarding resources — `persistence/json/roster-file.repository.js`
+### Onboarding resources — `persistence/sqlite/onboarding.store.js`
 
 | Method | Path | Behaviour |
 |---|---|---|
@@ -81,9 +81,9 @@ All routes take and return JSON. "Store" is the file the route reads and writes 
 
 The server normalises incoming bodies heavily (`normalizeOnboardingPayload` in [onboarding.service.js](../server/features/onboarding/onboarding.service.js)). It accepts camelCase or snake_case keys, strips everything from `@` onwards in the eid and lower-cases it, converts `YYYY-MM-DD` dates to `MM/DD/YYYY`, and when `projectDeployed` is `No` it forces `projectName = "Song Bench"` and defaults `poc` to `hannahdel.l.orellosa`.
 
-### Everything backed by `data/db.json`
+### The other dashboard collections (seeded from `data/db.json`)
 
-Each of these routes loads all of `db.json` (~185 KB), changes one collection, and writes the whole file back ([db-file.repository.js](../server/persistence/json/db-file.repository.js)). IDs come from `max(id) + 1`.
+Each of these routes reads or writes its own table in `dashboard.sqlite`, a write in one transaction. List filters (`?sprintId`, `?boardId`, `?year`…) are SQL `WHERE` clauses. IDs come from `max(id) + 1` (`INTEGER PRIMARY KEY`).
 
 | Collection | Routes | Validation |
 |---|---|---|
@@ -99,7 +99,7 @@ Each of these routes loads all of `db.json` (~185 KB), changes one collection, a
 | `planner-tasks` | GET (`?boardId`), POST, PATCH `/:id`, DELETE `/:id` | **None.** The body is spread into the record and the server sets `createdAt`/`updatedAt` |
 | `deletion-logs` | GET (`?eid`), POST | **None.** The server adds `deletedAt` |
 | `project-reachouts` | GET (`?group`), POST, PATCH `/:id`, DELETE `/:id` | Requires `eid`, `projectName`, `techRole`, `pocEid`. EIDs are normalised, `status` defaults to `CV Requested`, `groupNumber` must be 1–6 or it becomes null |
-| `competency-records` | GET (`?group`, default `5`), PATCH `/:eid` | GET joins the group's members from `custom-onboarding.json` with any saved competency rows. PATCH upserts by eid and merges the body's competency fields without validation (`eid`, `name`, `clLevel` and unknown fields are ignored) |
+| `competency-records` | GET (`?group`, default `5`), PATCH `/:eid` | GET joins the group's roster members with any saved competency rows, in one SQL `LEFT JOIN`. PATCH upserts by eid and merges the body's competency fields without validation (`eid`, `name`, `clLevel` and unknown fields are ignored) |
 
 ### Test bench (not used by the Angular app)
 
@@ -109,36 +109,31 @@ Each of these routes loads all of `db.json` (~185 KB), changes one collection, a
 
 ## 5. Data and persistence layer
 
-Since the cutover (Phase 6 of [sqlite-migration-plan.md](sqlite-migration-plan.md)), the dashboard data lives in **SQLite by default**, and the JSON files are the seed and the fallback. There's no ORM.
-
-| Backend | Where the data lives | How it's used |
-|---|---|---|
-| `sqlite` (default) | `DATA_DIR/dashboard.sqlite` (`server/data/dashboard.sqlite`), gitignored, one per developer | `better-sqlite3`, synchronous, through `persistence/sqlite/<feature>.store.js`. Opened on the first query (`persistence/sqlite/connection.js`); with no file, every route that uses a store returns 500 "No SQLite database at …" |
-| `json` (fallback until Phase 8) | `db.json` and `custom-onboarding.json` in `DATA_DIR` | Synchronous `fs.readFileSync` / `fs.writeFileSync` of whole files, through `persistence/json/<feature>.store.js` and the two file repositories below |
+The dashboard data lives in **SQLite**: `DATA_DIR/dashboard.sqlite` (`server/data/dashboard.sqlite`), gitignored, one per developer. It's used through `better-sqlite3`, synchronously, by `persistence/sqlite/<feature>.store.js`, and opened on the first query (`persistence/sqlite/connection.js`); with no file, every route that uses a store returns 500 "No SQLite database at …". There's no ORM. The JSON backend it replaced, and the `PERSISTENCE` setting that picked between them, were removed in Phase 8 of [sqlite-migration-plan.md](sqlite-migration-plan.md).
 
 The database's lifecycle:
 
 - **Build:** `npm run db:migrate` builds it from `DATA_DIR`'s `db.json` and `custom-onboarding.json` (the committed seed) with `persistence/sqlite/import.js`, and prints the rows per table. It refuses to overwrite an existing database. `npm run api` and `npm run dev` run `db:migrate --if-missing` first, so a fresh clone builds it on the first start.
 - **Reset:** `npm run db:migrate -- --force` rebuilds it from the JSON, discarding every change made in the app. It builds the new database first, and refuses while another process (a running server) has the old one open.
-- **Back up / fall back:** `npm run db:export [-- --out <dir>]` writes it out as `db.json` + `custom-onboarding.json`, backing up the files it replaces to `*.bak-<timestamp>`. The fallback runbook is [running-backend.md](running-backend.md) §6.
+- **Back up:** stop the server and copy `dashboard.sqlite` with its `-wal` file, if any ([running-backend.md](running-backend.md) §5).
 
-The JSON files:
+The data files:
 
 | File | Owner | Contents |
 |---|---|---|
-| `server/data/custom-onboarding.json` | `persistence/json/roster-file.repository.js` | Onboarding resources (98 records). If the file is missing it's **seeded from `custom.csv`** on first read. Record IDs get back-filled and the file is rewritten on read |
-| `server/data/db.json` | `persistence/json/db-file.repository.js` (`loadDb`/`saveDb`) | Every other collection listed in §4 |
+| `server/data/dashboard.sqlite` | `persistence/sqlite/` (`connection.js`, one store per feature) | Every dashboard collection listed in §4, and the roster. Schema: [schema.sql](../server/persistence/sqlite/schema.sql) |
+| `server/data/custom-onboarding.json` | `persistence/sqlite/import.js` (seed only) | The roster seed (98 records) |
+| `server/data/db.json` | `persistence/sqlite/import.js` (seed only) | The seed for every other collection |
 | `server/data/tasks.json` | `persistence/tasks-file.repository.js` | Legacy tasks. It doesn't exist yet and is created on the first GET `/api/tasks` |
 | `server/data/test_bwd/db.json` | `persistence/fruits-file.repository.js` (also served as-is by the `/test` static mount) | Fruits test data |
-| `server/data/custom.csv` | seed only | Columns `EID`, `GROUP`, `Primary Skill` |
-| `attendance.json`, `attendance-options.json`, `routes.json`, `custom.xlsx`, `groupings name` | – | Not read by the Express server. `routes.json` looks like a json-server rewrite map, but the `json-api` script doesn't pass it |
+| `attendance.json`, `attendance-options.json`, `routes.json`, `custom.xlsx`, `groupings name` | – | Not read by the Express server. `routes.json` looks like a json-server rewrite map, left over from before the Express API |
 
 Things to know about this layer:
 
-- **Two copies of onboarding data.** `db.json` has its own `onboarding-resources` collection (81 records) that Express never reads. Express uses `custom-onboarding.json` (98 records). Running `npm run json-api` (json-server on `db.json`) therefore shows different resources than `npm run api`.
-- **Mixed key styles.** Records in `custom-onboarding.json` are a mix of camelCase (created through the API) and snake_case (seeded from the CSV). The read paths cope with both using `a || a_snake` fallbacks.
-- **Concurrency.** A single Node process is safe in practice because the I/O is synchronous and requests can't interleave. On JSON, running two writers against the same file (for example json-server and Express, both on port 3000, which the README warns about) would lose writes, and every request re-parses the entire file. On SQLite, each write is one transaction (`BEGIN IMMEDIATE`) with a 5 s busy timeout.
-- **The committed JSON is the seed.** On the default backend, UI edits go to the local database only, so the files in git change only when someone edits the seed on purpose, or writes them through the fallback (`PERSISTENCE=json`, `db:export`) or json-server.
+- **The seed has dead data.** `db.json` has its own `onboarding-resources` collection (81 records), plus `dashboard` and `$schema` keys; the import skips them. The roster comes from `custom-onboarding.json` (98 records). The import also drops the 36 attendance rows with random json-server ids (decision 6 of the plan).
+- **Mixed key styles in the seed.** Records in `custom-onboarding.json` are a mix of camelCase (created through the API) and snake_case (from an old CSV seed). The import merges them camelCase-first, the way the API reads them; the database has one column per field.
+- **Concurrency.** A single Node process is safe in practice because the I/O is synchronous and requests can't interleave. Each write is one transaction (`BEGIN IMMEDIATE`) with a 5 s busy timeout, so a second process on the same database waits rather than losing writes.
+- **The committed JSON is the seed.** UI edits go to the local database only, so the files in git change only when someone edits the seed on purpose.
 - **The SQLite schema** is [server/persistence/sqlite/schema.sql](../server/persistence/sqlite/schema.sql). The old, never-used `server/schema.sql` was deleted at the start of the migration.
 
 ---
@@ -149,7 +144,6 @@ Things to know about this layer:
 |---|---|---|---|
 | `PORT` | [config/index.js](../server/config/index.js) | `3000` | API listen port |
 | `DATA_DIR` | [config/index.js](../server/config/index.js) | `server/data` | Folder that holds the data files; the API tests point it at a temp copy |
-| `PERSISTENCE` | [config/index.js](../server/config/index.js) | `sqlite` | Storage backend, `sqlite` or `json` (the fallback until Phase 8 of [sqlite-migration-plan.md](sqlite-migration-plan.md)). Read on every request by [select-store.js](../server/persistence/select-store.js). With `sqlite` and no `DATA_DIR/dashboard.sqlite`, every route that uses a store returns 500 until `npm run db:migrate` builds it. Health, dashboard, legacy tasks and fruits don't use a store. Any other value throws when config loads |
 | `CI` | [playwright.config.ts](../playwright.config.ts) | – | Turns off `reuseExistingServer` for Playwright's webServers |
 
 The server has no `.env` loading and no secrets. [server/config/index.js](../server/config/index.js) resolves `PORT`, `DATA_DIR` (default `server/data`; a relative value resolves against the working directory) and every data-file path once, when it loads.
@@ -270,6 +264,6 @@ These are things I saw while reading. None of them have been changed.
 3. **Changing an EID through PATCH duplicates the resource.** The old record stays, which `updateResource` in [onboarding.service.js](../server/features/onboarding/onboarding.service.js) does on purpose and the README documents. It's still surprising.
 4. **The attendance location sticks around.** When a cell changes from `RTO` to another status, the client sends `{ status }` without `location` (`undefined` is dropped from JSON), and the server merges, so the old `location` stays on the stored record.
 5. **Unknown `/api` GETs return `index.html` with 200** because of the SPA catch-all (§3).
-6. **There are three persistence stories.** SQLite is what's live, the JSON files are its seed and a fallback until Phase 8 of [sqlite-migration-plan.md](sqlite-migration-plan.md), and json-server on `db.json` is still in `package.json` (it writes the seed, not the live data). The README both recommends `npm run json-api` (Option A) and says "Do NOT use json-server".
-7. **`db.json` has dead collections** (`onboarding-resources`, `dashboard`) that diverge from what Express serves.
+6. **Fixed in Phase 8 of the SQLite migration: there were three persistence stories.** SQLite is now the only backend; the JSON files are only its seed, and the JSON fallback and json-server (`npm run json-api`) are gone.
+7. **The `db.json` seed has dead collections** (`onboarding-resources`, `dashboard`) that diverge from what Express serves. The import skips them.
 8. **Planner tasks embed comments and checklists**, so every modal save rewrites the whole task, and two users editing comments at once overwrite each other.

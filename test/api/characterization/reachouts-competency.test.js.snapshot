@@ -327,6 +327,358 @@ outbound calls: none
 
 `;
 
+exports[`GET /api/competency-records > invalid input › a member with an empty name is listed under their eid 1`] = `
+
+GET /api/competency-records?group=5
+credentials: group 5 POC (rafael.t.mendoza, role poc)
+
+status: 200
+content-type: application/json; charset=utf-8
+access-control-allow-origin: *
+x-powered-by: Express
+response body:
+  [
+    {
+      "name": "liza.m.navarro",
+      "clLevel": "12",
+      "eid": "liza.m.navarro",
+      "primarySkill": "Angular",
+      "primaryProficiency": "P2",
+      "recentRetakeDate": "2026-10-22",
+      "nextRetakeDate": "",
+      "secondarySkill": "TBD",
+      "secondaryProficiency": "TBD",
+      "retakeDate": ""
+    },
+    {
+      "name": "Jomar Pascual",
+      "clLevel": "11",
+      "eid": "jomar.c.pascual",
+      "primarySkill": "AEM",
+      "primaryProficiency": "P1",
+      "recentRetakeDate": "2026-10-20",
+      "nextRetakeDate": "2026-11-17",
+      "secondarySkill": "",
+      "secondaryProficiency": "N/A",
+      "retakeDate": ""
+    },
+    {
+      "name": "Teresa Villanueva",
+      "clLevel": "9",
+      "eid": "teresa.villanueva",
+      "primarySkill": "AEM",
+      "primaryProficiency": "P2",
+      "recentRetakeDate": "2026-09-28",
+      "nextRetakeDate": "2026-11-12",
+      "secondarySkill": "Java",
+      "secondaryProficiency": "P1",
+      "retakeDate": ""
+    },
+    {
+      "name": "Rafael Mendoza",
+      "clLevel": "7",
+      "eid": "rafael.t.mendoza",
+      "primarySkill": "Angular",
+      "primaryProficiency": "P3+",
+      "recentRetakeDate": "2026-08-20",
+      "nextRetakeDate": "",
+      "secondarySkill": "AEM",
+      "secondaryProficiency": "P3",
+      "retakeDate": ""
+    },
+    {
+      "name": "kevin.r.lim",
+      "clLevel": "",
+      "eid": "kevin.r.lim",
+      "primarySkill": "",
+      "primaryProficiency": "N/A",
+      "recentRetakeDate": "",
+      "nextRetakeDate": "",
+      "secondarySkill": "",
+      "secondaryProficiency": "N/A",
+      "retakeDate": ""
+    }
+  ]
+
+stored data: unchanged
+data files: unchanged
+
+outbound calls: none
+
+`;
+
+exports[`GET /api/competency-records > invalid input › a row saved under a differently-cased eid is not joined (bug M9) 1`] = `
+
+GET /api/competency-records?group=5
+credentials: group 5 POC (rafael.t.mendoza, role poc)
+
+status: 200
+content-type: application/json; charset=utf-8
+access-control-allow-origin: *
+x-powered-by: Express
+response body:
+  [
+    {
+      "name": "Liza Navarro",
+      "clLevel": "12",
+      "eid": "liza.m.navarro",
+      "primarySkill": "Angular",
+      "primaryProficiency": "P2",
+      "recentRetakeDate": "2026-10-22",
+      "nextRetakeDate": "",
+      "secondarySkill": "TBD",
+      "secondaryProficiency": "TBD",
+      "retakeDate": ""
+    },
+    {
+      "name": "Jomar Pascual",
+      "clLevel": "11",
+      "eid": "jomar.c.pascual",
+      "primarySkill": "AEM",
+      "primaryProficiency": "P1",
+      "recentRetakeDate": "2026-10-20",
+      "nextRetakeDate": "2026-11-17",
+      "secondarySkill": "",
+      "secondaryProficiency": "N/A",
+      "retakeDate": ""
+    },
+    {
+      "name": "Teresa Villanueva",
+      "clLevel": "9",
+      "eid": "teresa.villanueva",
+      "primarySkill": "AEM",
+      "primaryProficiency": "P2",
+      "recentRetakeDate": "2026-09-28",
+      "nextRetakeDate": "2026-11-12",
+      "secondarySkill": "Java",
+      "secondaryProficiency": "P1",
+      "retakeDate": ""
+    },
+    {
+      "name": "Rafael Mendoza",
+      "clLevel": "7",
+      "eid": "rafael.t.mendoza",
+      "primarySkill": "Angular",
+      "primaryProficiency": "P3+",
+      "recentRetakeDate": "2026-08-20",
+      "nextRetakeDate": "",
+      "secondarySkill": "AEM",
+      "secondaryProficiency": "P3",
+      "retakeDate": ""
+    },
+    {
+      "name": "kevin.r.lim",
+      "clLevel": "",
+      "eid": "kevin.r.lim",
+      "primarySkill": "",
+      "primaryProficiency": "N/A",
+      "recentRetakeDate": "",
+      "nextRetakeDate": "",
+      "secondarySkill": "",
+      "secondaryProficiency": "N/A",
+      "retakeDate": ""
+    }
+  ]
+
+stored data: unchanged
+data files: unchanged
+
+outbound calls: none
+
+`;
+
+exports[`GET /api/competency-records > invalid input › a saved row with only some fields is listed as saved, without the default fields 1`] = `
+
+GET /api/competency-records?group=5
+credentials: group 5 POC (rafael.t.mendoza, role poc)
+
+status: 200
+content-type: application/json; charset=utf-8
+access-control-allow-origin: *
+x-powered-by: Express
+response body:
+  [
+    {
+      "name": "Liza Navarro",
+      "clLevel": "12",
+      "eid": "liza.m.navarro",
+      "primarySkill": "Angular",
+      "primaryProficiency": "P2",
+      "recentRetakeDate": "2026-10-22",
+      "nextRetakeDate": "",
+      "secondarySkill": "TBD",
+      "secondaryProficiency": "TBD",
+      "retakeDate": ""
+    },
+    {
+      "name": "Jomar Pascual",
+      "clLevel": "11",
+      "eid": "jomar.c.pascual",
+      "primarySkill": "AEM",
+      "primaryProficiency": "P1",
+      "recentRetakeDate": "2026-10-20",
+      "nextRetakeDate": "2026-11-17",
+      "secondarySkill": "",
+      "secondaryProficiency": "N/A",
+      "retakeDate": ""
+    },
+    {
+      "name": "Teresa Villanueva",
+      "clLevel": "9",
+      "eid": "teresa.villanueva",
+      "primarySkill": "AEM",
+      "primaryProficiency": "P2",
+      "recentRetakeDate": "2026-09-28",
+      "nextRetakeDate": "2026-11-12",
+      "secondarySkill": "Java",
+      "secondaryProficiency": "P1",
+      "retakeDate": ""
+    },
+    {
+      "name": "Rafael Mendoza",
+      "clLevel": "7",
+      "eid": "rafael.t.mendoza",
+      "primarySkill": "Angular",
+      "primaryProficiency": "P3+",
+      "recentRetakeDate": "2026-08-20",
+      "nextRetakeDate": "",
+      "secondarySkill": "AEM",
+      "secondaryProficiency": "P3",
+      "retakeDate": ""
+    },
+    {
+      "name": "kevin.r.lim",
+      "clLevel": "",
+      "eid": "kevin.r.lim",
+      "primarySkill": "AEM"
+    }
+  ]
+
+stored data: unchanged
+data files: unchanged
+
+outbound calls: none
+
+`;
+
+exports[`GET /api/competency-records > invalid input › empty group defaults to 5 1`] = `
+
+GET /api/competency-records?group=
+credentials: group 5 POC (rafael.t.mendoza, role poc)
+
+status: 200
+content-type: application/json; charset=utf-8
+access-control-allow-origin: *
+x-powered-by: Express
+response body:
+  [
+    {
+      "name": "Liza Navarro",
+      "clLevel": "12",
+      "eid": "liza.m.navarro",
+      "primarySkill": "Angular",
+      "primaryProficiency": "P2",
+      "recentRetakeDate": "2026-10-22",
+      "nextRetakeDate": "",
+      "secondarySkill": "TBD",
+      "secondaryProficiency": "TBD",
+      "retakeDate": ""
+    },
+    {
+      "name": "Jomar Pascual",
+      "clLevel": "11",
+      "eid": "jomar.c.pascual",
+      "primarySkill": "AEM",
+      "primaryProficiency": "P1",
+      "recentRetakeDate": "2026-10-20",
+      "nextRetakeDate": "2026-11-17",
+      "secondarySkill": "",
+      "secondaryProficiency": "N/A",
+      "retakeDate": ""
+    },
+    {
+      "name": "Teresa Villanueva",
+      "clLevel": "9",
+      "eid": "teresa.villanueva",
+      "primarySkill": "AEM",
+      "primaryProficiency": "P2",
+      "recentRetakeDate": "2026-09-28",
+      "nextRetakeDate": "2026-11-12",
+      "secondarySkill": "Java",
+      "secondaryProficiency": "P1",
+      "retakeDate": ""
+    },
+    {
+      "name": "Rafael Mendoza",
+      "clLevel": "7",
+      "eid": "rafael.t.mendoza",
+      "primarySkill": "Angular",
+      "primaryProficiency": "P3+",
+      "recentRetakeDate": "2026-08-20",
+      "nextRetakeDate": "",
+      "secondarySkill": "AEM",
+      "secondaryProficiency": "P3",
+      "retakeDate": ""
+    },
+    {
+      "name": "kevin.r.lim",
+      "clLevel": "",
+      "eid": "kevin.r.lim",
+      "primarySkill": "",
+      "primaryProficiency": "N/A",
+      "recentRetakeDate": "",
+      "nextRetakeDate": "",
+      "secondarySkill": "",
+      "secondaryProficiency": "N/A",
+      "retakeDate": ""
+    }
+  ]
+
+stored data: unchanged
+data files: unchanged
+
+outbound calls: none
+
+`;
+
+exports[`GET /api/competency-records > invalid input › fractional group matches nothing 1`] = `
+
+GET /api/competency-records?group=5.5
+credentials: group 5 POC (rafael.t.mendoza, role poc)
+
+status: 200
+content-type: application/json; charset=utf-8
+access-control-allow-origin: *
+x-powered-by: Express
+response body:
+  []
+
+stored data: unchanged
+data files: unchanged
+
+outbound calls: none
+
+`;
+
+exports[`GET /api/competency-records > invalid input › group past the number range matches nothing 1`] = `
+
+GET /api/competency-records?group=1e999
+credentials: group 5 POC (rafael.t.mendoza, role poc)
+
+status: 200
+content-type: application/json; charset=utf-8
+access-control-allow-origin: *
+x-powered-by: Express
+response body:
+  []
+
+stored data: unchanged
+data files: unchanged
+
+outbound calls: none
+
+`;
+
 exports[`GET /api/competency-records > invalid input › group=0 lists members with no group (bug L17) 1`] = `
 
 GET /api/competency-records?group=0
@@ -489,6 +841,25 @@ outbound calls: none
 
 `;
 
+exports[`GET /api/competency-records > invalid input › repeated group matches nothing 1`] = `
+
+GET /api/competency-records?group=5&group=1
+credentials: group 5 POC (rafael.t.mendoza, role poc)
+
+status: 200
+content-type: application/json; charset=utf-8
+access-control-allow-origin: *
+x-powered-by: Express
+response body:
+  []
+
+stored data: unchanged
+data files: unchanged
+
+outbound calls: none
+
+`;
+
 exports[`GET /api/competency-records > no auth 1`] = `
 
 GET /api/competency-records?group=5
@@ -573,132 +944,6 @@ response body:
 
 stored data: unchanged
 data files: unchanged
-
-outbound calls: none
-
-`;
-
-exports[`GET /api/competency-records > not found › custom-onboarding.json missing: reseeded from custom.csv 1`] = `
-
-GET /api/competency-records?group=5
-credentials: group 5 POC (rafael.t.mendoza, role poc)
-
-status: 200
-content-type: application/json; charset=utf-8
-access-control-allow-origin: *
-x-powered-by: Express
-response body:
-  [
-    {
-      "name": "kevin.r.lim",
-      "clLevel": "",
-      "eid": "kevin.r.lim",
-      "primarySkill": "",
-      "primaryProficiency": "N/A",
-      "recentRetakeDate": "",
-      "nextRetakeDate": "",
-      "secondarySkill": "",
-      "secondaryProficiency": "N/A",
-      "retakeDate": ""
-    }
-  ]
-
-data files:
-  custom-onboarding.json: created
-    raw text:
-      [
-        {
-          "name": "kevin.r.lim",
-          "eid": "kevin.r.lim",
-          "hire_date": "",
-          "roll_in_date": "",
-          "project_deployed": "No",
-          "deployment_date": "",
-          "project_name": "Song Bench",
-          "poc": "",
-          "dn": "No",
-          "roll_off_date": "",
-          "from_project": "",
-          "group_number": 5,
-          "primary_skill": "AEM",
-          "primary_years": "",
-          "secondary_skill": "",
-          "secondary_years": "",
-          "another_skills": [],
-          "created_at": "<generated-timestamp>",
-          "updated_at": "<generated-timestamp>",
-          "id": 1
-        },
-        {
-          "name": "nina.g.castro",
-          "eid": "nina.g.castro",
-          "hire_date": "",
-          "roll_in_date": "",
-          "project_deployed": "No",
-          "deployment_date": "",
-          "project_name": "Song Bench",
-          "poc": "",
-          "dn": "No",
-          "roll_off_date": "",
-          "from_project": "",
-          "group_number": 1,
-          "primary_skill": "React Native",
-          "primary_years": "",
-          "secondary_skill": "",
-          "secondary_years": "",
-          "another_skills": [],
-          "created_at": "<generated-timestamp>",
-          "updated_at": "<generated-timestamp>",
-          "id": 2
-        }
-      ]
-    parsed JSON:
-      [
-        {
-          "name": "kevin.r.lim",
-          "eid": "kevin.r.lim",
-          "hire_date": "",
-          "roll_in_date": "",
-          "project_deployed": "No",
-          "deployment_date": "",
-          "project_name": "Song Bench",
-          "poc": "",
-          "dn": "No",
-          "roll_off_date": "",
-          "from_project": "",
-          "group_number": 5,
-          "primary_skill": "AEM",
-          "primary_years": "",
-          "secondary_skill": "",
-          "secondary_years": "",
-          "another_skills": [],
-          "created_at": "<generated-timestamp>",
-          "updated_at": "<generated-timestamp>",
-          "id": 1
-        },
-        {
-          "name": "nina.g.castro",
-          "eid": "nina.g.castro",
-          "hire_date": "",
-          "roll_in_date": "",
-          "project_deployed": "No",
-          "deployment_date": "",
-          "project_name": "Song Bench",
-          "poc": "",
-          "dn": "No",
-          "roll_off_date": "",
-          "from_project": "",
-          "group_number": 1,
-          "primary_skill": "React Native",
-          "primary_years": "",
-          "secondary_skill": "",
-          "secondary_years": "",
-          "another_skills": [],
-          "created_at": "<generated-timestamp>",
-          "updated_at": "<generated-timestamp>",
-          "id": 2
-        }
-      ]
 
 outbound calls: none
 
@@ -863,6 +1108,25 @@ outbound calls: none
 
 `;
 
+exports[`GET /api/project-reachouts > invalid input › group matches as text: 05 matches nothing 1`] = `
+
+GET /api/project-reachouts?group=05
+credentials: group 5 POC (rafael.t.mendoza, role poc)
+
+status: 200
+content-type: application/json; charset=utf-8
+access-control-allow-origin: *
+x-powered-by: Express
+response body:
+  []
+
+stored data: unchanged
+data files: unchanged
+
+outbound calls: none
+
+`;
+
 exports[`GET /api/project-reachouts > invalid input › group=null matches the reachout stored with a null group 1`] = `
 
 GET /api/project-reachouts?group=null
@@ -928,6 +1192,25 @@ outbound calls: none
 exports[`GET /api/project-reachouts > invalid input › non-numeric group matches nothing 1`] = `
 
 GET /api/project-reachouts?group=abc
+credentials: group 5 POC (rafael.t.mendoza, role poc)
+
+status: 200
+content-type: application/json; charset=utf-8
+access-control-allow-origin: *
+x-powered-by: Express
+response body:
+  []
+
+stored data: unchanged
+data files: unchanged
+
+outbound calls: none
+
+`;
+
+exports[`GET /api/project-reachouts > invalid input › repeated group matches nothing 1`] = `
+
+GET /api/project-reachouts?group=5&group=1
 credentials: group 5 POC (rafael.t.mendoza, role poc)
 
 status: 200

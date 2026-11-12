@@ -10,7 +10,7 @@ const read = (file) => JSON.parse(fs.readFileSync(path.join(FIXTURES_DIR, file),
 const db = read('db.json');
 const roster = read('custom-onboarding.json');
 
-// Roster records come in two shapes (camelCase from the API, snake_case from the CSV seed).
+// Roster records come in two shapes (camelCase from the API, snake_case from the old CSV seed).
 const groupOf = (r) => r.groupNumber ?? r.group_number ?? null;
 const eids = new Set(roster.map((r) => r.eid));
 const names = new Set(roster.map((r) => r.name));
@@ -99,14 +99,4 @@ test('deletion logs: deleted tasks are gone, commented tasks still exist', () =>
     if (log.type === 'task-deletion') assert.ok(!taskIds.has(id(log.taskId)), `log ${log.id}`);
     else assert.ok(taskIds.has(id(log.taskId)), `log ${log.id}`);
   }
-});
-
-test('custom.csv seeds exactly the legacy snake_case roster records', () => {
-  const [header, ...rows] = fs.readFileSync(path.join(FIXTURES_DIR, 'custom.csv'), 'utf8').trim().split(/\r?\n/);
-  assert.equal(header, 'EID,GROUP,Primary Skill');
-  const legacy = roster.filter((r) => 'group_number' in r);
-  assert.deepEqual(
-    rows.map((line) => line.split(',')).map(([eid, group, skill]) => ({ eid, group: Number(group), skill })),
-    legacy.map((r) => ({ eid: r.eid, group: r.group_number, skill: r.primary_skill })).reverse()
-  );
 });

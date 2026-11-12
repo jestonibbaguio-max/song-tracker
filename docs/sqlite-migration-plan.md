@@ -1,6 +1,6 @@
 # SQLite migration plan
 
-**Status:** Phase 0 is done on `feature/sqlite-phase-0`, with review fixes on `feature/sqlite-phase-0-fixes`; the Linux CI check waits for Phase 4 step 6. Phase 1 is done on `feature/sqlite-phase-1`, rebuilt on top of the fixes, with step 0 first (see "Deviations"). Phase 2 is done on `feature/sqlite-phase-2`, with steps 3 and 4 before step 2 (see "Deviations"). Phase 3 is done on `feature/sqlite-phase-3` (see "Deviations"). Phase 4 is done on `feature/sqlite-phase-4` (see "Deviations"). Phase 5 is done on `feature/sqlite-phase-5` (see "Deviations"). Phase 6 (the cutover) is done on `feature/sqlite-phase-6` (see "Deviations"): SQLite is the default. Phase 7, a soak of 1–2 days, starts when it's merged; Phase 8 hasn't started. This plan builds on the restructured backend from [server-restructure-plan.md](server-restructure-plan.md), which was merged into `develop` in `07f41a8`. Every phase branches off `develop`, and its PRs target `develop`.
+**Status:** Phase 0 is done on `feature/sqlite-phase-0`, with review fixes on `feature/sqlite-phase-0-fixes`; the Linux CI check waits for Phase 4 step 6. Phase 1 is done on `feature/sqlite-phase-1`, rebuilt on top of the fixes, with step 0 first (see "Deviations"). Phase 2 is done on `feature/sqlite-phase-2`, with steps 3 and 4 before step 2 (see "Deviations"). Phase 3 is done on `feature/sqlite-phase-3` (see "Deviations"). Phase 4 is done on `feature/sqlite-phase-4` (see "Deviations"). Phase 5 is done on `feature/sqlite-phase-5` (see "Deviations"). Phase 6 (the cutover) is done on `feature/sqlite-phase-6` (see "Deviations"): SQLite became the default. Phase 7, the soak, passed with no fallback. Phase 8 is done on `feature/sqlite-phase-8` (see "Deviations"): the JSON backend, the `PERSISTENCE` setting and the export are gone, and SQLite is the only backend. The migration is complete. This plan builds on the restructured backend from [server-restructure-plan.md](server-restructure-plan.md), which was merged into `develop` in `07f41a8`. Every phase branches off `develop`, and its PRs target `develop`.
 
 **Goal:** move the dashboard data (`db.json` and `custom-onboarding.json`) from whole-file JSON reads and writes to SQLite, using `better-sqlite3`. The HTTP contract stays the same, apart from storage-related bugs fixed on purpose (see "Bug scope"). The JSON backend stays for a while as a fallback that a setting can switch back to. It is then removed completely (Phase 8).
 
@@ -40,31 +40,29 @@ These are verified against `develop` at `07f41a8` (the merge of `feature/backend
   `formatOnboardingResource` reads camelCase first and falls back to snake_case, so the API already returns the camelCase value. The import uses exactly the same rule.
 - **Planner tasks carry fields the UI doesn't know about.** `completedDate` exists on 86 tasks, and holds a date on 59 of them and `""` on 27. `notes` exists on 78 tasks and is `""` on every one of them. Neither field is in `PlannerTask` or anywhere else in `src/`.
 - **`deletion-logs` doesn't exist in the real `db.json`** (the fixtures have 2 rows), and `project-reachouts` exists only in uncommitted edits. Both start empty.
-- **The test suite is green:** 588 tests before Phase 0, 594 after it, 601 after Phase 1, 620 after Phase 2 and 622 after Phase 3, run with `npm run test:api`. After Phase 2, `npm run test:api:sqlite` passes the 43 tests that don't need the stores and skips the rest. After Phase 4 (with its review fixes), `test:api` passes 661 and `test:api:sqlite` passes 582, skipping the 74 json-only tests. After Phase 5, `test:api` passes 677 (skipping the 2 sqlite-only round trips), `test:api:sqlite` passes 599 (skipping the 74 json-only tests and the json round trip), and `test:api:exported` passes 580 (skipping 77: those 75 and the 2 sqlite-only round trips). The leftover `song-tracker.sqlite-wal`/`-shm` files are gitignored and untracked, and there's no main `.sqlite` file, so they can't be read. After Phase 6, `test:api` (now explicitly json) passes 689, `test:api:sqlite` 611 and `test:api:exported` 592, each with one more skip than above (3, 76 and 78) on a machine where `dist/` isn't built (see "Deviations › Phase 6").
+- **The test suite is green:** 588 tests before Phase 0, 594 after it, 601 after Phase 1, 620 after Phase 2 and 622 after Phase 3, run with `npm run test:api`. After Phase 2, `npm run test:api:sqlite` passes the 43 tests that don't need the stores and skips the rest. After Phase 4 (with its review fixes), `test:api` passes 661 and `test:api:sqlite` passes 582, skipping the 74 json-only tests. After Phase 5, `test:api` passes 677 (skipping the 2 sqlite-only round trips), `test:api:sqlite` passes 599 (skipping the 74 json-only tests and the json round trip), and `test:api:exported` passes 580 (skipping 77: those 75 and the 2 sqlite-only round trips). The leftover `song-tracker.sqlite-wal`/`-shm` files are gitignored and untracked, and there's no main `.sqlite` file, so they can't be read. After Phase 6, `test:api` (now explicitly json) passes 689, `test:api:sqlite` 611 and `test:api:exported` 592, each with one more skip than above (3, 76 and 78) on a machine where `dist/` isn't built (see "Deviations › Phase 6"). After Phase 8, `test:api` is the only suite and runs on SQLite: it passes 616 and skips 4 without a built `dist/` (the `dist/` check and 3 `notApplicable` placeholders); see "Deviations › Phase 8".
 
 ## Target structure
 
+As built after Phase 8 (the JSON backend, `select-store.js`, the export and `PERSISTENCE` are gone):
+
 ```
 server/
-  config/index.js                 + PERSISTENCE ('json' | 'sqlite'), sqlitePath (DATA_DIR/dashboard.sqlite)
+  config/index.js                 DATA_DIR, PORT, sqlitePath (DATA_DIR/dashboard.sqlite) and the JSON files' paths
   persistence/
-    json/                         today's db-file and roster-file repositories (moved, then extended)
-      db-file.repository.js
-      roster-file.repository.js
-      <feature>.store.js          one per feature: the store interface, implemented on db.json / the roster
     sqlite/
-      connection.js               opens the database lazily on first use, sets pragmas, close()
+      connection.js               opens the database lazily on first use, sets pragmas, js_number(), close()
       schema.sql                  the full schema (replaces the stale server/schema.sql)
       migrations.js               PRAGMA user_version-based schema upgrades
-      <feature>.store.js          one per feature: the same interface, implemented with prepared statements
-      import.js                   JSON files → SQLite (used by db:migrate and the test harness)
-      export.js                   SQLite → JSON files (used by db:export, the fallback)
+      tables.js                   API fields ↔ columns, used by the stores and the import
+      sqlite-store.js             the unit of work (read/write) and shared select/insert/update/delete helpers
+      <feature>.store.js          one per feature, with prepared statements
+      import.js                   JSON seed → SQLite (used by db:migrate and the test harness)
     tasks-file.repository.js      unchanged, out of scope
     fruits-file.repository.js     unchanged, out of scope
   scripts/
     db-migrate.js                 CLI: npm run db:migrate [--force] [--if-missing]
-    db-export.js                  CLI: npm run db:export [--out <dir>]
-  features/<name>/<name>.repository.js   picks the json or sqlite store from config.PERSISTENCE
+  features/<name>/<name>.repository.js   exports persistence/sqlite/<name>.store.js
 ```
 
 ### Layer rules (in addition to the restructure plan's)
@@ -274,21 +272,21 @@ Run on SQLite with the fallback available for **1–2 days** (decided at cutover
 5. **Decide what the seed becomes.** Either keep the committed JSON plus `import.js` as a seed loader, or replace them with a committed SQL seed. Also decide whether `export.js` stays as a backup tool. Neither choice affects the runtime.
 6. Still on JSON after Phase 8, by decision 10: `tasks-file.repository.js` and `fruits-file.repository.js`. Migrating or deleting them is separate work.
 
-## Fallback runbook (Phases 6–7)
+## Reset and back up (since Phase 8)
+
+The JSON fallback and its runbook were removed in Phase 8. What's left:
 
 ```bash
-# Switch to the JSON backend
-#   1. stop the server
-npm run db:export                       # writes server/data/db.json + custom-onboarding.json (originals backed up as *.bak-<ts>)
-PERSISTENCE=json npm run api            # PowerShell: $env:PERSISTENCE = 'json'; npm run api
-
-# Switch back to SQLite (keeps whatever was written while on JSON)
+# Reset: rebuild the database from the committed JSON seed (discards local edits)
 #   1. stop the server
 npm run db:migrate -- --force
 npm run api
+
+# Back up: with the server stopped, copy the database and its -wal file (if any)
+#   server/data/dashboard.sqlite   server/data/dashboard.sqlite-wal
 ```
 
-Never edit the exported files with PowerShell (`Set-Content`, `Out-File`). After Phase 3 a BOM no longer wipes data, but it still makes every `db.json` route return 500.
+`Ctrl+C` kills the server without closing the database, so its last writes may still be in the `-wal` file; copy both. To restore, stop the server and copy them back, deleting any other `-wal`/`-shm` in `server/data`. Never edit the seed with PowerShell (`Set-Content`, `Out-File`): the BOM it adds makes `db:migrate` refuse the file. The runbook as it was during Phases 6–7 is in git history ([running-backend.md](running-backend.md) §6 at `c836b08`).
 
 ## Risks
 
@@ -462,3 +460,60 @@ No snapshot entry changed and none was added; `sqlite-trace` is untouched. The n
   - **The fix is docs only, decided with the user:** install with `npx npm@12 ci`. No dependency, `engines` or `.npmrc` change.
 - **Phase 7's soak period is 1–2 days**, decided with the user at cutover (2026-11-11).
 - **Real data, checked by hand** in a temp copy of `develop`'s JSON. `db:migrate` reports 98 roster rows, 13 sprints, 16 retros, 18 capacity entries, 325 attendance rows (36 dropped), 12 attendance options, 2 office locations, 11 labels, 5 boards, 16 buckets, 96 tasks, 0 deletion logs, 0 reachouts and 13 competency rows, with the 3 dead keys skipped. `--if-missing` is a no-op, and a second plain run refuses. `--force` refuses while `npm run api` runs and succeeds after it stops, cleaning up the killed server's `-wal`/`-shm`. A fresh `npm run api` with `PERSISTENCE` unset builds the database and serves it.
+
+### Phase 8
+
+The Phase 7 soak passed with no fallback (confirmed by the user before Phase 8 started). Existing snapshot entries changed only as the snapshot rule allows for this phase: 70 json-only characterization entries were deleted (plus `fs-trace`'s 9, with its file), and `sqlite-trace` entries changed only in the three clean-up commits (2, 3 and 1 entries), each reviewed. 28 entries were added, add-only, before the clean-ups. No response or stored-data entry changed.
+
+- **Step order.** Steps 1–5 in the plan's order, then one commit tightening `fs-boundary` (it could only list the files that need `fs` once `export.js` was gone in step 5), then the docs. Each step's deletions are in their own commits:
+  1. step 1: delete the leaf files (`fs-trace`, `json-format`, `verify-storage-snapshots.js`); serve only from SQLite and drop the json-only tests (logic); delete `persistence/json/`, `select-store.js`, `test/helpers/backend.js` and the fixture `custom.csv`; delete `server/data/custom.csv`;
+  2. step 2: `npm run json-api` and the json-server references;
+  3. step 3: found-bugs;
+  4. step 4: each clean-up as an add-only commit of new entries, then the change;
+  5. step 5: the `db:export` script (logic), then the export's files.
+- **`fs-trace` is deleted entirely (decided with the user)**, including its scenarios for the files that stay on JSON (legacy tasks, the fruits test bench, and "routes that touch no data file"). Their fs calls are no longer pinned; their behaviour still is (characterization, `no-read-cache`).
+- **More json-only tests than the plan names.** Besides the tagged json-only tests, these pinned the JSON backend and went:
+  - the json half of `backend-differences` (L18);
+  - the json round trip;
+  - `store-interface`'s db.json unit of work and store-switch tests;
+  - `paths`' five `PERSISTENCE` tests;
+  - the custom.csv fixture-integrity test.
+
+  Plain tests were ported or added (no snapshots):
+  - the harness's "writes never touch server/data" (now: no file under `server/data` changes) and "beforeStart reshapes the data" (now: it edits the seed before the build);
+  - "a leftover `PERSISTENCE` (json, SQLite) is ignored";
+  - "every feature repository is its SQLite store".
+- **Three "not found" categories lost every case** (GET skill options, GET and POST onboarding resources: a missing or corrupt roster file). They're `notApplicable` now, which adds 3 skips and no entry.
+- **The feature repositories export their store directly**, so it's loaded with the app instead of on every call. The harness still refuses a second open app (both would share DATA_DIR and the module cache `store-dump.js` reads).
+- **`config` drops more than `PERSISTENCE`**: `dbPath`, `onboardingCsvPath` and `onboardingJsonPath` were only the JSON backend's. `nextId()` went with the JSON stores.
+- **Test scripts (decided with the user).** `test:api` and `test:api:update` run every test, with no backend argument (`test/tools/test-api.js`). `test:api:sqlite` and `test:api:exported` are gone. The second ran the JSON backend on exported fixtures, so it had nothing left to run, and the export went in step 5. With no skipped test holding snapshot entries, `test:api:update` can't drop entries any more.
+- **A leftover `PERSISTENCE` is ignored (decided with the user).** Config has no such key, and any value (`json`, or `SQLite`, which used to throw) loads the app on SQLite. The missing-database 500 lost " (PERSISTENCE=sqlite)"; no snapshot held it.
+- **`custom.csv` is deleted (decided with the user):** `server/data/custom.csv` (a training-progress sheet since the initial commit, read only by the JSON backend's CSV seeding) and the fixture copy.
+- **Step 3.** Each bug was checked first, on a temp copy of `origin/develop`'s seed with the server on SQLite (11 checks):
+  - **M3:** the roster, skill options and competency still return 200 with the seed corrupted after the build, and `db:migrate --force` refuses the corrupt seed;
+  - **M15:** the import refuses a fractional id, and new ids are integers;
+  - **L8 (roster part):** roster GETs and a POST change no file;
+  - **L9:** an upserted legacy record has one key per field;
+  - **L14:** no CSV code is left.
+
+  Evidence that named deleted tests now names surviving ones. **New bug L20:** the POC how-to page undoes an Edit click when that tab's HTML arrives after it, which makes `tests/poc-howto/poc-howto.spec.ts` flaky. It's reproduced on `develop` (`c836b08`), frontend-only, and not fixed.
+- **Step 4: all three clean-ups (decided with the user).** Each has an add-only commit first, with cases recorded on the code before it, so the SQL had to reproduce the JS semantics exactly:
+  - **Onboarding** (2 entries): the store gets `findById`/`findByEid`. POST's upsert and PATCH's lookup and 409 check use them instead of reading the whole roster.
+  - **Competency** (8 entries): the store gets `listGroupRecords`, one `LEFT JOIN` of the roster and the saved rows with `WHERE IFNULL(group_number, 0) = ?`, which keeps L17 (a member with no group is in group 0).
+    - It joins by exact eid, which keeps M9.
+    - It's the one place SQL crosses features. The service no longer reads onboarding's repository.
+  - **List filters** (18 entries): `WHERE` clauses, with the services still computing the JS value (`Number()`, `String()`, the truthy checks) and binding it.
+    - Buckets and tasks compare `board_id` as it's listed (NULL or an infinity lists as 0).
+    - Capacity and deletion logs compare ANY columns, where a number and the same digits as text stay apart, and a repeated parameter binds NULL.
+    - Reachouts compare `IFNULL(CAST(group_number AS TEXT), 'null')`.
+    - Attendance uses `js_number()`, a JS function registered on the server's connection only, which returns what `Number()` of the listed value was: text converts, NULL matches nothing, and an infinity counts as 0.
+  - **Real data:** on a copy of `origin/develop`'s seed, 184 filtered GETs return byte-identical responses before the clean-ups (`9019b61`) and after.
+- **Step 5: the seed stays JSON, and the export goes (decided with the user).** The committed `db.json` + `custom-onboarding.json` and `import.js` stay as the seed loader. `export.js`, `db:export`, their tests, `exported-fixtures.js` and the round-trip tests (every round trip went through the export) are deleted. A backup is a copy of `dashboard.sqlite` with its `-wal`, taken with the server stopped. `.gitignore` still ignores `server/data/*.bak-*`, so backups made before Phase 8 stay out of git.
+- **`fs-boundary` lists files, not a directory.**
+  - `fs`: the tasks and fruits repositories, `sqlite/import.js` and `sqlite/migrations.js`, plus `middleware/static.js`.
+  - `better-sqlite3`: `sqlite/connection.js` and `sqlite/import.js`.
+
+  Each entry must still exist and still need it. Adding `require('fs')` to `sqlite/tables.js` fails it.
+- **E2E.** After step 1, `npx playwright test` passed 76 of 78. The 2 failures were `poc-howto` specs (L20), and the same spec also failed on `develop`. At the end (`de3b87b` plus the docs), all 78 passed. Both runs had nothing on :3000, and the e2e API ran on its own temp copy of the seed.
+- **Clean clone.** A clone of the branch at `de3b87b` (the last code commit) installed with `npx npm@12 ci` (npm 12.2.2, 71 s, nothing compiled). `npm run api` on a temp `DATA_DIR` copy of its seed built the database on the first start (98 roster rows, 13 sprints, 16 retros, 18 capacity entries, 325 attendance rows, 12 options, 2 office locations, 11 labels, 5 boards, 16 buckets, 96 tasks, 0 deletion logs, 0 reachouts, 13 competency rows) and served `GET /api/onboarding-resources` with 98 rows.
+- **Counts:** `npm run test:api` passes 616 and skips 4 on a machine without a built `dist/`. The baseline was `test:api` 689/3 (json), `test:api:sqlite` 611/76 and `test:api:exported` 592/78.

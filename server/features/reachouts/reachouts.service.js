@@ -1,5 +1,5 @@
 // Project reachouts. Each call runs in one read() or write() of the reachouts
-// store (one load, at most one save). Bugs M11 and L11 in docs/found-bugs.md
+// store (one read session, or one transaction). Bugs M11 and L11 in docs/found-bugs.md
 // are kept (no roster check; changing a reachout's eid keeps its old groupNumber).
 const repository = require('./reachouts.repository');
 const { normalizeEid } = require('../../utils/eid');
@@ -28,8 +28,7 @@ function normalizeReachoutPayload(body) {
 /** group is the raw query value; falsy means no filter. Ids come back numeric. */
 function listReachouts(group) {
   return repository.read((store) => {
-    let rows = store.listRows();
-    if (group) rows = rows.filter(r => String(r.groupNumber) === String(group));
+    const rows = store.listRows(group ? { group: String(group) } : {});
     return rowsInColumnOrder('project-reachouts', rows.map(r => ({ ...r, id: Number(r.id) })));
   });
 }

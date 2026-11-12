@@ -3,8 +3,8 @@
 // These pin down current behaviour, bugs included. See docs/found-bugs.md.
 const { describe, test } = require('node:test');
 const {
-  describeEndpoint, runCase, snapshot, caseSkip, CREDENTIALS, MALFORMED_JSON,
-  removeFile, writeFile, steps,
+  describeEndpoint, notApplicable, runCase, snapshot, CREDENTIALS, MALFORMED_JSON,
+  writeFile, ROSTER_IS_A_TABLE,
 } = require('../../helpers/characterize');
 
 // ── Health and dashboard ─────────────────────────────────────────────────────
@@ -40,23 +40,8 @@ describeEndpoint('GET /api/skill-options', {
   },
   invalid: {
     'malformed JSON body': MALFORMED_JSON,
-    'roster record without an id is back-filled and the file rewritten': {
-      jsonOnly: 'roster id repair',
-      setup: (dataDir) => {
-        const fs = require('node:fs');
-        const file = require('node:path').join(dataDir, 'custom-onboarding.json');
-        const records = JSON.parse(fs.readFileSync(file, 'utf8'));
-        delete records[0].id;
-        fs.writeFileSync(file, JSON.stringify(records, null, 2) + '\n', 'utf8');
-      },
-    },
   },
-  notFound: {
-    'custom-onboarding.json missing: reseeded from custom.csv': { setup: removeFile('custom-onboarding.json') },
-    'custom-onboarding.json and custom.csv both missing': {
-      setup: steps(removeFile('custom-onboarding.json'), removeFile('custom.csv')),
-    },
-  },
+  notFound: notApplicable(ROSTER_IS_A_TABLE),
 });
 
 // ── Legacy tasks (data/tasks.json) ───────────────────────────────────────────
@@ -157,7 +142,7 @@ describe('unmatched routes and static mounts', () => {
     'OPTIONS preflight from any origin': ['OPTIONS', '/api/sprints', {}],
   };
   for (const [name, [method, urlPath, kase]] of Object.entries(cases)) {
-    test(name, { skip: caseSkip(kase) }, async (t) => {
+    test(name, async (t) => {
       snapshot(t, await runCase(method, urlPath, kase, CREDENTIALS.none));
     });
   }

@@ -444,6 +444,88 @@ outbound calls: none
 
 `;
 
+exports[`GET /api/attendance > invalid input › year and month match as numbers, whatever type they are stored as 1`] = `
+
+GET /api/attendance?year=2026&month=11
+credentials: group 5 POC (rafael.t.mendoza, role poc)
+
+status: 200
+content-type: application/json; charset=utf-8
+access-control-allow-origin: *
+x-powered-by: Express
+response body:
+  [
+    {
+      "id": 9,
+      "eid": "teresa.villanueva",
+      "year": "2026",
+      "month": 11,
+      "day": 3,
+      "status": "RTO",
+      "location": "Riverside Tech Tower 2"
+    },
+    {
+      "id": 10,
+      "eid": "liza.m.navarro",
+      "year": "0x7EA",
+      "month": 11,
+      "day": 3,
+      "status": "Present"
+    },
+    {
+      "id": 11,
+      "eid": "kevin.r.lim",
+      "year": 2026,
+      "month": " 11 ",
+      "day": 4,
+      "status": "Present"
+    }
+  ]
+
+stored data: unchanged
+data files: unchanged
+
+outbound calls: none
+
+`;
+
+exports[`GET /api/attendance > invalid input › year=0 matches an empty and an infinite year, not a missing one 1`] = `
+
+GET /api/attendance?year=0
+credentials: group 5 POC (rafael.t.mendoza, role poc)
+
+status: 200
+content-type: application/json; charset=utf-8
+access-control-allow-origin: *
+x-powered-by: Express
+response body:
+  [
+    {
+      "id": 9,
+      "eid": "teresa.villanueva",
+      "year": "",
+      "month": 11,
+      "day": 3,
+      "status": "RTO",
+      "location": "Riverside Tech Tower 2"
+    },
+    {
+      "id": 11,
+      "eid": "kevin.r.lim",
+      "year": null,
+      "month": 11,
+      "day": 4,
+      "status": "Present"
+    }
+  ]
+
+stored data: unchanged
+data files: unchanged
+
+outbound calls: none
+
+`;
+
 exports[`GET /api/attendance > no auth 1`] = `
 
 GET /api/attendance
@@ -756,6 +838,34 @@ outbound calls: none
 
 `;
 
+exports[`GET /api/capacity-entries > invalid input › a numeric sprintName is not matched by the same text 1`] = `
+
+GET /api/capacity-entries?sprintName=1
+credentials: group 5 POC (rafael.t.mendoza, role poc)
+
+status: 200
+content-type: application/json; charset=utf-8
+access-control-allow-origin: *
+x-powered-by: Express
+response body:
+  [
+    {
+      "id": 7,
+      "sprintName": "1",
+      "eid": "liza.m.navarro",
+      "cadence": 2,
+      "admin": 0,
+      "holiday": 0
+    }
+  ]
+
+stored data: unchanged
+data files: unchanged
+
+outbound calls: none
+
+`;
+
 exports[`GET /api/capacity-entries > invalid input › empty sprintName returns everything 1`] = `
 
 GET /api/capacity-entries?sprintName=
@@ -839,6 +949,25 @@ response body:
   </body>
   </html>
   
+
+stored data: unchanged
+data files: unchanged
+
+outbound calls: none
+
+`;
+
+exports[`GET /api/capacity-entries > invalid input › repeated sprintName matches nothing 1`] = `
+
+GET /api/capacity-entries?sprintName=Sprint%202&sprintName=Sprint%203
+credentials: group 5 POC (rafael.t.mendoza, role poc)
+
+status: 200
+content-type: application/json; charset=utf-8
+access-control-allow-origin: *
+x-powered-by: Express
+response body:
+  []
 
 stored data: unchanged
 data files: unchanged
@@ -1018,54 +1147,6 @@ credentials: no-group new joiner (paolo.d.ramos, role viewer)
 
 `;
 
-exports[`PATCH /api/attendance/:id > happy path › RTO cell changed to Absent keeps its stale location; string id becomes a number (raw db.json) 1`] = `
-
-PATCH /api/attendance/1
-credentials: group 5 POC (rafael.t.mendoza, role poc)
-request body:
-  {
-    "status": "Absent"
-  }
-
-status: 200
-content-type: application/json; charset=utf-8
-access-control-allow-origin: *
-x-powered-by: Express
-response body:
-  {
-    "id": 1,
-    "eid": "rafael.t.mendoza",
-    "year": 2026,
-    "month": 10,
-    "day": 27,
-    "status": "Absent",
-    "location": "Riverside Tech Tower 2"
-  }
-
-data files:
-  db.json: modified
-    raw text diff:
-      @@ -148,10 +148,10 @@
-         "attendance": [
-           {
-      -      "id": "1",
-      +      "id": 1,
-             "eid": "rafael.t.mendoza",
-             "year": 2026,
-             "month": 10,
-             "day": 27,
-      -      "status": "RTO",
-      +      "status": "Absent",
-             "location": "Riverside Tech Tower 2"
-           },
-    parsed JSON diff:
-      - /attendance[id="1"]: {"id":"1","eid":"rafael.t.mendoza","year":2026,"month":10,"day":27,"status":"RTO","location":"Riverside Tech Tower 2"}
-      + /attendance[id=1] (at index 0): {"id":1,"eid":"rafael.t.mendoza","year":2026,"month":10,"day":27,"status":"Absent","location":"Riverside Tech Tower 2"}
-
-outbound calls: none
-
-`;
-
 exports[`PATCH /api/attendance/:id > happy path › RTO cell changed to Absent keeps its stale location; string id becomes a number 1`] = `
 
 PATCH /api/attendance/1
@@ -1125,56 +1206,6 @@ response body:
 stored data:
   ~ /attendance[id=6]/status: "RTO" → "Absent"
 data files: unchanged
-
-outbound calls: none
-
-`;
-
-exports[`PATCH /api/attendance/:id > happy path › changes an RTO location (raw db.json) 1`] = `
-
-PATCH /api/attendance/1
-credentials: group 5 POC (rafael.t.mendoza, role poc)
-request body:
-  {
-    "status": "RTO",
-    "location": "Harbor Point Building B"
-  }
-
-status: 200
-content-type: application/json; charset=utf-8
-access-control-allow-origin: *
-x-powered-by: Express
-response body:
-  {
-    "id": 1,
-    "eid": "rafael.t.mendoza",
-    "year": 2026,
-    "month": 10,
-    "day": 27,
-    "status": "RTO",
-    "location": "Harbor Point Building B"
-  }
-
-data files:
-  db.json: modified
-    raw text diff:
-      @@ -148,5 +148,5 @@
-         "attendance": [
-           {
-      -      "id": "1",
-      +      "id": 1,
-             "eid": "rafael.t.mendoza",
-             "year": 2026,
-      @@ -154,5 +154,5 @@
-             "day": 27,
-             "status": "RTO",
-      -      "location": "Riverside Tech Tower 2"
-      +      "location": "Harbor Point Building B"
-           },
-           {
-    parsed JSON diff:
-      - /attendance[id="1"]: {"id":"1","eid":"rafael.t.mendoza","year":2026,"month":10,"day":27,"status":"RTO","location":"Riverside Tech Tower 2"}
-      + /attendance[id=1] (at index 0): {"id":1,"eid":"rafael.t.mendoza","year":2026,"month":10,"day":27,"status":"RTO","location":"Harbor Point Building B"}
 
 outbound calls: none
 
@@ -1244,45 +1275,6 @@ stored data:
   ~ /attendance[id=6]/eid: "liza.m.navarro" → "nobody.here"
   ~ /attendance[id=6]/status: "RTO" → "Nope"
 data files: unchanged
-
-outbound calls: none
-
-`;
-
-exports[`PATCH /api/attendance/:id > invalid input › empty body still rewrites the record (raw db.json) 1`] = `
-
-PATCH /api/attendance/2
-credentials: group 5 POC (rafael.t.mendoza, role poc)
-request body:
-  {}
-
-status: 200
-content-type: application/json; charset=utf-8
-access-control-allow-origin: *
-x-powered-by: Express
-response body:
-  {
-    "id": 2,
-    "eid": "liza.m.navarro",
-    "year": 2026,
-    "month": 10,
-    "day": 27,
-    "status": "Present"
-  }
-
-data files:
-  db.json: modified
-    raw text diff:
-      @@ -157,5 +157,5 @@
-           },
-           {
-      -      "id": "2",
-      +      "id": 2,
-             "eid": "liza.m.navarro",
-             "year": 2026,
-    parsed JSON diff:
-      - /attendance[id="2"]: {"id":"2","eid":"liza.m.navarro","year":2026,"month":10,"day":27,"status":"Present"}
-      + /attendance[id=2] (at index 1): {"id":2,"eid":"liza.m.navarro","year":2026,"month":10,"day":27,"status":"Present"}
 
 outbound calls: none
 

@@ -1,10 +1,9 @@
-// The capacity_entries table (the SQLite counterpart of
-// persistence/json/capacity.store.js). An entry is found by (sprintName, eid)
-// compared by value and type, as === does on db.json: sprint_name and eid are
+// The capacity_entries table. An entry is found by (sprintName, eid)
+// compared by value and type, as === did on db.json: sprint_name and eid are
 // ANY columns, so 1 and "1" are different keys (decision of 2026-11-10).
 const { prepare } = require('./connection');
 const { spec, fromColumns, bindValue } = require('./tables');
-const { createSqliteStore, selectAll, insertRow, updateRow } = require('./sqlite-store');
+const { createSqliteStore, selectWhere, insertRow, updateRow } = require('./sqlite-store');
 
 const COLUMNS = spec('capacity-entries').columns;
 const column = (api) => COLUMNS.find((c) => c.api === api);
@@ -16,9 +15,13 @@ function find(sprintName, eid) {
 }
 
 module.exports = createSqliteStore((changed) => ({
-  /** Every entry (no filtering). */
-  listEntries() {
-    return selectAll('capacity-entries');
+  /**
+   * Every entry, or only those whose sprintName is exactly sprintName (when it
+   * isn't undefined): same value and type, as === did, so the text "1" doesn't
+   * match a numeric 1, and null matches nothing.
+   */
+  listEntries({ sprintName } = {}) {
+    return selectWhere('capacity-entries', sprintName === undefined ? [] : [['sprint_name', sprintName]]);
   },
 
   /** The stored entry for (sprintName, eid), or undefined. */

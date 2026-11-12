@@ -1,4 +1,4 @@
-// The SQLite database behind PERSISTENCE=sqlite (docs/sqlite-migration-plan.md).
+// The SQLite database that holds the dashboard data (docs/sqlite-migration-plan.md).
 //
 // Loading this module opens nothing: the database is opened on the first
 // getDb() call, i.e. by the first query, and stays open until close(). Opening
@@ -30,6 +30,7 @@ function configure(database) {
 function getDb() {
   if (!db) {
     const opened = configure(open());
+    opened.function('js_number', { deterministic: true }, jsNumber);
     try {
       migrate(opened);
     } catch (error) {
@@ -42,6 +43,22 @@ function getDb() {
   return db;
 }
 
+/**
+ * SQL js_number(value): a stored value as JavaScript's Number() saw it when
+ * the services filtered listed rows in JS (docs/sqlite-migration-plan.md,
+ * Phase 8 clean-ups), so a WHERE clause matches the same rows. Text converts
+ * the way Number() converts it ("2026", " 11 ", "0x7EA", "" → 0). NULL (a
+ * missing field: Number(undefined) is NaN) and anything else NaN give NULL,
+ * which matches nothing. An infinity counts as 0: the stores read it back as
+ * null (tables.js), and Number(null) is 0.
+ */
+function jsNumber(value) {
+  if (value === null) return null;
+  if (value === Infinity || value === -Infinity) return 0;
+  const number = Number(value);
+  return Number.isNaN(number) ? null : number;
+}
+
 /** Opens the existing database file, or throws a clear error when there's none. */
 function open() {
   try {
@@ -49,7 +66,7 @@ function open() {
   } catch (error) {
     if (error.code !== 'SQLITE_CANTOPEN' && !/directory does not exist/.test(error.message)) throw error;
     throw new Error(
-      `No SQLite database at ${sqlitePath} (PERSISTENCE=sqlite). ` +
+      `No SQLite database at ${sqlitePath}. ` +
       'Build it from the JSON files with npm run db:migrate (docs/running-backend.md).',
       { cause: error },
     );

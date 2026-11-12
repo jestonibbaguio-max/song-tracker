@@ -1,7 +1,7 @@
 // Characterization tests: /api/sprints and /api/sprint-retros.
 // These pin down current behaviour, bugs included. See docs/found-bugs.md.
 const {
-  describeEndpoint, MALFORMED_JSON, editDb, addBom, removeFile,
+  describeEndpoint, MALFORMED_JSON, editDb,
 } = require('../../helpers/characterize');
 
 const dropCollection = (name) => editDb((db) => { delete db[name]; });
@@ -17,8 +17,6 @@ describeEndpoint('GET /api/sprints', {
   },
   notFound: {
     'sprints collection missing': { setup: dropCollection('sprints') },
-    'db.json missing': { setup: removeFile('db.json') },
-    'db.json starts with a UTF-8 BOM': { setup: addBom('db.json') },
   },
 });
 
@@ -38,7 +36,6 @@ describeEndpoint('POST /api/sprints', {
   },
   notFound: {
     'sprints collection missing': { setup: dropCollection('sprints'), body: { name: 'Sprint 1', start: '2026-10-13', end: '2026-10-24' } },
-    'db.json starts with a UTF-8 BOM': { setup: addBom('db.json'), body: { name: 'Sprint 4', start: '2026-11-24', end: '2026-12-05' } },
   },
 });
 
@@ -87,6 +84,10 @@ describeEndpoint('GET /api/sprint-retros', {
     'filters by sprintId and groupNumber': { path: '/api/sprint-retros?sprintId=2&groupNumber=1' },
   },
   invalid: {
+    // Added in Phase 8 before the list filters moved into SQL WHERE clauses.
+    'sprintId=1.0 matches sprint 1': { path: '/api/sprint-retros?sprintId=1.0' },
+    'groupNumber=5.0 matches group 5': { path: '/api/sprint-retros?groupNumber=5.0' },
+    'repeated sprintId matches nothing': { path: '/api/sprint-retros?sprintId=1&sprintId=2' },
     'non-numeric sprintId': { path: '/api/sprint-retros?sprintId=abc' },
     'empty groupNumber': { path: '/api/sprint-retros?groupNumber=' },
     'malformed JSON body': MALFORMED_JSON,

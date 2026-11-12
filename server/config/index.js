@@ -3,8 +3,10 @@ const path = require('path');
 // Server configuration: everything below is resolved once, when this module
 // loads, and never changes afterwards. Nothing here touches the filesystem.
 
-// Directory holding the JSON data files. Override with the DATA_DIR env var
-// (relative paths resolve against the current working directory).
+// Directory holding the data: the SQLite database, the JSON seed it's built
+// from, legacy tasks.json and the fruits test bench. Override with the
+// DATA_DIR env var (relative paths resolve against the current working
+// directory).
 const DATA_DIR = process.env.DATA_DIR
   ? path.resolve(process.env.DATA_DIR)
   : path.join(__dirname, '..', 'data');
@@ -12,50 +14,31 @@ const DATA_DIR = process.env.DATA_DIR
 // Port the API listens on (used by server.js).
 const PORT = Number(process.env.PORT || 3000);
 
-// Which backend stores the dashboard data: 'json' (db.json and the roster file
-// below) or 'sqlite' (sqlitePath). Override with the PERSISTENCE env var; unset
-// or empty means DEFAULT_PERSISTENCE, which the API tests' harness follows too
-// (test/helpers/backend.js). The default is 'sqlite' since the cutover
-// (docs/sqlite-migration-plan.md, Phase 6); 'json' is the fallback until
-// Phase 8 removes it.
-// An unknown value throws here, so a typo can't silently pick a backend.
-const PERSISTENCE_BACKENDS = ['json', 'sqlite'];
-const DEFAULT_PERSISTENCE = 'sqlite';
-const PERSISTENCE = process.env.PERSISTENCE || DEFAULT_PERSISTENCE;
-if (!PERSISTENCE_BACKENDS.includes(PERSISTENCE)) {
-  throw new Error(`PERSISTENCE must be one of ${PERSISTENCE_BACKENDS.join(', ')}; got "${PERSISTENCE}"`);
-}
-
 // The built Angular app, served as static files with an index.html fallback.
 const browserDir = path.join(__dirname, '..', '..', 'dist', 'atcp-song-dashboard', 'browser');
 const browserIndexPath = path.join(browserDir, 'index.html');
 
-// Data files. Each one has its own owner and its own read/write rules
+// Data files that stay on JSON (docs/sqlite-migration-plan.md, decision 10).
+// Each one has its own owner and its own read/write rules
 // (see docs/server-restructure-plan.md).
-const dbPath = path.join(DATA_DIR, 'db.json');
 const tasksPath = path.join(DATA_DIR, 'tasks.json');
-const onboardingCsvPath = path.join(DATA_DIR, 'custom.csv');
-const onboardingJsonPath = path.join(DATA_DIR, 'custom-onboarding.json');
 const testBenchDir = path.join(DATA_DIR, 'test_bwd');
 const fruitsDbPath = path.join(testBenchDir, 'db.json');
 
-// The SQLite database (used when PERSISTENCE is 'sqlite'). Built from the JSON
-// files by `npm run db:migrate`; gitignored. Nothing opens it when this loads.
+// The SQLite database that holds the dashboard data. Built from the JSON seed
+// (db.json and custom-onboarding.json in DATA_DIR) by `npm run db:migrate`;
+// gitignored. Nothing opens it when this loads. SQLite is the only backend
+// since Phase 8 of docs/sqlite-migration-plan.md, so a PERSISTENCE env var
+// left over from the fallback is ignored.
 const sqlitePath = path.join(DATA_DIR, 'dashboard.sqlite');
 
 module.exports = {
   DATA_DIR,
   PORT,
-  PERSISTENCE,
-  PERSISTENCE_BACKENDS,
-  DEFAULT_PERSISTENCE,
   sqlitePath,
   browserDir,
   browserIndexPath,
-  dbPath,
   tasksPath,
-  onboardingCsvPath,
-  onboardingJsonPath,
   testBenchDir,
   fruitsDbPath,
 };

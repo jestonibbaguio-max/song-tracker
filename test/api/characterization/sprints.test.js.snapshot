@@ -379,6 +379,50 @@ outbound calls: none
 
 `;
 
+exports[`GET /api/sprint-retros > invalid input › groupNumber=5.0 matches group 5 1`] = `
+
+GET /api/sprint-retros?groupNumber=5.0
+credentials: group 5 POC (rafael.t.mendoza, role poc)
+
+status: 200
+content-type: application/json; charset=utf-8
+access-control-allow-origin: *
+x-powered-by: Express
+response body:
+  [
+    {
+      "id": 1,
+      "sprintId": 1,
+      "groupNumber": 5,
+      "category": "improve",
+      "text": "Pair on AEM environment setup earlier so blockers surface on day one",
+      "createdAt": "2026-10-23T07:02:11.408Z"
+    },
+    {
+      "id": 2,
+      "sprintId": 1,
+      "groupNumber": 5,
+      "category": "didnt-go-well",
+      "text": "Local author instance setup took most of the first week",
+      "createdAt": "2026-10-23T07:03:40.917Z"
+    },
+    {
+      "id": 4,
+      "sprintId": 1,
+      "groupNumber": 5,
+      "category": "went-well",
+      "text": "Daily knowledge-share sessions kept the new joiners unblocked",
+      "createdAt": "2026-10-23T07:05:02.233Z"
+    }
+  ]
+
+stored data: unchanged
+data files: unchanged
+
+outbound calls: none
+
+`;
+
 exports[`GET /api/sprint-retros > invalid input › malformed JSON body 1`] = `
 
 GET /api/sprint-retros
@@ -421,6 +465,69 @@ access-control-allow-origin: *
 x-powered-by: Express
 response body:
   []
+
+stored data: unchanged
+data files: unchanged
+
+outbound calls: none
+
+`;
+
+exports[`GET /api/sprint-retros > invalid input › repeated sprintId matches nothing 1`] = `
+
+GET /api/sprint-retros?sprintId=1&sprintId=2
+credentials: group 5 POC (rafael.t.mendoza, role poc)
+
+status: 200
+content-type: application/json; charset=utf-8
+access-control-allow-origin: *
+x-powered-by: Express
+response body:
+  []
+
+stored data: unchanged
+data files: unchanged
+
+outbound calls: none
+
+`;
+
+exports[`GET /api/sprint-retros > invalid input › sprintId=1.0 matches sprint 1 1`] = `
+
+GET /api/sprint-retros?sprintId=1.0
+credentials: group 5 POC (rafael.t.mendoza, role poc)
+
+status: 200
+content-type: application/json; charset=utf-8
+access-control-allow-origin: *
+x-powered-by: Express
+response body:
+  [
+    {
+      "id": 1,
+      "sprintId": 1,
+      "groupNumber": 5,
+      "category": "improve",
+      "text": "Pair on AEM environment setup earlier so blockers surface on day one",
+      "createdAt": "2026-10-23T07:02:11.408Z"
+    },
+    {
+      "id": 2,
+      "sprintId": 1,
+      "groupNumber": 5,
+      "category": "didnt-go-well",
+      "text": "Local author instance setup took most of the first week",
+      "createdAt": "2026-10-23T07:03:40.917Z"
+    },
+    {
+      "id": 4,
+      "sprintId": 1,
+      "groupNumber": 5,
+      "category": "went-well",
+      "text": "Daily knowledge-share sessions kept the new joiners unblocked",
+      "createdAt": "2026-10-23T07:05:02.233Z"
+    }
+  ]
 
 stored data: unchanged
 data files: unchanged
@@ -579,52 +686,6 @@ GET /api/sprints
 credentials: none
 
 => identical to the happy path (lists every sprint): same status, body, data-file changes and outbound calls
-
-`;
-
-exports[`GET /api/sprints > not found › db.json missing 1`] = `
-
-GET /api/sprints
-credentials: group 5 POC (rafael.t.mendoza, role poc)
-
-status: 200
-content-type: application/json; charset=utf-8
-access-control-allow-origin: *
-x-powered-by: Express
-response body:
-  []
-
-data files: unchanged
-
-outbound calls: none
-
-`;
-
-exports[`GET /api/sprints > not found › db.json starts with a UTF-8 BOM 1`] = `
-
-GET /api/sprints
-credentials: group 5 POC (rafael.t.mendoza, role poc)
-
-status: 500
-content-type: text/html; charset=utf-8
-access-control-allow-origin: *
-x-powered-by: Express
-response body:
-  <!DOCTYPE html>
-  <html lang="en">
-  <head>
-  <meta charset="utf-8">
-  <title>Error</title>
-  </head>
-  <body>
-  <pre>Error: db.json is not valid JSON: Unexpected token &#39;﻿&#39;, &quot;﻿{<br> &nbsp;&quot;capa&quot;... is not valid JSON<br> &nbsp; &nbsp;at <stack trace removed></pre>
-  </body>
-  </html>
-  
-
-data files: unchanged
-
-outbound calls: none
 
 `;
 
@@ -1997,40 +2058,6 @@ request body:
   }
 
 => identical to the happy path (creates a sprint (as the planner sends it)): same status, body, data-file changes and outbound calls
-
-`;
-
-exports[`POST /api/sprints > not found › db.json starts with a UTF-8 BOM 1`] = `
-
-POST /api/sprints
-credentials: group 5 POC (rafael.t.mendoza, role poc)
-request body:
-  {
-    "name": "Sprint 4",
-    "start": "2026-11-24",
-    "end": "2026-12-05"
-  }
-
-status: 500
-content-type: text/html; charset=utf-8
-access-control-allow-origin: *
-x-powered-by: Express
-response body:
-  <!DOCTYPE html>
-  <html lang="en">
-  <head>
-  <meta charset="utf-8">
-  <title>Error</title>
-  </head>
-  <body>
-  <pre>Error: db.json is not valid JSON: Unexpected token &#39;﻿&#39;, &quot;﻿{<br> &nbsp;&quot;capa&quot;... is not valid JSON<br> &nbsp; &nbsp;at <stack trace removed></pre>
-  </body>
-  </html>
-  
-
-data files: unchanged
-
-outbound calls: none
 
 `;
 

@@ -1,7 +1,8 @@
 // Guardrail (docs/sqlite-migration-plan.md, Phase 4 step 5): the SQL each
-// request runs, on the SQLite backend.
+// request runs.
 //
-// The counterpart of fs-trace for the database: the characterization snapshots
+// It replaced fs-trace, which pinned the JSON backend's file calls, in Phase 8.
+// The characterization snapshots
 // pin what a request returns and what ends up stored, but not how. A query per
 // row (N+1), a write outside a transaction, a second transaction where one
 // should do, or a cached result instead of a query all leave those snapshots
@@ -13,14 +14,13 @@
 // The statements are better-sqlite3's expanded SQL, with the bound values in
 // place. Timestamps the server generates are replaced with <timestamp>.
 //
-// Phase 8's clean-ups (targeted queries, WHERE filters, a JOIN) will change
-// these snapshots on purpose; that's the one place they may change.
+// Phase 8's clean-ups (targeted queries, WHERE filters, a JOIN) change these
+// snapshots on purpose, as reviewed updates; nothing else may.
 const { describe, test } = require('node:test');
 const fs = require('node:fs');
 const path = require('node:path');
 const { startTestServer, SERVER_DIR, FIXTURES_DIR } = require('../../helpers/test-server');
 const { DB_ROUTES, newJoiner, teresaEdited } = require('../../helpers/sample-requests');
-const { backendSkip } = require('../../helpers/backend');
 
 process.env.NODE_ENV = 'test';
 
@@ -80,10 +80,10 @@ async function scenario(t, requests) {
 
 const get = (p, label) => ({ method: 'GET', path: p, label });
 
-describe('guardrail: SQL statements per request', { skip: backendSkip('sqlite', 'traces the SQLite backend') }, () => {
+describe('guardrail: SQL statements per request', () => {
   test('db.json routes, in order on one app (each re-reads; one transaction per write)', async (t) => {
     const requests = [];
-    for (const r of DB_ROUTES.filter((x) => !x.note)) {
+    for (const r of DB_ROUTES) {
       requests.push(r);
       if (r.method !== 'GET') requests.push(get(DB_ROUTES.find((x) => x.method === 'GET' && x.collection === r.collection).path, 'read back'));
     }
@@ -120,6 +120,47 @@ describe('guardrail: SQL statements per request', { skip: backendSkip('sqlite', 
       get('/api/competency-records?group=5'),
       get('/api/competency-records'),
       { method: 'PATCH', path: '/api/competency-records/liza.m.navarro', body: { primaryProficiency: 'P3' } },
+    ]);
+  });
+
+  // Added in Phase 8 before the onboarding clean-up (targeted queries), so its
+  // trace diff shows the lookups by id and by eid that replace full reads.
+  test('onboarding lookups by id and by eid', async (t) => {
+    await scenario(t, [
+      { method: 'POST', path: '/api/onboarding-resources', body: teresaEdited, label: 'existing eid: upserts' },
+      { method: 'PATCH', path: '/api/onboarding-resources/5', body: { ...teresaEdited, eid: 'rafael.t.mendoza' }, label: 'eid of another record: 409' },
+      { method: 'PATCH', path: '/api/onboarding-resources/abc', body: teresaEdited, label: 'non-numeric id: 404' },
+      { method: 'PATCH', path: '/api/onboarding-resources/5.5', body: teresaEdited, label: 'fractional id: 404' },
+    ]);
+  });
+
+  // Added in Phase 8 before the competency clean-up (one SQL JOIN).
+  test('competency groups', async (t) => {
+    await scenario(t, [
+      get('/api/competency-records?group=5'),
+      get('/api/competency-records?group=1'),
+      get('/api/competency-records?group=0', 'members with no group (L17)'),
+      get('/api/competency-records?group=3', 'no members'),
+      get('/api/competency-records?group=abc'),
+      get('/api/competency-records?group=', 'empty: group 5'),
+    ]);
+  });
+
+  // Added in Phase 8 before the list filters moved into SQL WHERE clauses.
+  test('filtered lists', async (t) => {
+    await scenario(t, [
+      get('/api/attendance?year=2026&month=11'),
+      get('/api/attendance?month=10'),
+      get('/api/capacity-entries?sprintName=Sprint%202'),
+      get('/api/planner-boards?groupNumber=5'),
+      get('/api/planner-buckets?boardId=2'),
+      get('/api/planner-tasks?boardId=1'),
+      get('/api/deletion-logs?eid=rafael.t.mendoza'),
+      get('/api/project-reachouts?group=5'),
+      get('/api/sprint-retros?sprintId=1&groupNumber=5'),
+      get('/api/sprint-retros?groupNumber=1'),
+      get('/api/planner-tasks?boardId=abc', 'non-numeric: matches nothing'),
+      get('/api/deletion-logs?eid=a&eid=b', 'repeated: matches nothing'),
     ]);
   });
 

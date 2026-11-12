@@ -1,9 +1,5 @@
-// The lookups store for the configured backend (docs/sqlite-migration-plan.md).
-// read(fn) hands fn a session with attendanceOptions(), officeLocations() and
-// plannerLabels().
-const { selectStore } = require('../../persistence/select-store');
-
-module.exports = selectStore('lookups', ['read'], {
-  json: () => require('../../persistence/json/lookups.store'),
-  sqlite: () => require('../../persistence/sqlite/lookups.store'),
-});
+// The lookups store: persistence/sqlite/lookups.store.js. SQLite is the
+// only backend since Phase 8 (docs/sqlite-migration-plan.md).
+// read(fn) hands fn a session with attendanceOptions(), officeLocations()
+// and plannerLabels().
+module.exports = require('../../persistence/sqlite/lookups.store');
