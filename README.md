@@ -39,23 +39,22 @@ The first start builds your own local database, `server/data/dashboard.sqlite`, 
 
 ## Overview
 
-The ATCP Song Dashboard provides two primary views:
+The ATCP Song Dashboard helps bench leads (POCs) run the Song bench: who is on it, their attendance, the group's sprint work, retros, skill proficiency, trainings, mock interviews and the projects each person has been put forward for. Every page is scoped by the **group filter** in the sidebar.
 
-- **Dashboard** — A summary view showing KPI stats, an onboarding checklist, active Song initiatives, announcements, POC contacts, and quick-access tools.
-- **Onboarding** — A form and searchable table for managing resource onboarding records (EID, name, project assignment, skill tags, dates, and more).
+| Page | What it's for |
+|---|---|
+| Dashboard | Summary: notice bar, KPI cards, onboarding checklist, initiatives, announcements, POC contacts, quick tools |
+| Resources | The bench roster: add, edit and delete resource profiles |
+| Attendance Tracker | Monthly attendance grid per group, with RTO office locations |
+| Planner | Microsoft Planner-style boards, buckets and tasks per group, with Grid, Board (kanban) and Sprint Burndown views and a capacity plan |
+| Sprint Retros | Went well / didn't go well / improve cards per sprint and group (under the Planner menu) |
+| myCompetency | Skill proficiency (P1–P5) and retake dates per group member, coloured by minimum requirement |
+| Bench Trainings / Group Trainings | Course checklists per resource |
+| Mock Interview | Mock assessment summary, feedback and head count |
+| Project Reachouts | Which resource was put forward for which project, and the status |
+| POC how-to | Guides for running calls, reports and sprint prep |
 
-### Mock Assessment Summary
-
-In Head Count, the Communication, Technical, and Client Interview status pills cycle
-through Pending, Conducted, Pass, and Fail, then back to Pending. Results are saved
-per resource in browser local storage. Previously conducted communication assessments
-remain Conducted until a result is selected.
-
-The summary table automatically calculates conducted, passed, and failed counts for
-each stream within the selected group. Pass and fail rates are the respective counts
-divided by total conducted (including assessments awaiting results), rounded to two
-decimal places; both rates are 0% when none have been conducted. These counts and
-rates are read-only in the edit dialog.
+See [Features](#features) for details and [DASHBOARD_POLICIES.md](DASHBOARD_POLICIES.md) for the business rules.
 
 ---
 
@@ -81,10 +80,14 @@ rates are read-only in the edit dialog.
 song-tracker/
 ├── src/                          # Angular frontend source
 │   ├── app/
-│   │   ├── app.component.ts      # Root component — all app logic and state
-│   │   ├── app.component.html    # Template — dashboard & onboarding views
-│   │   ├── app.component.css     # Component-scoped styles
-│   │   └── app.config.ts         # App-level providers (HttpClient, zone)
+│   │   ├── app.component.ts      # Shell: sidebar, activeView switching, nav label → view map
+│   │   ├── app.component.html    # Sidebar + the @if/@else if chain that renders one view
+│   │   ├── app.component.css     # Effectively global (ViewEncapsulation.None)
+│   │   ├── app.config.ts         # App-level providers (HttpClient, zone)
+│   │   ├── models/types.ts       # Shared interfaces
+│   │   ├── services/             # SharedDataService (roster cache, group filter, apiUrl), POC how-to content
+│   │   └── views/<page>/         # One standalone component per page
+│   ├── envinronments/            # environment.development.ts (apiUrl; the folder name is misspelt)
 │   ├── main.ts                   # Angular bootstrap entry point
 │   ├── index.html                # Host HTML page
 │   └── styles.css                # Global styles (Bootstrap, CSS variables)
@@ -102,7 +105,10 @@ song-tracker/
 │       ├── db.json               # Seed: sprints, attendance, planner, capacity, reachouts, competency…
 │       ├── custom-onboarding.json  # Seed: the onboarding roster
 │       └── custom.xlsx           # Source Excel file (reference only)
-├── public/                       # Static assets (favicon)
+├── public/                       # Static assets (favicon, poc-howto/*.html guides)
+├── test/                         # API tests (node:test): characterization, guardrails, fixtures
+├── tests/                        # Playwright e2e specs, one folder per page
+├── docs/                         # Backend overview, running the backend, found bugs, migration plans
 ├── dist/                         # Production build output (generated)
 ├── angular.json                  # Angular CLI workspace config
 ├── package.json                  # Dependencies and npm scripts
@@ -216,15 +222,19 @@ Output goes to `dist/atcp-song-dashboard/browser/`. In production mode, Express 
 
 ### Frontend
 
-The entire frontend is a **single Angular standalone component** (`AppComponent`). There are no child components, services, guards, or NgModules. This monolithic component approach is intentional for the current scope — it is fast to build and easy to follow.
+The frontend is a set of **standalone Angular components**: `AppComponent` is the shell (sidebar and main area), and each page is its own component in `src/app/views/<page>/`. There are no NgModules or guards.
 
-**View switching** is done via an `activeView` property (`'dashboard' | 'onboarding'`). Angular's `@if` control flow shows or hides the relevant sections. There is no Angular Router; the URL does not change between views.
+**View switching** is done via an `activeView` property on `AppComponent` (`'dashboard' | 'onboarding' | 'attendance' | 'planner' | …`), saved in `localStorage['active-view']`. An `@if / @else if` chain in `app.component.html` renders one view component. There is no Angular Router; the URL does not change between views. The sidebar items come from `GET /api/dashboard`, and `selectNav()` maps each label to a view.
 
-All state is held as plain TypeScript properties on `AppComponent`, populated by `HttpClient` calls to the Express API.
+To add a page: extend the `activeView` union and `validViews` array, add the label to the nav maps in `app.component.ts`, add a template branch, import the component, and add the nav item in `server/features/dashboard/dashboard.service.js`.
+
+**Shared state** lives in `SharedDataService` (`src/app/services/shared-data.service.ts`): the cached roster (`onboardingResources`), office locations, the sidebar group filter (`attendanceGroup`, used by every page), and `apiUrl(path)`. Always build API URLs with `apiUrl()`: on port 4200/4201 it prefixes `http://localhost:3000`, otherwise it returns the relative path, so the same build works when Express serves it.
+
+Most pages call `HttpClient` directly from the component; Project Reachouts has its own data service. Some features are **frontend-only for now**: trainings progress (mocked with `of(...)`), mock interviews (browser localStorage) and POC how-to edits (in memory).
 
 ### Backend
 
-The Express server (`server/server.js`) exposes a REST API with the following responsibilities:
+The Express server (`server/server.js` starts it, `server/app.js` composes it) has one folder per feature in `server/features/<name>/`, each split into routes → controller → service → repository. Each repository exposes a SQLite store from `server/persistence/sqlite/`, the only code that runs SQL. See [docs/backend-overview.md](docs/backend-overview.md) for the details. It:
 
 - Returns static dashboard content (currently hardcoded in `server/features/dashboard/dashboard.service.js`)
 - Manages onboarding resource records via CRUD endpoints
@@ -253,24 +263,75 @@ Browser (Angular)  <-->  HTTP (JSON)  <-->  Express API  <-->  SQLite (server/da
 - **POC contacts** — Point-of-contact roster with pending counts
 - **Quick tools** — Shortcut buttons for common actions
 
-### Onboarding View
+The Dashboard's content is static: it's hard-coded in `server/features/dashboard/dashboard.service.js`.
 
-- **Resource form** — Add or edit onboarding records with fields:
-  - EID, Resource Name, POC, Group (1–6)
-  - Primary Skill, Secondary Skill, Additional Skills (tag input with deduplication)
-  - Project Deployed (Yes/No), Project Name (auto-set to "Song Bench" when not deployed)
-  - Onboarding Date (native OS date picker via a hidden `<input type="date">`)
-  - Status, Location
-- **Search and filter** — Client-side search across name, EID, project, POC, and skills
-- **Skill autocomplete** — Native `<datalist>` populated from all existing records via `/api/skill-options`
-- **Edit flow** — Inline editing via row action; cancel returns to blank form
-- **Skill removal confirmation** — Three-step confirm dialog (built with Bootstrap CSS + Angular `@if`, no Bootstrap JS)
+### Resources (Onboarding)
+
+- **Resource form** — Add or edit a resource profile: name, EID, hire date, roll-in date, project deployed (Yes/No), deployment date, project name (forced to "Song Bench" when not deployed), POC, DN, roll-off date, from project, CL level, group, primary and secondary skill with years, additional skills (tag input), office location
+- **Table** — Name, EID, project (with a Deployed badge), group, skills; sorted by name, 10 per page, filtered by the sidebar group and a search box
+- **Edit flow** — Clicking a name opens the form pre-filled; after saving it stays open until **Cancel Edit**
+- **Delete** — Trash icon, confirmed by typing `DELETE`
+- **Server rules** — `POST` upserts by EID; EIDs are lower-cased with everything from `@` removed; dates go over the wire as `MM/DD/YYYY`
+
+Rules: [DASHBOARD_POLICIES.md](DASHBOARD_POLICIES.md) §6.
+
+### Attendance Tracker
+
+A month grid with one row per group member and one cell per day. Each cell holds a status (`Present`, `RTO`, `Absent`, `SL`, `VL`, …); choosing `RTO` asks for an office location, and clearing a cell deletes the entry. The selected month is remembered in localStorage.
+
+### Planner and Sprint Retros
+
+- **Boards → buckets → tasks** — one board per group; one bucket per sprint, created automatically the first time a sprint is opened
+- **Views** — Grid (table), Board (kanban with drag and drop) and Dashboard (sprint burndown chart)
+- **Task dialog** — title, assignee, dates, priority, labels, description, acceptance criteria, checklist and comments (saved with the task); deleting a task or comment writes a deletion log
+- **Sprints** — created and edited from the sprint selector (`YYYY-MM-DD` dates)
+- **Capacity Plan** — per-person cadence, admin and holiday hours for the sprint; refreshes attendance and tasks every 2.5 s while open
+- **Sprint Retros** — went well / didn't go well / improve cards per sprint and group
+
+Rules: [DASHBOARD_POLICIES.md](DASHBOARD_POLICIES.md) §10–14.
+
+### myCompetency
+
+One row per member of the selected group, whether or not they have saved data yet: primary and secondary skill, proficiency (N/A, TBD, P1–P5) and retake dates. Each field saves as soon as it changes. Rows are green when the member meets the minimum for their CL level (P2 for CL 11–12, P3 for CL 6–10) and yellow otherwise. Rules: [DASHBOARD_POLICIES.md](DASHBOARD_POLICIES.md) §1–5.
+
+### Project Reachouts
+
+One row per resource put forward for a project: EID, project, tech/role, POC EID, status, details and group. Status (`CV Requested`, `Interview Scheduled`, `Passed`, `Failed`, `Pending Update`) is editable inline; everything else through the add/edit dialog. Rules: [DASHBOARD_POLICIES.md](DASHBOARD_POLICIES.md) §15.
+
+### Bench Trainings and Group Trainings
+
+Course checklists per resource: a bench-wide course list, and course tracks per group (only Group 5 has courses so far). **Progress is mocked in the frontend** and isn't saved to the server yet.
+
+### Mock Interview
+
+Three tabs: Summary Table, Feedback and Head Count. **Everything is saved in the browser's localStorage**, so each user sees only their own data.
+
+In Head Count, the Communication, Technical, and Client Interview status pills cycle
+through Pending, Conducted, Pass, and Fail, then back to Pending. Results are saved
+per resource in browser local storage. Previously conducted communication assessments
+remain Conducted until a result is selected.
+
+The summary table automatically calculates conducted, passed, and failed counts for
+each stream within the selected group. Pass and fail rates are the respective counts
+divided by total conducted (including assessments awaiting results), rounded to two
+decimal places; both rates are 0% when none have been conducted. These counts and
+rates are read-only in the edit dialog.
+
+### POC how-to
+
+Five guides (AM call with group, AM call with execs, EOD call, preparing the report, new sprint prep), loaded from `public/poc-howto/*.html` and editable in a rich-text editor. **Edits aren't saved**: they're lost on reload.
+
+### Placeholder pages
+
+Initiatives, Reports, Resource tracking, Announcements and Settings are in the sidebar but show a "coming soon" page.
 
 ---
 
 ## API Reference
 
-All endpoints are prefixed with `/api`. The server runs on port **3000**.
+All endpoints are prefixed with `/api`. The server runs on port **3000**. This section covers the main ones; [docs/backend-overview.md](docs/backend-overview.md) §4 lists every route with its validation, and §7 every call the frontend makes with its payload.
+
+> A GET to an `/api` path that doesn't exist returns `index.html` with status 200 (the SPA fallback), not a 404.
 
 ### Health
 
@@ -289,11 +350,28 @@ All endpoints are prefixed with `/api`. The server runs on port **3000**.
 | Method | Path | Description |
 |---|---|---|
 | `GET` | `/api/onboarding-resources` | Returns all records, sorted newest-first |
-| `POST` | `/api/onboarding-resources` | Creates a new record. If the EID already exists, updates the existing record silently (upsert). |
-| `PATCH` | `/api/onboarding-resources/:id` | Updates a specific record by ID. If the new EID conflicts with a different record, returns `409`. If the EID is changed to a new value, creates a new record. |
+| `POST` | `/api/onboarding-resources` | Creates a new record (201). If the EID already exists, updates the existing record silently (upsert, 200). `name`, `eid`, `hireDate` and `rollInDate` are required |
+| `PATCH` | `/api/onboarding-resources/:id` | Updates a specific record by ID; send the full record, since missing fields are blanked. If the new EID conflicts with a different record, returns `409`. If the EID is changed to a new value, creates a new record and leaves the old one |
+| `DELETE` | `/api/onboarding-resources/:id` | Deletes the record; `404` if it doesn't exist |
 | `GET` | `/api/skill-options` | Returns a deduplicated, sorted list of all skills from all records |
 
-### Tasks (stub — not yet surfaced in UI)
+### Other dashboard data
+
+| Path | Methods | Used by |
+|---|---|---|
+| `/api/attendance` | GET (`?year`, `?month`), POST, PATCH `/:id`, DELETE `/:id` | Attendance Tracker, Planner capacity |
+| `/api/attendance-options`, `/api/office-locations`, `/api/planner-labels` | GET (read-only lookups) | Attendance, Resources, Planner |
+| `/api/sprints` | GET, POST, PATCH `/:id`, DELETE `/:id` | Planner, Sprint Retros |
+| `/api/sprint-retros` | GET (`?sprintId`, `?groupNumber`), POST, PATCH `/:id`, DELETE `/:id` | Sprint Retros |
+| `/api/capacity-entries` | GET (`?sprintName`), POST (upsert by sprint name + EID) | Planner capacity |
+| `/api/planner-boards` | GET (`?groupNumber`) | Planner |
+| `/api/planner-buckets` | GET (`?boardId`), POST | Planner |
+| `/api/planner-tasks` | GET (`?boardId`), POST, PATCH `/:id`, DELETE `/:id` | Planner |
+| `/api/deletion-logs` | GET (`?eid`), POST | Planner (task and comment deletes) |
+| `/api/project-reachouts` | GET (`?group`), POST, PATCH `/:id`, DELETE `/:id` | Project Reachouts |
+| `/api/competency-records` | GET (`?group`, default 5), PATCH `/:eid` (upsert) | myCompetency |
+
+### Tasks (legacy — not used by the UI, stored in `tasks.json`)
 
 | Method | Path | Description |
 |---|---|---|
@@ -311,24 +389,31 @@ All endpoints accept and return `application/json`.
 ```json
 {
   "id": 1,
-  "eid": "EMP001",
-  "resource_name": "Jane Doe",
-  "poc": "John Smith",
-  "group_num": 2,
-  "primary_skill": "UX Design",
-  "secondary_skill": "Research",
-  "another_skills": ["Figma", "Prototyping"],
-  "project_deployed": "Yes",
-  "project_name": "Project Alpha",
-  "onboarding_date": "07/15/2026",
-  "status": "Active",
-  "location": "Manila",
-  "created_at": "2026-07-15T08:00:00.000Z",
-  "updated_at": "2026-07-15T08:00:00.000Z"
+  "name": "Jane Doe",
+  "eid": "jane.doe",
+  "hireDate": "07/01/2026",
+  "rollInDate": "07/15/2026",
+  "projectDeployed": "Yes",
+  "deploymentDate": "08/01/2026",
+  "projectName": "Project Alpha",
+  "poc": "john.smith",
+  "dn": "No",
+  "rollOffDate": "",
+  "fromProject": "",
+  "clLevel": "11",
+  "groupNumber": 2,
+  "primarySkill": "UX Design",
+  "primaryYears": "2",
+  "secondarySkill": "Research",
+  "secondaryYears": "1",
+  "anotherSkills": ["Figma", "Prototyping"],
+  "officeLocation": "Manila",
+  "createdAt": "2026-07-15T08:00:00.000Z",
+  "updatedAt": "2026-07-15T08:00:00.000Z"
 }
 ```
 
-Dates are stored and returned in **MM/DD/YYYY** format. The server normalizes and auto-corrects transposed day/month values on both create and update.
+Keys are camelCase (the server also accepts snake_case on input). Onboarding dates are stored and returned in **MM/DD/YYYY** format; `YYYY-MM-DD` input is converted, and a `D/M/YYYY` date whose first part is over 12 is swapped to `M/D`. Sprint dates use `YYYY-MM-DD`.
 
 ---
 
@@ -429,11 +514,13 @@ Configured in `angular.json`:
 - **No Angular Router** — The URL does not reflect the current view; deep-linking and browser back/forward are not supported.
 - **Dashboard data is hardcoded** — The `/api/dashboard` response is a static JavaScript object; it does not read from a database. Changes require editing `server/features/dashboard/dashboard.service.js` directly.
 - **No authentication or authorization** — All endpoints are publicly accessible. The app is intended for internal network use only.
-- **No containerization** — There is no Dockerfile or CI/CD configuration.
-- **Single-component frontend** — All UI logic is in one file. As the feature set grows, splitting into multiple components and services will become necessary.
+- **No containerization** — There is no Dockerfile. The only CI is a Playwright workflow (`.github/workflows/playwright.yml`) on pushes and PRs to `main`; GitHub Actions isn't running for this repository at the moment, so run the tests locally before opening a PR.
+- **Some features aren't saved on the server yet** — trainings progress is mocked in the frontend, mock interviews live in browser localStorage, and POC how-to edits are lost on reload.
+- **Known bugs** — see [docs/found-bugs.md](docs/found-bugs.md).
 
 ### Planned features (indicated by design mockups in `server/chart_requirement/`)
 
 - **DSR (Daily Status Report) charts** — 12 chart types designed and mocked up; not yet implemented in code.
 - **Daily Attendance charts** — 2 attendance visualization mockups; not yet implemented.
-- **Additional sidebar views** — Initiatives, Reports, Resource Tracking, POC How-To, Announcements, and Settings are present in the nav but not yet wired to views.
+- **Placeholder sidebar views** — Initiatives, Reports, Resource tracking, Announcements, and Settings are in the nav but show "coming soon" pages.
+- **Server endpoints for trainings progress** — the frontend services already name them (`/api/trainings-progress/:eid`, `/api/training-progress/:eid`); the server doesn't have them yet.
